@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { signUpWithEmail } from '../../lib/auth'
 import { createUser } from '../../lib/firestore'
-import { setRoleCookie } from '../../lib/cookies'
+import { setRoleCookie } from '../../lib/cookies.client'
 import { User } from '../../types'
 import { Loader2, Users, Store } from 'lucide-react'
 
