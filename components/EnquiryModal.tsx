@@ -93,8 +93,8 @@ export default function EnquiryModal({ vendorName, onClose, onSubmit }: EnquiryM
             <h4 className="font-medium text-blue-900 mb-2">Tips for a good enquiry:</h4>
             <ul className="text-sm text-blue-800 space-y-1">
               <li>• Mention your wedding date and location</li>
-              <li>• Describe what services you're interested in</li>
-              <li>• Ask about availability and pricing</li>
+              <li>Describe what services you&apos;re interested in</li>
+              <li>Ask about availability and pricing</li>
               <li>• Include any specific questions you have</li>
             </ul>
           </div>

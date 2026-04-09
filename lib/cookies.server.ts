@@ -9,7 +9,7 @@ export const getRoleCookie = async (): Promise<'couple' | 'vendor' | 'admin' | n
   return role as 'couple' | 'vendor' | 'admin' | null
 }
 
-export const setRoleCookie = (role: 'couple' | 'vendor' | 'admin' | null): void => {
+export const setRoleCookie = (_role: 'couple' | 'vendor' | 'admin' | null): void => {
   // Server-side cookie setting (for API routes)
   // Note: This should only be used in server components/API routes
   console.warn('setRoleCookie should only be used on client-side. Use Response.cookie() in API routes.')

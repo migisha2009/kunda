@@ -1,5 +1,4 @@
 import { getAllVendors } from '../../lib/firestore'
-import { Vendor } from '../../types'
 import VendorCard from './VendorCard'
 import VendorFilters from './VendorFilters'
 
