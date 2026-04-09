@@ -1,0 +1,86 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null && request.auth.uid != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'admin';
+    }
+    
+    function isVendorOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Vendor portfolio images rules
+    // Pattern: vendors/{userId}/portfolio/{filename}
+    match /vendors/{userId}/portfolio/{allPaths=**} {
+      allow read: if true; // Anyone can read vendor portfolio images
+      allow write: if isVendorOwner(userId) &&
+                       // File size validation (5MB max)
+                       request.resource.size < 5 * 1024 * 1024 &&
+                       // File type validation (images only)
+                       (request.resource.matches('.*\\.jpeg$') ||
+                        request.resource.matches('.*\\.jpg$') ||
+                        request.resource.matches('.*\\.png$') ||
+                        request.resource.matches('.*\\.webp$'));
+      allow delete: if isVendorOwner(userId) || isAdmin();
+    }
+
+    // User profile images (if applicable)
+    // Pattern: users/{userId}/profile/{filename}
+    match /users/{userId}/profile/{allPaths=**} {
+      allow read: if true; // Anyone can read profile images
+      allow write: if isVendorOwner(userId) && // Users can only write their own profile images
+                       request.resource.size < 5 * 1024 * 1024 &&
+                       (request.resource.matches('.*\\.jpeg$') ||
+                        request.resource.matches('.*\\.jpg$') ||
+                        request.resource.matches('.*\\.png$') ||
+                        request.resource.matches('.*\\.webp$'));
+      allow delete: if isVendorOwner(userId) || isAdmin();
+    }
+
+    // Wedding-related images (if applicable)
+    // Pattern: weddings/{weddingId}/{allPaths=**}
+    match /weddings/{weddingId}/{allPaths=**} {
+      allow read: if isAuthenticated(); // Only authenticated users can read wedding images
+      allow write: if isAuthenticated() && 
+                       // Check if user owns the wedding
+                       get(/databases/(database)/documents/weddings/$(weddingId))/data/coupleId == request.auth.uid &&
+                       request.resource.size < 5 * 1024 * 1024 &&
+                       (request.resource.matches('.*\\.jpeg$') ||
+                        request.resource.matches('.*\\.jpg$') ||
+                        request.resource.matches('.*\\.png$') ||
+                        request.resource.matches('.*\\.webp$'));
+      allow delete: if isAuthenticated() && 
+                       get(/databases/(database)/documents/weddings/$(weddingId))/data/coupleId == request.auth.uid;
+    }
+
+    // General file uploads with additional validation
+    match /{allPaths=**} {
+      allow read: if true; // Default read access for public files
+      allow write: if isAdmin() && // Only admins can write to general storage
+                       request.resource.size < 5 * 1024 * 1024 &&
+                       (request.resource.matches('.*\\.jpeg$') ||
+                        request.resource.matches('.*\\.jpg$') ||
+                        request.resource.matches('.*\\.png$') ||
+                        request.resource.matches('.*\\.webp$'));
+    }
+
+    // Deny all other writes that don't meet criteria
+    match /{allPaths=**} {
+      allow write: if false;
+    }
+  }
+
+  // Fallback rule for any other bucket patterns
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read: if false; // Deny reads by default
+      allow write: if false; // Deny writes by default
+    }
+  }
+}

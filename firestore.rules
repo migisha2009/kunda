@@ -1,0 +1,98 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null && request.auth.uid != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'admin';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isCoupleOwner(coupleId) {
+      return isAuthenticated() && 
+             isOwner(coupleId) &&
+             get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'couple';
+    }
+    
+    function isVendorOwner(vendorId) {
+      return isAuthenticated() && 
+             isOwner(vendorId) &&
+             get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'vendor';
+    }
+    
+    function isParticipantInBooking(bookingId) {
+      return isAuthenticated() && 
+             (isOwner(get(/databases/(database)/documents/bookings/$(bookingId))/data/coupleId) ||
+              isOwner(get(/databases/(database)/documents/bookings/$(bookingId))/data/vendorId));
+    }
+    
+    function isParticipantInEnquiry(enquiryId) {
+      return isAuthenticated() && 
+             (isOwner(get(/databases/(database)/documents/enquiries/$(enquiryId))/data/coupleId) ||
+              isOwner(get(/databases/(database)/documents/enquiries/$(enquiryId))/data/vendorId));
+    }
+
+    // Users collection rules
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      allow create: if isAuthenticated();
+    }
+
+    // Vendors collection rules
+    match /vendors/{vendorId} {
+      allow read: if true; // Anyone can read vendor profiles
+      allow write: if isVendorOwner(vendorId);
+      allow create: if isAuthenticated() && 
+                       get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'vendor';
+    }
+
+    // Weddings collection rules
+    match /weddings/{weddingId} {
+      allow read, write: if isCoupleOwner(get(/databases/(database)/documents/weddings/$(weddingId))/data/coupleId);
+      allow create: if isAuthenticated() && 
+                       get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'couple';
+    }
+
+    // Bookings collection rules
+    match /bookings/{bookingId} {
+      allow read: if isParticipantInBooking(bookingId) || isAdmin();
+      allow create: if isAuthenticated() && 
+                       (get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'couple' ||
+                        get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'vendor');
+      allow update: if (isParticipantInBooking(bookingId) || isAdmin()) && 
+                       // Only allow updating status field for non-admins
+                       (isAdmin() || 
+                        (request.resource.data.diff(resource.data.data()).affectedKeys().hasAll(['status'])));
+    }
+
+    // Enquiries collection rules
+    match /enquiries/{enquiryId} {
+      allow read, write: if isParticipantInEnquiry(enquiryId) || isAdmin();
+      allow create: if isAuthenticated() && 
+                       (get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'couple' ||
+                        get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'vendor');
+    }
+
+    // Reviews collection rules (if exists)
+    match /reviews/{reviewId} {
+      allow read: if true; // Anyone can read reviews
+      allow create: if isAuthenticated() && 
+                       get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'couple' &&
+                       isOwner(get(/databases/(database)/documents/reviews/$(reviewId))/data/coupleId);
+      allow update, delete: if isAdmin() || 
+                       isOwner(get(/databases/(database)/documents/reviews/$(reviewId))/data/coupleId);
+    }
+
+    // Deny all other reads/writes
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
