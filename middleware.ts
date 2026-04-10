@@ -7,21 +7,22 @@ export function middleware(request: NextRequest, _event: NextFetchEvent) {
   // Get the role from cookie
   const role = request.cookies.get('kunda-role')?.value as 'couple' | 'vendor' | 'admin' | null
 
-  // Guest routes that don't require authentication
-  const isGuestRoute = pathname.startsWith('/guest')
-
-  // Protected routes that require authentication
-  const isDashboardRoute = pathname.startsWith('/dashboard')
-  const isCoupleRoute = pathname.startsWith('/dashboard/couple')
-  const isVendorRoute = pathname.startsWith('/dashboard/vendor')
+  // Define protected routes
   const isAdminRoute = pathname.startsWith('/dashboard/admin')
+  const isVendorRoute = pathname.startsWith('/dashboard/vendor')
+  const isCoupleRoute = pathname.startsWith('/dashboard/couple')
+  const isDashboardRoute = pathname.startsWith('/dashboard')
+  const isLoginRoute = pathname === '/login'
+  const isSignupRoute = pathname === '/signup'
 
-  // Skip authentication for guest routes
-  if (isGuestRoute) {
-    return NextResponse.next()
+  // Handle login/signup redirects for authenticated users
+  if ((isLoginRoute || isSignupRoute) && role) {
+    // Redirect to appropriate dashboard based on role
+    const dashboardUrl = new URL(`/dashboard/${role}`, request.url)
+    return NextResponse.redirect(dashboardUrl)
   }
 
-  // If trying to access dashboard routes
+  // Handle dashboard routes protection
   if (isDashboardRoute) {
     // If not authenticated, redirect to login
     if (!role) {
@@ -30,19 +31,34 @@ export function middleware(request: NextRequest, _event: NextFetchEvent) {
       return NextResponse.redirect(loginUrl)
     }
 
-    // If trying to access admin routes but not an admin
+    // CRITICAL FIX: Only redirect if role doesn't match the route
+    // If user is on the correct dashboard for their role, let them through
+    if (isAdminRoute && role === 'admin') {
+      return NextResponse.next()
+    }
+    
+    if (isVendorRoute && role === 'vendor') {
+      return NextResponse.next()
+    }
+    
+    if (isCoupleRoute && role === 'couple') {
+      return NextResponse.next()
+    }
+
+    // If user is on wrong dashboard, redirect to correct one
     if (isAdminRoute && role !== 'admin') {
-      return NextResponse.redirect(new URL('/dashboard/couple', request.url))
+      const correctUrl = new URL(`/dashboard/${role}`, request.url)
+      return NextResponse.redirect(correctUrl)
     }
 
-    // If trying to access couple routes but not a couple
-    if (isCoupleRoute && role !== 'couple') {
-      return NextResponse.redirect(new URL('/dashboard/vendor', request.url))
-    }
-
-    // If trying to access vendor routes but not a vendor
     if (isVendorRoute && role !== 'vendor') {
-      return NextResponse.redirect(new URL('/dashboard/couple', request.url))
+      const correctUrl = new URL(`/dashboard/${role}`, request.url)
+      return NextResponse.redirect(correctUrl)
+    }
+
+    if (isCoupleRoute && role !== 'couple') {
+      const correctUrl = new URL(`/dashboard/${role}`, request.url)
+      return NextResponse.redirect(correctUrl)
     }
   }
 
@@ -51,14 +67,8 @@ export function middleware(request: NextRequest, _event: NextFetchEvent) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|public).*)',
+    '/dashboard/:path*',
+    '/login',
+    '/signup'
   ],
 }
