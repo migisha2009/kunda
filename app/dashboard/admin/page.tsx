@@ -2,13 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
+import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { collection, query, where, getDocs, orderBy, limit, onSnapshot } from 'firebase/firestore'
 import { db } from '../../../lib/firebase'
 import { User, Vendor, Booking, Enquiry } from '../../../types'
 import { Users, Store, Calendar, DollarSign, MessageSquare, TrendingUp, UserPlus, Loader2 } from 'lucide-react'
 
 export default function AdminOverview() {
+  const { loading: authLoading } = useRequireAuth('admin')
   const { userProfile } = useAuth()
+  
+  if (authLoading) return <div>Loading...</div>
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalUsers: 0,

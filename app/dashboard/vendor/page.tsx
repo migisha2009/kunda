@@ -2,13 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
+import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { collection, query, where, getDocs, orderBy, limit, onSnapshot, doc, getDoc } from 'firebase/firestore'
 import { db } from '../../../lib/firebase'
 import { Vendor, Booking, Enquiry } from '../../../types'
 import { Store, Star, MessageSquare, Calendar, DollarSign, TrendingUp, User as UserIcon, AlertTriangle, Loader2, Clock, CheckCircle } from 'lucide-react'
 
 export default function VendorDashboard() {
+  const { loading: authLoading } = useRequireAuth('vendor')
   const { user, userProfile } = useAuth()
+  
+  if (authLoading) return <div>Loading...</div>
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalEnquiries: 0,

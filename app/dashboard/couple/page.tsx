@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
+import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { getWedding, updateWedding, getBookingsByCouple } from '../../../lib/firestore'
 import { Wedding, Booking } from '../../../types'
 import { Heart, Calendar, Users, DollarSign, CheckSquare, Search, Plus, Edit2, Save, X, Loader2, User, UsersIcon } from 'lucide-react'
 
 export default function CoupleDashboard() {
+  const { loading: authLoading } = useRequireAuth('couple')
   const { user, userProfile } = useAuth()
+  
+  if (authLoading) return <div>Loading...</div>
   const [wedding, setWedding] = useState<Wedding | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)

@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { signUpWithEmail } from '../../lib/auth'
 import { createUser } from '../../lib/firestore'
-import { setRoleCookie } from '../../lib/cookies.client'
 import { testFirebaseConnection, checkEnvironmentVariables } from '../../lib/firebase-test'
 import { User } from '../../types'
 import { Loader2, Users, Store, Eye, EyeOff, Check, X } from 'lucide-react'
@@ -132,17 +131,12 @@ export default function SignupPage() {
       })
       console.log('✅ Firestore user document created')
 
-      // Set role cookie for middleware
-      console.log('🍪 Setting role cookie...')
-      setRoleCookie(data.role)
-      console.log('✅ Role cookie set')
-
-      // Redirect based on role
-      console.log('🔄 Redirecting to dashboard...')
+      // Redirect based on role using full page reload
+      console.log('?? Redirecting to dashboard...')
       if (data.role === 'couple') {
-        router.push('/dashboard/couple')
+        window.location.href = '/dashboard/couple'
       } else {
-        router.push('/dashboard/vendor')
+        window.location.href = '/dashboard/vendor'
       }
     } catch (err) {
       console.error('❌ Signup error:', err)

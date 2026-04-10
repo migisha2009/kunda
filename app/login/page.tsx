@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { signInWithEmail } from '../../lib/auth'
 import { getUser } from '../../lib/firestore'
-import { setRoleCookie } from '../../lib/cookies.client'
 import { Loader2 } from 'lucide-react'
 
 const loginSchema = z.object({
@@ -46,9 +45,6 @@ export default function LoginPage() {
       if (!userProfile) {
         throw new Error('User profile not found')
       }
-
-      // Set role cookie for middleware
-      setRoleCookie(userProfile.role)
 
       // Redirect based on role or custom redirect using full page reload
       if (redirect) {

@@ -5,7 +5,6 @@ import { User as FirebaseUser } from 'firebase/auth'
 import { onAuthChange } from '../lib/auth'
 import { getUser } from '../lib/firestore'
 import { User } from '../types'
-import { setRoleCookie } from '../lib/cookies.client'
 
 interface AuthContextType {
   user: FirebaseUser | null
@@ -33,21 +32,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           const profile = await getUser(firebaseUser.uid)
           setUserProfile(profile)
-          // Set the role cookie when profile is loaded
-          if (profile?.role) {
-            setRoleCookie(profile.role)
-            // Wait 100ms to ensure cookie is written before navigation
-            await new Promise(resolve => setTimeout(resolve, 100))
-          }
         } catch (error) {
           console.error('Error fetching user profile:', error)
           setUserProfile(null)
-          setRoleCookie(null)
         }
       } else {
         setUserProfile(null)
-        // Clear cookie when user logs out
-        setRoleCookie(null)
       }
       
       setLoading(false)
