@@ -302,7 +302,7 @@ export default function AdminBookingsPage() {
           </div>
         </div>
       </div>
-    </div>
+        </div>
       )}
     </>
   )

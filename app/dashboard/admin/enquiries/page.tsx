@@ -287,7 +287,7 @@ export default function AdminEnquiriesPage() {
           </div>
         </div>
       </div>
-    </div>
+        </div>
       )}
     </>
   )
