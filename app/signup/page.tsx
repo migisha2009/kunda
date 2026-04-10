@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { signUpWithEmail } from '../../lib/auth'
 import { createUser } from '../../lib/firestore'
 import { setRoleCookie } from '../../lib/cookies.client'
+import { testFirebaseConnection, checkEnvironmentVariables } from '../../lib/firebase-test'
 import { User } from '../../types'
 import { Loader2, Users, Store, Eye, EyeOff, Check, X } from 'lucide-react'
 
@@ -57,6 +58,23 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const router = useRouter()
 
+  // Test Firebase connection on component mount
+  useState(() => {
+    console.log('🧪 Running Firebase connection test...')
+    const envCheck = checkEnvironmentVariables()
+    const connectionTest = testFirebaseConnection()
+    
+    if (!envCheck) {
+      console.error('❌ Environment variables check failed')
+      setError('Firebase configuration error. Please check environment variables.')
+    } else if (!connectionTest) {
+      console.error('❌ Firebase connection test failed')
+      setError('Firebase connection error. Please check your configuration.')
+    } else {
+      console.log('✅ Firebase connection test passed')
+    }
+  })
+
   const {
     register,
     handleSubmit,
@@ -97,27 +115,42 @@ export default function SignupPage() {
     setError('')
 
     try {
+      console.log('🚀 Starting signup process...', { email: data.email, role: data.role })
+      
       // Create Firebase user
+      console.log('📧 Creating Firebase user...')
       const firebaseUser = await signUpWithEmail(data.email, data.password)
+      console.log('✅ Firebase user created successfully:', firebaseUser.uid)
       
       // Create user document in Firestore
+      console.log('📝 Creating Firestore user document...')
       await createUser(firebaseUser.uid, {
         email: data.email,
         name: data.name,
         phone: data.phone,
         role: data.role
       })
+      console.log('✅ Firestore user document created')
 
       // Set role cookie for middleware
+      console.log('🍪 Setting role cookie...')
       setRoleCookie(data.role)
+      console.log('✅ Role cookie set')
 
       // Redirect based on role
+      console.log('🔄 Redirecting to dashboard...')
       if (data.role === 'couple') {
         router.push('/dashboard/couple')
       } else {
         router.push('/dashboard/vendor')
       }
     } catch (err) {
+      console.error('❌ Signup error:', err)
+      console.error('❌ Error details:', {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : 'No stack trace',
+        type: typeof err
+      })
       setError(err instanceof Error ? err.message : 'An error occurred during signup')
     } finally {
       setIsLoading(false)

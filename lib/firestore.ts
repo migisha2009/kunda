@@ -33,13 +33,26 @@ const convertDoc = <T>(doc: QueryDocumentSnapshot<DocumentData>): T & { id: stri
 // Users
 export const createUser = async (userId: string, data: Omit<User, 'id' | 'createdAt'>): Promise<void> => {
   try {
+    console.log('📝 Creating Firestore user with ID:', userId)
+    console.log('📝 User data:', data)
+    
     const userRef = doc(db, 'users', userId)
-    await setDoc(userRef, {
+    const userData = {
       ...data,
       createdAt: new Date()
-    })
+    }
+    console.log('📝 Complete user document:', userData)
+    
+    await setDoc(userRef, userData)
+    console.log('✅ Firestore user created successfully')
   } catch (error) {
-    console.error('Error creating user:', error)
+    console.error('❌ Error creating Firestore user:', error)
+    console.error('❌ Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+      userId,
+      data
+    })
     throw error
   }
 }
