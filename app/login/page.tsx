@@ -42,14 +42,11 @@ export default function LoginPage() {
       
       // b. Get the Firebase Auth UID
       const uid = firebaseUser.uid
-      console.log('Firebase UID after login:', uid)
       
       // c. Fetch Firestore document directly inside the login page using getDoc()
       const userDoc = await getDoc(doc(db, 'users', uid))
       const userData = userDoc.data()
-      console.log('Firestore userData:', userData)
       const role = userData?.role
-      console.log('Role found:', role)
       
       // d. Redirect based on role
       if (role === 'admin') {

@@ -34,18 +34,13 @@ const convertDoc = <T>(doc: QueryDocumentSnapshot<DocumentData>): T & { id: stri
 // Users
 export const createUser = async (userId: string, data: Omit<User, 'id' | 'createdAt'>): Promise<void> => {
   try {
-    console.log('📝 Creating Firestore user with ID:', userId)
-    console.log('📝 User data:', data)
-    
     const userRef = doc(db, 'users', userId)
     const userData = {
       ...data,
       createdAt: new Date()
     }
-    console.log('📝 Complete user document:', userData)
     
     await setDoc(userRef, userData)
-    console.log('✅ Firestore user created successfully')
   } catch (error) {
     console.error('❌ Error creating Firestore user:', error)
     console.error('❌ Error details:', {
@@ -60,17 +55,13 @@ export const createUser = async (userId: string, data: Omit<User, 'id' | 'create
 
 export const getUser = async (userId: string): Promise<User | null> => {
   try {
-    console.log('Fetching user:', userId)
     const userRef = doc(db, 'users', userId)
     const userSnap = await getDoc(userRef)
     
     if (userSnap.exists()) {
       const data = convertDoc<User>(userSnap as QueryDocumentSnapshot<DocumentData>)
-      console.log('User data:', data)
-      console.log('User role found:', data.role)
       return data
     }
-    console.log('No user document found for userId:', userId)
     return null
   } catch (error) {
     console.error('Error getting user:', error)
@@ -308,8 +299,6 @@ export const getEnquiriesByVendor = async (vendorId: string): Promise<Enquiry[]>
 // Guests
 export const createGuest = async (data: Omit<Guest, 'id' | 'createdAt' | 'inviteToken'>): Promise<string> => {
   try {
-    console.log('📝 Creating guest with data:', data)
-    
     const guestRef = doc(collection(db, 'guests'))
     const inviteToken = crypto.randomUUID()
     
@@ -324,10 +313,7 @@ export const createGuest = async (data: Omit<Guest, 'id' | 'createdAt' | 'invite
       createdAt: new Date()
     }
     
-    console.log('📝 Complete guest document:', guestData)
-    
     await setDoc(guestRef, guestData)
-    console.log('✅ Guest created successfully with ID:', guestRef.id)
     
     return guestRef.id
   } catch (error) {

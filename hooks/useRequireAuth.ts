@@ -25,12 +25,10 @@ export function useRequireAuth(requiredRole: 'couple' | 'vendor' | 'admin') {
         if (userDoc.exists()) {
           const data = userDoc.data()
           const fetchedRole = data?.role
-          console.log('useRequireAuth - fetched role:', fetchedRole)
           setRole(fetchedRole)
           
           // Only redirect if role does not match
           if (fetchedRole && fetchedRole !== requiredRole) {
-            console.log('Wrong dashboard, redirecting to:', '/dashboard/' + fetchedRole)
             window.location.href = '/dashboard/' + fetchedRole
           }
         } else {

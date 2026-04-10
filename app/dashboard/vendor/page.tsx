@@ -241,48 +241,125 @@ export default function VendorDashboard() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
       
-      {/* TOP NAVBAR */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-                {displayName}
-              </h1>
-              <nav className="flex space-x-8">
-                <a 
-                  href="/dashboard/vendor" 
-                  className="text-sm font-medium hover:text-[#b08850] transition-colors"
-                  style={{ fontFamily: 'Jost', color: '#3a2a1a' }}
-                >
-                  Overview
-                </a>
-                <a 
-                  href="/dashboard/vendor/profile" 
-                  className="text-sm font-medium hover:text-[#b08850] transition-colors"
-                  style={{ fontFamily: 'Jost', color: '#9a7850' }}
-                >
-                  Profile
-                </a>
-                <a 
-                  href="/dashboard/vendor/bookings" 
-                  className="text-sm font-medium hover:text-[#b08850] transition-colors"
-                  style={{ fontFamily: 'Jost', color: '#9a7850' }}
-                >
-                  Bookings
-                </a>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-sm font-medium" style={{ color: '#3a2a1a' }}>
-                  {userProfile.name.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            </div>
-          </div>
+      {/* KUNDA NAVBAR */}
+      <nav style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '14px 32px',
+        background: '#ffffff',
+        borderBottom: '0.5px solid rgba(180,140,90,0.2)'
+      }}>
+        {/* Left - Logo */}
+        <div 
+          className="flex items-center cursor-pointer"
+          onClick={() => window.location.href = '/'}
+        >
+          <div style={{
+            width: '8px',
+            height: '8px',
+            border: '1.5px solid #b08850',
+            marginRight: '12px'
+          }}></div>
+          <span style={{
+            fontFamily: 'Cormorant Garamond',
+            fontSize: '20px',
+            color: '#7a5c30',
+            letterSpacing: '0.1em'
+          }}>Kunda</span>
         </div>
-      </div>
+
+        {/* Center - Navigation */}
+        <div style={{ display: 'flex', gap: '32px' }}>
+          <a 
+            href="/dashboard/vendor" 
+            style={{
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: '#7a5c30',
+              textDecoration: 'none'
+            }}
+          >
+            Overview
+          </a>
+          <a 
+            href="/dashboard/vendor/profile" 
+            style={{
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: '#9a7850',
+              textDecoration: 'none'
+            }}
+          >
+            Profile
+          </a>
+          <a 
+            href="/dashboard/vendor/bookings" 
+            style={{
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: '#9a7850',
+              textDecoration: 'none'
+            }}
+          >
+            Bookings
+          </a>
+        </div>
+
+        {/* Right - User Info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            background: '#f0e4d0',
+            border: '1px solid #b08850',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <span style={{
+              color: '#7a5c30',
+              fontSize: '13px',
+              fontFamily: 'Jost',
+              fontWeight: 500
+            }}>
+              {(vendorData?.businessName || userProfile.name).charAt(0).toUpperCase()}
+            </span>
+          </div>
+          <span style={{
+            fontFamily: 'Jost',
+            fontSize: '13px',
+            color: '#7a5c30'
+          }}>
+            {vendorData?.businessName || userProfile.name}
+          </span>
+          <button
+            onClick={() => {
+              // signOutUser() - will need to implement this
+              window.location.href = '/login'
+            }}
+            style={{
+              border: '0.5px solid #b08850',
+              color: '#b08850',
+              background: 'transparent',
+              padding: '6px 14px',
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              cursor: 'pointer'
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+      </nav>
 
       {/* HERO SECTION */}
       <div style={{ padding: '32px 32px 20px', backgroundColor: '#fdf9f5' }}>
@@ -296,7 +373,7 @@ export default function VendorDashboard() {
           {vendorData?.businessName || userProfile.name}
         </h1>
         <p className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
-          {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to get started'}
+          {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to start receiving enquiries'}
         </p>
       </div>
 
@@ -344,73 +421,113 @@ export default function VendorDashboard() {
       <div className="grid grid-cols-4 gap-3 px-8 mb-5">
         {/* Total Enquiries */}
         <div 
-          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
-          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+          className="border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderColor: 'rgba(180,140,90,0.2)', 
+            padding: '16px 18px'
+          }}
         >
-          <div className="flex items-center justify-between mb-2">
-            <MessageSquare size={20} style={{ color: '#b08850' }} />
-          </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            {stats.totalEnquiries}
-          </div>
-          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+          <div className="text-xs uppercase mb-2" style={{ 
+            fontFamily: 'Jost', 
+            letterSpacing: '0.15em',
+            color: '#9a7850' 
+          }}>
             Total Enquiries
           </div>
-          <div className="text-xs mt-1 opacity-70" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+          <div className="text-4xl font-light mb-1" style={{ 
+            fontFamily: 'Cormorant Garamond', 
+            color: '#3a2a1a',
+            fontWeight: 300,
+            fontSize: '32px'
+          }}>
+            {stats.totalEnquiries}
+          </div>
+          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
             this week
           </div>
         </div>
 
         {/* Confirmed Bookings */}
         <div 
-          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
-          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+          className="border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderColor: 'rgba(180,140,90,0.2)', 
+            padding: '16px 18px'
+          }}
         >
-          <div className="flex items-center justify-between mb-2">
-            <Calendar size={20} style={{ color: '#b08850' }} />
-          </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            {stats.confirmedBookings}
-          </div>
-          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+          <div className="text-xs uppercase mb-2" style={{ 
+            fontFamily: 'Jost', 
+            letterSpacing: '0.15em',
+            color: '#9a7850' 
+          }}>
             Confirmed Bookings
           </div>
-          <div className="text-xs mt-1 opacity-70" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+          <div className="text-4xl font-light mb-1" style={{ 
+            fontFamily: 'Cormorant Garamond', 
+            color: '#3a2a1a',
+            fontWeight: 300,
+            fontSize: '32px'
+          }}>
+            {stats.confirmedBookings}
+          </div>
+          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
             upcoming
           </div>
         </div>
 
         {/* Total Revenue */}
         <div 
-          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
-          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+          className="border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderColor: 'rgba(180,140,90,0.2)', 
+            padding: '16px 18px'
+          }}
         >
-          <div className="flex items-center justify-between mb-2">
-            <DollarSign size={20} style={{ color: '#b08850' }} />
-          </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            ${stats.totalRevenue.toLocaleString()}
-          </div>
-          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+          <div className="text-xs uppercase mb-2" style={{ 
+            fontFamily: 'Jost', 
+            letterSpacing: '0.15em',
+            color: '#9a7850' 
+          }}>
             Total Revenue
+          </div>
+          <div className="text-4xl font-light mb-1" style={{ 
+            fontFamily: 'Cormorant Garamond', 
+            color: '#3a2a1a',
+            fontWeight: 300,
+            fontSize: '32px'
+          }}>
+            ${stats.totalRevenue.toLocaleString()}
           </div>
         </div>
 
         {/* Avg Rating */}
         <div 
-          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
-          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+          className="border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderColor: 'rgba(180,140,90,0.2)', 
+            padding: '16px 18px'
+          }}
         >
-          <div className="flex items-center justify-between mb-2">
-            <Star size={20} style={{ color: '#b08850' }} />
-          </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '—'}
-          </div>
-          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+          <div className="text-xs uppercase mb-2" style={{ 
+            fontFamily: 'Jost', 
+            letterSpacing: '0.15em',
+            color: '#9a7850' 
+          }}>
             Avg Rating
           </div>
-          <div className="text-xs mt-1 opacity-70" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+          <div className="text-4xl font-light mb-1" style={{ 
+            fontFamily: 'Cormorant Garamond', 
+            color: '#3a2a1a',
+            fontWeight: 300,
+            fontSize: '32px'
+          }}>
+            {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '—'}
+          </div>
+          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
             {stats.reviewCount > 0 ? `${stats.reviewCount} reviews` : 'No reviews yet'}
           </div>
         </div>
@@ -507,7 +624,7 @@ export default function VendorDashboard() {
                   Category
                 </span>
                 <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
-                  {vendorData?.category || 'Not set'}
+                  {vendorData?.category || '—'}
                 </span>
               </div>
               
@@ -519,7 +636,7 @@ export default function VendorDashboard() {
                   Location
                 </span>
                 <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
-                  {vendorData?.location || 'Not set'}
+                  {vendorData?.location || '—'}
                 </span>
               </div>
               
@@ -533,7 +650,7 @@ export default function VendorDashboard() {
                 <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
                   {vendorData?.pricing && vendorData.pricing.min > 0 
                     ? `$${vendorData.pricing.min.toLocaleString()} — $${vendorData.pricing.max?.toLocaleString() || 'TBD'}`
-                    : 'Not set'
+                    : '—'
                   }
                 </span>
               </div>
@@ -546,12 +663,14 @@ export default function VendorDashboard() {
                   Status
                 </span>
                 <div 
-                  className="text-xs px-2 py-1"
+                  className="text-xs px-2 py-1 uppercase"
                   style={{
                     fontFamily: 'Jost',
                     background: vendorData?.verified ? '#e8f5e0' : '#faeeda',
                     color: vendorData?.verified ? '#3b6d11' : '#633806',
-                    border: vendorData?.verified ? '0.5px solid #c0dd97' : '0.5px solid #fac775'
+                    border: vendorData?.verified ? '0.5px solid #c0dd97' : '0.5px solid #fac775',
+                    padding: '3px 10px',
+                    fontSize: '10px'
                   }}
                 >
                   {vendorData?.verified ? 'Verified' : 'Unverified'}

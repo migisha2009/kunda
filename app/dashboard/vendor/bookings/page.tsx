@@ -117,86 +117,312 @@ export default function VendorBookingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Enquiries & Bookings</h1>
-          <p className="text-gray-600">Manage client enquiries and track your bookings</p>
+    <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+      {/* KUNDA NAVBAR */}
+      <nav style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '14px 32px',
+        background: '#ffffff',
+        borderBottom: '0.5px solid rgba(180,140,90,0.2)'
+      }}>
+        {/* Left - Logo */}
+        <div 
+          className="flex items-center cursor-pointer"
+          onClick={() => window.location.href = '/'}
+        >
+          <div style={{
+            width: '8px',
+            height: '8px',
+            border: '1.5px solid #b08850',
+            marginRight: '12px'
+          }}></div>
+          <span style={{
+            fontFamily: 'Cormorant Garamond',
+            fontSize: '20px',
+            color: '#7a5c30',
+            letterSpacing: '0.1em'
+          }}>Kunda</span>
         </div>
 
+        {/* Center - Navigation */}
+        <div style={{ display: 'flex', gap: '32px' }}>
+          <a 
+            href="/dashboard/vendor" 
+            style={{
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: '#9a7850',
+              textDecoration: 'none'
+            }}
+          >
+            Overview
+          </a>
+          <a 
+            href="/dashboard/vendor/profile" 
+            style={{
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: '#9a7850',
+              textDecoration: 'none'
+            }}
+          >
+            Profile
+          </a>
+          <a 
+            href="/dashboard/vendor/bookings" 
+            style={{
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.15em',
+              color: '#7a5c30',
+              textDecoration: 'none'
+            }}
+          >
+            Bookings
+          </a>
+        </div>
+
+        {/* Right - User Info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            background: '#f0e4d0',
+            border: '1px solid #b08850',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <span style={{
+              color: '#7a5c30',
+              fontSize: '13px',
+              fontFamily: 'Jost',
+              fontWeight: 500
+            }}>
+              {user?.email?.charAt(0).toUpperCase()}
+            </span>
+          </div>
+          <span style={{
+            fontFamily: 'Jost',
+            fontSize: '13px',
+            color: '#7a5c30'
+          }}>
+            {user?.email}
+          </span>
+          <button
+            onClick={() => {
+              window.location.href = '/login'
+            }}
+            style={{
+              border: '0.5px solid #b08850',
+              color: '#b08850',
+              background: 'transparent',
+              padding: '6px 14px',
+              fontFamily: 'Jost',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              cursor: 'pointer'
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+      </nav>
+
+      {/* Page Title */}
+      <div style={{ padding: '48px 32px 32px' }}>
+        <div className="text-xs uppercase tracking-wider mb-3" style={{ 
+          color: '#b08850', 
+          fontFamily: 'Jost', 
+          fontWeight: 400,
+          letterSpacing: '0.15em'
+        }}>
+          Enquiries & Bookings
+        </div>
+        <h1 
+          className="text-4xl font-light mb-3" 
+          style={{ 
+            fontFamily: 'Cormorant Garamond', 
+            color: '#3a2a1a', 
+            fontWeight: 300,
+            fontSize: '32px'
+          }}
+        >
+          Manage Your Enquiries
+        </h1>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-8">
+
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Pending Enquiries</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {enquiries.filter(e => e.status === 'pending').length}
-                </p>
-              </div>
-              <MessageSquare className="w-8 h-8 text-yellow-600" />
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          {/* Pending Enquiries */}
+          <div 
+            className="border"
+            style={{ 
+              backgroundColor: '#ffffff', 
+              borderColor: 'rgba(180,140,90,0.2)', 
+              padding: '16px 18px'
+            }}
+          >
+            <div className="text-xs uppercase mb-2" style={{ 
+              fontFamily: 'Jost', 
+              letterSpacing: '0.15em',
+              color: '#9a7850' 
+            }}>
+              Pending Enquiries
+            </div>
+            <div className="text-4xl font-light mb-1" style={{ 
+              fontFamily: 'Cormorant Garamond', 
+              color: '#3a2a1a',
+              fontWeight: 300,
+              fontSize: '32px'
+            }}>
+              {enquiries.filter(e => e.status === 'pending').length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Replied</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {enquiries.filter(e => e.status === 'replied').length}
-                </p>
-              </div>
-              <CheckCircle className="w-8 h-8 text-green-600" />
+
+          {/* Replied */}
+          <div 
+            className="border"
+            style={{ 
+              backgroundColor: '#ffffff', 
+              borderColor: 'rgba(180,140,90,0.2)', 
+              padding: '16px 18px'
+            }}
+          >
+            <div className="text-xs uppercase mb-2" style={{ 
+              fontFamily: 'Jost', 
+              letterSpacing: '0.15em',
+              color: '#9a7850' 
+            }}>
+              Replied
+            </div>
+            <div className="text-4xl font-light mb-1" style={{ 
+              fontFamily: 'Cormorant Garamond', 
+              color: '#3a2a1a',
+              fontWeight: 300,
+              fontSize: '32px'
+            }}>
+              {enquiries.filter(e => e.status === 'replied').length}
             </div>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Enquiries</p>
-                <p className="text-2xl font-bold text-gray-900">{enquiries.length}</p>
-              </div>
-              <User className="w-8 h-8 text-blue-600" />
+
+          {/* Total Enquiries */}
+          <div 
+            className="border"
+            style={{ 
+              backgroundColor: '#ffffff', 
+              borderColor: 'rgba(180,140,90,0.2)', 
+              padding: '16px 18px'
+            }}
+          >
+            <div className="text-xs uppercase mb-2" style={{ 
+              fontFamily: 'Jost', 
+              letterSpacing: '0.15em',
+              color: '#9a7850' 
+            }}>
+              Total Enquiries
+            </div>
+            <div className="text-4xl font-light mb-1" style={{ 
+              fontFamily: 'Cormorant Garamond', 
+              color: '#3a2a1a',
+              fontWeight: 300,
+              fontSize: '32px'
+            }}>
+              {enquiries.length}
             </div>
           </div>
         </div>
 
         {/* Enquiries List */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Enquiries</h2>
-          </div>
+          <div 
+            style={{
+              backgroundColor: '#ffffff',
+              border: '0.5px solid rgba(180,140,90,0.2)',
+              padding: '24px'
+            }}
+          >
+            <h2 
+              className="text-lg font-medium mb-4" 
+              style={{ 
+                fontFamily: 'Cormorant Garamond', 
+                color: '#3a2a1a', 
+                fontWeight: 400,
+                fontSize: '18px',
+                borderBottom: '0.5px solid rgba(180,140,90,0.15)',
+                paddingBottom: '12px',
+                marginBottom: '20px'
+              }}
+            >
+              Recent Enquiries
+            </h2>
           
-          {enquiries.length > 0 ? (
-            <div className="divide-y divide-gray-200">
-              {enquiries.map((enquiry) => (
-                <div key={enquiry.id} className="p-6">
-                  <div className="flex items-start justify-between">
+            {enquiries.length > 0 ? (
+              <div className="space-y-3">
+                {enquiries.map((enquiry) => (
+                  <div 
+                    key={enquiry.id}
+                    className="flex items-start justify-between p-4"
+                    style={{
+                      backgroundColor: '#fdf9f5',
+                      border: '0.5px solid rgba(180,140,90,0.15)'
+                    }}
+                  >
                     <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        {getStatusIcon(enquiry.status)}
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(enquiry.status)}`}>
-                          {enquiry.status.charAt(0).toUpperCase() + enquiry.status.slice(1)}
-                        </span>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <Calendar className="w-4 h-4 mr-1" />
-                          {formatDate(enquiry.createdAt)}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-3">
+                          <div 
+                            className="text-xs px-2 py-1 uppercase"
+                            style={{
+                              fontFamily: 'Jost',
+                              ...(enquiry.status === 'pending' && {
+                                background: '#faeeda',
+                                color: '#633806',
+                                border: '0.5px solid #fac775'
+                              }),
+                              ...(enquiry.status === 'replied' && {
+                                background: '#e8f5e0',
+                                color: '#3b6d11',
+                                border: '0.5px solid #c0dd97'
+                              }),
+                              ...(enquiry.status === 'closed' && {
+                                background: '#f0efef',
+                                color: '#5f5e5a'
+                              })
+                            }}
+                          >
+                            {enquiry.status.charAt(0).toUpperCase() + enquiry.status.slice(1)}
+                          </div>
+                          <div className="flex items-center text-xs" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {formatDate(enquiry.createdAt)}
+                          </div>
                         </div>
                       </div>
                       
                       <div className="mb-3">
-                        <p className="text-gray-900 whitespace-pre-wrap">{enquiry.message}</p>
-                      </div>
-                      
-                      <div className="flex items-center text-sm text-gray-600">
-                        <User className="w-4 h-4 mr-1" />
-                        Couple ID: {enquiry.coupleId}
+                        <p style={{ fontFamily: 'Jost', color: '#3a2a1a', fontSize: '13px', fontWeight: 500, marginBottom: '4px' }}>
+                          Couple ID: {enquiry.coupleId}
+                        </p>
+                        <p style={{ fontFamily: 'Jost', color: '#9a7850', fontSize: '11px', whiteSpace: 'pre-wrap' }}>
+                          {enquiry.message}
+                        </p>
                       </div>
                     </div>
                     
@@ -204,30 +430,61 @@ export default function VendorBookingsPage() {
                       <div className="ml-4 flex flex-col space-y-2">
                         <button
                           onClick={() => updateEnquiryStatus(enquiry.id, 'replied')}
-                          className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+                          style={{
+                            padding: '8px 16px',
+                            fontFamily: 'Jost',
+                            fontSize: '11px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            background: '#e8f5e0',
+                            color: '#3b6d11',
+                            border: '0.5px solid #c0dd97',
+                            cursor: 'pointer'
+                          }}
                         >
                           Mark as Replied
                         </button>
                         <button
                           onClick={() => updateEnquiryStatus(enquiry.id, 'closed')}
-                          className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
+                          style={{
+                            padding: '8px 16px',
+                            fontFamily: 'Jost',
+                            fontSize: '11px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            background: '#faeeda',
+                            color: '#633806',
+                            border: '0.5px solid #fac775',
+                            cursor: 'pointer'
+                          }}
                         >
                           Decline
                         </button>
                       </div>
                     )}
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="p-12 text-center">
-              <MessageSquare className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No enquiries yet</h3>
-              <p className="text-gray-600">When couples send you enquiries, they'll appear here</p>
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <MessageSquare size={48} style={{ color: '#b4a090' }} className="mx-auto mb-4" />
+                <h3 
+                  className="text-xl font-light mb-3" 
+                  style={{ 
+                    fontFamily: 'Cormorant Garamond', 
+                    color: '#9a7850', 
+                    fontWeight: 300,
+                    fontSize: '20px'
+                  }}
+                >
+                  No enquiries yet
+                </h3>
+                <p style={{ fontFamily: 'Jost', color: '#b4a090', fontSize: '13px' }}>
+                  When couples send you enquiries, they'll appear here
+                </p>
+              </div>
+            )}
+          </div>
       </div>
     </div>
   )
