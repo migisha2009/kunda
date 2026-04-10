@@ -375,18 +375,19 @@ export const getGuestsByWedding = async (weddingId: string): Promise<Guest[]> =>
 
 export const updateGuestRSVP = async (
   guestId: string, 
-  rsvpStatus: Guest['rsvpStatus'], 
-  dietaryPreferences?: string
+  rsvpStatus: string, 
+  dietaryPreferences?: string,
+  tableNumber?: number
 ): Promise<void> => {
   try {
-    const guestRef = doc(db, 'guests', guestId)
-    const updateData: Partial<Guest> = { rsvpStatus }
-    
+    const updateData: any = { rsvpStatus }
     if (dietaryPreferences !== undefined) {
       updateData.dietaryPreferences = dietaryPreferences
     }
-    
-    await updateDoc(guestRef, updateData)
+    if (tableNumber !== undefined) {
+      updateData.tableNumber = tableNumber
+    }
+    await updateDoc(doc(db, 'guests', guestId), updateData)
   } catch (error) {
     console.error('Error updating guest RSVP:', error)
     throw error
