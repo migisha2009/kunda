@@ -240,9 +240,6 @@ export default function VendorDashboard() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap');
-      `}</style>
       
       {/* TOP NAVBAR */}
       <div className="bg-white border-b border-gray-200">
@@ -552,15 +549,9 @@ export default function VendorDashboard() {
                   className="text-xs px-2 py-1"
                   style={{
                     fontFamily: 'Jost',
-                    ...(vendorData?.verified ? {
-                      background: '#e8f5e0',
-                      color: '#3b6d11',
-                      border: '0.5px solid #c0dd97'
-                    }) : ({
-                      background: '#faeeda',
-                      color: '#633806',
-                      border: '0.5px solid #fac775'
-                    })
+                    background: vendorData?.verified ? '#e8f5e0' : '#faeeda',
+                    color: vendorData?.verified ? '#3b6d11' : '#633806',
+                    border: vendorData?.verified ? '0.5px solid #c0dd97' : '0.5px solid #fac775'
                   }}
                 >
                   {vendorData?.verified ? 'Verified' : 'Unverified'}

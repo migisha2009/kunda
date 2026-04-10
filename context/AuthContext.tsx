@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { User as FirebaseUser } from 'firebase/auth'
-import { onAuthChange } from '../lib/auth'
+import { onAuthChange, signOutUser } from '../lib/auth'
 import { getUser } from '../lib/firestore'
 import { User } from '../types'
 
@@ -11,6 +11,7 @@ interface AuthContextType {
   loading: boolean
   userProfile: User | null
   role: 'couple' | 'vendor' | 'admin' | null
+  signOutUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -55,7 +56,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     loading,
     userProfile,
-    role
+    role,
+    signOutUser
   }
 
   if (loading) {

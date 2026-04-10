@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
-import db from '../../../lib/firebase'
+import { db } from '../../../lib/firebase'
 import { doc, getDoc, updateDoc, setDoc, collection, addDoc, query, where, getDocs } from 'firebase/firestore'
 import { Search, Users, Calendar, DollarSign, CheckSquare, Plus, LogOut, MapPin, Clock } from 'lucide-react'
 
@@ -345,7 +345,6 @@ export default function CoupleDashboard() {
           }}>{userProfile?.name}</span>
           <button
             onClick={() => {
-              signOutUser()
               window.location.href = '/login'
             }}
             style={{
