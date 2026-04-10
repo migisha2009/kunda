@@ -191,9 +191,11 @@ export async function POST(request: NextRequest) {
     })
 
     if (error) {
-      console.error('Resend error:', error)
+      console.error('Resend error full object:', 
+        JSON.stringify(error))
       return NextResponse.json(
-        { error: 'Failed to send email' },
+        { error: error.message || 'Failed to send email',
+          details: JSON.stringify(error) },
         { status: 500 }
       )
     }
@@ -204,10 +206,10 @@ export async function POST(request: NextRequest) {
       inviteLink 
     })
 
-  } catch (error) {
-    console.error('Error sending invite:', error)
+  } catch (error: any) {
+    console.error('Invite catch error:', error.message)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: error.message || 'Internal server error' },
       { status: 500 }
     )
   }

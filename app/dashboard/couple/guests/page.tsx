@@ -142,14 +142,15 @@ export default function GuestsManagement() {
         })
       })
 
-      if (response.ok) {
-        alert('Invite sent successfully!')
-      } else {
-        throw new Error('Failed to send invite')
+      const data = await response.json()
+      if (!response.ok) {
+        console.error('Invite API error:', data)
+        throw new Error(data.error || 'Failed to send invite')
       }
-    } catch (error) {
+      alert('Invite sent successfully!')
+    } catch (error: any) {
       console.error('Error sending invite:', error)
-      alert('Failed to send invite. Please try again.')
+      alert('Email error: ' + error.message)
     } finally {
       setSendingInviteId(null)
     }
