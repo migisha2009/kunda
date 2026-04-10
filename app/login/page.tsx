@@ -50,13 +50,13 @@ export default function LoginPage() {
       // Set role cookie for middleware
       setRoleCookie(userProfile.role)
 
-      // Redirect based on role or custom redirect
+      // Redirect based on role or custom redirect using full page reload
       if (redirect) {
-        router.push(redirect)
+        window.location.href = redirect
       } else if (userProfile.role === 'couple') {
-        router.push('/dashboard/couple')
+        window.location.href = '/dashboard/couple'
       } else {
-        router.push('/dashboard/vendor')
+        window.location.href = '/dashboard/vendor'
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login')

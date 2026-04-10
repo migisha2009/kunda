@@ -36,6 +36,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Set the role cookie when profile is loaded
           if (profile?.role) {
             setRoleCookie(profile.role)
+            // Wait 100ms to ensure cookie is written before navigation
+            await new Promise(resolve => setTimeout(resolve, 100))
           }
         } catch (error) {
           console.error('Error fetching user profile:', error)
