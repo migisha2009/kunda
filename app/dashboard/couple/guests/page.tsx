@@ -347,53 +347,123 @@ export default function GuestsManagement() {
 
         {/* RSVP Summary Stats */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#3a2a1a] opacity-75 font-jost">Total Invited</p>
-                <p className="text-2xl font-bold text-[#7a5c30]">{stats.total}</p>
-              </div>
-              <Users className="w-8 h-8 text-[#b08850]" />
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '16px'
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: '#9a7850',
+                marginBottom: '8px'
+              }}>Total Invited</p>
+              <p style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '32px',
+                fontWeight: 300,
+                color: '#3a2a1a'
+              }}>{stats.total}</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#3a2a1a] opacity-75 font-jost">Attending</p>
-                <p className="text-2xl font-bold text-green-600">{stats.attending}</p>
-              </div>
-              <Check className="w-8 h-8 text-green-600" />
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '16px'
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: '#9a7850',
+                marginBottom: '8px'
+              }}>Attending</p>
+              <p style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '32px',
+                fontWeight: 300,
+                color: '#3a2a1a'
+              }}>{stats.attending}</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#3a2a1a] opacity-75 font-jost">Declined</p>
-                <p className="text-2xl font-bold text-red-600">{stats.declined}</p>
-              </div>
-              <XCircle className="w-8 h-8 text-red-600" />
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '16px'
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: '#9a7850',
+                marginBottom: '8px'
+              }}>Declined</p>
+              <p style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '32px',
+                fontWeight: 300,
+                color: '#3a2a1a'
+              }}>{stats.declined}</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#3a2a1a] opacity-75 font-jost">Pending</p>
-                <p className="text-2xl font-bold text-amber-600">{stats.pending}</p>
-              </div>
-              <Clock className="w-8 h-8 text-amber-600" />
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '16px'
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: '#9a7850',
+                marginBottom: '8px'
+              }}>Pending</p>
+              <p style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '32px',
+                fontWeight: 300,
+                color: '#3a2a1a'
+              }}>{stats.pending}</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-[#3a2a1a] opacity-75 font-jost">Maybe</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.maybe}</p>
-              </div>
-              <HelpCircle className="w-8 h-8 text-blue-600" />
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '16px'
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: '#9a7850',
+                marginBottom: '8px'
+              }}>Maybe</p>
+              <p style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '32px',
+                fontWeight: 300,
+                color: '#3a2a1a'
+              }}>{stats.maybe}</p>
             </div>
           </div>
         </div>
@@ -423,10 +493,26 @@ export default function GuestsManagement() {
                       <div className="text-sm text-[#3a2a1a] font-jost">{guest.email}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRSVPBadgeColor(guest.rsvpStatus)}`}>
-                        {getRSVPIcon(guest.rsvpStatus)}
-                        <span className="ml-1">{guest.rsvpStatus.charAt(0).toUpperCase() + guest.rsvpStatus.slice(1)}</span>
-                      </span>
+                      {guest.rsvpStatus === 'pending' ? (
+                        <span style={{
+                          backgroundColor: '#faeeda',
+                          color: '#633806',
+                          border: '0.5px solid #fac775',
+                          padding: '3px 10px',
+                          fontSize: '10px',
+                          fontWeight: 500,
+                          textTransform: 'uppercase',
+                          fontFamily: 'Jost',
+                          letterSpacing: '0.1em'
+                        }}>
+                          Pending
+                        </span>
+                      ) : (
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRSVPBadgeColor(guest.rsvpStatus)}`}>
+                          {getRSVPIcon(guest.rsvpStatus)}
+                          <span className="ml-1">{guest.rsvpStatus.charAt(0).toUpperCase() + guest.rsvpStatus.slice(1)}</span>
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-[#3a2a1a] font-jost">
@@ -481,22 +567,22 @@ export default function GuestsManagement() {
                         {inviteLinks[guest.id] && (
                           <button
                             onClick={() => copyToClipboard(inviteLinks[guest.id])}
-                            className="text-[#7a5c30] hover:text-[#6a4c20]"
+                            className="hover:opacity-80 transition-opacity"
                             title="Copy invite link"
                           >
-                            <Copy className="w-4 h-4" />
+                            <Copy className="w-4 h-4" style={{ width: '16px', height: '16px', color: '#b08850' }} />
                           </button>
                         )}
                         <button
                           onClick={() => handleSendInvite(guest)}
                           disabled={sendingInviteId === guest.id}
-                          className="text-[#7a5c30] hover:text-[#6a4c20] disabled:opacity-50"
+                          className="hover:opacity-80 transition-opacity disabled:opacity-50"
                           title="Send invite email"
                         >
                           {sendingInviteId === guest.id ? (
-                            <div className="w-4 h-4 border-2 border-[#7a5c30] border-t-transparent rounded-full animate-spin" />
+                            <div className="w-4 h-4 border-2 border-[#7a5c30] border-t-transparent rounded-full animate-spin" style={{ width: '16px', height: '16px', borderColor: '#7a5c30' }} />
                           ) : (
-                            <Send className="w-4 h-4" />
+                            <Send className="w-4 h-4" style={{ width: '16px', height: '16px', color: '#7a5c30' }} />
                           )}
                         </button>
                         <button
@@ -506,13 +592,13 @@ export default function GuestsManagement() {
                             }
                           }}
                           disabled={deletingGuestId === guest.id}
-                          className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                          className="hover:opacity-80 transition-opacity disabled:opacity-50"
                           title="Delete guest"
                         >
                           {deletingGuestId === guest.id ? (
-                            <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                            <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" style={{ width: '16px', height: '16px', borderColor: '#cc4444' }} />
                           ) : (
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-4 h-4" style={{ width: '16px', height: '16px', color: '#cc4444' }} />
                           )}
                         </button>
                       </div>
@@ -587,6 +673,6 @@ export default function GuestsManagement() {
         )}
       </div>
     </div>
-      </div>
+    </div>
   )
 }
