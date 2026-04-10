@@ -26,14 +26,18 @@ export default function VendorCard({ vendor }: VendorCardProps) {
           }}
         />
         <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-          {vendor.category}
+          {vendor.category.charAt(0).toUpperCase() + vendor.category.slice(1).toLowerCase()}
         </div>
       </div>
 
       {/* Content */}
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="font-semibold text-gray-900 text-lg">{vendor.businessName}</h3>
+          <h3 className="font-semibold text-gray-900 text-lg">
+              {vendor.businessName.split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              ).join(' ')}
+            </h3>
           {vendor.verified && (
             <div className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
               Verified
@@ -43,14 +47,26 @@ export default function VendorCard({ vendor }: VendorCardProps) {
 
         <div className="flex items-center text-sm text-gray-600 mb-3">
           <MapPin className="w-4 h-4 mr-1" />
-          {vendor.location}
+          {vendor.location.split(',').map(part => 
+            part.trim().split(' ').map(word => 
+              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            ).join(' ')
+          ).join(', ')}
         </div>
 
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center">
-            <Star className="w-4 h-4 text-yellow-500 mr-1" />
-            <span className="font-medium text-gray-900">{vendor.rating?.toFixed(1) || '0.0'}</span>
-            <span className="text-sm text-gray-500 ml-1">({vendor.reviewCount || 0})</span>
+            {(!vendor.rating || vendor.rating === 0) ? (
+              <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
+                New
+              </div>
+            ) : (
+              <>
+                <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                <span className="font-medium text-gray-900">{vendor.rating.toFixed(1)}</span>
+                <span className="text-sm text-gray-500 ml-1">({vendor.reviewCount || 0})</span>
+              </>
+            )}
           </div>
         </div>
 

@@ -28,7 +28,7 @@ import {
 } from 'lucide-react'
 
 export default function GuestsManagement() {
-  const { user } = useAuth()
+  const { user, userProfile } = useAuth()
   const [wedding, setWedding] = useState<Wedding | null>(null)
   const [guests, setGuests] = useState<Guest[]>([])
   const [loading, setLoading] = useState(true)
@@ -136,7 +136,7 @@ export default function GuestsManagement() {
           inviteToken: guest.inviteToken,
           coupleName: wedding?.coupleName1 && wedding?.coupleName2 
             ? `${wedding.coupleName1} & ${wedding.coupleName2}` 
-            : 'The Happy Couple',
+            : userProfile?.name || 'The Happy Couple',
           weddingDate: wedding?.date,
           weddingVenue: wedding?.venue
         })
@@ -227,10 +227,102 @@ export default function GuestsManagement() {
   const stats = getRSVPStats()
 
   return (
-    <div className="min-h-screen bg-[#fdf9f5] p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+    <div>
+      {/* TOP NAVBAR */}
+      <div style={{
+        width: '100%',
+        backgroundColor: 'white',
+        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        padding: '14px 32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        {/* Left side */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '8px',
+            height: '8px',
+            border: '1.5px solid #b08850',
+            borderRadius: '50%'
+          }}></div>
+          <span style={{
+            fontFamily: 'Cormorant Garamond',
+            fontSize: '20px',
+            color: '#7a5c30',
+            letterSpacing: '0.1em'
+          }}>Kunda</span>
+        </div>
+
+        {/* Center */}
+        <div style={{ display: 'flex', gap: '24px' }}>
+          <a href="/dashboard/couple" style={{
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#7a5c30',
+            textDecoration: 'none'
+          }}>Overview</a>
+          <a href="/vendors" style={{
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#9a7850',
+            textDecoration: 'none'
+          }}>Vendors</a>
+          <a href="/dashboard/couple/guests" style={{
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#7a5c30',
+            textDecoration: 'none'
+          }}>Guests</a>
+          <a href="/dashboard/couple/bookings" style={{
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#9a7850',
+            textDecoration: 'none'
+          }}>Bookings</a>
+        </div>
+
+        {/* Right side */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            border: '1px solid #b08850',
+            backgroundColor: '#fdf9f5',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'Jost',
+            fontSize: '13px',
+            color: '#7a5c30'
+          }}>
+            {userProfile?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase()}
+          </div>
+          <span style={{
+            fontFamily: 'Jost',
+            fontSize: '13px',
+            color: '#3a2a1a'
+          }}>{userProfile?.name}</span>
+        </div>
+      </div>
+
+      <div className="min-h-screen bg-[#fdf9f5] p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-[#7a5c30] font-cormorant">Guest Management</h1>
             <p className="text-[#3a2a1a] opacity-75 font-jost mt-1">Manage your wedding guests and RSVPs</p>
@@ -495,5 +587,6 @@ export default function GuestsManagement() {
         )}
       </div>
     </div>
+      </div>
   )
 }

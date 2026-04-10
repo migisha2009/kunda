@@ -80,6 +80,13 @@ service cloud.firestore {
                         get(/databases/(database)/documents/users/$(request.auth.uid))/data/role) == 'vendor');
     }
 
+    // Guests collection rules
+    match /guests/{guestId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if request.auth != null && 
+                       resource.data.coupleId == request.auth.uid;
+    }
+
     // Reviews collection rules (if exists)
     match /reviews/{reviewId} {
       allow read: if true; // Anyone can read reviews

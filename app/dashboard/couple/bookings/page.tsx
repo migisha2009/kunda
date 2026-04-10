@@ -24,6 +24,12 @@ export default function CoupleBookingsPage() {
 
     setLoading(true)
     
+    // Set up timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      console.log('⏰ Booking data loading timeout - setting loading to false')
+      setLoading(false)
+    }, 5000) // 5 second timeout
+    
     // Set up real-time listener for bookings
     const bookingsQuery = query(
       collection(db, 'bookings'),
@@ -32,7 +38,18 @@ export default function CoupleBookingsPage() {
     )
 
     const unsubscribe = onSnapshot(bookingsQuery, async (snapshot) => {
+      // Clear timeout since we got data
+      clearTimeout(timeoutId)
+      
       const bookingsData: BookingWithVendor[] = []
+      
+      // If no bookings, immediately set loading to false
+      if (snapshot.empty) {
+        console.log('📋 No bookings found for couple:', user.uid)
+        setBookings([])
+        setLoading(false)
+        return
+      }
       
       for (const bookingDoc of snapshot.docs) {
         const bookingData = {
@@ -64,11 +81,15 @@ export default function CoupleBookingsPage() {
         bookingsData.push(bookingData)
       }
 
+      console.log('📋 Bookings loaded:', bookingsData.length)
       setBookings(bookingsData)
       setLoading(false)
     })
 
-    return unsubscribe
+    return () => {
+      clearTimeout(timeoutId)
+      unsubscribe()
+    }
   }, [user])
 
   const handleCancelBooking = async (bookingId: string) => {
@@ -205,15 +226,26 @@ export default function CoupleBookingsPage() {
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 text-gray-500">
-                <Calendar className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No bookings yet</h3>
-                <p className="text-gray-600 mb-6">
-                  Start browsing vendors and make bookings to see them here
+              <div className="text-center py-12">
+                <Calendar className="w-8 h-8 mx-auto mb-4" style={{ color: '#b4a090' }} />
+                <h3 className="text-lg font-medium mb-2" style={{ fontFamily: 'Jost', color: '#9a7850' }}>No bookings yet</h3>
+                <p className="mb-6" style={{ fontFamily: 'Jost', fontSize: '12px', color: '#b4a090' }}>
+                  Browse vendors and send enquiries to get started
                 </p>
                 <a
                   href="/vendors"
-                  className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center px-6 py-3 font-medium rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: '#7a5c30', 
+                    color: '#fdf9f5',
+                    fontFamily: 'Jost'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#5a4a25'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#7a5c30'
+                  }}
                 >
                   Browse Vendors
                 </a>

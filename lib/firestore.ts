@@ -308,18 +308,35 @@ export const getEnquiriesByVendor = async (vendorId: string): Promise<Enquiry[]>
 // Guests
 export const createGuest = async (data: Omit<Guest, 'id' | 'createdAt' | 'inviteToken'>): Promise<string> => {
   try {
+    console.log('📝 Creating guest with data:', data)
+    
     const guestRef = doc(collection(db, 'guests'))
     const inviteToken = crypto.randomUUID()
     
-    await setDoc(guestRef, {
+    const guestData = {
       ...data,
+      weddingId: data.weddingId || null, // Can be null if couple has no wedding yet
+      rsvpStatus: "pending",
+      dietaryPreferences: data.dietaryPreferences || "",
+      tableNumber: data.tableNumber || null,
       inviteToken,
+      coupleId: data.coupleId,
       createdAt: new Date()
-    })
+    }
+    
+    console.log('📝 Complete guest document:', guestData)
+    
+    await setDoc(guestRef, guestData)
+    console.log('✅ Guest created successfully with ID:', guestRef.id)
     
     return guestRef.id
   } catch (error) {
-    console.error('Error creating guest:', error)
+    console.error('❌ Error creating guest:', error)
+    console.error('❌ Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+      data
+    })
     throw error
   }
 }
