@@ -3,10 +3,45 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
-import { collection, query, where, getDocs, orderBy, limit, onSnapshot, doc, getDoc } from 'firebase/firestore'
 import { db } from '../../../lib/firebase'
-import { Vendor, Booking, Enquiry } from '../../../types'
-import { Store, Star, MessageSquare, Calendar, DollarSign, TrendingUp, User as UserIcon, AlertTriangle, Loader2, Clock, CheckCircle } from 'lucide-react'
+import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore'
+import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle } from 'lucide-react'
+
+// Type definitions
+interface Vendor {
+  id: string
+  userId: string
+  businessName?: string
+  category?: string
+  bio?: string
+  location?: string
+  portfolioImages?: string[]
+  pricing?: {
+    min: number
+    max: number
+    currency?: string
+  }
+  rating?: number
+  reviewCount?: number
+  verified?: boolean
+}
+
+interface Enquiry {
+  id: string
+  vendorId: string
+  coupleId: string
+  message: string
+  status: 'pending' | 'replied' | 'closed'
+  createdAt: Date
+}
+
+interface Booking {
+  id: string
+  vendorId: string
+  amount: number
+  status: 'pending' | 'confirmed' | 'paid' | 'cancelled'
+  createdAt: Date
+}
 
 export default function VendorDashboard() {
   const { loading: authLoading } = useRequireAuth('vendor')
@@ -37,8 +72,10 @@ export default function VendorDashboard() {
           where('userId', '==', user.uid)
         )
         const vendorsSnapshot = await getDocs(vendorsQuery)
+        let vendor: Vendor | null = null
+        
         if (!vendorsSnapshot.empty) {
-          const vendor = {
+          vendor = {
             id: vendorsSnapshot.docs[0].id,
             ...vendorsSnapshot.docs[0].data()
           } as Vendor
@@ -73,66 +110,63 @@ export default function VendorDashboard() {
 
         const totalRevenue = bookings
           .filter(b => b.status === 'paid')
-          .reduce((sum, b) => sum + b.amount, 0)
+          .reduce((sum, b) => sum + (b.amount || 0), 0)
 
         setStats(prev => ({
           ...prev,
           totalEnquiries,
           confirmedBookings,
           totalRevenue,
-          averageRating: vendorData?.rating || 0,
-          reviewCount: vendorData?.reviewCount || 0
+          averageRating: vendor?.rating || 0,
+          reviewCount: vendor?.reviewCount || 0
         }))
 
-        // Set up real-time listener for recent enquiries
+        // Fetch recent enquiries
         const recentEnquiriesQuery = query(
           collection(db, 'enquiries'),
           where('vendorId', '==', user.uid),
           orderBy('createdAt', 'desc'),
           limit(5)
         )
+        
+        const recentSnapshot = await getDocs(recentEnquiriesQuery)
+        const enquiriesData = await Promise.all(
+          recentSnapshot.docs.map(async (enquiryDoc) => {
+            const enquiryData = {
+              id: enquiryDoc.id,
+              ...enquiryDoc.data()
+            } as Enquiry
 
-        const unsubscribe = onSnapshot(recentEnquiriesQuery, async (snapshot) => {
-          const enquiriesData = await Promise.all(
-            snapshot.docs.map(async (enquiryDoc) => {
-              const enquiryData = {
-                id: enquiryDoc.id,
-                ...enquiryDoc.data()
-              } as Enquiry
+            // Convert Timestamp to Date
+            if (enquiryData.createdAt instanceof Date) {
+              enquiryData.createdAt = enquiryData.createdAt
+            } else {
+              enquiryData.createdAt = new Date(enquiryData.createdAt as any)
+            }
 
-              // Convert Timestamp to Date
-              if (enquiryData.createdAt instanceof Date) {
-                enquiryData.createdAt = enquiryData.createdAt
-              } else {
-                enquiryData.createdAt = new Date(enquiryData.createdAt as any)
+            // Fetch couple details
+            let coupleName = 'Unknown'
+            let coupleEmail = 'Unknown'
+            try {
+              const coupleDoc = await getDoc(doc(db, 'users', enquiryData.coupleId))
+              if (coupleDoc.exists()) {
+                const coupleData = coupleDoc.data() as any
+                coupleName = coupleData.name
+                coupleEmail = coupleData.email
               }
+            } catch (error) {
+              console.error('Error fetching couple details:', error)
+            }
 
-              // Fetch couple details
-              let coupleName = 'Unknown'
-              let coupleEmail = 'Unknown'
-              try {
-                const coupleDoc = await getDoc(doc(db, 'users', enquiryData.coupleId))
-                if (coupleDoc.exists()) {
-                  const coupleData = coupleDoc.data() as any
-                  coupleName = coupleData.name
-                  coupleEmail = coupleData.email
-                }
-              } catch (error) {
-                console.error('Error fetching couple details:', error)
-              }
+            return {
+              ...enquiryData,
+              coupleName,
+              coupleEmail
+            }
+          })
+        )
 
-              return {
-                ...enquiryData,
-                coupleName,
-                coupleEmail
-              }
-            })
-          )
-
-          setRecentEnquiries(enquiriesData)
-        })
-
-        return unsubscribe
+        setRecentEnquiries(enquiriesData)
       } catch (error) {
         console.error('Error loading vendor data:', error)
       } finally {
@@ -144,17 +178,16 @@ export default function VendorDashboard() {
   }, [user, userProfile])
 
   const calculateProfileCompletion = (vendor: Vendor): number => {
-    const fields = [
-      vendor.businessName,
-      vendor.category,
-      vendor.bio,
-      vendor.location,
-      vendor.portfolioImages && vendor.portfolioImages.length > 0,
-      vendor.pricing && (vendor.pricing.min > 0 || vendor.pricing.max > 0)
-    ]
-
-    const completedFields = fields.filter(field => field && field !== '').length
-    return Math.round((completedFields / fields.length) * 100)
+    let completion = 0
+    
+    if (vendor.businessName) completion += 20
+    if (vendor.category) completion += 20
+    if (vendor.bio) completion += 15
+    if (vendor.location) completion += 15
+    if (vendor.portfolioImages && vendor.portfolioImages.length > 0) completion += 15
+    if (vendor.pricing && vendor.pricing.min > 0) completion += 15
+    
+    return completion
   }
 
   const formatTimeAgo = (date: Date): string => {
@@ -162,273 +195,422 @@ export default function VendorDashboard() {
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
     
     if (diffInMinutes < 60) {
-      return `${diffInMinutes} minute${diffInMinutes !== 1 ? 's' : ''} ago`
+      return `${diffInMinutes}m ago`
     } else if (diffInMinutes < 1440) {
       const hours = Math.floor(diffInMinutes / 60)
-      return `${hours} hour${hours !== 1 ? 's' : ''} ago`
+      return `${hours}h ago`
     } else {
       const days = Math.floor(diffInMinutes / 1440)
-      return `${days} day${days !== 1 ? 's' : ''} ago`
+      return `${days}d ago`
     }
   }
 
+  const getMissingFields = (): string[] => {
+    if (!vendorData) return []
+    
+    const missing = []
+    if (!vendorData.businessName) missing.push('business name')
+    if (!vendorData.category) missing.push('category')
+    if (!vendorData.bio) missing.push('bio')
+    if (!vendorData.location) missing.push('location')
+    if (!vendorData.portfolioImages || vendorData.portfolioImages.length === 0) missing.push('portfolio images')
+    if (!vendorData.pricing || vendorData.pricing.min === 0) missing.push('pricing')
+    
+    return missing
+  }
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      </div>
+    )
+  }
+
+  if (!user || !userProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      </div>
+    )
+  }
+
+  const displayName = vendorData?.businessName || userProfile.name
+  const missingFields = getMissingFields()
+
   return (
-    <>
-      {authLoading || loading ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-          <Loader2 className="w-8 h-8 animate-spin" />
-        </div>
-      ) : !user || !userProfile ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-          <Loader2 className="w-8 h-8 animate-spin" />
-        </div>
-      ) : (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {userProfile.name}! 🎉
-          </h1>
-          <p className="text-gray-600">Manage your wedding business and connect with couples</p>
-          
-          {/* Navigation Links */}
-          <div className="flex flex-wrap gap-4 mt-4">
-            <a
-              href="/dashboard/vendor/profile"
-              className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <Store className="w-4 h-4 mr-2" />
-              Edit Profile
-            </a>
-            <a
-              href="/dashboard/vendor/bookings"
-              className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              My Bookings
-            </a>
-            <a
-              href="/profile"
-              className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <UserIcon className="w-4 h-4 mr-2" />
-              Account Settings
-            </a>
-          </div>
-        </div>
-
-        {/* Profile Completion Alert */}
-        {stats.profileCompletion < 80 && (
-          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <div className="flex items-start">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 mr-3 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-yellow-800 mb-1">Complete Your Profile</h3>
-                <p className="text-yellow-700 text-sm">
-                  Your profile is {stats.profileCompletion}% complete. A complete profile helps couples find and trust your business. 
-                  <a href="/dashboard/vendor/profile" className="underline font-medium hover:text-yellow-800">
-                    Complete your profile now
-                  </a>
-                </p>
-              </div>
+    <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+      <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap');
+      `}</style>
+      
+      {/* TOP NAVBAR */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-8">
+              <h1 className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
+                {displayName}
+              </h1>
+              <nav className="flex space-x-8">
+                <a 
+                  href="/dashboard/vendor" 
+                  className="text-sm font-medium hover:text-[#b08850] transition-colors"
+                  style={{ fontFamily: 'Jost', color: '#3a2a1a' }}
+                >
+                  Overview
+                </a>
+                <a 
+                  href="/dashboard/vendor/profile" 
+                  className="text-sm font-medium hover:text-[#b08850] transition-colors"
+                  style={{ fontFamily: 'Jost', color: '#9a7850' }}
+                >
+                  Profile
+                </a>
+                <a 
+                  href="/dashboard/vendor/bookings" 
+                  className="text-sm font-medium hover:text-[#b08850] transition-colors"
+                  style={{ fontFamily: 'Jost', color: '#9a7850' }}
+                >
+                  Bookings
+                </a>
+              </nav>
             </div>
-          </div>
-        )}
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Enquiries</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalEnquiries}</p>
-              </div>
-              <MessageSquare className="w-8 h-8 text-purple-600" />
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Confirmed Bookings</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.confirmedBookings}</p>
-              </div>
-              <Calendar className="w-8 h-8 text-blue-600" />
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  ${stats.totalRevenue.toLocaleString()}
-                </p>
-              </div>
-              <DollarSign className="w-8 h-8 text-green-600" />
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Profile Completion</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.profileCompletion}%</p>
-              </div>
-              <TrendingUp className="w-8 h-8 text-yellow-600" />
-            </div>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Recent Enquiries */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <MessageSquare className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
-                Recent Enquiries
-              </h2>
-              <div className="space-y-4">
-                {recentEnquiries.length > 0 ? (
-                  recentEnquiries.map((enquiry) => (
-                    <div key={enquiry.id} className="p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-medium text-gray-900">{enquiry.coupleName}</p>
-                          <p className="text-xs text-gray-500">{enquiry.coupleEmail}</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            enquiry.status === 'replied' 
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {enquiry.status}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {formatTimeAgo(enquiry.createdAt)}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-600">{enquiry.message}</p>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <MessageSquare className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                    <p>No enquiries yet</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Recent Enquiries */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Enquiries</h2>
-              <div className="space-y-4">
-                {[
-                  { couple: 'Emily & James', message: 'Looking for wedding photography for August 2024', time: '2 hours ago', status: 'pending' },
-                  { couple: 'Sophie & Mark', message: 'Interested in your premium package', time: '5 hours ago', status: 'replied' },
-                  { couple: 'Rachel & Tom', message: 'Do you have availability for September?', time: '1 day ago', status: 'pending' },
-                ].map((enquiry, index) => (
-                  <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-start justify-between mb-2">
-                      <p className="font-medium text-gray-900">{enquiry.couple}</p>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        enquiry.status === 'replied' 
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {enquiry.status}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-2">{enquiry.message}</p>
-                    <p className="text-xs text-gray-500">{enquiry.time}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-6">
-            {/* Profile Overview */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Business Profile</h2>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Store className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">Business Name</p>
-                    <p className="font-medium text-gray-900">{vendorData?.businessName || 'Not set'}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Star className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">Rating</p>
-                    <p className="font-medium text-gray-900">
-                      {stats.averageRating} ({stats.reviewCount} reviews)
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <DollarSign className="w-5 h-5 text-gray-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">Price Range</p>
-                    <p className="font-medium text-gray-900">
-                      {vendorData?.pricing 
-                        ? `${vendorData.pricing.currency} ${vendorData.pricing.min.toLocaleString()} - ${vendorData.pricing.max.toLocaleString()}`
-                        : 'Not set'
-                      }
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <a
-                href="/dashboard/vendor/profile"
-                className="w-full mt-4 px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-center"
-              >
-                Edit Profile
-              </a>
-            </div>
-
-            {/* Performance */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Performance</h2>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Profile Completion</span>
-                  <span className={`font-medium ${
-                    stats.profileCompletion >= 80 ? 'text-green-600' : 'text-yellow-600'
-                  }`}>
-                    {stats.profileCompletion}%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Response Rate</span>
-                  <span className="font-medium text-green-600">
-                    {stats.totalEnquiries > 0 
-                      ? Math.round((stats.confirmedBookings / stats.totalEnquiries) * 100)
-                      : 0}%
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Avg. Revenue per Booking</span>
-                  <span className="font-medium text-gray-900">
-                    ${stats.confirmedBookings > 0 
-                      ? Math.round(stats.totalRevenue / stats.confirmedBookings).toLocaleString()
-                      : '0'
-                    }
-                  </span>
-                </div>
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                <span className="text-sm font-medium" style={{ color: '#3a2a1a' }}>
+                  {userProfile.name.charAt(0).toUpperCase()}
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* HERO SECTION */}
+      <div style={{ padding: '32px 32px 20px', backgroundColor: '#fdf9f5' }}>
+        <div className="text-xs uppercase tracking-wider" style={{ color: '#b08850', fontFamily: 'Jost', fontWeight: 400 }}>
+          Vendor Dashboard
+        </div>
+        <h1 
+          className="text-4xl font-light mt-2 mb-3" 
+          style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300 }}
+        >
+          {vendorData?.businessName || userProfile.name}
+        </h1>
+        <p className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+          {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to get started'}
+        </p>
+      </div>
+
+      {/* PROFILE COMPLETION BANNER */}
+      {stats.profileCompletion < 100 && (
+        <div 
+          className="flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity"
+          style={{ 
+            background: '#faf0e0', 
+            border: '0.5px solid rgba(180,140,90,0.3)', 
+            padding: '14px 20px',
+            margin: '0 32px 20px'
+          }}
+          onClick={() => window.location.href = '/dashboard/vendor/profile'}
+        >
+          <div>
+            <div className="text-xs uppercase" style={{ color: '#9a7850', fontFamily: 'Jost' }}>
+              Profile Completion
+            </div>
+            <div className="text-sm mt-1" style={{ color: '#7a5c30', fontFamily: 'Jost' }}>
+              Add {missingFields.join(', ')} to attract more couples
+            </div>
+          </div>
+          <div className="flex-1 mx-4">
+            <div className="h-1" style={{ background: '#f0e4d0' }}>
+              <div 
+                className="h-full transition-all duration-500"
+                style={{ 
+                  width: `${stats.profileCompletion}%`, 
+                  background: '#b08850' 
+                }}
+              ></div>
+            </div>
+          </div>
+          <div 
+            className="text-2xl font-light" 
+            style={{ fontFamily: 'Cormorant Garamond', color: '#b08850' }}
+          >
+            {stats.profileCompletion}%
+          </div>
+        </div>
       )}
-    </>
+
+      {/* STATS ROW */}
+      <div className="grid grid-cols-4 gap-3 px-8 mb-5">
+        {/* Total Enquiries */}
+        <div 
+          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <MessageSquare size={20} style={{ color: '#b08850' }} />
+          </div>
+          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
+            {stats.totalEnquiries}
+          </div>
+          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+            Total Enquiries
+          </div>
+          <div className="text-xs mt-1 opacity-70" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+            this week
+          </div>
+        </div>
+
+        {/* Confirmed Bookings */}
+        <div 
+          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <Calendar size={20} style={{ color: '#b08850' }} />
+          </div>
+          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
+            {stats.confirmedBookings}
+          </div>
+          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+            Confirmed Bookings
+          </div>
+          <div className="text-xs mt-1 opacity-70" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+            upcoming
+          </div>
+        </div>
+
+        {/* Total Revenue */}
+        <div 
+          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <DollarSign size={20} style={{ color: '#b08850' }} />
+          </div>
+          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
+            ${stats.totalRevenue.toLocaleString()}
+          </div>
+          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+            Total Revenue
+          </div>
+        </div>
+
+        {/* Avg Rating */}
+        <div 
+          className="p-4 border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ backgroundColor: '#fdf9f5', borderColor: 'rgba(180,140,90,0.15)' }}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <Star size={20} style={{ color: '#b08850' }} />
+          </div>
+          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
+            {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '—'}
+          </div>
+          <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+            Avg Rating
+          </div>
+          <div className="text-xs mt-1 opacity-70" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+            {stats.reviewCount > 0 ? `${stats.reviewCount} reviews` : 'No reviews yet'}
+          </div>
+        </div>
+      </div>
+
+      {/* MAIN GRID */}
+      <div className="grid grid-cols-12 gap-4 px-8 pb-8">
+        {/* LEFT COLUMN - Recent Enquiries */}
+        <div className="col-span-8">
+          <div 
+            className="p-5"
+            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
+          >
+            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+              Recent Enquiries
+            </h2>
+            
+            {recentEnquiries.length > 0 ? (
+              <div className="space-y-3">
+                {recentEnquiries.map((enquiry) => (
+                  <div 
+                    key={enquiry.id}
+                    className="flex items-start justify-between p-3"
+                    style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
+                  >
+                    <div className="flex-1">
+                      <div className="font-medium text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                        {enquiry.coupleName}
+                      </div>
+                      <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                        {enquiry.message.substring(0, 65)}{enquiry.message.length > 65 ? '...' : ''}
+                      </div>
+                    </div>
+                    <div className="text-right ml-4">
+                      <div className="text-xs mb-1" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+                        {formatTimeAgo(enquiry.createdAt)}
+                      </div>
+                      <div 
+                        className="text-xs px-2 py-1"
+                        style={{
+                          fontFamily: 'Jost',
+                          ...(enquiry.status === 'pending' && {
+                            background: '#faeeda',
+                            color: '#633806',
+                            border: '0.5px solid #fac775'
+                          }),
+                          ...(enquiry.status === 'replied' && {
+                            background: '#e8f5e0',
+                            color: '#3b6d11',
+                            border: '0.5px solid #c0dd97'
+                          }),
+                          ...(enquiry.status === 'closed' && {
+                            background: '#f0efef',
+                            color: '#5f5e5a'
+                          })
+                        }}
+                      >
+                        {enquiry.status.charAt(0).toUpperCase() + enquiry.status.slice(1)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <MessageSquare size={32} style={{ color: '#b4a090' }} className="mx-auto mb-3" />
+                <div className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  No enquiries yet
+                </div>
+                <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+                  Your enquiries from couples will appear here
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN - Business Profile */}
+        <div className="col-span-4">
+          <div 
+            className="p-5"
+            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
+          >
+            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+              Business Profile
+            </h2>
+            
+            <div className="space-y-3">
+              <div 
+                className="flex justify-between items-center pb-3"
+                style={{ borderBottom: '0.5px solid #b08850' }}
+              >
+                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  Category
+                </span>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                  {vendorData?.category || 'Not set'}
+                </span>
+              </div>
+              
+              <div 
+                className="flex justify-between items-center pb-3"
+                style={{ borderBottom: '0.5px solid #b08850' }}
+              >
+                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  Location
+                </span>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                  {vendorData?.location || 'Not set'}
+                </span>
+              </div>
+              
+              <div 
+                className="flex justify-between items-center pb-3"
+                style={{ borderBottom: '0.5px solid #b08850' }}
+              >
+                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  Price Range
+                </span>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                  {vendorData?.pricing && vendorData.pricing.min > 0 
+                    ? `$${vendorData.pricing.min.toLocaleString()} — $${vendorData.pricing.max?.toLocaleString() || 'TBD'}`
+                    : 'Not set'
+                  }
+                </span>
+              </div>
+              
+              <div 
+                className="flex justify-between items-center pb-3"
+                style={{ borderBottom: '0.5px solid #b08850' }}
+              >
+                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  Status
+                </span>
+                <div 
+                  className="text-xs px-2 py-1"
+                  style={{
+                    fontFamily: 'Jost',
+                    ...(vendorData?.verified ? {
+                      background: '#e8f5e0',
+                      color: '#3b6d11',
+                      border: '0.5px solid #c0dd97'
+                    }) : ({
+                      background: '#faeeda',
+                      color: '#633806',
+                      border: '0.5px solid #fac775'
+                    })
+                  }}
+                >
+                  {vendorData?.verified ? 'Verified' : 'Unverified'}
+                </div>
+              </div>
+              
+              <div 
+                className="flex justify-between items-center pb-3"
+                style={{ borderBottom: '0.5px solid #b08850' }}
+              >
+                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  Portfolio
+                </span>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                  {vendorData?.portfolioImages?.length || 0} images
+                </span>
+              </div>
+              
+              <div 
+                className="flex justify-between items-center"
+              >
+                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                  Rating
+                </span>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                  {stats.averageRating > 0 
+                    ? `${stats.averageRating.toFixed(1)} (${stats.reviewCount} reviews)`
+                    : 'No reviews yet'
+                  }
+                </span>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => window.location.href = '/dashboard/vendor/profile'}
+              className="w-full mt-5 text-xs uppercase font-medium transition-colors"
+              style={{ 
+                background: '#7a5c30', 
+                color: '#fdf9f5', 
+                padding: '11px',
+                fontFamily: 'Jost',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
