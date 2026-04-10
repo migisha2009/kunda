@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { signInWithEmail } from '../../lib/auth'
-import { getUser } from '../../lib/firestore'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../../lib/firebase'
 import { Loader2 } from 'lucide-react'
 
 const loginSchema = z.object({
@@ -36,23 +37,30 @@ export default function LoginPage() {
     setError('')
 
     try {
-      // Sign in with Firebase
+      // a. Sign in with Firebase Auth using signInWithEmail(email, password)
       const firebaseUser = await signInWithEmail(data.email, data.password)
       
-      // Get user profile from Firestore
-      const userProfile = await getUser(firebaseUser.uid)
+      // b. Get the Firebase Auth UID
+      const uid = firebaseUser.uid
+      console.log('Firebase UID after login:', uid)
       
-      if (!userProfile) {
-        throw new Error('User profile not found')
-      }
-
-      // Redirect based on role or custom redirect using full page reload
-      if (redirect) {
-        window.location.href = redirect
-      } else if (userProfile.role === 'couple') {
+      // c. Fetch Firestore document directly inside the login page using getDoc()
+      const userDoc = await getDoc(doc(db, 'users', uid))
+      const userData = userDoc.data()
+      console.log('Firestore userData:', userData)
+      const role = userData?.role
+      console.log('Role found:', role)
+      
+      // d. Redirect based on role
+      if (role === 'admin') {
+        window.location.href = '/dashboard/admin'
+      } else if (role === 'vendor') {
+        window.location.href = '/dashboard/vendor'
+      } else if (role === 'couple') {
         window.location.href = '/dashboard/couple'
       } else {
-        window.location.href = '/dashboard/vendor'
+        console.error('No role found for user:', uid)
+        window.location.href = '/login?error=no-role'
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login')

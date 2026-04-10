@@ -26,11 +26,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthChange(async (firebaseUser) => {
+      console.log('Auth state changed:', firebaseUser?.uid)
       setUser(firebaseUser)
       
       if (firebaseUser) {
         try {
           const profile = await getUser(firebaseUser.uid)
+          console.log('User profile:', profile)
           setUserProfile(profile)
         } catch (error) {
           console.error('Error fetching user profile:', error)
@@ -47,6 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [])
 
   const role = userProfile?.role || null
+  console.log('Role set in context:', role)
 
   const value: AuthContextType = {
     user,

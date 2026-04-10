@@ -60,12 +60,17 @@ export const createUser = async (userId: string, data: Omit<User, 'id' | 'create
 
 export const getUser = async (userId: string): Promise<User | null> => {
   try {
+    console.log('Fetching user:', userId)
     const userRef = doc(db, 'users', userId)
     const userSnap = await getDoc(userRef)
     
     if (userSnap.exists()) {
-      return convertDoc<User>(userSnap as QueryDocumentSnapshot<DocumentData>)
+      const data = convertDoc<User>(userSnap as QueryDocumentSnapshot<DocumentData>)
+      console.log('User data:', data)
+      console.log('User role found:', data.role)
+      return data
     }
+    console.log('No user document found for userId:', userId)
     return null
   } catch (error) {
     console.error('Error getting user:', error)
