@@ -8,7 +8,9 @@ interface VendorCardProps {
 }
 
 export default function VendorCard({ vendor }: VendorCardProps) {
-  const imageUrl = vendor.portfolioImages[0] || '/placeholder-vendor.jpg'
+  const imageUrl = (vendor.portfolioImages && vendor.portfolioImages.length > 0) 
+    ? vendor.portfolioImages[0] 
+    : '/placeholder-vendor.jpg'
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
@@ -47,13 +49,13 @@ export default function VendorCard({ vendor }: VendorCardProps) {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center">
             <Star className="w-4 h-4 text-yellow-500 mr-1" />
-            <span className="font-medium text-gray-900">{vendor.rating.toFixed(1)}</span>
-            <span className="text-sm text-gray-500 ml-1">({vendor.reviewCount})</span>
+            <span className="font-medium text-gray-900">{vendor.rating?.toFixed(1) || '0.0'}</span>
+            <span className="text-sm text-gray-500 ml-1">({vendor.reviewCount || 0})</span>
           </div>
         </div>
 
         <div className="text-sm text-gray-600 mb-4">
-          {vendor.pricing.currency} {vendor.pricing.min.toLocaleString()} - {vendor.pricing.max.toLocaleString()}
+          {vendor.pricing?.currency || '$'} {vendor.pricing?.min?.toLocaleString() || 0} - {vendor.pricing?.max?.toLocaleString() || 0}
         </div>
 
         <button className="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-sm">

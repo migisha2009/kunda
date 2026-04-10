@@ -116,14 +116,14 @@ export const getAllVendors = async (): Promise<Vendor[]> => {
   try {
     const vendorsQuery = query(
       collection(db, 'vendors'),
-      where('verified', '==', true),
       orderBy('rating', 'desc')
     )
     const querySnapshot = await getDocs(vendorsQuery)
     return querySnapshot.docs.map(doc => convertDoc<Vendor>(doc))
   } catch (error) {
     console.error('Error getting all vendors:', error)
-    throw error
+    // Return empty array instead of throwing to prevent page crashes
+    return []
   }
 }
 

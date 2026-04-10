@@ -107,15 +107,32 @@ export default function VendorProfilePage() {
             {/* Portfolio Images */}
             <div className="lg:col-span-2">
               <div className="grid grid-cols-2 gap-4">
-                {vendor.portfolioImages.slice(0, 4).map((image: string, index: number) => (
-                  <div key={index} className="aspect-w-16 aspect-h-12">
-                    <img
-                      src={image}
-                      alt={`${vendor.businessName} portfolio ${index + 1}`}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
-                  </div>
-                ))}
+                {(vendor.portfolioImages && vendor.portfolioImages.length > 0) 
+                  ? vendor.portfolioImages.slice(0, 4).map((image: string, index: number) => (
+                      <div key={index} className="aspect-w-16 aspect-h-12">
+                        <img
+                          src={image}
+                          alt={`${vendor.businessName} portfolio ${index + 1}`}
+                          className="w-full h-48 object-cover rounded-lg"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder-vendor.jpg'
+                          }}
+                        />
+                      </div>
+                    ))
+                  : (
+                    <div className="col-span-2 text-center py-8">
+                      <div className="bg-gray-100 rounded-lg p-8">
+                        <div className="text-gray-400 mb-2">
+                          <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <p className="text-gray-600">No portfolio images available</p>
+                      </div>
+                    </div>
+                  )
+                }
               </div>
             </div>
 
@@ -127,8 +144,8 @@ export default function VendorProfilePage() {
                   <div className="flex items-center space-x-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                      <span className="font-medium">{vendor.rating.toFixed(1)}</span>
-                      <span className="ml-1">({vendor.reviewCount} reviews)</span>
+                      <span className="font-medium">{vendor.rating?.toFixed(1) || '0.0'}</span>
+                      <span className="ml-1">({vendor.reviewCount || 0} reviews)</span>
                     </div>
                     {vendor.verified && (
                       <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
@@ -155,13 +172,13 @@ export default function VendorProfilePage() {
               </div>
 
               <div className="mb-6">
-                <p className="text-gray-700">{vendor.bio}</p>
+                <p className="text-gray-700">{vendor.bio || 'No bio available'}</p>
               </div>
 
               <div className="mb-6">
                 <h3 className="font-semibold text-gray-900 mb-2">Pricing</h3>
                 <p className="text-gray-700">
-                  {vendor.pricing.currency} {vendor.pricing.min.toLocaleString()} - {vendor.pricing.max.toLocaleString()}
+                  {vendor.pricing?.currency || '$'} {vendor.pricing?.min?.toLocaleString() || 0} - {vendor.pricing?.max?.toLocaleString() || 0}
                 </p>
               </div>
 
@@ -179,20 +196,25 @@ export default function VendorProfilePage() {
         </div>
 
         {/* Full Portfolio */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Portfolio</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {vendor.portfolioImages.map((image: string, index: number) => (
-              <div key={index} className="aspect-w-16 aspect-h-12">
-                <img
-                  src={image}
-                  alt={`${vendor.businessName} portfolio ${index + 1}`}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-              </div>
-            ))}
+        {(vendor.portfolioImages && vendor.portfolioImages.length > 0) && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Portfolio</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {vendor.portfolioImages.map((image: string, index: number) => (
+                <div key={index} className="aspect-w-16 aspect-h-12">
+                  <img
+                    src={image}
+                    alt={`${vendor.businessName} portfolio ${index + 1}`}
+                    className="w-full h-48 object-cover rounded-lg"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder-vendor.jpg'
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Enquiry Modal */}
