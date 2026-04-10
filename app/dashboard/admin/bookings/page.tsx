@@ -140,24 +140,18 @@ export default function AdminBookingsPage() {
     }
   }
 
-  if (!userProfile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
+    <>
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : !userProfile ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : (
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -309,5 +303,7 @@ export default function AdminBookingsPage() {
         </div>
       </div>
     </div>
+      )}
+    </>
   )
 }

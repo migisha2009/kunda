@@ -10,8 +10,6 @@ import { Heart, Calendar, Users, DollarSign, CheckSquare, Search, Plus, Edit2, S
 export default function CoupleDashboard() {
   const { loading: authLoading } = useRequireAuth('couple')
   const { user, userProfile } = useAuth()
-  
-  if (authLoading) return <div>Loading...</div>
   const [wedding, setWedding] = useState<Wedding | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
@@ -123,63 +121,52 @@ export default function CoupleDashboard() {
     return total > 0 ? Math.round((spent / total) * 100) : 0
   }
 
-  if (!user || !userProfile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
-
-  // Show onboarding if no wedding document exists
-  if (!wedding) {
-    return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome, {userProfile.name}! 0x1f495
-            </h1>
-            <p className="text-gray-600">Let's start planning your perfect wedding</p>
-          </div>
-
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <div className="text-center mb-8">
-              <Heart className="w-16 h-16 mx-auto mb-4" style={{ color: '#7a5c30' }} />
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Set Up Your Wedding Profile</h2>
-              <p className="text-gray-600">Tell us about your wedding so we can help you plan every detail</p>
-            </div>
-            
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <p className="text-blue-900 font-medium">
-                This feature is coming soon! For now, you can browse vendors and start making enquiries.
-              </p>
-              <div className="mt-4">
-                <a href="/vendors" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                  Browse Vendors
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   const { done: tasksDone, total: totalTasks } = calculateTasksDone()
   const daysUntilWedding = calculateDaysUntilWedding()
   const budgetUsed = calculateBudgetUsed()
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
+    <>
+      {authLoading || loading ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : !user || !userProfile ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : !wedding ? (
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <div className="max-w-4xl mx-auto px-4 py-8">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Welcome, {userProfile.name}! 0x1f495
+              </h1>
+              <p className="text-gray-600">Let's start planning your perfect wedding</p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+              <div className="text-center mb-8">
+                <Heart className="w-16 h-16 mx-auto mb-4" style={{ color: '#7a5c30' }} />
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Set Up Your Wedding Profile</h2>
+                <p className="text-gray-600">Tell us about your wedding so we can help you plan every detail</p>
+              </div>
+              
+              <div className="bg-blue-50 p-6 rounded-lg">
+                <p className="text-blue-900 font-medium">
+                  This feature is coming soon! For now, you can browse vendors and start making enquiries.
+                </p>
+                <div className="mt-4">
+                  <a href="/vendors" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    Browse Vendors
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -457,5 +444,7 @@ export default function CoupleDashboard() {
         </div>
       </div>
     </div>
+      )}
+    </>
   )
 }

@@ -11,8 +11,6 @@ import { Store, Star, MessageSquare, Calendar, DollarSign, TrendingUp, User as U
 export default function VendorDashboard() {
   const { loading: authLoading } = useRequireAuth('vendor')
   const { user, userProfile } = useAuth()
-  
-  if (authLoading) return <div>Loading...</div>
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalEnquiries: 0,
@@ -174,24 +172,18 @@ export default function VendorDashboard() {
     }
   }
 
-  if (!user || !userProfile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
+    <>
+      {authLoading || loading ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : !user || !userProfile ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+          <Loader2 className="w-8 h-8 animate-spin" />
+        </div>
+      ) : (
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -436,5 +428,7 @@ export default function VendorDashboard() {
         </div>
       </div>
     </div>
+      )}
+    </>
   )
 }
