@@ -42,7 +42,8 @@ export interface ChecklistItem {
 
 export interface Guest {
   id: string
-  weddingId: string
+  weddingId: string | null
+  coupleId: string
   name: string
   email: string
   phone: string

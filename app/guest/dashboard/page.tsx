@@ -37,7 +37,7 @@ export default function GuestDashboard() {
           return
         }
 
-        const weddingData = await getWedding(guestData.weddingId)
+        const weddingData = guestData.weddingId ? await getWedding(guestData.weddingId) : null
         setGuest(guestData)
         setWedding(weddingData)
         setDietaryPreference(guestData.dietaryPreferences || '')

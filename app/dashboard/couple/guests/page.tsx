@@ -74,6 +74,7 @@ export default function GuestsManagement() {
     try {
       const guestId = await createGuest({
         weddingId: wedding.id,
+        coupleId: user.uid,
         name: newGuest.name,
         email: newGuest.email,
         phone: newGuest.phone,

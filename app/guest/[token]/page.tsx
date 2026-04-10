@@ -24,7 +24,7 @@ export default function GuestAuthPage({ params }: { params: { token: string } })
           return
         }
 
-        const weddingData = await getWedding(guestData.weddingId)
+        const weddingData = guestData.weddingId ? await getWedding(guestData.weddingId) : null
         setGuest(guestData)
         setWedding(weddingData)
         setConfirmName(guestData.name)
