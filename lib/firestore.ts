@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -13,7 +14,7 @@ import {
   Timestamp
 } from 'firebase/firestore'
 import { db } from './firebase'
-import { User, Vendor, Wedding, Booking, Enquiry } from '../types'
+import { User, Vendor, Wedding, Booking, Enquiry, Guest } from '../types'
 
 // Helper function to convert Firestore document to typed object
 const convertDoc = <T>(doc: QueryDocumentSnapshot<DocumentData>): T & { id: string } => {
@@ -295,6 +296,104 @@ export const getEnquiriesByVendor = async (vendorId: string): Promise<Enquiry[]>
     return querySnapshot.docs.map(doc => convertDoc<Enquiry>(doc))
   } catch (error) {
     console.error('Error getting enquiries by vendor:', error)
+    throw error
+  }
+}
+
+// Guests
+export const createGuest = async (data: Omit<Guest, 'id' | 'createdAt' | 'inviteToken'>): Promise<string> => {
+  try {
+    const guestRef = doc(collection(db, 'guests'))
+    const inviteToken = crypto.randomUUID()
+    
+    await setDoc(guestRef, {
+      ...data,
+      inviteToken,
+      createdAt: new Date()
+    })
+    
+    return guestRef.id
+  } catch (error) {
+    console.error('Error creating guest:', error)
+    throw error
+  }
+}
+
+export const getGuest = async (guestId: string): Promise<Guest | null> => {
+  try {
+    const guestRef = doc(db, 'guests', guestId)
+    const guestSnap = await getDoc(guestRef)
+    
+    if (guestSnap.exists()) {
+      return convertDoc<Guest>(guestSnap as QueryDocumentSnapshot<DocumentData>)
+    }
+    return null
+  } catch (error) {
+    console.error('Error getting guest:', error)
+    throw error
+  }
+}
+
+export const getGuestByToken = async (token: string): Promise<Guest | null> => {
+  try {
+    const guestsQuery = query(
+      collection(db, 'guests'),
+      where('inviteToken', '==', token)
+    )
+    const querySnapshot = await getDocs(guestsQuery)
+    
+    if (querySnapshot.empty) {
+      return null
+    }
+    
+    return convertDoc<Guest>(querySnapshot.docs[0])
+  } catch (error) {
+    console.error('Error getting guest by token:', error)
+    throw error
+  }
+}
+
+export const getGuestsByWedding = async (weddingId: string): Promise<Guest[]> => {
+  try {
+    const guestsQuery = query(
+      collection(db, 'guests'),
+      where('weddingId', '==', weddingId),
+      orderBy('createdAt', 'desc')
+    )
+    const querySnapshot = await getDocs(guestsQuery)
+    return querySnapshot.docs.map(doc => convertDoc<Guest>(doc))
+  } catch (error) {
+    console.error('Error getting guests by wedding:', error)
+    throw error
+  }
+}
+
+export const updateGuestRSVP = async (
+  guestId: string, 
+  rsvpStatus: Guest['rsvpStatus'], 
+  dietaryPreferences?: string
+): Promise<void> => {
+  try {
+    const guestRef = doc(db, 'guests', guestId)
+    const updateData: Partial<Guest> = { rsvpStatus }
+    
+    if (dietaryPreferences !== undefined) {
+      updateData.dietaryPreferences = dietaryPreferences
+    }
+    
+    await updateDoc(guestRef, updateData)
+  } catch (error) {
+    console.error('Error updating guest RSVP:', error)
+    throw error
+  }
+}
+
+export const deleteGuest = async (guestId: string): Promise<void> => {
+  try {
+    const guestRef = doc(db, 'guests', guestId)
+    await deleteDoc(guestRef)
+  } catch (error) {
+    console.error('Error deleting guest:', error)
     throw error
   }
 }

@@ -40,6 +40,24 @@ export interface ChecklistItem {
   done: boolean
 }
 
+export interface Guest {
+  id: string
+  weddingId: string
+  name: string
+  email: string
+  phone: string
+  rsvpStatus: 'pending' | 'attending' | 'declined' | 'maybe'
+  dietaryPreferences: string
+  tableNumber?: number
+  inviteToken: string
+  createdAt: Date
+}
+
+export interface ScheduleItem {
+  time: string
+  event: string
+}
+
 export interface Wedding {
   id: string
   coupleId: string
@@ -48,6 +66,13 @@ export interface Wedding {
   guestCount: number
   budget: Budget
   checklist: ChecklistItem[]
+  coupleName1?: string
+  coupleName2?: string
+  ceremonyTime?: string
+  receptionTime?: string
+  dresscode?: string
+  messageToGuests?: string
+  scheduleItems?: ScheduleItem[]
 }
 
 export interface Booking {

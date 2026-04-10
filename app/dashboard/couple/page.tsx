@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
 import { getWedding, updateWedding, getBookingsByCouple } from '../../../lib/firestore'
 import { Wedding, Booking } from '../../../types'
-import { Heart, Calendar, Users, DollarSign, CheckSquare, Search, Plus, Edit2, Save, X, Loader2, User } from 'lucide-react'
+import { Heart, Calendar, Users, DollarSign, CheckSquare, Search, Plus, Edit2, Save, X, Loader2, User, UsersIcon } from 'lucide-react'
 
 export default function CoupleDashboard() {
   const { user, userProfile } = useAuth()
@@ -206,6 +206,13 @@ export default function CoupleDashboard() {
             >
               <Search className="w-4 h-4 mr-2" />
               My Vendors
+            </a>
+            <a
+              href="/dashboard/couple/guests"
+              className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <UsersIcon className="w-4 h-4 mr-2" />
+              Guests
             </a>
             <a
               href="/profile"

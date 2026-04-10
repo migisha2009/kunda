@@ -7,11 +7,19 @@ export function middleware(request: NextRequest, _event: NextFetchEvent) {
   // Get the role from cookie
   const role = request.cookies.get('kunda-role')?.value as 'couple' | 'vendor' | 'admin' | null
 
+  // Guest routes that don't require authentication
+  const isGuestRoute = pathname.startsWith('/guest')
+
   // Protected routes that require authentication
   const isDashboardRoute = pathname.startsWith('/dashboard')
   const isCoupleRoute = pathname.startsWith('/dashboard/couple')
   const isVendorRoute = pathname.startsWith('/dashboard/vendor')
   const isAdminRoute = pathname.startsWith('/dashboard/admin')
+
+  // Skip authentication for guest routes
+  if (isGuestRoute) {
+    return NextResponse.next()
+  }
 
   // If trying to access dashboard routes
   if (isDashboardRoute) {
