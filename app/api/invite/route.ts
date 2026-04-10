@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
     `
 
     const { data, error } = await resend.emails.send({
-      from: 'weddings@kunda-kappa.vercel.app',
+      from: 'Kunda Weddings <onboarding@resend.dev>',
       to: [guestEmail],
       subject: `You're Invited to ${coupleName}'s Wedding!`,
       html: htmlContent
