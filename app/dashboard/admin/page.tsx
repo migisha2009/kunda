@@ -11,8 +11,6 @@ import { Users, Store, Calendar, DollarSign, MessageSquare, TrendingUp, UserPlus
 export default function AdminOverview() {
   const { loading: authLoading } = useRequireAuth('admin')
   const { userProfile } = useAuth()
-  
-  if (authLoading) return <div>Loading...</div>
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalUsers: 0,
@@ -23,6 +21,8 @@ export default function AdminOverview() {
     totalEnquiries: 0
   })
   const [recentUsers, setRecentUsers] = useState<User[]>([])
+  
+  if (authLoading) return <div>Loading...</div>
 
   useEffect(() => {
     if (!userProfile) return
