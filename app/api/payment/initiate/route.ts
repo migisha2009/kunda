@@ -3,7 +3,10 @@ import Flutterwave from 'flutterwave-node-v3'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
 
-const flw = new Flutterwave(process.env.FLUTTERWAVE_SECRET_KEY!)
+// Initialize Flutterwave lazily to avoid build-time errors
+function getFlutterwaveInstance() {
+  return new Flutterwave(process.env.FLUTTERWAVE_SECRET_KEY!);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,7 +53,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const response = await flw.Payment.link(paymentData)
+    const response = await getFlutterwaveInstance().Payment.link(paymentData)
 
     if (response.status === 'success' && response.data?.link) {
       // Update booking with payment reference

@@ -4,7 +4,10 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
 import crypto from 'crypto'
 
-const flw = new Flutterwave(process.env.FLUTTERWAVE_SECRET_KEY!)
+// Initialize Flutterwave lazily to avoid build-time errors
+function getFlutterwaveInstance() {
+  return new Flutterwave(process.env.FLUTTERWAVE_SECRET_KEY!);
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,7 +34,7 @@ export async function POST(request: NextRequest) {
       const meta = event.data.meta || {}
 
       // Verify the transaction
-      const verification = await flw.Payment.verify(txRef)
+      const verification = await getFlutterwaveInstance().Payment.verify(txRef)
       
       if (verification.status === 'success' && verification.data) {
         const bookingId = meta.bookingId || verification.data.meta?.bookingId

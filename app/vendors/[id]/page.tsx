@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+export const dynamic = 'force-dynamic'
 import { useParams } from 'next/navigation'
 import { useAuth } from '../../../context/AuthContext'
-import { getVendor } from '../../../lib/firestore'
-import { createEnquiry } from '../../../lib/firestore'
 import { Star, MapPin, Phone, Mail, Send, MessageCircle, X } from 'lucide-react'
 import EnquiryModal from '../../../components/EnquiryModal'
 
@@ -23,8 +23,19 @@ export default function VendorProfilePage() {
 
   const loadVendor = async (vendorId: string) => {
     try {
-      const vendorData = await getVendor(vendorId)
-      setVendor(vendorData)
+      const response = await fetch(`/api/vendors/${vendorId}`)
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch vendor')
+      }
+      
+      const result = await response.json()
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch vendor')
+      }
+      
+      setVendor(result.data)
     } catch (error) {
       console.error('Error loading vendor:', error)
     } finally {
@@ -36,31 +47,27 @@ export default function VendorProfilePage() {
     if (!user || !userProfile || !vendor) return
 
     try {
-      // Create enquiry in Firestore
-      await createEnquiry({
-        vendorId: vendor.id,
-        coupleId: user.uid,
-        message,
-        status: 'pending'
-      })
-
-      // Send email notification
-      const response = await fetch('/api/enquiry', {
+      // Create enquiry via API
+      const response = await fetch('/api/enquiries', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          vendorEmail: user.email, // This should come from vendor's profile
-          vendorName: vendor.businessName,
-          coupleName: userProfile.name,
-          coupleEmail: user.email,
+          vendorId: vendor.id,
+          coupleId: user.uid,
           message
         })
       })
 
       if (!response.ok) {
-        throw new Error('Failed to send notification')
+        throw new Error('Failed to create enquiry')
+      }
+
+      const result = await response.json()
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to create enquiry')
       }
 
       setShowEnquiryModal(false)

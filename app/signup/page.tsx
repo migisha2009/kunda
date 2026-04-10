@@ -72,7 +72,7 @@ export default function SignupPage() {
   const confirmPassword = watch('confirmPassword')
   
   const passwordStrength = password ? getPasswordStrength(password) : null
-  const isPasswordWeak = passwordStrength && passwordStrength.score <= 2
+  const isPasswordWeak = Boolean(passwordStrength ? passwordStrength.score <= 2 : false)
   
   const requirements = [
     { label: 'At least 8 characters', met: passwordRequirements.minLength(password || '') },
