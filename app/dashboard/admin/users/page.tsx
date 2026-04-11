@@ -589,7 +589,7 @@ export default function AdminUsersPage() {
                           Deleting...
                         </>
                       ) : (
-                        Delete User
+                        <span>Delete User</span>
                       )}
                     </button>
                     <button

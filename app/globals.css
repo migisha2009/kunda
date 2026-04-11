@@ -5,12 +5,276 @@
 :root {
   --color-gold: #b08850;
   --color-gold-dark: #7a5c30;
+  --color-gold-light: #d4af7a;
   --color-cream: #fdf9f5;
+  --color-cream-dark: #f5ebe0;
   --color-brown: #3a2a1a;
+  --color-brown-light: #5a4a3a;
+  --color-muted: #9a7850;
+  --color-muted-light: #baa890;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-info: #6366f1;
+  
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-jost: 'Jost', sans-serif;
+  
+  --border-radius-sm: 2px;
+  --border-radius-md: 4px;
+  --border-radius-lg: 8px;
+  --border-radius-full: 50%;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(180, 140, 90, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(180, 140, 90, 0.1), 0 2px 4px -1px rgba(180, 140, 90, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(180, 140, 90, 0.1), 0 4px 6px -2px rgba(180, 140, 90, 0.05);
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-jost);
+  background-color: var(--color-cream);
+  color: var(--color-brown);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--color-brown);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-gold-dark);
+}
+
+/* Form elements */
+input, textarea, select {
+  font-family: var(--font-jost);
+  background-color: white;
+  border: 0.5px solid rgba(180, 140, 90, 0.3);
+  border-radius: var(--border-radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-brown);
+  transition: all var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(176, 136, 80, 0.1);
+}
+
+input:disabled, textarea:disabled, select:disabled {
+  background-color: var(--color-cream-dark);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--color-gold-dark);
+  color: var(--color-cream);
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-family: var(--font-jost);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-brown);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-gold);
+  border: 0.5px solid var(--color-gold);
+  padding: 0.5rem 1.5rem;
+  font-family: var(--font-jost);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-gold);
+  color: var(--color-cream);
+}
+
+/* Cards */
+.card {
+  background-color: white;
+  border: 0.5px solid rgba(180, 140, 90, 0.2);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.5rem;
+  border-bottom: 0.5px solid rgba(180, 140, 90, 0.2);
+  background-color: var(--color-cream);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--border-radius-md);
+}
+
+.status-pending {
+  background-color: rgba(217, 119, 6, 0.1);
+  color: var(--color-warning);
+}
+
+.status-confirmed {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: var(--color-success);
+}
+
+.status-cancelled {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--color-error);
+}
+
+.status-paid {
+  background-color: rgba(99, 102, 241, 0.1);
+  color: var(--color-info);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid var(--color-cream-dark);
+  border-top: 3px solid var(--color-gold);
+  border-radius: var(--border-radius-full);
+  animation: spin 1s linear infinite;
+}
+
+/* Utility classes */
+.text-balance {
+  text-wrap: balance;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  
+  .btn-primary, .btn-secondary {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
   }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
 }
