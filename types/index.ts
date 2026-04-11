@@ -26,18 +26,20 @@ export interface Vendor {
   images?: string[]
   pricing?: Pricing
   priceRange: string
-  rating: number
+  rating?: number
   reviews?: number
   reviewCount?: number
   verified?: boolean
   availability?: string[]
   createdAt?: any
   featured?: boolean
-  description: string
+  description?: string
   contact?: {
     phone?: string
     email?: string
     website?: string
+    instagram?: string
+    whatsapp?: string
   }
   services?: string[]
   badges?: string[]
