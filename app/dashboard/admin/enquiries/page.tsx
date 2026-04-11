@@ -43,12 +43,6 @@ export default function AdminEnquiriesPage() {
             ...enquiryDoc.data()
           } as unknown as Enquiry
 
-          // Convert Timestamp to Date
-          if (enquiryData.createdAt instanceof Date) {
-            enquiryData.createdAt = enquiryData.createdAt
-          } else {
-            enquiryData.createdAt = new Date(enquiryData.createdAt as any)
-          }
 
           // Fetch couple details
           let coupleName = 'Unknown'

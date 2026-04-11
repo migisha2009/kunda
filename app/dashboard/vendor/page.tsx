@@ -175,9 +175,11 @@ export default function VendorDashboard() {
             } as Enquiry
 
             // Convert Timestamp to Date using formatDate helper
-            if (enquiryData.createdAt?.toDate) {
-              enquiryData.createdAt = enquiryData.createdAt.toDate()
-            } else if (!(enquiryData.createdAt instanceof Date)) {
+            if (enquiryData.createdAt && 
+                typeof (enquiryData.createdAt as any)?.toDate === 'function') {
+              enquiryData.createdAt = (enquiryData.createdAt as any).toDate()
+            } else if (enquiryData.createdAt && 
+                       !(enquiryData.createdAt instanceof Date)) {
               enquiryData.createdAt = new Date(enquiryData.createdAt as any)
             }
 

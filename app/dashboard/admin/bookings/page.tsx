@@ -44,12 +44,6 @@ export default function AdminBookingsPage() {
             ...bookingDoc.data()
           } as unknown as Booking
 
-          // Convert Timestamp to Date
-          if (bookingData.createdAt instanceof Date) {
-            bookingData.createdAt = bookingData.createdAt
-          } else {
-            bookingData.createdAt = new Date(bookingData.createdAt as any)
-          }
 
           // Fetch couple details
           let coupleName = 'Unknown'

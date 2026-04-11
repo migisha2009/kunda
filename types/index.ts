@@ -25,7 +25,7 @@ export interface Vendor {
   rating: number
   reviewCount: number
   verified: boolean
-  createdAt: Date
+  createdAt?: any
 }
 
 export interface Budget {
@@ -51,7 +51,7 @@ export interface Guest {
   dietaryPreferences: string
   tableNumber?: number
   inviteToken: string
-  createdAt: Date
+  createdAt?: any
 }
 
 export interface ScheduleItem {
@@ -85,7 +85,7 @@ export interface Booking {
   amount: number
   currency: string
   paymentRef: string
-  createdAt: Date
+  createdAt?: any
 }
 
 export interface Enquiry {
@@ -94,7 +94,7 @@ export interface Enquiry {
   coupleId: string
   message: string
   status: 'pending' | 'replied' | 'closed'
-  createdAt: Date
+  createdAt?: any
 }
 
 export interface Review {
@@ -104,5 +104,5 @@ export interface Review {
   bookingId: string
   rating: number
   comment: string
-  createdAt: Date
+  createdAt?: any
 }
