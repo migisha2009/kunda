@@ -7,6 +7,43 @@ import { db } from '../../../../lib/firebase'
 import { User } from '../../../../types'
 import { Users, Search, Filter, Trash2, AlertTriangle, Loader2 } from 'lucide-react'
 
+const formatDate = (timestamp: any): string => {
+  if (!timestamp) return 'Unknown'
+  
+  // Firestore Timestamp object
+  if (timestamp?.toDate) {
+    return timestamp.toDate().toLocaleDateString(
+      'en-US', {
+        year: 'numeric',
+        month: 'short', 
+        day: 'numeric'
+      }
+    )
+  }
+  
+  // Already a Date object
+  if (timestamp instanceof Date) {
+    return timestamp.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
+  
+  // String or number timestamp
+  try {
+    return new Date(timestamp).toLocaleDateString(
+      'en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }
+    )
+  } catch {
+    return 'Unknown'
+  }
+}
+
 export default function AdminUsersPage() {
   const { userProfile } = useAuth()
   const [users, setUsers] = useState<User[]>([])
@@ -167,7 +204,7 @@ export default function AdminUsersPage() {
                       <div className="text-sm text-gray-600">{user.phone || 'Not provided'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.createdAt.toLocaleDateString()}
+                      {formatDate(user.createdAt)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       {user.role !== 'admin' && (

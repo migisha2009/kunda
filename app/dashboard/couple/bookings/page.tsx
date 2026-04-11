@@ -8,6 +8,43 @@ import { collection, query, where, onSnapshot, doc, getDoc, orderBy, QueryDocume
 import { db } from '../../../../lib/firebase'
 import { Calendar, DollarSign, X, Loader2, AlertCircle, CheckCircle, Clock, Ban } from 'lucide-react'
 
+const formatDate = (timestamp: any): string => {
+  if (!timestamp) return 'Unknown'
+  
+  // Firestore Timestamp object
+  if (timestamp?.toDate) {
+    return timestamp.toDate().toLocaleDateString(
+      'en-US', {
+        year: 'numeric',
+        month: 'short', 
+        day: 'numeric'
+      }
+    )
+  }
+  
+  // Already a Date object
+  if (timestamp instanceof Date) {
+    return timestamp.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
+  
+  // String or number timestamp
+  try {
+    return new Date(timestamp).toLocaleDateString(
+      'en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }
+    )
+  } catch {
+    return 'Unknown'
+  }
+}
+
 interface BookingWithVendor extends Booking {
   vendorName?: string
   vendorCategory?: string
@@ -189,7 +226,7 @@ export default function CoupleBookingsPage() {
                         </div>
                         <div>
                           <p className="text-sm text-gray-600">Date</p>
-                          <p className="font-medium text-gray-900">{booking.createdAt.toLocaleDateString()}</p>
+                          <p className="font-medium text-gray-900">{formatDate(booking.createdAt)}</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
@@ -197,7 +234,7 @@ export default function CoupleBookingsPage() {
                           <p className="text-2xl font-bold text-gray-900">
                             {booking.currency} {booking.amount.toLocaleString()}
                           </p>
-                          <p className="text-sm text-gray-600">Booked on {booking.createdAt.toLocaleDateString()}</p>
+                          <p className="text-sm text-gray-600">Booked on {formatDate(booking.createdAt)}</p>
                         </div>
                         <div className="flex flex-col space-y-2">
                           {booking.status === 'pending' && (

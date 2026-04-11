@@ -8,6 +8,43 @@ import { db } from '../../../lib/firebase'
 import { User, Vendor, Booking, Enquiry } from '../../../types'
 import { Users, Store, Calendar, DollarSign, MessageSquare, TrendingUp, UserPlus, Loader2 } from 'lucide-react'
 
+const formatDate = (timestamp: any): string => {
+  if (!timestamp) return 'Unknown'
+  
+  // Firestore Timestamp object
+  if (timestamp?.toDate) {
+    return timestamp.toDate().toLocaleDateString(
+      'en-US', {
+        year: 'numeric',
+        month: 'short', 
+        day: 'numeric'
+      }
+    )
+  }
+  
+  // Already a Date object
+  if (timestamp instanceof Date) {
+    return timestamp.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
+  
+  // String or number timestamp
+  try {
+    return new Date(timestamp).toLocaleDateString(
+      'en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      }
+    )
+  } catch {
+    return 'Unknown'
+  }
+}
+
 export default function AdminOverview() {
   const { loading: authLoading } = useRequireAuth('admin')
   const { userProfile } = useAuth()
@@ -228,7 +265,7 @@ export default function AdminOverview() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.createdAt.toLocaleDateString()}
+                      {formatDate(user.createdAt)}
                     </td>
                   </tr>
                 ))}
