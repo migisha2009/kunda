@@ -368,286 +368,246 @@ export default function VendorProfilePage() {
               color: '#7a5c30',
               textDecoration: 'none'
             }}
-          >
-            Profile
-          </a>
-          <a 
-            href="/dashboard/vendor/bookings" 
-            style={{
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#9a7850',
-              textDecoration: 'none'
-            }}
-          >
-            Bookings
-          </a>
-        </div>
 
-        {/* Right - User Info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            background: '#f0e4d0',
-            border: '1px solid #b08850',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <span style={{
-              color: '#7a5c30',
-              fontSize: '13px',
-              fontFamily: 'Jost',
-              fontWeight: 500
-            }}>
-              {user?.email?.charAt(0).toUpperCase()}
-            </span>
-          </div>
-          <span style={{
+      {/* Center - Navigation */}
+      <div style={{ display: 'flex', gap: '32px' }}>
+        <a 
+          href="/dashboard/vendor" 
+          style={{
             fontFamily: 'Jost',
-            fontSize: '13px',
-            color: '#7a5c30'
-          }}>
-            {user?.email}
-          </span>
-          <button
-            onClick={() => {
-              window.location.href = '/login'
-            }}
-            style={{
-              border: '0.5px solid #b08850',
-              color: '#b08850',
-              background: 'transparent',
-              padding: '6px 14px',
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              cursor: 'pointer'
-            }}
-          >
-            Sign Out
-          </button>
-        </div>
-      </nav>
-
-      {/* Page Title Area */}
-      <div style={{ padding: '48px 32px 32px' }}>
-        <div className="text-xs uppercase tracking-wider mb-3" style={{ 
-          color: '#b08850', 
-          fontFamily: 'Jost', 
-          fontWeight: 400,
-          letterSpacing: '0.15em'
-        }}>
-          Vendor Profile
-        </div>
-        <h1 
-          className="text-4xl font-light mb-3" 
-          style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a', 
-            fontWeight: 300,
-            fontSize: '32px'
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#9a7850',
+            textDecoration: 'none'
           }}
         >
-          Edit Your Profile
-        </h1>
-        <p className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
-          Complete your profile to appear in vendor discovery
-        </p>
+          Overview
+        </a>
+        <a 
+          href="/dashboard/vendor/profile" 
+          style={{
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#7a5c30',
+            textDecoration: 'none'
+          }}
+        >
+          Profile
+        </a>
+        <a 
+          href="/dashboard/vendor/bookings" 
+          style={{
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#7a5c30',
+            textDecoration: 'none'
+          }}
+        >
+          Bookings
+        </a>
       </div>
 
-      <div className="max-w-4xl mx-auto px-8">
+      {/* Right - User Info */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: '#f0e4d0',
+          border: '1px solid #b08850',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <span style={{
+            color: '#7a5c30',
+            fontSize: '13px',
+            fontFamily: 'Jost',
+            fontWeight: 500
+          }}>
+            {user?.email?.charAt(0).toUpperCase()}
+          </span>
+        </div>
+        <span style={{
+          fontFamily: 'Jost',
+          fontSize: '13px',
+          color: '#7a5c30'
+        }}>
+          {user?.email}
+        </span>
+        <button
+          onClick={() => {
+            window.location.href = '/login'
+          }}
+          style={{
+            border: '0.5px solid #b08850',
+            color: '#b08850',
+            background: 'transparent',
+            padding: '6px 14px',
+            fontFamily: 'Jost',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            cursor: 'pointer'
+          }}
+        >
+          Sign Out
+        </button>
+      </div>
+    </nav>
 
-        <form onSubmit={handleSubmit(onSubmit as any)} className="space-y-8">
-          {/* Basic Information */}
-          <div 
-            style={{
-              backgroundColor: '#ffffff',
-              border: '0.5px solid rgba(180,140,90,0.2)',
-              padding: '28px'
+    {/* Page Title Area */}
+    <div style={{ padding: '48px 32px 32px' }}>
+      <div className="text-xs uppercase tracking-wider mb-3" style={{ 
+        color: '#b08850', 
+        fontFamily: 'Jost', 
+        fontWeight: 400,
+        letterSpacing: '0.15em'
+      }}>
+        Vendor Profile
+      </div>
+      <h1 
+        className="text-4xl font-light mb-3" 
+        style={{ 
+          fontFamily: 'Cormorant Garamond', 
+          color: '#3a2a1a', 
+          fontWeight: 300,
+          fontSize: '32px'
+        }}
+      >
+        Edit Your Profile
+      </h1>
+      <p className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+        Complete your profile to appear in vendor discovery
+      </p>
+    </div>
+
+    <div className="max-w-4xl mx-auto px-8 py-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        {/* Business Information */}
+        <div 
+          style={{
+            backgroundColor: '#ffffff',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '28px'
+          }}
+        >
+          <h2 
+            className="text-xl font-light mb-6" 
+            style={{ 
+              fontFamily: 'Cormorant Garamond', 
+              color: '#3a2a1a', 
+              fontWeight: 400,
+              fontSize: '20px',
+              borderBottom: '0.5px solid rgba(180,140,90,0.15)',
+              paddingBottom: '10px',
+              marginBottom: '20px'
             }}
           >
-            <h2 
-              className="text-xl font-light mb-6" 
-              style={{ 
-                fontFamily: 'Cormorant Garamond', 
-                color: '#3a2a1a', 
-                fontWeight: 400,
-                fontSize: '20px',
-                borderBottom: '0.5px solid rgba(180,140,90,0.15)',
-                paddingBottom: '10px',
-                marginBottom: '20px'
-              }}
-            >
-              Basic Information
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block mb-2" style={{
+            Business Information
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2" style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: '#9a7850'
+              }}>
+                Business Name *
+              </label>
+              <input
+                {...register('businessName')}
+                type="text"
+                className="w-full"
+                style={{
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  background: '#fdf9f5',
+                  padding: '10px 14px',
                   fontFamily: 'Jost',
-                  fontSize: '11px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                  color: '#9a7850'
-                }}>
-                  Business Name *
-                </label>
-                <input
-                  {...register('businessName')}
-                  type="text"
-                  className="w-full"
-                  style={{
-                    border: '0.5px solid rgba(180,140,90,0.3)',
-                    background: '#fdf9f5',
-                    padding: '10px 14px',
-                    fontFamily: 'Jost',
-                    fontSize: '13px',
-                    color: '#3a2a1a'
-                  }}
-                  placeholder="Your business name"
-                />
-                {errors.businessName && (
-                  <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
-                    {errors.businessName.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="block mb-2" style={{
-                  fontFamily: 'Jost',
-                  fontSize: '11px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                  color: '#9a7850'
-                }}>
-                  Category *
-                </label>
-                <select
-                  {...register('category')}
-                  className="w-full"
-                  style={{
-                    border: '0.5px solid rgba(180,140,90,0.3)',
-                    background: '#fdf9f5',
-                    padding: '10px 14px',
-                    fontFamily: 'Jost',
-                    fontSize: '13px',
-                    color: '#3a2a1a'
-                  }}
-                >
-                  {CATEGORIES.map(category => (
-                    <option key={category} value={category}>{category}</option>
-                  ))}
-                </select>
-                {errors.category && (
-                  <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
-                    {errors.category.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="block mb-2" style={{
-                  fontFamily: 'Jost',
-                  fontSize: '11px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                  color: '#9a7850'
-                }}>
-                  Location *
-                </label>
-                <input
-                  {...register('location')}
-                  type="text"
-                  className="w-full"
-                  style={{
-                    border: '0.5px solid rgba(180,140,90,0.3)',
-                    background: '#fdf9f5',
-                    padding: '10px 14px',
-                    fontFamily: 'Jost',
-                    fontSize: '13px',
-                    color: '#3a2a1a'
-                  }}
-                  placeholder="City, State/Country"
-                />
-                {errors.location && (
-                  <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
-                    {errors.location.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-2" style={{
-                    fontFamily: 'Jost',
-                    fontSize: '11px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: '#9a7850'
-                  }}>
-                    Min Price *
-                  </label>
-                  <input
-                    {...register('pricing.min', { valueAsNumber: true })}
-                    type="number"
-                    className="w-full"
-                    style={{
-                      border: '0.5px solid rgba(180,140,90,0.3)',
-                      background: '#fdf9f5',
-                      padding: '10px 14px',
-                      fontFamily: 'Jost',
-                      fontSize: '13px',
-                      color: '#3a2a1a'
-                    }}
-                    placeholder="1000"
-                  />
-                  {errors.pricing?.min && (
-                    <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
-                      {errors.pricing.min.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block mb-2" style={{
-                    fontFamily: 'Jost',
-                    fontSize: '11px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: '#9a7850'
-                  }}>
-                    Max Price *
-                  </label>
-                  <input
-                    {...register('pricing.max', { valueAsNumber: true })}
-                    type="number"
-                    className="w-full"
-                    style={{
-                      border: '0.5px solid rgba(180,140,90,0.3)',
-                      background: '#fdf9f5',
-                      padding: '10px 14px',
-                      fontFamily: 'Jost',
-                      fontSize: '13px',
-                      color: '#3a2a1a'
-                    }}
-                    placeholder="5000"
-                  />
-                  {errors.pricing?.max && (
-                    <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
-                      {errors.pricing.max.message}
-                    </p>
-                  )}
-                </div>
-              </div>
+                  fontSize: '13px',
+                  color: '#3a2a1a'
+                }}
+                placeholder="Your business name"
+              />
+              {errors.businessName && (
+                <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
+                  {errors.businessName.message}
+                </p>
+              )}
             </div>
 
-            <div className="mt-6">
+            <div>
+              <label className="block mb-2" style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: '#9a7850'
+              }}>
+                Category *
+              </label>
+              <select
+                {...register('category')}
+                className="w-full"
+                style={{
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  background: '#fdf9f5',
+                  padding: '10px 14px',
+                  fontFamily: 'Jost',
+                  fontSize: '13px',
+                  color: '#3a2a1a'
+                }}
+              >
+                {CATEGORIES.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+              {errors.category && (
+                <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
+                  {errors.category.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block mb-2" style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: '#9a7850'
+              }}>
+                Location *
+              </label>
+              <input
+                {...register('location')}
+                type="text"
+                className="w-full"
+                style={{
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  background: '#fdf9f5',
+                  padding: '10px 14px',
+                  fontFamily: 'Jost',
+                  fontSize: '13px',
+                  color: '#3a2a1a'
+                }}
+                placeholder="City, Country"
+              />
+              {errors.location && (
+                <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
+                  {errors.location.message}
+                </p>
+              )}
+            </div>
+
+            <div>
               <label className="block mb-2" style={{
                 fontFamily: 'Jost',
                 fontSize: '11px',
@@ -668,10 +628,10 @@ export default function VendorProfilePage() {
                   fontFamily: 'Jost',
                   fontSize: '13px',
                   color: '#3a2a1a',
-                  resize: 'vertical'
+                  resize: 'vertical',
+                  minHeight: '100px'
                 }}
-                placeholder="Tell couples about your business, services, and what makes you special..."
-                maxLength={500}
+                placeholder="Tell couples about your business..."
               />
               {errors.bio && (
                 <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
@@ -684,44 +644,43 @@ export default function VendorProfilePage() {
             </div>
           </div>
 
-            {/* Additional Information */}
-            <div 
-              style={{
-                backgroundColor: '#ffffff',
-                border: '0.5px solid rgba(180,140,90,0.2)',
-                padding: '28px'
-              }}
-            >
-              <h2 
-                className="text-xl font-light mb-6" 
-                style={{ 
-                  fontFamily: 'Cormorant Garamond', 
-                  color: '#3a2a1a', 
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  borderBottom: '0.5px solid rgba(180,140,90,0.15)',
-                  paddingBottom: '10px',
-                  marginBottom: '20px'
+          {/* Pricing Information */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className="block mb-2" style={{
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: '#9a7850'
+              }}>
+                Minimum Price *
+              </label>
+              <input
+                {...register('pricing.min', { valueAsNumber: true })}
+                type="number"
+                className="w-full"
+                style={{
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  background: '#fdf9f5',
+                  padding: '10px 14px',
+                  fontFamily: 'Jost',
+                  fontSize: '13px',
+                  color: '#3a2a1a'
                 }}
-              >
-                Additional Information
+                placeholder="0"
+              />
+              {errors.pricing?.min && (
+                <p className="mt-1 text-sm" style={{ color: '#dc2626', fontFamily: 'Jost', fontSize: '12px' }}>
+                  {errors.pricing.min.message}
+                </p>
+              )}
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block mb-2" style={{
                     fontFamily: 'Jost',
-                    fontSize: '11px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    color: '#9a7850'
-                  }}>
-                    Website URL
-                  </label>
-                  <input
-                    {...register('contact.website')}
-                    type="url"
-                    className="w-full"
                     style={{
                       border: '0.5px solid rgba(180,140,90,0.3)',
                       background: '#fdf9f5',
