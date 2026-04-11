@@ -52,7 +52,7 @@ export default function GuestsManagement() {
     
     setLoading(true)
     try {
-      const weddingData = await getWedding(user.uid)
+      const weddingData = await getWedding(user?.uid || '')
       setWedding(weddingData)
 
       if (weddingData) {
@@ -74,7 +74,7 @@ export default function GuestsManagement() {
     try {
       const guestId = await createGuest({
         weddingId: wedding.id,
-        coupleId: user.uid,
+        coupleId: user?.uid || '',
         name: newGuest.name,
         email: newGuest.email,
         phone: newGuest.phone,
