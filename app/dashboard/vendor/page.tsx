@@ -78,6 +78,8 @@ interface Booking {
   amount: number
   status: 'pending' | 'confirmed' | 'paid' | 'cancelled'
   createdAt: Date
+  date?: Date
+  coupleName?: string
 }
 
 export default function VendorDashboard() {
@@ -175,7 +177,7 @@ export default function VendorDashboard() {
         const upcomingBookings = bookings.filter(b => 
           b.status === 'confirmed' || b.status === 'paid'
         ).filter(b => {
-          const bookingDate = b.date?.toDate ? b.date.toDate() : new Date(b.date)
+          const bookingDate = b.date || b.createdAt
           return bookingDate >= today
         }).length
 
@@ -187,12 +189,12 @@ export default function VendorDashboard() {
         const upcoming = bookings
           .filter(b => b.status === 'confirmed' || b.status === 'paid')
           .filter(b => {
-            const bookingDate = b.date?.toDate ? b.date.toDate() : new Date(b.date)
+            const bookingDate = b.date || b.createdAt
             return bookingDate >= today
           })
           .sort((a, b) => {
-            const dateA = a.date?.toDate ? a.date.toDate() : new Date(a.date)
-            const dateB = b.date?.toDate ? b.date.toDate() : new Date(b.date)
+            const dateA = a.date || a.createdAt
+            const dateB = b.date || b.createdAt
             return dateA.getTime() - dateB.getTime()
           })
         
@@ -275,10 +277,10 @@ export default function VendorDashboard() {
       }
     }
 
-    const unsubscribe = loadData()
+    loadData()
 
     return () => {
-      if (unsubscribe) unsubscribe()
+      // Cleanup handled inside loadData
     }
   }, [user, userProfile])
 

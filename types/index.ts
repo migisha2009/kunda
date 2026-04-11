@@ -4,6 +4,7 @@ export interface User {
   name: string
   phone: string
   role: 'couple' | 'vendor' | 'admin'
+  active?: boolean
   createdAt?: any
 }
 
@@ -15,19 +16,31 @@ export interface Pricing {
 
 export interface Vendor {
   id: string
-  userId: string
-  businessName: string
+  userId?: string
+  businessName?: string
+  name: string
   category: string
-  bio: string
+  bio?: string
   location: string
-  portfolioImages: string[]
-  pricing: Pricing
+  portfolioImages?: string[]
+  images?: string[]
+  pricing?: Pricing
+  priceRange: string
   rating: number
-  reviewCount: number
-  verified: boolean
-  availability: 'available' | 'busy'
+  reviews?: number
+  reviewCount?: number
+  verified?: boolean
+  availability?: string[]
   createdAt?: any
   featured?: boolean
+  description: string
+  contact?: {
+    phone?: string
+    email?: string
+    website?: string
+  }
+  services?: string[]
+  badges?: string[]
 }
 
 export interface Budget {
@@ -52,15 +65,16 @@ export interface Guest {
   weddingId: string | null
   coupleId: string
   name: string
-  email: string
-  phone: string
-  rsvpStatus: 'pending' | 'attending' | 'declined' | 'maybe'
+  email?: string
+  phone?: string
+  address?: string
   dietaryPreferences: string
   tableNumber?: number
   inviteToken: string
   plusOne: boolean
   plusOneName?: string
   notes?: string
+  rsvpStatus: 'pending' | 'declined' | 'attending' | 'maybe'
   createdAt?: any
 }
 
@@ -94,9 +108,13 @@ export interface Wedding {
   planningStartDate: Date
   profileCompletion: number
   budgetExpenses: Expense[]
+  expenses: Expense[]
+  guests?: Guest[]
   currency: 'RWF' | 'USD' | 'EUR'
   weatherData?: WeatherData
   quoteOfTheDay?: string
+  savedVendors?: string[]
+  recentlyViewedVendors?: string[]
 }
 
 export interface Booking {
@@ -114,8 +132,12 @@ export interface Booking {
 export interface Enquiry {
   id: string
   vendorId: string
+  vendorName?: string
   coupleId: string
   message: string
+  date?: Date
+  guests?: number
+  budget?: number
   status: 'pending' | 'replied' | 'closed'
   createdAt?: any
 }

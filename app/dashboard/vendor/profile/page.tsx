@@ -1,29 +1,55 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuth } from '../../../../context/AuthContext'
 import { getVendorByUserId, createOrUpdateVendorProfile } from '../../../../lib/firestore'
 import { uploadMultiplePortfolioImages, deletePortfolioImage } from '../../../../lib/storage'
-import { Loader2, Upload, X, Camera, Save } from 'lucide-react'
+import { Loader2, Upload, X, Camera, Save, Eye, ExternalLink, Globe, Phone, Languages, Award, Clock, AlertCircle } from 'lucide-react'
 
 const vendorProfileSchema = z.object({
   businessName: z.string().min(2, 'Business name must be at least 2 characters'),
-  category: z.enum(['Photography', 'Catering', 'Floristry', 'Venues', 'Music', 'Decor', 'Bridal Wear', 'Cake', 'Hair & Makeup', 'Transport']),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  category: z.string(),
   bio: z.string().min(10, 'Bio must be at least 10 characters').max(500, 'Bio must be less than 500 characters'),
   location: z.string().min(2, 'Location must be at least 2 characters'),
   pricing: z.object({
     min: z.number().min(0, 'Minimum price must be positive'),
     max: z.number().min(0, 'Maximum price must be positive'),
     currency: z.string().default('USD')
-  })
+  }),
+  contact: z.object({
+    website: z.string().url().optional().or(z.literal('')),
+    instagram: z.string().optional(),
+    whatsapp: z.string().optional(),
+    phone: z.string().optional(),
+    email: z.string().optional()
+  }),
+  services: z.array(z.string()).optional(),
+  priceRange: z.string().optional(),
+  description: z.string().optional()
 })
 
 type VendorProfileFormData = z.infer<typeof vendorProfileSchema>
 
-const CATEGORIES = ['Photography', 'Catering', 'Floristry', 'Venues', 'Music', 'Decor', 'Bridal Wear', 'Cake', 'Hair & Makeup', 'Transport']
+const CATEGORIES = ['Photography', 'Venues', 'Catering', 'Floristry', 'Music & DJ', 'Decor', 'Bridal Wear', 'Cake', 'Hair & Makeup', 'Transport']
+
+const LANGUAGES = ['English', 'French', 'Kinyarwanda', 'Swahili', 'Portuguese']
+
+const SERVICE_OPTIONS = {
+  'Photography': ['Wedding Photography', 'Engagement Photos', 'Portrait Photography', 'Event Coverage'],
+  'Venues': ['Indoor Venues', 'Outdoor Venues', 'Garden Venues', 'Beach Venues'],
+  'Catering': ['Full Service Catering', 'Buffet Service', 'Plated Meals', 'Bar Service'],
+  'Floristry': ['Bridal Bouquets', 'Centerpieces', 'Ceremony Flowers', 'Reception Flowers'],
+  'Music & DJ': ['Live Bands', 'DJ Services', 'Sound Systems', 'Lighting'],
+  'Decor': ['Venue Decoration', 'Table Settings', 'Lighting Design', 'Theme Planning'],
+  'Bridal Wear': ['Wedding Dresses', 'Bridesmaid Dresses', 'Groom Attire', 'Accessories'],
+  'Cake': ['Wedding Cakes', 'Dessert Tables', 'Cake Tasting', 'Delivery'],
+  'Hair & Makeup': ['Bridal Hair', 'Bridal Makeup', 'Trial Sessions', 'On-site Services'],
+  'Transport': ['Luxury Cars', 'Buses', 'Shuttle Service', 'Airport Transfers']
+}
 
 export default function VendorProfilePage() {
   const { user } = useAuth()
@@ -33,6 +59,11 @@ export default function VendorProfilePage() {
   const [success, setSuccess] = useState('')
   const [portfolioImages, setPortfolioImages] = useState<string[]>([])
   const [newImages, setNewImages] = useState<File[]>([])
+  const [profileCompletion, setProfileCompletion] = useState(0)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
+  const [draggedImageIndex, setDraggedImageIndex] = useState<number | null>(null)
+  const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null)
 
   const {
     register,
@@ -45,6 +76,7 @@ export default function VendorProfilePage() {
     resolver: zodResolver(vendorProfileSchema) as any,
     defaultValues: {
       businessName: '',
+      name: '',
       category: 'Photography',
       bio: '',
       location: '',
@@ -52,15 +84,62 @@ export default function VendorProfilePage() {
         min: 0,
         max: 0,
         currency: 'USD'
-      }
+      },
+      contact: {
+        website: '',
+        instagram: '',
+        whatsapp: '',
+        phone: '',
+        email: ''
+      },
+      services: [],
+      priceRange: '',
+      description: ''
     }
   })
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      setHasUnsavedChanges(true)
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(() => {
     if (user) {
       loadVendorProfile()
     }
   }, [user])
+
+  // Auto-save draft every 30 seconds
+  useEffect(() => {
+    if (hasUnsavedChanges) {
+      const timer = setTimeout(() => {
+        autoSaveDraft()
+      }, 30000)
+      setAutoSaveTimer(timer)
+      return () => clearTimeout(timer)
+    }
+  }, [hasUnsavedChanges])
+
+  // Calculate profile completion
+  useEffect(() => {
+    const completion = calculateProfileCompletion(watch())
+    setProfileCompletion(completion)
+  }, [watch()])
+
+  // Warn before leaving with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasUnsavedChanges])
 
   const loadVendorProfile = async () => {
     if (!user) return
@@ -71,10 +150,21 @@ export default function VendorProfilePage() {
       if (vendorProfile) {
         reset({
           businessName: vendorProfile.businessName,
-          category: vendorProfile.category as VendorProfileFormData['category'],
+          name: vendorProfile.name,
+          category: vendorProfile.category,
           bio: vendorProfile.bio,
           location: vendorProfile.location,
-          pricing: vendorProfile.pricing
+          pricing: vendorProfile.pricing,
+          contact: {
+            website: vendorProfile.contact?.website || '',
+            instagram: vendorProfile.contact?.instagram || '',
+            whatsapp: vendorProfile.contact?.whatsapp || '',
+            phone: vendorProfile.contact?.phone || '',
+            email: vendorProfile.contact?.email || ''
+          },
+          services: vendorProfile.services || [],
+          priceRange: vendorProfile.priceRange || '',
+          description: vendorProfile.description || ''
         })
         setPortfolioImages(vendorProfile.portfolioImages || [])
       }
@@ -113,6 +203,59 @@ export default function VendorProfilePage() {
     }
   }
 
+  const calculateProfileCompletion = (data: any): number => {
+    let completion = 0
+    
+    if (data.businessName) completion += 20
+    if (data.category) completion += 20
+    if (data.bio) completion += 15
+    if (data.location) completion += 15
+    if (portfolioImages.length > 0) completion += 15
+    if (data.pricing?.min > 0) completion += 15
+    
+    return completion
+  }
+
+  const autoSaveDraft = useCallback(async () => {
+    if (!user) return
+    
+    try {
+      const formData = watch()
+      await createOrUpdateVendorProfile(user.uid, {
+        ...formData,
+        portfolioImages,
+        priceRange: `${formData.pricing.currency} ${formData.pricing.min} - ${formData.pricing.max}`,
+        images: portfolioImages
+      })
+      console.log('Auto-saved draft')
+    } catch (error) {
+      console.error('Auto-save failed:', error)
+    }
+  }, [user, watch, portfolioImages])
+
+  const handleDragStart = (index: number) => {
+    setDraggedImageIndex(index)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault()
+    
+    if (draggedImageIndex === null) return
+    
+    const draggedImage = portfolioImages[draggedImageIndex]
+    const newImages = [...portfolioImages]
+    newImages.splice(draggedImageIndex, 1)
+    newImages.splice(dropIndex, 0, draggedImage)
+    
+    setPortfolioImages(newImages)
+    setDraggedImageIndex(null)
+    setHasUnsavedChanges(true)
+  }
+
   const onSubmit = async (data: VendorProfileFormData) => {
     if (!user) return
     
@@ -140,12 +283,21 @@ export default function VendorProfilePage() {
         portfolioImages: updatedPortfolioImages,
         rating: 0,
         reviewCount: 0,
-        verified: false
+        verified: false,
+        priceRange: `${data.pricing.currency} ${data.pricing.min} - ${data.pricing.max}`,
+        images: updatedPortfolioImages
       })
 
       setPortfolioImages(updatedPortfolioImages)
       setNewImages([])
+      setHasUnsavedChanges(false)
       setSuccess('Profile updated successfully!')
+      
+      // Clear auto-save timer
+      if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer)
+        setAutoSaveTimer(null)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update profile')
     } finally {
@@ -532,28 +684,234 @@ export default function VendorProfilePage() {
             </div>
           </div>
 
-          {/* Portfolio Images */}
-          <div 
-            style={{
-              backgroundColor: '#ffffff',
-              border: '0.5px solid rgba(180,140,90,0.2)',
-              padding: '28px'
-            }}
-          >
-            <h2 
-              className="text-xl font-light mb-6" 
-              style={{ 
-                fontFamily: 'Cormorant Garamond', 
-                color: '#3a2a1a', 
-                fontWeight: 400,
-                fontSize: '20px',
-                borderBottom: '0.5px solid rgba(180,140,90,0.15)',
-                paddingBottom: '10px',
-                marginBottom: '20px'
+            {/* Additional Information */}
+            <div 
+              style={{
+                backgroundColor: '#ffffff',
+                border: '0.5px solid rgba(180,140,90,0.2)',
+                padding: '28px'
               }}
             >
-              Portfolio Images ({portfolioImages.length + newImages.length}/10)
-            </h2>
+              <h2 
+                className="text-xl font-light mb-6" 
+                style={{ 
+                  fontFamily: 'Cormorant Garamond', 
+                  color: '#3a2a1a', 
+                  fontWeight: 400,
+                  fontSize: '20px',
+                  borderBottom: '0.5px solid rgba(180,140,90,0.15)',
+                  paddingBottom: '10px',
+                  marginBottom: '20px'
+                }}
+              >
+                Additional Information
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block mb-2" style={{
+                    fontFamily: 'Jost',
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: '#9a7850'
+                  }}>
+                    Website URL
+                  </label>
+                  <input
+                    {...register('contact.website')}
+                    type="url"
+                    className="w-full"
+                    style={{
+                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      background: '#fdf9f5',
+                      padding: '10px 14px',
+                      fontFamily: 'Jost',
+                      fontSize: '13px',
+                      color: '#3a2a1a'
+                    }}
+                    placeholder="https://yourwebsite.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2" style={{
+                    fontFamily: 'Jost',
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: '#9a7850'
+                  }}>
+                    Instagram Handle
+                  </label>
+                  <input
+                    {...register('contact.instagram')}
+                    type="text"
+                    className="w-full"
+                    style={{
+                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      background: '#fdf9f5',
+                      padding: '10px 14px',
+                      fontFamily: 'Jost',
+                      fontSize: '13px',
+                      color: '#3a2a1a'
+                    }}
+                    placeholder="@yourbusiness"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2" style={{
+                    fontFamily: 'Jost',
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: '#9a7850'
+                  }}>
+                    WhatsApp Number
+                  </label>
+                  <input
+                    {...register('contact.whatsapp')}
+                    type="tel"
+                    className="w-full"
+                    style={{
+                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      background: '#fdf9f5',
+                      padding: '10px 14px',
+                      fontFamily: 'Jost',
+                      fontSize: '13px',
+                      color: '#3a2a1a'
+                    }}
+                    placeholder="+250788123456"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2" style={{
+                    fontFamily: 'Jost',
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+
+  <div className="mt-6">
+    <label className="block mb-2" style={{
+      fontFamily: 'Jost',
+      fontSize: '11px',
+      textTransform: 'uppercase',
+      letterSpacing: '0.12em',
+      color: '#9a7850'
+    }}>
+      Languages Spoken
+    </label>
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {LANGUAGES.map(language => (
+        <label key={language} className="flex items-center">
+          <input
+            type="checkbox"
+            value={language}
+            {...register('languages')}
+            className="mr-2"
+            style={{
+              accentColor: '#7a5c30'
+            }}
+          />
+          <span className="text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+            {language}
+          </span>
+        </label>
+      ))}
+    </div>
+  </div>
+
+  <div className="mt-6">
+    <label className="block mb-2" style={{
+      fontFamily: 'Jost',
+      fontSize: '11px',
+      textTransform: 'uppercase',
+      letterSpacing: '0.12em',
+      color: '#9a7850'
+    }}>
+      Services Offered
+    </label>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {(SERVICE_OPTIONS[watch('category') as keyof typeof SERVICE_OPTIONS] || []).map(service => (
+        <label key={service} className="flex items-center">
+          <input
+            type="checkbox"
+            value={service}
+            {...register('services')}
+            className="mr-2"
+            style={{
+              accentColor: '#7a5c30'
+            }}
+          />
+          <span className="text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+            {service}
+          </span>
+        </label>
+      ))}
+    </div>
+  </div>
+</div>
+                  fontSize: '11px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  color: '#9a7850'
+                }}>
+                  Services Offered
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {(SERVICE_OPTIONS[watch('category') as keyof typeof SERVICE_OPTIONS] || []).map(service => (
+                    <label key={service} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        value={service}
+                        {...register('services')}
+                        className="mr-2"
+                        style={{
+                          accentColor: '#7a5c30'
+                        }}
+                      />
+                      <span className="text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+                        {service}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Portfolio Images */}
+            <div 
+              style={{
+                backgroundColor: '#ffffff',
+                border: '0.5px solid rgba(180,140,90,0.2)',
+                padding: '28px'
+              }}
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h2 
+                  className="text-xl font-light" 
+                  style={{ 
+                    fontFamily: 'Cormorant Garamond', 
+                    color: '#3a2a1a', 
+                    fontWeight: 400,
+                    fontSize: '20px'
+                  }}
+                >
+                  Portfolio Images ({portfolioImages.length + newImages.length}/10)
+                </h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                    Profile Completion:
+                  </span>
+                  <span 
+                    className="text-lg font-light" 
+                    style={{ fontFamily: 'Cormorant Garamond', color: '#b08850' }}
+                  >
+                    {profileCompletion}%
+                  </span>
+                </div>
+              </div>
             
             {/* Upload Button */}
             <div className="mb-6">

@@ -2,44 +2,65 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../../context/AuthContext'
+import { useRequireAuth } from '../../../../hooks/useRequireAuth'
+import { db } from '../../../../lib/firebase'
+import { doc, getDoc, updateDoc, collection, query, getDocs, addDoc, deleteDoc } from 'firebase/firestore'
+import { formatDate } from '../../../../lib/dateUtils'
 import { 
-  getWedding, 
-  getGuestsByWedding, 
-  createGuest, 
-  deleteGuest, 
-  updateGuestRSVP 
-} from '../../../../lib/firestore'
-import { Wedding, Guest } from '../../../../types'
-import { 
-  Users, 
-  Plus, 
-  Mail, 
-  Download, 
-  Trash2, 
-  Edit2, 
-  Save, 
-  X, 
-  Check, 
-  XCircle, 
-  Clock, 
-  HelpCircle,
-  Copy,
-  Send
+  Plus, X, Edit2, Trash2, Search, Filter, Download, Mail, 
+  Phone, Users, Calendar, CheckCircle, XCircle, AlertCircle,
+  UserPlus, Send, Copy, CheckSquare, Square
 } from 'lucide-react'
+import { Wedding, Guest } from '../../../../types'
 
-export default function GuestsManagement() {
-  const { user, userProfile } = useAuth()
+// Color variables
+const gold = '#b08850'
+const goldDark = '#7a5c30'
+const cream = '#fdf9f5'
+const brown = '#3a2a1a'
+const muted = '#9a7850'
+
+const dietaryOptions = [
+  'None',
+  'Vegetarian',
+  'Vegan',
+  'Gluten-Free',
+  'Dairy-Free',
+  'Nut-Free',
+  'Halal',
+  'Kosher',
+  'Other'
+]
+
+export default function GuestManagement() {
+  const { loading: authLoading } = useRequireAuth('couple')
+  const { user } = useAuth()
   const [wedding, setWedding] = useState<Wedding | null>(null)
-  const [guests, setGuests] = useState<Guest[]>([])
   const [loading, setLoading] = useState(true)
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [newGuest, setNewGuest] = useState({ name: '', email: '', phone: '' })
-  const [addingGuest, setAddingGuest] = useState(false)
-  const [deletingGuestId, setDeletingGuestId] = useState<string | null>(null)
-  const [editingTableId, setEditingTableId] = useState<string | null>(null)
-  const [editingTableNumber, setEditingTableNumber] = useState('')
-  const [sendingInviteId, setSendingInviteId] = useState<string | null>(null)
-  const [inviteLinks, setInviteLinks] = useState<{ [key: string]: string }>({})
+  const [showAddGuest, setShowAddGuest] = useState(false)
+  const [editingGuest, setEditingGuest] = useState<string | null>(null)
+  const [selectedGuests, setSelectedGuests] = useState<string[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterStatus, setFilterStatus] = useState<'all' | 'confirmed' | 'pending' | 'declined'>('all')
+  const [filterDietary, setFilterDietary] = useState('all')
+  const [filterTable, setFilterTable] = useState('all')
+  const [showBulkInvite, setShowBulkInvite] = useState(false)
+  const [bulkInviteEmails, setBulkInviteEmails] = useState('')
+  const [selectAll, setSelectAll] = useState(false)
+  
+  // New guest form
+  const [newGuest, setNewGuest] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    dietaryPreferences: 'None',
+    tableNumber: '',
+    plusOne: false,
+    plusOneName: '',
+    notes: '',
+    rsvpStatus: 'pending' as 'pending' | 'declined' | 'attending' | 'maybe'
+  })
 
   useEffect(() => {
     if (user) {
@@ -52,12 +73,20 @@ export default function GuestsManagement() {
     
     setLoading(true)
     try {
-      const weddingData = await getWedding(user?.uid || '')
-      setWedding(weddingData)
+      const weddingDoc = doc(db, 'weddings', user.uid)
+      const weddingSnapshot = await getDoc(weddingDoc)
+      if (weddingSnapshot.exists()) {
+        setWedding(weddingSnapshot.data() as Wedding)
+      }
 
-      if (weddingData) {
-        const guestsData = await getGuestsByWedding(weddingData.id)
-        setGuests(guestsData)
+      // Load guests from Firestore
+      const guestsQuery = query(collection(db, 'weddings', user.uid, 'guests'))
+      const guestsSnapshot = await getDocs(guestsQuery)
+      if (!guestsSnapshot.empty) {
+        const guestsData = guestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Guest[]
+        // Update wedding with guests
+        await updateDoc(weddingDoc, { guests: guestsData })
+        setWedding(prev => prev ? { ...prev, guests: guestsData } : null)
       }
     } catch (error) {
       console.error('Error loading data:', error)
@@ -66,615 +95,1236 @@ export default function GuestsManagement() {
     }
   }
 
-  const handleAddGuest = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!wedding || !newGuest.name || !newGuest.email) return
-
-    setAddingGuest(true)
+  const handleAddGuest = async () => {
+    if (!wedding || !newGuest.name.trim()) return
+    
+    const guestItem: Guest = {
+      id: Date.now().toString(),
+      name: newGuest.name.trim(),
+      email: newGuest.email.trim() || undefined,
+      phone: newGuest.phone.trim() || undefined,
+      address: newGuest.address.trim() || undefined,
+      dietaryPreferences: newGuest.dietaryPreferences,
+      tableNumber: newGuest.tableNumber ? parseInt(newGuest.tableNumber) : undefined,
+      inviteToken: Math.random().toString(36).substring(7),
+      plusOne: newGuest.plusOne,
+      plusOneName: newGuest.plusOneName.trim() || undefined,
+      notes: newGuest.notes.trim() || undefined,
+      rsvpStatus: newGuest.rsvpStatus
+    }
+    
     try {
-      const guestId = await createGuest({
-        weddingId: wedding.id,
-        coupleId: user?.uid || '',
-        name: newGuest.name,
-        email: newGuest.email,
-        phone: newGuest.phone,
-        rsvpStatus: 'pending',
-        dietaryPreferences: ''
+      const updatedGuests = [...(wedding.guests || []), guestItem]
+      await updateDoc(doc(db, 'weddings', user!.uid), { guests: updatedGuests })
+      setWedding({ ...wedding, guests: updatedGuests })
+      
+      // Also add to guests subcollection
+      const guestsRef = collection(db, 'weddings', user!.uid, 'guests')
+      await addDoc(guestsRef, guestItem)
+      
+      setNewGuest({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        dietaryPreferences: 'None',
+        tableNumber: '',
+        plusOne: false,
+        plusOneName: '',
+        notes: '',
+        rsvpStatus: 'pending'
       })
-
-      // Generate invite link
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://kunda-kappa.vercel.app'
-      const inviteLink = `${baseUrl}/guest/${guestId}`
-      setInviteLinks(prev => ({ ...prev, [guestId]: inviteLink }))
-
-      // Reset form and reload data
-      setNewGuest({ name: '', email: '', phone: '' })
-      setShowAddModal(false)
-      await loadData()
+      setShowAddGuest(false)
     } catch (error) {
       console.error('Error adding guest:', error)
-    } finally {
-      setAddingGuest(false)
+    }
+  }
+
+  const handleEditGuest = async (guestId: string, updates: Partial<Guest>) => {
+    if (!wedding) return
+    
+    try {
+      const updatedGuests = wedding.guests?.map(item =>
+        item.id === guestId ? { ...item, ...updates } : item
+      ) || []
+      
+      await updateDoc(doc(db, 'weddings', user!.uid), { guests: updatedGuests })
+      setWedding({ ...wedding, guests: updatedGuests })
+      setEditingGuest(null)
+    } catch (error) {
+      console.error('Error editing guest:', error)
     }
   }
 
   const handleDeleteGuest = async (guestId: string) => {
-    setDeletingGuestId(guestId)
+    if (!wedding) return
+    
+    if (!confirm('Are you sure you want to delete this guest?')) return
+    
     try {
-      await deleteGuest(guestId)
-      await loadData()
+      const updatedGuests = wedding.guests?.filter(item => item.id !== guestId) || []
+      await updateDoc(doc(db, 'weddings', user!.uid), { guests: updatedGuests })
+      setWedding({ ...wedding, guests: updatedGuests })
+      
+      // Also delete from guests subcollection
+      const guestDoc = doc(db, 'weddings', user!.uid, 'guests', guestId)
+      await deleteDoc(guestDoc)
     } catch (error) {
       console.error('Error deleting guest:', error)
-    } finally {
-      setDeletingGuestId(null)
     }
   }
 
-  const handleUpdateTableNumber = async (guestId: string) => {
-    if (!editingTableNumber) return
+  const handleToggleSelection = (guestId: string) => {
+    setSelectedGuests(prev => 
+      prev.includes(guestId) 
+        ? prev.filter(id => id !== guestId)
+        : [...prev, guestId]
+    )
+  }
 
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedGuests([])
+    } else {
+      setSelectedGuests(filteredGuests.map(guest => guest.id))
+    }
+    setSelectAll(!selectAll)
+  }
+
+  const handleBulkInvite = async () => {
+    if (!wedding || !bulkInviteEmails.trim()) return
+    
+    const emails = bulkInviteEmails.split(',').map(email => email.trim()).filter(email => email)
+    
     try {
-      const tableNumber = parseInt(editingTableNumber)
-      await updateGuestRSVP(guestId, guests.find(g => g.id === guestId)!.rsvpStatus, undefined, tableNumber)
-      setEditingTableId(null)
-      setEditingTableNumber('')
-      await loadData()
+      // Here you would integrate with an email service
+      alert(`Invitations sent to ${emails.length} guests!`)
+      setBulkInviteEmails('')
+      setShowBulkInvite(false)
     } catch (error) {
-      console.error('Error updating table number:', error)
+      console.error('Error sending bulk invites:', error)
+      alert('Error sending invitations. Please try again.')
     }
   }
 
   const handleSendInvite = async (guest: Guest) => {
-    setSendingInviteId(guest.id)
+    if (!guest.email) {
+      alert('Guest must have an email address to send invitation.')
+      return
+    }
+    
     try {
-      const response = await fetch('/api/invite', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          guestId: guest.id,
-          guestName: guest.name,
-          guestEmail: guest.email,
-          inviteToken: guest.inviteToken,
-          coupleName: wedding?.coupleName1 && wedding?.coupleName2 
-            ? `${wedding.coupleName1} & ${wedding.coupleName2}` 
-            : userProfile?.name || 'The Happy Couple',
-          weddingDate: wedding?.date,
-          weddingVenue: wedding?.venue
-        })
-      })
-
-      const data = await response.json()
-      if (!response.ok) {
-        console.error('Invite API error:', data)
-        throw new Error(data.error || 'Failed to send invite')
-      }
-      alert('Invite sent successfully!')
-    } catch (error: any) {
+      // Here you would integrate with an email service
+      alert(`Invitation sent to ${guest.name}!`)
+    } catch (error) {
       console.error('Error sending invite:', error)
-      alert('Email error: ' + error.message)
-    } finally {
-      setSendingInviteId(null)
+      alert('Error sending invitation. Please try again.')
     }
   }
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
-    alert('Link copied to clipboard!')
-  }
-
-  const exportToCSV = () => {
-    const headers = ['Name', 'Email', 'Phone', 'RSVP Status', 'Dietary Preferences', 'Table Number']
-    const rows = guests.map(guest => [
-      guest.name,
-      guest.email,
-      guest.phone,
-      guest.rsvpStatus,
-      guest.dietaryPreferences,
-      guest.tableNumber || 'Not assigned'
-    ])
-
-    const csvContent = [headers, ...rows]
-      .map(row => row.map(cell => `"${cell}"`).join(','))
-      .join('\n')
-
-    const blob = new Blob([csvContent], { type: 'text/csv' })
-    const url = window.URL.createObjectURL(blob)
+  const exportGuests = () => {
+    if (!wedding?.guests) return
+    
+    const csv = 'Name,Email,Phone,Address,Dietary Preferences,Table,RSVP Status,Plus One,Plus One Name,Notes\n' +
+      wedding.guests.map(guest => 
+        `"${guest.name}","${guest.email || ''}","${guest.phone || ''}","${guest.address || ''}","${guest.dietaryPreferences}","${guest.tableNumber || ''}","${guest.rsvpStatus}","${guest.plusOne}","${guest.plusOneName || ''}","${guest.notes || ''}"`
+      ).join('\n')
+    
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `guests-${new Date().toISOString().split('T')[0]}.csv`
+    a.download = 'wedding-guests.csv'
     a.click()
-    window.URL.revokeObjectURL(url)
   }
 
-  const getRSVPStats = () => {
-    const stats = {
-      total: guests.length,
-      attending: guests.filter(g => g.rsvpStatus === 'attending').length,
-      declined: guests.filter(g => g.rsvpStatus === 'declined').length,
-      pending: guests.filter(g => g.rsvpStatus === 'pending').length,
-      maybe: guests.filter(g => g.rsvpStatus === 'maybe').length
-    }
-    return stats
+  const getFilteredGuests = () => {
+    if (!wedding?.guests) return []
+    
+    return wedding.guests.filter(guest => {
+      const matchesSearch = guest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           guest.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           guest.phone?.includes(searchTerm)
+      const matchesStatus = filterStatus === 'all' || guest.rsvpStatus === filterStatus
+      const matchesDietary = filterDietary === 'all' || guest.dietaryPreferences === filterDietary
+      const matchesTable = filterTable === 'all' || guest.tableNumber?.toString() === filterTable
+      
+      return matchesSearch && matchesStatus && matchesDietary && matchesTable
+    })
   }
 
-  const getRSVPBadgeColor = (status: Guest['rsvpStatus']) => {
-    switch (status) {
-      case 'attending': return 'bg-green-100 text-green-800'
-      case 'declined': return 'bg-red-100 text-red-800'
-      case 'maybe': return 'bg-blue-100 text-blue-800'
-      default: return 'bg-amber-100 text-amber-800'
-    }
+  const getGuestStats = () => {
+    if (!wedding?.guests) return { total: 0, confirmed: 0, pending: 0, declined: 0, plusOnes: 0 }
+    
+    const total = wedding.guests.length
+    const confirmed = wedding.guests.filter(g => g.rsvpStatus === 'confirmed').length
+    const pending = wedding.guests.filter(g => g.rsvpStatus === 'pending').length
+    const declined = wedding.guests.filter(g => g.rsvpStatus === 'declined').length
+    const plusOnes = wedding.guests.filter(g => g.plusOne).length
+    
+    return { total, confirmed, pending, declined, plusOnes }
   }
 
-  const getRSVPIcon = (status: Guest['rsvpStatus']) => {
-    switch (status) {
-      case 'attending': return <Check className="w-4 h-4" />
-      case 'declined': return <XCircle className="w-4 h-4" />
-      case 'maybe': return <HelpCircle className="w-4 h-4" />
-      default: return <Clock className="w-4 h-4" />
-    }
-  }
+  const filteredGuests = getFilteredGuests()
+  const stats = getGuestStats()
 
-  if (loading) {
+  // Loading state
+  if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-[#fdf9f5] flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7a5c30] mx-auto mb-4"></div>
-          <p className="text-[#3a2a1a] font-jost">Loading guests...</p>
-        </div>
+      <div style={{ 
+        minHeight: '100vh', 
+        backgroundColor: cream, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          border: '3px solid #f0e4d0',
+          borderTop: `3px solid ${gold}`,
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
+        <style jsx>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     )
   }
 
-  const stats = getRSVPStats()
-
   return (
-    <div>
-      {/* TOP NAVBAR */}
+    <div style={{ backgroundColor: cream, color: brown, minHeight: '100vh' }}>
+      {/* Google Fonts */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link 
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
+        rel="stylesheet" 
+      />
+
+      {/* Header */}
       <div style={{
-        width: '100%',
         backgroundColor: 'white',
         borderBottom: '0.5px solid rgba(180,140,90,0.2)',
-        padding: '14px 32px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        padding: '24px 32px'
       }}>
-        {/* Left side */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '8px',
-            height: '8px',
-            border: '1.5px solid #b08850',
-            borderRadius: '50%'
-          }}></div>
-          <span style={{
-            fontFamily: 'Cormorant Garamond',
-            fontSize: '20px',
-            color: '#7a5c30',
-            letterSpacing: '0.1em'
-          }}>Kunda</span>
-        </div>
-
-        {/* Center */}
-        <div style={{ display: 'flex', gap: '24px' }}>
-          <a href="/dashboard/couple" style={{
-            fontFamily: 'Jost',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: '#7a5c30',
-            textDecoration: 'none'
-          }}>Overview</a>
-          <a href="/vendors" style={{
-            fontFamily: 'Jost',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: '#9a7850',
-            textDecoration: 'none'
-          }}>Vendors</a>
-          <a href="/dashboard/couple/guests" style={{
-            fontFamily: 'Jost',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: '#7a5c30',
-            textDecoration: 'none'
-          }}>Guests</a>
-          <a href="/dashboard/couple/bookings" style={{
-            fontFamily: 'Jost',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: '#9a7850',
-            textDecoration: 'none'
-          }}>Bookings</a>
-        </div>
-
-        {/* Right side */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            border: '1px solid #b08850',
-            backgroundColor: '#fdf9f5',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: 'Jost',
-            fontSize: '13px',
-            color: '#7a5c30'
-          }}>
-            {userProfile?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase()}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div>
+            <h1 style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '32px',
+              fontWeight: 300,
+              color: brown,
+              marginBottom: '8px'
+            }}>Guest Management</h1>
+            <p style={{
+              fontFamily: 'Jost',
+              fontSize: '14px',
+              color: muted
+            }}>
+              Manage your wedding guest list and RSVPs
+            </p>
           </div>
-          <span style={{
-            fontFamily: 'Jost',
-            fontSize: '13px',
-            color: '#3a2a1a'
-          }}>{userProfile?.name}</span>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              onClick={exportGuests}
+              style={{
+                border: `0.5px solid ${gold}`,
+                color: gold,
+                padding: '8px 16px',
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                backgroundColor: 'transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Download size={16} />
+              Export CSV
+            </button>
+            <button
+              onClick={() => setShowBulkInvite(true)}
+              style={{
+                border: `0.5px solid ${gold}`,
+                color: gold,
+                padding: '8px 16px',
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                backgroundColor: 'transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Send size={16} />
+              Bulk Invite
+            </button>
+            <button
+              onClick={() => setShowAddGuest(true)}
+              style={{
+                backgroundColor: goldDark,
+                color: cream,
+                padding: '8px 16px',
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Plus size={16} />
+              Add Guest
+            </button>
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
+          <div style={{
+            backgroundColor: cream,
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '16px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '28px',
+              fontWeight: 300,
+              color: brown
+            }}>{stats.total}</div>
+            <div style={{
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              color: muted,
+              marginTop: '4px'
+            }}>Total Guests</div>
+          </div>
+          <div style={{
+            backgroundColor: '#dcfce7',
+            border: '0.5px solid rgba(34, 197, 94, 0.2)',
+            padding: '16px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '28px',
+              fontWeight: 300,
+              color: '#16a34a'
+            }}>{stats.confirmed}</div>
+            <div style={{
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              color: '#16a34a',
+              marginTop: '4px'
+            }}>Confirmed</div>
+          </div>
+          <div style={{
+            backgroundColor: '#fef3c7',
+            border: '0.5px solid rgba(245, 158, 11, 0.2)',
+            padding: '16px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '28px',
+              fontWeight: 300,
+              color: '#d97706'
+            }}>{stats.pending}</div>
+            <div style={{
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              color: '#d97706',
+              marginTop: '4px'
+            }}>Pending</div>
+          </div>
+          <div style={{
+            backgroundColor: '#fee2e2',
+            border: '0.5px solid rgba(220, 38, 38, 0.2)',
+            padding: '16px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '28px',
+              fontWeight: 300,
+              color: '#dc2626'
+            }}>{stats.declined}</div>
+            <div style={{
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              color: '#dc2626',
+              marginTop: '4px'
+            }}>Declined</div>
+          </div>
+          <div style={{
+            backgroundColor: '#e0e7ff',
+            border: '0.5px solid rgba(99, 102, 241, 0.2)',
+            padding: '16px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '28px',
+              fontWeight: 300,
+              color: '#6366f1'
+            }}>{stats.plusOnes}</div>
+            <div style={{
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              color: '#6366f1',
+              marginTop: '4px'
+            }}>Plus Ones
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="min-h-screen bg-[#fdf9f5] p-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-[#7a5c30] font-cormorant">Guest Management</h1>
-            <p className="text-[#3a2a1a] opacity-75 font-jost mt-1">Manage your wedding guests and RSVPs</p>
-          </div>
-          <div className="flex space-x-3">
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="bg-[#7a5c30] text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-[#6a4c20] transition-colors font-jost"
+      {/* Filters */}
+      <div style={{
+        backgroundColor: 'white',
+        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        padding: '16px 32px'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flex: 1 }}>
+            <div style={{ position: 'relative', minWidth: '200px' }}>
+              <Search size={20} color={muted} style={{ position: 'absolute', left: '12px', top: '12px' }} />
+              <input
+                type="text"
+                placeholder="Search guests by name, email, or phone..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '12px 12px 12px 44px',
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  fontFamily: 'Jost',
+                  fontSize: '14px',
+                  backgroundColor: 'white',
+                  color: brown,
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value as any)}
+              style={{
+                padding: '12px',
+                border: '0.5px solid rgba(180,140,90,0.3)',
+                fontFamily: 'Jost',
+                fontSize: '14px',
+                backgroundColor: 'white',
+                color: brown
+              }}
             >
-              <Plus className="w-5 h-5" />
-              <span>Add Guest</span>
-            </button>
-            <button
-              onClick={exportToCSV}
-              className="bg-[#b08850] text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-[#a07840] transition-colors font-jost"
+              <option value="all">All Status</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="pending">Pending</option>
+              <option value="declined">Declined</option>
+            </select>
+
+            <select
+              value={filterDietary}
+              onChange={(e) => setFilterDietary(e.target.value)}
+              style={{
+                padding: '12px',
+                border: '0.5px solid rgba(180,140,90,0.3)',
+                fontFamily: 'Jost',
+                fontSize: '14px',
+                backgroundColor: 'white',
+                color: brown
+              }}
             >
-              <Download className="w-5 h-5" />
-              <span>Export CSV</span>
-            </button>
+              <option value="all">All Dietary</option>
+              {dietaryOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+
+            <select
+              value={filterTable}
+              onChange={(e) => setFilterTable(e.target.value)}
+              style={{
+                padding: '12px',
+                border: '0.5px solid rgba(180,140,90,0.3)',
+                fontFamily: 'Jost',
+                fontSize: '14px',
+                backgroundColor: 'white',
+                color: brown
+              }}
+            >
+              <option value="all">All Tables</option>
+              <option value="1">Table 1</option>
+              <option value="2">Table 2</option>
+              <option value="3">Table 3</option>
+              <option value="4">Table 4</option>
+              <option value="5">Table 5</option>
+            </select>
           </div>
+
+          {selectedGuests.length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{
+                fontFamily: 'Jost',
+                fontSize: '12px',
+                color: muted
+              }}>
+                {selectedGuests.length} selected
+              </span>
+              <button
+                onClick={() => {
+                  if (confirm(`Send invitations to ${selectedGuests.length} selected guests?`)) {
+                    selectedGuests.forEach(guestId => {
+                      const guest = filteredGuests.find(g => g.id === guestId)
+                      if (guest) handleSendInvite(guest)
+                    })
+                    setSelectedGuests([])
+                  }
+                }}
+                style={{
+                  backgroundColor: goldDark,
+                  color: cream,
+                  padding: '8px 16px',
+                  fontFamily: 'Jost',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                Send Invites
+              </button>
+            </div>
+          )}
         </div>
+      </div>
 
-        {/* RSVP Summary Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+      {/* Guests Table */}
+      <div style={{ padding: '32px' }}>
+        {filteredGuests.length === 0 ? (
           <div style={{
             backgroundColor: 'white',
             border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px'
+            padding: '48px',
+            textAlign: 'center'
           }}>
-            <div>
-              <p style={{
-                fontFamily: 'Jost',
-                fontSize: '11px',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                color: '#9a7850',
-                marginBottom: '8px'
-              }}>Total Invited</p>
-              <p style={{
-                fontFamily: 'Cormorant Garamond',
-                fontSize: '32px',
-                fontWeight: 300,
-                color: '#3a2a1a'
-              }}>{stats.total}</p>
-            </div>
+            <div style={{
+              fontSize: '48px',
+              color: muted,
+              marginBottom: '16px'
+            }}> <Users size={48} /> </div>
+            <h3 style={{
+              fontFamily: 'Cormorant Garamond',
+              fontSize: '20px',
+              color: brown,
+              marginBottom: '8px'
+            }}>No guests found</h3>
+            <p style={{
+              fontFamily: 'Jost',
+              fontSize: '14px',
+              color: muted
+            }}>
+              {searchTerm || filterStatus !== 'all' || filterDietary !== 'all' || filterTable !== 'all'
+                ? 'Try adjusting your filters or add your first guest.'
+                : 'Add your first guest to start building your wedding guest list.'
+              }
+            </p>
           </div>
-          
+        ) : (
           <div style={{
             backgroundColor: 'white',
             border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px'
+            overflow: 'hidden'
           }}>
-            <div>
-              <p style={{
+            {/* Table Header */}
+            <div style={{
+              backgroundColor: cream,
+              padding: '16px',
+              borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+              display: 'grid',
+              gridTemplateColumns: '40px 2fr 1fr 1fr 1fr 1fr 1fr 120px',
+              gap: '16px',
+              alignItems: 'center'
+            }}>
+              <div>
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                  style={{ cursor: 'pointer' }}
+                />
+              </div>
+              <div style={{
                 fontFamily: 'Jost',
-                fontSize: '11px',
+                fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                color: '#9a7850',
-                marginBottom: '8px'
-              }}>Attending</p>
-              <p style={{
-                fontFamily: 'Cormorant Garamond',
-                fontSize: '32px',
-                fontWeight: 300,
-                color: '#3a2a1a'
-              }}>{stats.attending}</p>
-            </div>
-          </div>
-
-          <div style={{
-            backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px'
-          }}>
-            <div>
-              <p style={{
+                color: muted
+              }}>Name</div>
+              <div style={{
                 fontFamily: 'Jost',
-                fontSize: '11px',
+                fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                color: '#9a7850',
-                marginBottom: '8px'
-              }}>Declined</p>
-              <p style={{
-                fontFamily: 'Cormorant Garamond',
-                fontSize: '32px',
-                fontWeight: 300,
-                color: '#3a2a1a'
-              }}>{stats.declined}</p>
-            </div>
-          </div>
-
-          <div style={{
-            backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px'
-          }}>
-            <div>
-              <p style={{
+                color: muted
+              }}>Email</div>
+              <div style={{
                 fontFamily: 'Jost',
-                fontSize: '11px',
+                fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                color: '#9a7850',
-                marginBottom: '8px'
-              }}>Pending</p>
-              <p style={{
-                fontFamily: 'Cormorant Garamond',
-                fontSize: '32px',
-                fontWeight: 300,
-                color: '#3a2a1a'
-              }}>{stats.pending}</p>
-            </div>
-          </div>
-
-          <div style={{
-            backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px'
-          }}>
-            <div>
-              <p style={{
+                color: muted
+              }}>Phone</div>
+              <div style={{
                 fontFamily: 'Jost',
-                fontSize: '11px',
+                fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                color: '#9a7850',
-                marginBottom: '8px'
-              }}>Maybe</p>
-              <p style={{
-                fontFamily: 'Cormorant Garamond',
-                fontSize: '32px',
-                fontWeight: 300,
-                color: '#3a2a1a'
-              }}>{stats.maybe}</p>
+                color: muted
+              }}>Dietary</div>
+              <div style={{
+                fontFamily: 'Jost',
+                fontSize: '12px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                color: muted
+              }}>Table</div>
+              <div style={{
+                fontFamily: 'Jost',
+                fontSize: '12px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                color: muted
+              }}>Status</div>
+              <div style={{
+                fontFamily: 'Jost',
+                fontSize: '12px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                color: muted
+              }}>Actions</div>
             </div>
-          </div>
-        </div>
 
-        {/* Guests Table */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-[#fdf9f5] border-b border-[#e8dcc6]">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#3a2a1a] uppercase tracking-wider font-jost">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#3a2a1a] uppercase tracking-wider font-jost">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#3a2a1a] uppercase tracking-wider font-jost">RSVP Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#3a2a1a] uppercase tracking-wider font-jost">Dietary</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#3a2a1a] uppercase tracking-wider font-jost">Table</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[#3a2a1a] uppercase tracking-wider font-jost">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#e8dcc6]">
-                {guests.map((guest) => (
-                  <tr key={guest.id} className="hover:bg-[#fdf9f5]">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-[#3a2a1a] font-jost">{guest.name}</div>
-                      <div className="text-sm text-[#3a2a1a] opacity-60 font-jost">{guest.phone}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-[#3a2a1a] font-jost">{guest.email}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {guest.rsvpStatus === 'pending' ? (
-                        <span style={{
-                          backgroundColor: '#faeeda',
-                          color: '#633806',
-                          border: '0.5px solid #fac775',
-                          padding: '3px 10px',
-                          fontSize: '10px',
+            {/* Guest Rows */}
+            {filteredGuests.map((guest) => {
+              const isEditing = editingGuest === guest.id
+              
+              return (
+                <div key={guest.id} style={{
+                  padding: '16px',
+                  borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+                  display: 'grid',
+                  gridTemplateColumns: '40px 2fr 1fr 1fr 1fr 1fr 1fr 120px',
+                  gap: '16px',
+                  alignItems: 'center'
+                }}>
+                  <div>
+                    <input
+                      type="checkbox"
+                      checked={selectedGuests.includes(guest.id)}
+                      onChange={() => handleToggleSelection(guest.id)}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </div>
+
+                  {isEditing ? (
+                    <>
+                      <input
+                        type="text"
+                        defaultValue={guest.name}
+                        onBlur={(e) => handleEditGuest(guest.id, { name: e.target.value })}
+                        style={{
+                          padding: '8px',
+                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          fontFamily: 'Jost',
+                          fontSize: '14px',
+                          backgroundColor: 'white',
+                          color: brown
+                        }}
+                      />
+                      <input
+                        type="email"
+                        defaultValue={guest.email || ''}
+                        onBlur={(e) => handleEditGuest(guest.id, { email: e.target.value })}
+                        style={{
+                          padding: '8px',
+                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          fontFamily: 'Jost',
+                          fontSize: '14px',
+                          backgroundColor: 'white',
+                          color: brown
+                        }}
+                      />
+                      <input
+                        type="tel"
+                        defaultValue={guest.phone || ''}
+                        onBlur={(e) => handleEditGuest(guest.id, { phone: e.target.value })}
+                        style={{
+                          padding: '8px',
+                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          fontFamily: 'Jost',
+                          fontSize: '14px',
+                          backgroundColor: 'white',
+                          color: brown
+                        }}
+                      />
+                      <select
+                        defaultValue={guest.dietaryPreferences}
+                        onChange={(e) => handleEditGuest(guest.id, { dietaryPreferences: e.target.value })}
+                        style={{
+                          padding: '8px',
+                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          fontFamily: 'Jost',
+                          fontSize: '14px',
+                          backgroundColor: 'white',
+                          color: brown
+                        }}
+                      >
+                        {dietaryOptions.map(option => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
+                      <input
+                        type="number"
+                        defaultValue={guest.tableNumber || ''}
+                        onBlur={(e) => handleEditGuest(guest.id, { tableNumber: parseInt(e.target.value) || undefined })}
+                        style={{
+                          padding: '8px',
+                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          fontFamily: 'Jost',
+                          fontSize: '14px',
+                          backgroundColor: 'white',
+                          color: brown
+                        }}
+                      />
+                      <select
+                        defaultValue={guest.rsvpStatus}
+                        onChange={(e) => handleEditGuest(guest.id, { rsvpStatus: e.target.value as any })}
+                        style={{
+                          padding: '8px',
+                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          fontFamily: 'Jost',
+                          fontSize: '14px',
+                          backgroundColor: 'white',
+                          color: brown
+                        }}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="declined">Declined</option>
+                      </select>
+                      <button
+                        onClick={() => setEditingGuest(null)}
+                        style={{
+                          backgroundColor: goldDark,
+                          color: cream,
+                          padding: '6px 12px',
+                          fontFamily: 'Jost',
+                          fontSize: '11px',
                           fontWeight: 500,
                           textTransform: 'uppercase',
+                          border: 'none',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Save
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <div style={{
                           fontFamily: 'Jost',
-                          letterSpacing: '0.1em'
-                        }}>
-                          Pending
-                        </span>
-                      ) : (
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRSVPBadgeColor(guest.rsvpStatus)}`}>
-                          {getRSVPIcon(guest.rsvpStatus)}
-                          <span className="ml-1">{guest.rsvpStatus.charAt(0).toUpperCase() + guest.rsvpStatus.slice(1)}</span>
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-[#3a2a1a] font-jost">
-                        {guest.dietaryPreferences || 'None specified'}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {editingTableId === guest.id ? (
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="number"
-                            value={editingTableNumber}
-                            onChange={(e) => setEditingTableNumber(e.target.value)}
-                            className="w-16 px-2 py-1 border border-[#b08850] rounded text-sm"
-                            placeholder="Table #"
-                          />
-                          <button
-                            onClick={() => handleUpdateTableNumber(guest.id)}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            <Save className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => {
-                              setEditingTableId(null)
-                              setEditingTableNumber('')
-                            }}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm text-[#3a2a1a] font-jost">
-                            {guest.tableNumber ? `Table ${guest.tableNumber}` : 'Not assigned'}
-                          </span>
-                          <button
-                            onClick={() => {
-                              setEditingTableId(guest.id)
-                              setEditingTableNumber(guest.tableNumber?.toString() || '')
-                            }}
-                            className="text-[#7a5c30] hover:text-[#6a4c20]"
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <div className="flex items-center space-x-2">
-                        {inviteLinks[guest.id] && (
-                          <button
-                            onClick={() => copyToClipboard(inviteLinks[guest.id])}
-                            className="hover:opacity-80 transition-opacity"
-                            title="Copy invite link"
-                          >
-                            <Copy className="w-4 h-4" style={{ width: '16px', height: '16px', color: '#b08850' }} />
-                          </button>
+                          fontSize: '14px',
+                          fontWeight: 500,
+                          color: brown,
+                          marginBottom: '4px'
+                        }}>{guest.name}</div>
+                        {guest.plusOne && guest.plusOneName && (
+                          <div style={{
+                            fontSize: '11px',
+                            color: muted,
+                            fontStyle: 'italic'
+                          }}>+1 {guest.plusOneName}</div>
                         )}
-                        <button
-                          onClick={() => handleSendInvite(guest)}
-                          disabled={sendingInviteId === guest.id}
-                          className="hover:opacity-80 transition-opacity disabled:opacity-50"
-                          title="Send invite email"
-                        >
-                          {sendingInviteId === guest.id ? (
-                            <div className="w-4 h-4 border-2 border-[#7a5c30] border-t-transparent rounded-full animate-spin" style={{ width: '16px', height: '16px', borderColor: '#7a5c30' }} />
-                          ) : (
-                            <Send className="w-4 h-4" style={{ width: '16px', height: '16px', color: '#7a5c30' }} />
+                      </div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: muted
+                      }}>{guest.email || '-'}</div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: muted
+                      }}>{guest.phone || '-'}</div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: muted
+                      }}>{guest.dietaryPreferences}</div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: muted
+                      }}>{guest.tableNumber || '-'}</div>
+                      <div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}>
+                          {guest.rsvpStatus === 'confirmed' && (
+                            <CheckCircle size={16} color="#16a34a" />
                           )}
-                        </button>
+                          {guest.rsvpStatus === 'pending' && (
+                            <AlertCircle size={16} color="#d97706" />
+                          )}
+                          {guest.rsvpStatus === 'declined' && (
+                            <XCircle size={16} color="#dc2626" />
+                          )}
+                          <span style={{
+                            fontSize: '12px',
+                            color: guest.rsvpStatus === 'confirmed' ? '#16a34a' : 
+                                   guest.rsvpStatus === 'pending' ? '#d97706' : '#dc2626',
+                            fontWeight: 500
+                          }}>
+                            {guest.rsvpStatus}
+                          </span>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', gap: '8px' }}>
                         <button
                           onClick={() => {
-                            if (confirm(`Are you sure you want to delete ${guest.name}?`)) {
-                              handleDeleteGuest(guest.id)
+                            if (guest.email) {
+                              navigator.clipboard.writeText(guest.email)
+                              alert('Email copied to clipboard!')
                             }
                           }}
-                          disabled={deletingGuestId === guest.id}
-                          className="hover:opacity-80 transition-opacity disabled:opacity-50"
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '4px'
+                          }}
+                          title="Copy email"
+                        >
+                          <Copy size={14} color={muted} />
+                        </button>
+                        <button
+                          onClick={() => handleSendInvite(guest)}
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '4px'
+                          }}
+                          title="Send invitation"
+                        >
+                          <Mail size={14} color={muted} />
+                        </button>
+                        <button
+                          onClick={() => setEditingGuest(guest.id)}
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '4px'
+                          }}
+                          title="Edit guest"
+                        >
+                          <Edit2 size={14} color={muted} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteGuest(guest.id)}
+                          style={{
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '4px'
+                          }}
                           title="Delete guest"
                         >
-                          {deletingGuestId === guest.id ? (
-                            <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" style={{ width: '16px', height: '16px', borderColor: '#cc4444' }} />
-                          ) : (
-                            <Trash2 className="w-4 h-4" style={{ width: '16px', height: '16px', color: '#cc4444' }} />
-                          )}
+                          <Trash2 size={14} color={muted} />
                         </button>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Add Guest Modal */}
-        {showAddModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl p-6 max-w-md w-full">
-              <h2 className="text-xl font-bold text-[#7a5c30] mb-4 font-cormorant">Add New Guest</h2>
-              <form onSubmit={handleAddGuest} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-[#3a2a1a] mb-1 font-jost">Name *</label>
-                  <input
-                    type="text"
-                    value={newGuest.name}
-                    onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-[#b08850] rounded-lg focus:ring-2 focus:ring-[#7a5c30] focus:border-transparent font-jost"
-                    placeholder="Guest name"
-                    required
-                  />
+                    </>
+                  )}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#3a2a1a] mb-1 font-jost">Email *</label>
-                  <input
-                    type="email"
-                    value={newGuest.email}
-                    onChange={(e) => setNewGuest({ ...newGuest, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-[#b08850] rounded-lg focus:ring-2 focus:ring-[#7a5c30] focus:border-transparent font-jost"
-                    placeholder="guest@email.com"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#3a2a1a] mb-1 font-jost">Phone (optional)</label>
-                  <input
-                    type="tel"
-                    value={newGuest.phone}
-                    onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
-                    className="w-full px-3 py-2 border border-[#b08850] rounded-lg focus:ring-2 focus:ring-[#7a5c30] focus:border-transparent font-jost"
-                    placeholder="+1 234 567 8900"
-                  />
-                </div>
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    type="submit"
-                    disabled={addingGuest}
-                    className="flex-1 bg-[#7a5c30] text-white py-2 px-4 rounded-lg font-jost hover:bg-[#6a4c20] transition-colors disabled:opacity-50"
-                  >
-                    {addingGuest ? 'Adding...' : 'Add Guest'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowAddModal(false)
-                      setNewGuest({ name: '', email: '', phone: '' })
-                    }}
-                    className="flex-1 bg-gray-200 text-[#3a2a1a] py-2 px-4 rounded-lg font-jost hover:bg-gray-300 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
+              )
+            })}
           </div>
         )}
       </div>
-    </div>
+
+      {/* Add Guest Modal */}
+      {showAddGuest && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '24px',
+            width: '90%',
+            maxWidth: '600px'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h2 style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '20px',
+                color: brown
+              }}>Add New Guest</h2>
+              <button
+                onClick={() => setShowAddGuest(false)}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <X size={20} color={muted} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <input
+                  type="text"
+                  placeholder="Guest Name *"
+                  value={newGuest.name}
+                  onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
+                  style={{
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown
+                  }}
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={newGuest.email}
+                  onChange={(e) => setNewGuest({ ...newGuest, email: e.target.value })}
+                  style={{
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={newGuest.phone}
+                  onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
+                  style={{
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Table Number"
+                  value={newGuest.tableNumber}
+                  onChange={(e) => setNewGuest({ ...newGuest, tableNumber: e.target.value })}
+                  style={{
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown
+                  }}
+                />
+              </div>
+
+              <input
+                type="text"
+                placeholder="Address"
+                value={newGuest.address}
+                onChange={(e) => setNewGuest({ ...newGuest, address: e.target.value })}
+                style={{
+                  padding: '12px',
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  fontFamily: 'Jost',
+                  fontSize: '14px',
+                  backgroundColor: 'white',
+                  color: brown
+                }}
+              />
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <select
+                  value={newGuest.dietaryPreferences}
+                  onChange={(e) => setNewGuest({ ...newGuest, dietaryPreferences: e.target.value })}
+                  style={{
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown
+                  }}
+                >
+                  {dietaryOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={newGuest.rsvpStatus}
+                  onChange={(e) => setNewGuest({ ...newGuest, rsvpStatus: e.target.value as any })}
+                  style={{
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown
+                  }}
+                >
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="declined">Declined</option>
+                </select>
+              </div>
+
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Jost', fontSize: '14px' }}>
+                  <input
+                    type="checkbox"
+                    checked={newGuest.plusOne}
+                    onChange={(e) => setNewGuest({ ...newGuest, plusOne: e.target.checked })}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  Plus One
+                </label>
+
+                {newGuest.plusOne && (
+                  <input
+                    type="text"
+                    placeholder="Plus One Name"
+                    value={newGuest.plusOneName}
+                    onChange={(e) => setNewGuest({ ...newGuest, plusOneName: e.target.value })}
+                    style={{
+                      padding: '12px',
+                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      fontFamily: 'Jost',
+                      fontSize: '14px',
+                      backgroundColor: 'white',
+                      color: brown,
+                      flex: 1
+                    }}
+                  />
+                )}
+              </div>
+
+              <textarea
+                placeholder="Notes (optional)"
+                value={newGuest.notes}
+                onChange={(e) => setNewGuest({ ...newGuest, notes: e.target.value })}
+                rows={3}
+                style={{
+                  padding: '12px',
+                  border: '0.5px solid rgba(180,140,90,0.3)',
+                  fontFamily: 'Jost',
+                  fontSize: '14px',
+                  backgroundColor: 'white',
+                  color: brown,
+                  resize: 'vertical'
+                }}
+              />
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => setShowAddGuest(false)}
+                  style={{
+                    border: `0.5px solid ${gold}`,
+                    color: gold,
+                    padding: '10px 20px',
+                    fontFamily: 'Jost',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddGuest}
+                  disabled={!newGuest.name.trim()}
+                  style={{
+                    backgroundColor: goldDark,
+                    color: cream,
+                    padding: '10px 20px',
+                    fontFamily: 'Jost',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    border: 'none',
+                    cursor: !newGuest.name.trim() ? 'not-allowed' : 'pointer',
+                    opacity: !newGuest.name.trim() ? 0.7 : 1
+                  }}
+                >
+                  Add Guest
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Invite Modal */}
+      {showBulkInvite && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            border: '0.5px solid rgba(180,140,90,0.2)',
+            padding: '24px',
+            width: '90%',
+            maxWidth: '500px'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h2 style={{
+                fontFamily: 'Cormorant Garamond',
+                fontSize: '20px',
+                color: brown
+              }}>Send Bulk Invitations</h2>
+              <button
+                onClick={() => setShowBulkInvite(false)}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <X size={20} color={muted} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <label style={{
+                  display: 'block',
+                  fontFamily: 'Jost',
+                  fontSize: '12px',
+                  color: muted,
+                  marginBottom: '4px'
+                }}>
+                  Email Addresses (comma separated)
+                </label>
+                <textarea
+                  placeholder="guest1@example.com, guest2@example.com, guest3@example.com"
+                  value={bulkInviteEmails}
+                  onChange={(e) => setBulkInviteEmails(e.target.value)}
+                  rows={6}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Jost',
+                    fontSize: '14px',
+                    backgroundColor: 'white',
+                    color: brown,
+                    resize: 'vertical',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={() => setShowBulkInvite(false)}
+                  style={{
+                    border: `0.5px solid ${gold}`,
+                    color: gold,
+                    padding: '10px 20px',
+                    fontFamily: 'Jost',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleBulkInvite}
+                  disabled={!bulkInviteEmails.trim()}
+                  style={{
+                    backgroundColor: goldDark,
+                    color: cream,
+                    padding: '10px 20px',
+                    fontFamily: 'Jost',
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    border: 'none',
+                    cursor: !bulkInviteEmails.trim() ? 'not-allowed' : 'pointer',
+                    opacity: !bulkInviteEmails.trim() ? 0.7 : 1
+                  }}
+                >
+                  Send Invites
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

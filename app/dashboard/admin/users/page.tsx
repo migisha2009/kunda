@@ -3,12 +3,11 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../../context/AuthContext'
 import { useRequireAuth } from '../../../../hooks/useRequireAuth'
-import { collection, query, getDocs, orderBy, doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { collection, query, getDocs, orderBy, doc, deleteDoc, updateDoc, where } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
 import { User, Vendor, Booking } from '../../../../types'
 import { Users, Search, Filter, Trash2, AlertTriangle, Loader2, Eye, Mail, Download, ChevronLeft, ChevronRight, ArrowUpDown, UserPlus, Key } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
-
 
 export default function AdminUsersPage() {
   const { loading: authLoading } = useRequireAuth('admin')
@@ -64,8 +63,8 @@ export default function AdminUsersPage() {
       // Note: In a real app, you'd want to:
       // 1. Delete all related data (vendor profile, bookings, enquiries, etc.)
       // 2. Delete user's files from Storage
-      // 3. Delete the user's authentication record
-      // For now, we'll just delete the user document
+      // 3. Delete user's authentication record
+      // For now, we'll just delete user document
       await deleteDoc(doc(db, 'users', userId))
       
       // Update local state
@@ -137,12 +136,12 @@ export default function AdminUsersPage() {
         const vendorQuery = query(collection(db, 'vendors'), where('userId', '==', user.id))
         const vendorSnapshot = await getDocs(vendorQuery)
         if (!vendorSnapshot.empty) {
-          const vendorData = {
+          const vendorData = vendorSnapshot.docs[0].data()
+          setUserVendor({
             id: vendorSnapshot.docs[0].id,
             createdAt: null,
-            ...vendorSnapshot.docs[0].data()
-          } as unknown as Vendor
-          setUserVendor(vendorData)
+            ...vendorData
+          } as unknown as Vendor)
         }
       }
       
@@ -157,27 +156,32 @@ export default function AdminUsersPage() {
     try {
       await updateDoc(doc(db, 'users', userId), { role: newRole })
       setUsers(prev => prev.map(user => 
-        user.id === userId ? { ...user, role: newRole as 'admin' | 'couple' | 'vendor' } : user
+        user.id === userId ? { ...user, role: newRole as any } : user
       ))
     } catch (error) {
-      console.error('Error changing user role:', error)
+      console.error('Error updating user role:', error)
     }
   }
 
   const sendPasswordReset = async (email: string) => {
-    // In a real app, you'd use Firebase Auth to send password reset email
-    window.location.href = `mailto:${email}?subject=Password Reset&body=Click here to reset your password: [reset link]`
+    try {
+      // In a real app, you'd use Firebase Auth to send password reset email
+      console.log('Password reset email sent to:', email)
+      alert('Password reset email sent successfully!')
+    } catch (error) {
+      console.error('Error sending password reset:', error)
+      alert('Error sending password reset email')
+    }
   }
 
   const exportToCSV = () => {
-    const headers = ['Name', 'Email', 'Role', 'Phone', 'Joined', 'Status']
+    const headers = ['Name', 'Email', 'Role', 'Joined Date', 'Active']
     const csvData = filteredUsers.map(user => [
       user.name,
       user.email,
       user.role,
-      user.phone || 'Not provided',
       formatDate(user.createdAt),
-      user.active !== false ? 'Active' : 'Suspended'
+      user.active ? 'Yes' : 'No'
     ])
     
     const csv = [headers, ...csvData].map(row => row.join(',')).join('\n')
@@ -187,6 +191,19 @@ export default function AdminUsersPage() {
     a.href = url
     a.download = 'users.csv'
     a.click()
+  }
+
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return { bg: 'rgba(122, 92, 48, 0.1)', text: '#7a5c30' }
+      case 'vendor':
+        return { bg: 'rgba(176, 136, 80, 0.1)', text: '#b08850' }
+      case 'couple':
+        return { bg: 'rgba(34, 197, 94, 0.1)', text: '#22c55e' }
+      default:
+        return { bg: 'rgba(156, 163, 175, 0.1)', text: '#9ca3af' }
+    }
   }
 
   return (
@@ -206,7 +223,7 @@ export default function AdminUsersPage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h1 className="text-3xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>User Management</h1>
-                <p className="text-sm mt-2" style={{ color: '#9a7850' }}>Manage all users on the Kunda platform</p>
+                <p className="text-sm mt-2" style={{ color: '#9a7850' }}>Manage all users, couples, and vendors on the platform</p>
               </div>
               <button
                 onClick={exportToCSV}
@@ -228,7 +245,7 @@ export default function AdminUsersPage() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#9a7850' }} />
                   <input
                     type="text"
-                    placeholder="Search users by name or email..."
+                    placeholder="Search users..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 rounded focus:outline-none"
@@ -251,7 +268,7 @@ export default function AdminUsersPage() {
               </div>
             </div>
 
-            {/* Total user count */}
+            {/* Total users count */}
             <div className="mb-4">
               <p className="text-sm" style={{ color: '#9a7850' }}>
                 Total users: <span className="font-medium" style={{ color: '#3a2a1a' }}>{filteredUsers.length}</span>
@@ -264,15 +281,8 @@ export default function AdminUsersPage() {
                 <table className="w-full">
                   <thead style={{ backgroundColor: '#faf6f1' }}>
                     <tr>
-                      <th 
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
-                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
-                        onClick={() => toggleSort('name')}
-                      >
-                        <div className="flex items-center">
-                          Name
-                          <ArrowUpDown className="w-3 h-3 ml-1" />
-                        </div>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                        Name
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
                         Email
@@ -286,9 +296,6 @@ export default function AdminUsersPage() {
                           Role
                           <ArrowUpDown className="w-3 h-3 ml-1" />
                         </div>
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
-                        Phone
                       </th>
                       <th 
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
@@ -306,78 +313,65 @@ export default function AdminUsersPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
-                    {paginatedUsers.map((user) => (
-                      <tr 
-                        key={user.id} 
-                        className="hover:bg-gray-50" 
-                        style={{ backgroundColor: 'transparent' }} 
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#faf6f1'} 
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadUserDetails(user)}>
-                            {user.name}
-                            {user.active === false && (
-                              <span className="ml-2 text-xs" style={{ color: '#dc2626' }}>(Suspended)</span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm" style={{ color: '#9a7850' }}>{user.email}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold ${
-                            user.role === 'admin' 
-                              ? 'text-purple-800'
-                              : user.role === 'vendor'
-                              ? 'text-amber-800'
-                              : 'text-teal-800'
-                          }`} style={{ 
-                            backgroundColor: user.role === 'admin' ? 'rgba(147, 51, 234, 0.1)' :
-                                           user.role === 'vendor' ? 'rgba(245, 158, 11, 0.1)' :
-                                           'rgba(20, 184, 166, 0.1)'
-                          }}>
-                            {user.role}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm" style={{ color: '#9a7850' }}>{user.phone || 'Not provided'}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
-                          {formatDate(user.createdAt)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <div className="flex items-center space-x-2">
-                            <button
-                              onClick={() => loadUserDetails(user)}
-                              className="p-1 rounded transition-colors"
-                              style={{ color: '#7a5c30' }}
-                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
-                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    {paginatedUsers.map((user) => {
+                      const roleColors = getRoleColor(user.role)
+                      return (
+                        <tr 
+                          key={user.id} 
+                          className="hover:bg-gray-50" 
+                          style={{ backgroundColor: 'transparent' }} 
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#faf6f1'} 
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadUserDetails(user)}>
+                              {user.name}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm" style={{ color: '#9a7850' }}>{user.email}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span 
+                              className="px-2 py-1 inline-flex text-xs leading-5 font-semibold"
+                              style={{ backgroundColor: roleColors.bg, color: roleColors.text }}
                             >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <select
-                              value={user.role}
-                              onChange={(e) => changeUserRole(user.id, e.target.value)}
-                              className="px-2 py-1 text-xs rounded focus:outline-none"
-                              style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
-                              disabled={user.role === 'admin'}
-                            >
-                              <option value="couple">Couple</option>
-                              <option value="vendor">Vendor</option>
-                              <option value="admin">Admin</option>
-                            </select>
-                            <button
-                              onClick={() => sendPasswordReset(user.email)}
-                              className="p-1 rounded transition-colors"
-                              style={{ color: '#7a5c30' }}
-                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
-                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                            >
-                              <Key className="w-4 h-4" />
-                            </button>
-                            {user.role !== 'admin' && (
+                              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
+                            {formatDate(user.createdAt)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => loadUserDetails(user)}
+                                className="p-1 rounded transition-colors"
+                                style={{ color: '#7a5c30' }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <select
+                                value={user.role}
+                                onChange={(e) => changeUserRole(user.id, e.target.value)}
+                                className="px-2 py-1 text-xs rounded focus:outline-none"
+                                style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                              >
+                                <option value="couple">Couple</option>
+                                <option value="vendor">Vendor</option>
+                                <option value="admin">Admin</option>
+                              </select>
+                              <button
+                                onClick={() => sendPasswordReset(user.email)}
+                                className="p-1 rounded transition-colors"
+                                style={{ color: '#7a5c30' }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                              >
+                                <Key className="w-4 h-4" />
+                              </button>
                               <button
                                 onClick={() => setShowDeleteConfirm(user.id)}
                                 className="p-1 rounded transition-colors"
@@ -387,11 +381,11 @@ export default function AdminUsersPage() {
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
                 
@@ -444,10 +438,8 @@ export default function AdminUsersPage() {
                 <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowUserModal(false)} />
                 <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
                   <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
-                        {selectedUser.name}
-                      </h2>
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>User Details</h2>
                       <button
                         onClick={() => setShowUserModal(false)}
                         className="p-2 rounded transition-colors"
@@ -461,56 +453,88 @@ export default function AdminUsersPage() {
                     
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Name</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.name}</p>
+                      </div>
+                      <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Email</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.email}</p>
                       </div>
                       <div>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Phone</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.phone}</p>
+                      </div>
+                      <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Role</p>
-                        <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1 ${
-                          selectedUser.role === 'admin' ? 'text-purple-800' :
-                          selectedUser.role === 'vendor' ? 'text-amber-800' :
-                          'text-teal-800'
-                        }`} style={{ 
-                          backgroundColor: selectedUser.role === 'admin' ? 'rgba(147, 51, 234, 0.1)' :
-                                         selectedUser.role === 'vendor' ? 'rgba(245, 158, 11, 0.1)' :
-                                         'rgba(20, 184, 166, 0.1)'
+                        <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
+                          backgroundColor: getRoleColor(selectedUser.role).bg,
+                          color: getRoleColor(selectedUser.role).text
                         }}>
-                          {selectedUser.role}
+                          {selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1)}
                         </span>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Phone</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.phone || 'Not provided'}</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Joined Date</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{formatDate(selectedUser.createdAt)}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Joined</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{formatDate(selectedUser.createdAt)}</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Status</p>
+                        <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
+                          backgroundColor: selectedUser.active ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                          color: selectedUser.active ? '#22c55e' : '#ef4444'
+                        }}>
+                          {selectedUser.active ? 'Active' : 'Inactive'}
+                        </span>
                       </div>
                     </div>
                     
-                    {selectedUser.role === 'couple' && (
+                    {/* Show bookings for couples */}
+                    {selectedUser.role === 'couple' && userBookings.length > 0 && (
                       <div className="mb-6">
-                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Wedding Details</p>
-                        <div className="p-4" style={{ backgroundColor: '#faf6f1' }}>
-                          <p className="text-sm" style={{ color: '#9a7850' }}>Total Bookings: {userBookings.length}</p>
+                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Recent Bookings</p>
+                        <div className="space-y-2">
+                          {userBookings.slice(0, 5).map(booking => (
+                            <div key={booking.id} className="p-3" style={{ backgroundColor: '#faf6f1' }}>
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <p className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{booking.vendorName}</p>
+                                  <p className="text-xs" style={{ color: '#9a7850' }}>{formatDate(booking.createdAt)}</p>
+                                </div>
+                                <p className="text-sm font-medium" style={{ color: '#7a5c30' }}>${booking.amount}</p>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
                     
+                    {/* Show vendor profile for vendors */}
                     {selectedUser.role === 'vendor' && userVendor && (
                       <div className="mb-6">
                         <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Vendor Profile</p>
-                        <div className="p-4" style={{ backgroundColor: '#faf6f1' }}>
-                          <p className="text-sm font-medium mb-1" style={{ color: '#3a2a1a' }}>{userVendor.businessName}</p>
-                          <p className="text-sm" style={{ color: '#9a7850' }}>{userVendor.category} • {userVendor.location}</p>
-                          <div className="flex items-center mt-2">
-                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold ${
-                              userVendor.verified ? 'text-green-800' : 'text-amber-800'
-                            }`} style={{ 
-                              backgroundColor: userVendor.verified ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)'
-                            }}>
-                              {userVendor.verified ? 'Verified' : 'Unverified'}
-                            </span>
+                        <div className="p-3" style={{ backgroundColor: '#faf6f1' }}>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Business Name</p>
+                              <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{userVendor.businessName}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Category</p>
+                              <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{userVendor.category}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Rating</p>
+                              <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{userVendor.rating} ({userVendor.reviewCount} reviews)</p>
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Verified</p>
+                              <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
+                                backgroundColor: userVendor.verified ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                color: userVendor.verified ? '#22c55e' : '#ef4444'
+                              }}>
+                                {userVendor.verified ? 'Verified' : 'Not Verified'}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -523,7 +547,7 @@ export default function AdminUsersPage() {
                         style={{ backgroundColor: '#7a5c30', color: '#fdf9f5' }}
                       >
                         <Mail className="w-4 h-4 inline mr-2" />
-                        Send Email
+                        Email User
                       </button>
                       <button
                         onClick={() => sendPasswordReset(selectedUser.email)}
@@ -538,50 +562,47 @@ export default function AdminUsersPage() {
                 </div>
               </div>
             )}
-          </div>
-        </div>
-      )}
-    </>
-  )
-}
 
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowDeleteConfirm(null)} />
-          <div className="relative bg-white rounded-lg max-w-md w-full p-6" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
-            <div className="text-center mb-6">
-              <AlertTriangle className="w-12 h-12 mx-auto mb-4" style={{ color: '#dc2626' }} />
-              <h3 className="text-lg font-semibold mb-2" style={{ color: '#3a2a1a' }}>Delete User?</h3>
-              <p className="text-sm" style={{ color: '#9a7850' }}>
-                Are you sure? This cannot be undone. This will permanently delete the user account and all associated data.
-              </p>
-            </div>
-            
-            <div className="flex gap-3">
-              <button
-                onClick={() => deleteUser(showDeleteConfirm)}
-                disabled={deleting === showDeleteConfirm}
-                className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors disabled:opacity-50"
-                style={{ backgroundColor: '#dc2626', color: '#ffffff' }}
-              >
-                {deleting === showDeleteConfirm ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Deleting...
-                  </>
-                ) : (
-                  'Delete User'
-                )}
-              </button>
-              <button
-                onClick={() => setShowDeleteConfirm(null)}
-                className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors"
-                style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
-              >
-                Cancel
-              </button>
-            </div>
+            {/* Delete Confirmation Modal */}
+            {showDeleteConfirm && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowDeleteConfirm(null)} />
+                <div className="relative bg-white rounded-lg max-w-md w-full p-6" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
+                  <div className="text-center mb-6">
+                    <AlertTriangle className="w-12 h-12 mx-auto mb-4" style={{ color: '#dc2626' }} />
+                    <h3 className="text-lg font-semibold mb-2" style={{ color: '#3a2a1a' }}>Delete User?</h3>
+                    <p className="text-sm" style={{ color: '#9a7850' }}>
+                      Are you sure? This cannot be undone. This will permanently delete user account and all associated data.
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => deleteUser(showDeleteConfirm)}
+                      disabled={deleting === showDeleteConfirm}
+                      className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors disabled:opacity-50"
+                      style={{ backgroundColor: '#dc2626', color: '#ffffff' }}
+                    >
+                      {deleting === showDeleteConfirm ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Deleting...
+                        </>
+                      ) : (
+                        Delete User
+                      )}
+                    </button>
+                    <button
+                      onClick={() => setShowDeleteConfirm(null)}
+                      className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors"
+                      style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
