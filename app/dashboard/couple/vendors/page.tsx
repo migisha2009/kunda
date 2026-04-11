@@ -6,6 +6,7 @@ import { collection, query, where, onSnapshot, doc, getDoc, orderBy, getDocs } f
 import { Enquiry } from '../../../../types'
 import { db } from '../../../../lib/firebase'
 import { Store, MessageSquare, ExternalLink, Clock, CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { formatDate } from '../../../../lib/dateUtils'
 
 interface EnquiryWithVendor extends Enquiry {
   vendorName?: string
@@ -165,7 +166,7 @@ export default function CoupleVendorsPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Date</p>
-                      <p className="font-medium text-gray-900">{enquiry.createdAt.toLocaleDateString()}</p>
+                      <p className="font-medium text-gray-900">{formatDate(enquiry.createdAt)}</p>
                     </div>
                   </div>
                   

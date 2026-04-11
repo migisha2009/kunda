@@ -5,6 +5,7 @@ import { useAuth } from '../../../../context/AuthContext'
 import { getWedding, createWedding, updateWedding } from '../../../../lib/firestore'
 import { Wedding } from '../../../../types'
 import { Heart, Calendar, MapPin, Users, DollarSign, Save, Loader2 } from 'lucide-react'
+import { formatDate } from '../../../../lib/dateUtils'
 
 export default function WeddingDetailsPage() {
   const { user, userProfile } = useAuth()
@@ -205,7 +206,7 @@ export default function WeddingDetailsPage() {
                 <div>
                   <p className="text-sm text-gray-600">Wedding Date</p>
                   <p className="font-medium text-gray-900">
-                    {wedding.date ? new Date(wedding.date).toLocaleDateString() : 'Not set'}
+                    {formatDate(wedding.date)}
                   </p>
                 </div>
                 <div>

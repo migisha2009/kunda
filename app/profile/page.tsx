@@ -8,6 +8,7 @@ import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../../lib/firebase'
 import { signOutUser } from '../../lib/auth'
 import { Heart, User, Mail, Phone, Edit2, Save, X, AlertTriangle, Loader2, Key, Trash2 } from 'lucide-react'
+import { formatDate } from '../../lib/dateUtils'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -215,7 +216,7 @@ export default function ProfilePage() {
                   <div>
                     <p className="text-sm text-gray-600">Member Since</p>
                     <p className="font-medium text-gray-900">
-                      {userProfile.createdAt ? new Date(userProfile.createdAt).toLocaleDateString() : 'Unknown'}
+                      {formatDate(userProfile.createdAt)}
                     </p>
                   </div>
                 </div>

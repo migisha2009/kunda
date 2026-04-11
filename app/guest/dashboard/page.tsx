@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getGuest, getWedding, updateGuestRSVP } from '@/lib/firestore'
 import { Guest, Wedding } from '@/types'
+import { formatDate } from '@/lib/dateUtils'
 
 interface CountdownTime {
   days: number
@@ -243,12 +244,7 @@ export default function GuestDashboard() {
               <div>
                 <p className="text-sm text-[#3a2a1a] opacity-75 font-jost">Date</p>
                 <p className="text-lg font-semibold text-[#3a2a1a] font-jost">
-                  {new Date(wedding.date).toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
+                  {formatDate(wedding.date)}
                 </p>
               </div>
 
