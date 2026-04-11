@@ -35,28 +35,28 @@ export default function AdminOverview() {
           id: doc.id,
           createdAt: null,
           ...doc.data()
-        })) as User[]
+        })) as unknown as User[]
 
         const vendorsSnapshot = await getDocs(collection(db, 'vendors'))
         const vendorsData = vendorsSnapshot.docs.map(doc => ({
           id: doc.id,
           createdAt: null,
           ...doc.data()
-        })) as Vendor[]
+        })) as unknown as Vendor[]
 
         const bookingsSnapshot = await getDocs(collection(db, 'bookings'))
         const bookingsData = bookingsSnapshot.docs.map(doc => ({
           id: doc.id,
           createdAt: null,
           ...doc.data()
-        })) as Booking[]
+        })) as unknown as Booking[]
 
         const enquiriesSnapshot = await getDocs(collection(db, 'enquiries'))
         const enquiriesData = enquiriesSnapshot.docs.map(doc => ({
           id: doc.id,
           createdAt: null,
           ...doc.data()
-        })) as Enquiry[]
+        })) as unknown as Enquiry[]
 
         // Calculate stats
         const totalRevenue = bookingsData
@@ -84,7 +84,7 @@ export default function AdminOverview() {
           id: doc.id,
           createdAt: null,
           ...doc.data()
-        })) as User[]
+        })) as unknown as User[]
 
         setRecentUsers(recentUsersData)
       } catch (error) {

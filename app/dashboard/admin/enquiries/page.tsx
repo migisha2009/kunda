@@ -39,7 +39,7 @@ export default function AdminEnquiriesPage() {
             id: enquiryDoc.id,
             createdAt: null,
             ...enquiryDoc.data()
-          } as Enquiry
+          } as unknown as Enquiry
 
           // Convert Timestamp to Date
           if (enquiryData.createdAt instanceof Date) {

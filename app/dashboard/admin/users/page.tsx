@@ -34,7 +34,7 @@ export default function AdminUsersPage() {
         id: doc.id,
         createdAt: null,
         ...doc.data()
-      })) as User[]
+      })) as unknown as User[]
 
       setUsers(usersData)
     } catch (error) {

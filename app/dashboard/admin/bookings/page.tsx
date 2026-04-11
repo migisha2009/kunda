@@ -40,7 +40,7 @@ export default function AdminBookingsPage() {
             id: bookingDoc.id,
             createdAt: null,
             ...bookingDoc.data()
-          } as Booking
+          } as unknown as Booking
 
           // Convert Timestamp to Date
           if (bookingData.createdAt instanceof Date) {

@@ -34,7 +34,7 @@ export default function AdminVendorsPage() {
         id: doc.id,
         createdAt: null,
         ...doc.data()
-      })) as Vendor[]
+      })) as unknown as Vendor[]
 
       setVendors(vendorsData)
     } catch (error) {
