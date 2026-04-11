@@ -8,7 +8,8 @@ import {
   Users, 
   Calendar, 
   MessageSquare,
-  Heart,
+  BarChart,
+  Settings,
   LogOut,
   Menu,
   X
@@ -29,34 +30,46 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
 
   const navigation = [
     {
-      name: 'Overview',
+      name: 'LayoutDashboard',
       href: '/dashboard/admin',
       icon: LayoutDashboard,
       current: pathname === '/dashboard/admin'
     },
     {
-      name: 'Vendor Management',
+      name: 'Store',
       href: '/dashboard/admin/vendors',
       icon: Store,
       current: pathname === '/dashboard/admin/vendors'
     },
     {
-      name: 'User Management',
+      name: 'Users',
       href: '/dashboard/admin/users',
       icon: Users,
       current: pathname === '/dashboard/admin/users'
     },
     {
-      name: 'Booking Overview',
+      name: 'Calendar',
       href: '/dashboard/admin/bookings',
       icon: Calendar,
       current: pathname === '/dashboard/admin/bookings'
     },
     {
-      name: 'Enquiry Overview',
+      name: 'MessageSquare',
       href: '/dashboard/admin/enquiries',
       icon: MessageSquare,
       current: pathname === '/dashboard/admin/enquiries'
+    },
+    {
+      name: 'BarChart',
+      href: '/dashboard/admin/analytics',
+      icon: BarChart,
+      current: pathname === '/dashboard/admin/analytics'
+    },
+    {
+      name: 'Settings',
+      href: '/dashboard/admin/settings',
+      icon: Settings,
+      current: pathname === '/dashboard/admin/settings'
     }
   ]
 
@@ -70,12 +83,12 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
   }
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" style={{ backgroundColor: '#1a0f0a' }}>
       {/* Logo */}
-      <div className="flex items-center px-6 py-4 border-b border-gray-200">
-        <Heart className="w-8 h-8" style={{ color: '#7a5c30' }} />
-        <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'var(--font-cormorant)', color: '#7a5c30' }}>
-          Kunda Admin
+      <div className="flex items-center px-6 py-4" style={{ borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
+        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#b08850' }} />
+        <span className="ml-2 text-2xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#d4b080' }}>
+          Kunda
         </span>
       </div>
 
@@ -87,11 +100,15 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
             <Link
               key={item.name}
               href={item.href}
-              className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+              className={`group flex items-center px-3 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'text-white border-l-2'
+                  : 'text-gray-500 hover:text-gray-300'
               }`}
+              style={{
+                borderLeftColor: isActive ? '#b08850' : 'transparent',
+                backgroundColor: isActive ? 'rgba(176,136,80,0.1)' : 'transparent'
+              }}
               onClick={() => {
                 if (onClose) onClose()
                 setMobileMenuOpen(false)
@@ -99,37 +116,55 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
             >
               <item.icon
                 className={`mr-3 h-5 w-5 ${
-                  isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-500'
+                  isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'
                 }`}
+                style={{ color: isActive ? '#b08850' : 'inherit' }}
               />
-              {item.name}
+              <span style={{ color: isActive ? '#b08850' : 'inherit' }}>
+                {item.name}
+              </span>
             </Link>
           )
         })}
       </nav>
 
       {/* User Info & Sign Out */}
-      <div className="border-t border-gray-200 p-4">
+      <div style={{ borderTop: '0.5px solid rgba(180,140,90,0.2)' }} className="p-4">
         <div className="flex items-center mb-4">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">
+            <div 
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{ border: '2px solid #b08850', backgroundColor: 'rgba(176,136,80,0.1)' }}
+            >
+              <span className="text-sm font-medium" style={{ color: '#d4b080' }}>
                 {userProfile?.name?.charAt(0).toUpperCase()}
               </span>
             </div>
           </div>
           <div className="ml-3">
-            <p className="text-sm font-medium text-gray-900">{userProfile?.name}</p>
-            <p className="text-xs text-gray-500">Administrator</p>
+            <p className="text-sm font-medium" style={{ color: '#d4b080' }}>{userProfile?.name}</p>
+            <p className="text-xs" style={{ color: '#9a7850' }}>Administrator</p>
           </div>
         </div>
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
+          className="w-full flex items-center px-3 py-2 text-sm font-medium rounded transition-colors"
+          style={{ color: '#9a7850' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
           <LogOut className="mr-3 h-4 w-4" />
           Sign Out
         </button>
+        <Link
+          href="/"
+          className="w-full flex items-center px-3 py-2 text-xs font-medium rounded transition-colors mt-2"
+          style={{ color: '#9a7850' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
+          Back to site
+        </Link>
       </div>
     </div>
   )
@@ -142,12 +177,13 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
         <div className="lg:hidden fixed top-4 left-4 z-50">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-white shadow-md border border-gray-200"
+            className="p-2 rounded-lg shadow-md"
+            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.2)' }}
           >
             {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
+              <X className="w-6 h-6" style={{ color: '#7a5c30' }} />
             ) : (
-              <Menu className="w-6 h-6" />
+              <Menu className="w-6 h-6" style={{ color: '#7a5c30' }} />
             )}
           </button>
         </div>
@@ -156,7 +192,7 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
         {mobileMenuOpen && (
           <div className="lg:hidden fixed inset-0 z-40 flex">
             <div className="fixed inset-0 bg-black bg-opacity-25" onClick={() => setMobileMenuOpen(false)} />
-            <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+            <div className="relative flex-1 flex flex-col max-w-xs w-full">
               <SidebarContent />
             </div>
           </div>
@@ -167,8 +203,8 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
 
   // Desktop version
   return (
-    <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
-      <div className="flex flex-col flex-grow bg-white border-r border-gray-200 overflow-y-auto">
+    <div className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0" style={{ width: '220px' }}>
+      <div className="flex flex-col flex-grow overflow-y-auto">
         <SidebarContent />
       </div>
     </div>

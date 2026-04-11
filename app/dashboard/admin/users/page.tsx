@@ -1,17 +1,17 @@
 'use client'
 
-// Build: v2.0 - fixed date formatting
-
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../../context/AuthContext'
-import { collection, query, getDocs, orderBy, doc, deleteDoc } from 'firebase/firestore'
+import { useRequireAuth } from '../../../../hooks/useRequireAuth'
+import { collection, query, getDocs, orderBy, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
-import { User } from '../../../../types'
-import { Users, Search, Filter, Trash2, AlertTriangle, Loader2 } from 'lucide-react'
+import { User, Vendor, Booking } from '../../../../types'
+import { Users, Search, Filter, Trash2, AlertTriangle, Loader2, Eye, Mail, Download, ChevronLeft, ChevronRight, ArrowUpDown, UserPlus, Key } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
 
 
 export default function AdminUsersPage() {
+  const { loading: authLoading } = useRequireAuth('admin')
   const { userProfile } = useAuth()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -19,10 +19,22 @@ export default function AdminUsersPage() {
   const [roleFilter, setRoleFilter] = useState<'all' | 'couple' | 'vendor' | 'admin'>('all')
   const [deleting, setDeleting] = useState<string | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [sortBy, setSortBy] = useState<'name' | 'role' | 'joined'>('joined')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+  const [showUserModal, setShowUserModal] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [userBookings, setUserBookings] = useState<Booking[]>([])
+  const [userVendor, setUserVendor] = useState<Vendor | null>(null)
+  const usersPerPage = 10
 
   useEffect(() => {
     loadUsers()
   }, [])
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm, roleFilter])
 
   const loadUsers = async () => {
     try {
@@ -74,175 +86,475 @@ export default function AdminUsersPage() {
     return matchesSearch && matchesRole
   })
 
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    let comparison = 0
+    switch (sortBy) {
+      case 'name':
+        comparison = a.name.localeCompare(b.name)
+        break
+      case 'role':
+        comparison = a.role.localeCompare(b.role)
+        break
+      case 'joined':
+        comparison = new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
+        break
+    }
+    return sortOrder === 'asc' ? comparison : -comparison
+  })
+
+  const paginatedUsers = sortedUsers.slice(
+    (currentPage - 1) * usersPerPage,
+    currentPage * usersPerPage
+  )
+
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage)
+
+  const toggleSort = (field: typeof sortBy) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortBy(field)
+      setSortOrder('desc')
+    }
+  }
+
+  const loadUserDetails = async (user: User) => {
+    try {
+      // Load user bookings if couple
+      if (user.role === 'couple') {
+        const bookingsQuery = query(collection(db, 'bookings'), where('coupleId', '==', user.id))
+        const bookingsSnapshot = await getDocs(bookingsQuery)
+        const bookingsData = bookingsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          createdAt: null,
+          ...doc.data()
+        })) as unknown as Booking[]
+        setUserBookings(bookingsData)
+      }
+      
+      // Load vendor profile if vendor
+      if (user.role === 'vendor') {
+        const vendorQuery = query(collection(db, 'vendors'), where('userId', '==', user.id))
+        const vendorSnapshot = await getDocs(vendorQuery)
+        if (!vendorSnapshot.empty) {
+          const vendorData = {
+            id: vendorSnapshot.docs[0].id,
+            createdAt: null,
+            ...vendorSnapshot.docs[0].data()
+          } as unknown as Vendor
+          setUserVendor(vendorData)
+        }
+      }
+      
+      setSelectedUser(user)
+      setShowUserModal(true)
+    } catch (error) {
+      console.error('Error loading user details:', error)
+    }
+  }
+
+  const changeUserRole = async (userId: string, newRole: string) => {
+    try {
+      await updateDoc(doc(db, 'users', userId), { role: newRole })
+      setUsers(prev => prev.map(user => 
+        user.id === userId ? { ...user, role: newRole as 'admin' | 'couple' | 'vendor' } : user
+      ))
+    } catch (error) {
+      console.error('Error changing user role:', error)
+    }
+  }
+
+  const sendPasswordReset = async (email: string) => {
+    // In a real app, you'd use Firebase Auth to send password reset email
+    window.location.href = `mailto:${email}?subject=Password Reset&body=Click here to reset your password: [reset link]`
+  }
+
+  const exportToCSV = () => {
+    const headers = ['Name', 'Email', 'Role', 'Phone', 'Joined', 'Status']
+    const csvData = filteredUsers.map(user => [
+      user.name,
+      user.email,
+      user.role,
+      user.phone || 'Not provided',
+      formatDate(user.createdAt),
+      user.active !== false ? 'Active' : 'Suspended'
+    ])
+    
+    const csv = [headers, ...csvData].map(row => row.join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'users.csv'
+    a.click()
+  }
+
   return (
     <>
-      {loading ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-          <Loader2 className="w-8 h-8 animate-spin" />
+      {(authLoading || loading) ? (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
         </div>
       ) : !userProfile ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-          <Loader2 className="w-8 h-8 animate-spin" />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
         </div>
       ) : (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
-          <p className="text-gray-600">Manage all users on the Kunda platform</p>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search users by name or email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+        <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h1 className="text-3xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>User Management</h1>
+                <p className="text-sm mt-2" style={{ color: '#9a7850' }}>Manage all users on the Kunda platform</p>
+              </div>
+              <button
+                onClick={exportToCSV}
+                className="px-4 py-2 text-sm font-medium rounded transition-colors"
+                style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <Download className="w-4 h-4 inline mr-2" />
+                Export CSV
+              </button>
             </div>
 
-            {/* Role Filter */}
-            <select
-              value={roleFilter}
-              onChange={(e) => setRoleFilter(e.target.value as 'all' | 'couple' | 'vendor' | 'admin')}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">All Roles</option>
-              <option value="couple">Couples</option>
-              <option value="vendor">Vendors</option>
-              <option value="admin">Admins</option>
-            </select>
-          </div>
-        </div>
+            {/* Filters */}
+            <div className="p-4 mb-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#9a7850' }} />
+                  <input
+                    type="text"
+                    placeholder="Search users by name or email..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 rounded focus:outline-none"
+                    style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                  />
+                </div>
 
-        {/* Users Table */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Email
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Role
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Phone
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Joined
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-600">{user.email}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        user.role === 'admin' 
-                          ? 'bg-purple-100 text-purple-800'
-                          : user.role === 'vendor'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}>
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-600">{user.phone || 'Not provided'}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(user.createdAt)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {user.role !== 'admin' && (
-                        <button
-                          onClick={() => setShowDeleteConfirm(user.id)}
-                          className="px-3 py-1 bg-red-100 text-red-800 rounded text-xs font-medium hover:bg-red-200 transition-colors"
-                        >
-                          <Trash2 className="w-3 h-3 inline mr-1" />
-                          Delete
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            
-            {filteredUsers.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p>No users found matching your filters</p>
+                {/* Role Filter */}
+                <select
+                  value={roleFilter}
+                  onChange={(e) => setRoleFilter(e.target.value as 'all' | 'couple' | 'vendor' | 'admin')}
+                  className="px-4 py-2 rounded focus:outline-none"
+                  style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                >
+                  <option value="all">All Roles</option>
+                  <option value="couple">Couples</option>
+                  <option value="vendor">Vendors</option>
+                  <option value="admin">Admins</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Total user count */}
+            <div className="mb-4">
+              <p className="text-sm" style={{ color: '#9a7850' }}>
+                Total users: <span className="font-medium" style={{ color: '#3a2a1a' }}>{filteredUsers.length}</span>
+              </p>
+            </div>
+
+            {/* Users Table */}
+            <div style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead style={{ backgroundColor: '#faf6f1' }}>
+                    <tr>
+                      <th 
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
+                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        onClick={() => toggleSort('name')}
+                      >
+                        <div className="flex items-center">
+                          Name
+                          <ArrowUpDown className="w-3 h-3 ml-1" />
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                        Email
+                      </th>
+                      <th 
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
+                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        onClick={() => toggleSort('role')}
+                      >
+                        <div className="flex items-center">
+                          Role
+                          <ArrowUpDown className="w-3 h-3 ml-1" />
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                        Phone
+                      </th>
+                      <th 
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
+                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        onClick={() => toggleSort('joined')}
+                      >
+                        <div className="flex items-center">
+                          Joined
+                          <ArrowUpDown className="w-3 h-3 ml-1" />
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                    {paginatedUsers.map((user) => (
+                      <tr 
+                        key={user.id} 
+                        className="hover:bg-gray-50" 
+                        style={{ backgroundColor: 'transparent' }} 
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#faf6f1'} 
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadUserDetails(user)}>
+                            {user.name}
+                            {user.active === false && (
+                              <span className="ml-2 text-xs" style={{ color: '#dc2626' }}>(Suspended)</span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm" style={{ color: '#9a7850' }}>{user.email}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold ${
+                            user.role === 'admin' 
+                              ? 'text-purple-800'
+                              : user.role === 'vendor'
+                              ? 'text-amber-800'
+                              : 'text-teal-800'
+                          }`} style={{ 
+                            backgroundColor: user.role === 'admin' ? 'rgba(147, 51, 234, 0.1)' :
+                                           user.role === 'vendor' ? 'rgba(245, 158, 11, 0.1)' :
+                                           'rgba(20, 184, 166, 0.1)'
+                          }}>
+                            {user.role}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm" style={{ color: '#9a7850' }}>{user.phone || 'Not provided'}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
+                          {formatDate(user.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => loadUserDetails(user)}
+                              className="p-1 rounded transition-colors"
+                              style={{ color: '#7a5c30' }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <select
+                              value={user.role}
+                              onChange={(e) => changeUserRole(user.id, e.target.value)}
+                              className="px-2 py-1 text-xs rounded focus:outline-none"
+                              style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                              disabled={user.role === 'admin'}
+                            >
+                              <option value="couple">Couple</option>
+                              <option value="vendor">Vendor</option>
+                              <option value="admin">Admin</option>
+                            </select>
+                            <button
+                              onClick={() => sendPasswordReset(user.email)}
+                              className="p-1 rounded transition-colors"
+                              style={{ color: '#7a5c30' }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                            >
+                              <Key className="w-4 h-4" />
+                            </button>
+                            {user.role !== 'admin' && (
+                              <button
+                                onClick={() => setShowDeleteConfirm(user.id)}
+                                className="p-1 rounded transition-colors"
+                                style={{ color: '#dc2626' }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(220,38,38,0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                
+                {filteredUsers.length === 0 && (
+                  <div className="text-center py-8" style={{ color: '#9a7850' }}>
+                    <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p>No users found matching your filters</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                  <div className="text-sm" style={{ color: '#9a7850' }}>
+                    Showing {((currentPage - 1) * usersPerPage) + 1} to {Math.min(currentPage * usersPerPage, filteredUsers.length)} of {filteredUsers.length} users
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="p-2 rounded disabled:opacity-50 transition-colors"
+                      style={{ color: '#7a5c30' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <span className="text-sm" style={{ color: '#9a7850' }}>
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="p-2 rounded disabled:opacity-50 transition-colors"
+                      style={{ color: '#7a5c30' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* User Detail Modal */}
+            {showUserModal && selectedUser && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowUserModal(false)} />
+                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+                        {selectedUser.name}
+                      </h2>
+                      <button
+                        onClick={() => setShowUserModal(false)}
+                        className="p-2 rounded transition-colors"
+                        style={{ color: '#9a7850' }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        <AlertTriangle className="w-4 h-4" />
+                      </button>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Email</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Role</p>
+                        <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1 ${
+                          selectedUser.role === 'admin' ? 'text-purple-800' :
+                          selectedUser.role === 'vendor' ? 'text-amber-800' :
+                          'text-teal-800'
+                        }`} style={{ 
+                          backgroundColor: selectedUser.role === 'admin' ? 'rgba(147, 51, 234, 0.1)' :
+                                         selectedUser.role === 'vendor' ? 'rgba(245, 158, 11, 0.1)' :
+                                         'rgba(20, 184, 166, 0.1)'
+                        }}>
+                          {selectedUser.role}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Phone</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.phone || 'Not provided'}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Joined</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{formatDate(selectedUser.createdAt)}</p>
+                      </div>
+                    </div>
+                    
+                    {selectedUser.role === 'couple' && (
+                      <div className="mb-6">
+                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Wedding Details</p>
+                        <div className="p-4" style={{ backgroundColor: '#faf6f1' }}>
+                          <p className="text-sm" style={{ color: '#9a7850' }}>Total Bookings: {userBookings.length}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {selectedUser.role === 'vendor' && userVendor && (
+                      <div className="mb-6">
+                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Vendor Profile</p>
+                        <div className="p-4" style={{ backgroundColor: '#faf6f1' }}>
+                          <p className="text-sm font-medium mb-1" style={{ color: '#3a2a1a' }}>{userVendor.businessName}</p>
+                          <p className="text-sm" style={{ color: '#9a7850' }}>{userVendor.category} • {userVendor.location}</p>
+                          <div className="flex items-center mt-2">
+                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold ${
+                              userVendor.verified ? 'text-green-800' : 'text-amber-800'
+                            }`} style={{ 
+                              backgroundColor: userVendor.verified ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)'
+                            }}>
+                              {userVendor.verified ? 'Verified' : 'Unverified'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => window.location.href = `mailto:${selectedUser.email}`}
+                        className="px-4 py-2 text-sm font-medium rounded transition-colors"
+                        style={{ backgroundColor: '#7a5c30', color: '#fdf9f5' }}
+                      >
+                        <Mail className="w-4 h-4 inline mr-2" />
+                        Send Email
+                      </button>
+                      <button
+                        onClick={() => sendPasswordReset(selectedUser.email)}
+                        className="px-4 py-2 text-sm font-medium rounded transition-colors"
+                        style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
+                      >
+                        <Key className="w-4 h-4 inline mr-2" />
+                        Reset Password
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
         </div>
-
-        {/* Summary Stats */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Total Users</span>
-              <span className="text-lg font-bold text-gray-900">{users.length}</span>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Couples</span>
-              <span className="text-lg font-bold text-green-600">
-                {users.filter(u => u.role === 'couple').length}
-              </span>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Vendors</span>
-              <span className="text-lg font-bold text-blue-600">
-                {users.filter(u => u.role === 'vendor').length}
-              </span>
-            </div>
-          </div>
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Admins</span>
-              <span className="text-lg font-bold text-purple-600">
-                {users.filter(u => u.role === 'admin').length}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
+    </>
+  )
+}
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowDeleteConfirm(null)} />
+          <div className="relative bg-white rounded-lg max-w-md w-full p-6" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
             <div className="text-center mb-6">
-              <AlertTriangle className="w-12 h-12 text-red-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Delete User?</h3>
-              <p className="text-gray-600">
-                This action cannot be undone. This will permanently delete the user account and all associated data.
+              <AlertTriangle className="w-12 h-12 mx-auto mb-4" style={{ color: '#dc2626' }} />
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#3a2a1a' }}>Delete User?</h3>
+              <p className="text-sm" style={{ color: '#9a7850' }}>
+                Are you sure? This cannot be undone. This will permanently delete the user account and all associated data.
               </p>
             </div>
             
@@ -250,7 +562,8 @@ export default function AdminUsersPage() {
               <button
                 onClick={() => deleteUser(showDeleteConfirm)}
                 disabled={deleting === showDeleteConfirm}
-                className="flex-1 px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors disabled:opacity-50"
+                style={{ backgroundColor: '#dc2626', color: '#ffffff' }}
               >
                 {deleting === showDeleteConfirm ? (
                   <>
@@ -263,14 +576,13 @@ export default function AdminUsersPage() {
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(null)}
-                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors"
+                style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
               >
                 Cancel
               </button>
             </div>
           </div>
-        </div>
-      )}
         </div>
       )}
     </>

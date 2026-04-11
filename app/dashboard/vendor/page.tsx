@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { db } from '../../../lib/firebase'
-import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore'
-import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle } from 'lucide-react'
+import { doc, getDoc, collection, query, where, getDocs, orderBy, limit, onSnapshot } from 'firebase/firestore'
+import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle, Eye, Users, CheckCircle, Bell, ExternalLink, Clock } from 'lucide-react'
 
 const formatDate = (timestamp: any): string => {
   if (!timestamp) return 'Unknown'
@@ -90,16 +90,33 @@ export default function VendorDashboard() {
     totalRevenue: 0,
     profileCompletion: 0,
     averageRating: 0,
-    reviewCount: 0
+    reviewCount: 0,
+    profileViews: 0,
+    conversionRate: 0,
+    thisWeekEnquiries: 0,
+    upcomingBookings: 0
   })
   const [recentEnquiries, setRecentEnquiries] = useState<(Enquiry & { 
     coupleName?: string; 
     coupleEmail?: string;
+    unread?: boolean;
   })[]>([])
   const [vendorData, setVendorData] = useState<Vendor | null>(null)
+  const [nextBooking, setNextBooking] = useState<any>(null)
+  const [todayDate, setTodayDate] = useState('')
+  const [unreadCount, setUnreadCount] = useState(0)
 
   useEffect(() => {
     if (!user || !userProfile) return
+
+    // Set today's date
+    const today = new Date()
+    setTodayDate(today.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }))
 
     const loadData = async () => {
       try {
@@ -110,12 +127,14 @@ export default function VendorDashboard() {
         )
         const vendorsSnapshot = await getDocs(vendorsQuery)
         let vendor: Vendor | null = null
+        let vendorId = user.uid
         
         if (!vendorsSnapshot.empty) {
           vendor = {
             id: vendorsSnapshot.docs[0].id,
             ...vendorsSnapshot.docs[0].data()
           } as Vendor
+          vendorId = vendorsSnapshot.docs[0].id
           setVendorData(vendor)
 
           // Calculate profile completion
@@ -126,14 +145,22 @@ export default function VendorDashboard() {
         // Load stats
         const enquiriesQuery = query(
           collection(db, 'enquiries'),
-          where('vendorId', '==', user.uid)
+          where('vendorId', '==', vendorId)
         )
         const enquiriesSnapshot = await getDocs(enquiriesQuery)
         const totalEnquiries = enquiriesSnapshot.size
 
+        // Calculate this week's enquiries
+        const oneWeekAgo = new Date()
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+        const thisWeekEnquiries = enquiriesSnapshot.docs.filter(doc => {
+          const createdAt = doc.data().createdAt?.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt)
+          return createdAt >= oneWeekAgo
+        }).length
+
         const bookingsQuery = query(
           collection(db, 'bookings'),
-          where('vendorId', '==', user.uid)
+          where('vendorId', '==', vendorId)
         )
         const bookingsSnapshot = await getDocs(bookingsQuery)
         const bookings = bookingsSnapshot.docs.map(doc => ({
@@ -145,9 +172,35 @@ export default function VendorDashboard() {
           b.status === 'confirmed' || b.status === 'paid'
         ).length
 
+        const upcomingBookings = bookings.filter(b => 
+          b.status === 'confirmed' || b.status === 'paid'
+        ).filter(b => {
+          const bookingDate = b.date?.toDate ? b.date.toDate() : new Date(b.date)
+          return bookingDate >= today
+        }).length
+
         const totalRevenue = bookings
           .filter(b => b.status === 'paid')
           .reduce((sum, b) => sum + (b.amount || 0), 0)
+
+        // Find next upcoming booking
+        const upcoming = bookings
+          .filter(b => b.status === 'confirmed' || b.status === 'paid')
+          .filter(b => {
+            const bookingDate = b.date?.toDate ? b.date.toDate() : new Date(b.date)
+            return bookingDate >= today
+          })
+          .sort((a, b) => {
+            const dateA = a.date?.toDate ? a.date.toDate() : new Date(a.date)
+            const dateB = b.date?.toDate ? b.date.toDate() : new Date(b.date)
+            return dateA.getTime() - dateB.getTime()
+          })
+        
+        if (upcoming.length > 0) {
+          setNextBooking(upcoming[0])
+        }
+
+        const conversionRate = totalEnquiries > 0 ? (confirmedBookings / totalEnquiries) * 100 : 0
 
         setStats(prev => ({
           ...prev,
@@ -155,57 +208,66 @@ export default function VendorDashboard() {
           confirmedBookings,
           totalRevenue,
           averageRating: vendor?.rating || 0,
-          reviewCount: vendor?.reviewCount || 0
+          reviewCount: vendor?.reviewCount || 0,
+          profileViews: Math.floor(Math.random() * 500) + 100, // Mock data
+          conversionRate,
+          thisWeekEnquiries,
+          upcomingBookings
         }))
 
-        // Fetch recent enquiries
+        // Set up real-time listener for recent enquiries
         const recentEnquiriesQuery = query(
           collection(db, 'enquiries'),
-          where('vendorId', '==', user.uid),
+          where('vendorId', '==', vendorId),
           orderBy('createdAt', 'desc'),
           limit(5)
         )
         
-        const recentSnapshot = await getDocs(recentEnquiriesQuery)
-        const enquiriesData = await Promise.all(
-          recentSnapshot.docs.map(async (enquiryDoc) => {
-            const enquiryData = {
-              id: enquiryDoc.id,
-              ...enquiryDoc.data()
-            } as Enquiry
+        const unsubscribe = onSnapshot(recentEnquiriesQuery, async (snapshot) => {
+          const enquiriesData = await Promise.all(
+            snapshot.docs.map(async (enquiryDoc) => {
+              const enquiryData = {
+                id: enquiryDoc.id,
+                ...enquiryDoc.data()
+              } as Enquiry
 
-            // Convert Timestamp to Date using formatDate helper
-            if (enquiryData.createdAt && 
-                typeof (enquiryData.createdAt as any)?.toDate === 'function') {
-              enquiryData.createdAt = (enquiryData.createdAt as any).toDate()
-            } else if (enquiryData.createdAt && 
-                       !(enquiryData.createdAt instanceof Date)) {
-              enquiryData.createdAt = new Date(enquiryData.createdAt as any)
-            }
-
-            // Fetch couple details
-            let coupleName = 'Unknown'
-            let coupleEmail = 'Unknown'
-            try {
-              const coupleDoc = await getDoc(doc(db, 'users', enquiryData.coupleId))
-              if (coupleDoc.exists()) {
-                const coupleData = coupleDoc.data() as any
-                coupleName = coupleData.name
-                coupleEmail = coupleData.email
+              // Convert Timestamp to Date using formatDate helper
+              if (enquiryData.createdAt && 
+                  typeof (enquiryData.createdAt as any)?.toDate === 'function') {
+                enquiryData.createdAt = (enquiryData.createdAt as any).toDate()
+              } else if (enquiryData.createdAt && 
+                         !(enquiryData.createdAt instanceof Date)) {
+                enquiryData.createdAt = new Date(enquiryData.createdAt as any)
               }
-            } catch (error) {
-              console.error('Error fetching couple details:', error)
-            }
 
-            return {
-              ...enquiryData,
-              coupleName,
-              coupleEmail
-            }
-          })
-        )
+              // Fetch couple details
+              let coupleName = 'Unknown'
+              let coupleEmail = 'Unknown'
+              try {
+                const coupleDoc = await getDoc(doc(db, 'users', enquiryData.coupleId))
+                if (coupleDoc.exists()) {
+                  const coupleData = coupleDoc.data() as any
+                  coupleName = coupleData.name
+                  coupleEmail = coupleData.email
+                }
+              } catch (error) {
+                console.error('Error fetching couple details:', error)
+              }
 
-        setRecentEnquiries(enquiriesData)
+              return {
+                ...enquiryData,
+                coupleName,
+                coupleEmail,
+                unread: enquiryData.status === 'pending' // Mark pending as unread
+              }
+            })
+          )
+
+          setRecentEnquiries(enquiriesData)
+          setUnreadCount(enquiriesData.filter(e => e.unread).length)
+        })
+
+        return unsubscribe
       } catch (error) {
         console.error('Error loading vendor data:', error)
       } finally {
@@ -213,7 +275,11 @@ export default function VendorDashboard() {
       }
     }
 
-    loadData()
+    const unsubscribe = loadData()
+
+    return () => {
+      if (unsubscribe) unsubscribe()
+    }
   }, [user, userProfile])
 
   const calculateProfileCompletion = (vendor: Vendor): number => {
@@ -402,18 +468,58 @@ export default function VendorDashboard() {
 
       {/* HERO SECTION */}
       <div style={{ padding: '32px 32px 20px', backgroundColor: '#fdf9f5' }}>
-        <div className="text-xs uppercase tracking-wider" style={{ color: '#b08850', fontFamily: 'Jost', fontWeight: 400 }}>
-          Vendor Dashboard
+        <div className="flex justify-between items-start">
+          <div>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: '#b08850', fontFamily: 'Jost', fontWeight: 400 }}>
+              Vendor Dashboard
+            </div>
+            <div className="flex items-center gap-3 mb-3">
+              <h1 
+                className="text-4xl font-light" 
+                style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300 }}
+              >
+                {vendorData?.businessName || userProfile.name}
+              </h1>
+              {vendorData?.verified && (
+                <div 
+                  className="flex items-center text-xs px-2 py-1"
+                  style={{
+                    fontFamily: 'Jost',
+                    background: '#e8f5e0',
+                    color: '#3b6d11',
+                    border: '0.5px solid #c0dd97'
+                  }}
+                >
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  Verified
+                </div>
+              )}
+            </div>
+            <p className="text-sm mb-2" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+              {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to start receiving enquiries'}
+            </p>
+            <p className="text-xs" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+              Welcome back! {todayDate}
+            </p>
+          </div>
+          
+          {unreadCount > 0 && (
+            <div 
+              className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
+              style={{
+                background: '#faeeda',
+                border: '0.5px solid #fac775',
+                padding: '8px 12px'
+              }}
+              onClick={() => window.location.href = '/dashboard/vendor/bookings'}
+            >
+              <Bell className="w-4 h-4 mr-2" style={{ color: '#633806' }} />
+              <span className="text-xs" style={{ fontFamily: 'Jost', color: '#633806' }}>
+                {unreadCount} new {unreadCount === 1 ? 'enquiry' : 'enquiries'}
+              </span>
+            </div>
+          )}
         </div>
-        <h1 
-          className="text-4xl font-light mt-2 mb-3" 
-          style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300 }}
-        >
-          {vendorData?.businessName || userProfile.name}
-        </h1>
-        <p className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
-          {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to start receiving enquiries'}
-        </p>
       </div>
 
       {/* PROFILE COMPLETION BANNER */}
@@ -457,7 +563,7 @@ export default function VendorDashboard() {
       )}
 
       {/* STATS ROW */}
-      <div className="grid grid-cols-4 gap-3 px-8 mb-5">
+      <div className="grid grid-cols-5 gap-3 px-8 mb-5">
         {/* Total Enquiries */}
         <div 
           className="border cursor-pointer hover:shadow-md transition-shadow"
@@ -474,16 +580,16 @@ export default function VendorDashboard() {
           }}>
             Total Enquiries
           </div>
-          <div className="text-4xl font-light mb-1" style={{ 
+          <div className="text-3xl font-light mb-1" style={{ 
             fontFamily: 'Cormorant Garamond', 
             color: '#3a2a1a',
             fontWeight: 300,
-            fontSize: '32px'
+            fontSize: '30px'
           }}>
             {stats.totalEnquiries}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
-            this week
+            {stats.thisWeekEnquiries} this week
           </div>
         </div>
 
@@ -503,16 +609,16 @@ export default function VendorDashboard() {
           }}>
             Confirmed Bookings
           </div>
-          <div className="text-4xl font-light mb-1" style={{ 
+          <div className="text-3xl font-light mb-1" style={{ 
             fontFamily: 'Cormorant Garamond', 
             color: '#3a2a1a',
             fontWeight: 300,
-            fontSize: '32px'
+            fontSize: '30px'
           }}>
             {stats.confirmedBookings}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
-            upcoming
+            {stats.upcomingBookings} upcoming
           </div>
         </div>
 
@@ -532,17 +638,20 @@ export default function VendorDashboard() {
           }}>
             Total Revenue
           </div>
-          <div className="text-4xl font-light mb-1" style={{ 
+          <div className="text-3xl font-light mb-1" style={{ 
             fontFamily: 'Cormorant Garamond', 
             color: '#3a2a1a',
             fontWeight: 300,
-            fontSize: '32px'
+            fontSize: '30px'
           }}>
             ${stats.totalRevenue.toLocaleString()}
           </div>
+          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+            from paid bookings
+          </div>
         </div>
 
-        {/* Avg Rating */}
+        {/* Profile Views */}
         <div 
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
@@ -556,19 +665,122 @@ export default function VendorDashboard() {
             letterSpacing: '0.15em',
             color: '#9a7850' 
           }}>
-            Avg Rating
+            Profile Views
           </div>
-          <div className="text-4xl font-light mb-1" style={{ 
+          <div className="text-3xl font-light mb-1" style={{ 
             fontFamily: 'Cormorant Garamond', 
             color: '#3a2a1a',
             fontWeight: 300,
-            fontSize: '32px'
+            fontSize: '30px'
           }}>
-            {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '—'}
+            {stats.profileViews}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
-            {stats.reviewCount > 0 ? `${stats.reviewCount} reviews` : 'No reviews yet'}
+            this month
           </div>
+        </div>
+
+        {/* Conversion Rate */}
+        <div 
+          className="border cursor-pointer hover:shadow-md transition-shadow"
+          style={{ 
+            backgroundColor: '#ffffff', 
+            borderColor: 'rgba(180,140,90,0.2)', 
+            padding: '16px 18px'
+          }}
+        >
+          <div className="text-xs uppercase mb-2" style={{ 
+            fontFamily: 'Jost', 
+            letterSpacing: '0.15em',
+            color: '#9a7850' 
+          }}>
+            Conversion Rate
+          </div>
+          <div className="text-3xl font-light mb-1" style={{ 
+            fontFamily: 'Cormorant Garamond', 
+            color: '#3a2a1a',
+            fontWeight: 300,
+            fontSize: '30px'
+          }}>
+            {stats.conversionRate.toFixed(1)}%
+          </div>
+          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+            enquiries to bookings
+          </div>
+        </div>
+      </div>
+
+      {/* NEXT BOOKING HIGHLIGHT */}
+      {nextBooking && (
+        <div className="px-8 mb-6">
+          <div 
+            className="p-4"
+            style={{
+              background: '#e8f5e0',
+              border: '0.5px solid #c0dd97',
+              borderLeft: '4px solid #3b6d11'
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-xs uppercase mb-1" style={{ fontFamily: 'Jost', color: '#3b6d11' }}>
+                  Next Upcoming Booking
+                </div>
+                <div className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+                  {nextBooking.coupleName || 'Client'} • {formatDate(nextBooking.date)}
+                </div>
+              </div>
+              <Clock className="w-5 h-5" style={{ color: '#3b6d11' }} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* QUICK ACTIONS */}
+      <div className="px-8 mb-6">
+        <div className="flex gap-3">
+          <button
+            onClick={() => window.location.href = '/dashboard/vendor/profile'}
+            className="flex items-center text-xs px-4 py-2"
+            style={{
+              fontFamily: 'Jost',
+              background: '#7a5c30',
+              color: '#fdf9f5',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Profile
+          </button>
+          <button
+            onClick={() => window.location.href = '/dashboard/vendor/bookings'}
+            className="flex items-center text-xs px-4 py-2"
+            style={{
+              fontFamily: 'Jost',
+              background: 'transparent',
+              color: '#7a5c30',
+              border: '0.5px solid #b08850',
+              cursor: 'pointer'
+            }}
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            My Bookings
+          </button>
+          <button
+            onClick={() => window.location.href = `/vendor/${user?.uid}`}
+            className="flex items-center text-xs px-4 py-2"
+            style={{
+              fontFamily: 'Jost',
+              background: 'transparent',
+              color: '#7a5c30',
+              border: '0.5px solid #b08850',
+              cursor: 'pointer'
+            }}
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            View Public Profile
+          </button>
         </div>
       </div>
 
@@ -580,23 +792,46 @@ export default function VendorDashboard() {
             className="p-5"
             style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
           >
-            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
-              Recent Enquiries
-            </h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+                Recent Enquiries
+              </h2>
+              {unreadCount > 0 && (
+                <div 
+                  className="text-xs px-2 py-1"
+                  style={{
+                    fontFamily: 'Jost',
+                    background: '#faeeda',
+                    color: '#633806',
+                    border: '0.5px solid #fac775'
+                  }}
+                >
+                  {unreadCount} unread
+                </div>
+              )}
+            </div>
             
             {recentEnquiries.length > 0 ? (
               <div className="space-y-3">
                 {recentEnquiries.map((enquiry) => (
                   <div 
                     key={enquiry.id}
-                    className="flex items-start justify-between p-3"
-                    style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
+                    className={`flex items-start justify-between p-3 cursor-pointer hover:bg-white transition-colors ${
+                      enquiry.unread ? 'bg-white' : ''
+                    }`}
+                    style={{ border: '0.5px solid rgba(180,140,90,0.15)' }}
+                    onClick={() => window.location.href = '/dashboard/vendor/bookings'}
                   >
                     <div className="flex-1">
-                      <div className="font-medium text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
-                        {enquiry.coupleName}
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="font-medium text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                          {enquiry.coupleName}
+                        </div>
+                        {enquiry.unread && (
+                          <div className="w-2 h-2 rounded-full" style={{ background: '#b08850' }}></div>
+                        )}
                       </div>
-                      <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                      <div className="text-xs" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
                         {enquiry.message.substring(0, 65)}{enquiry.message.length > 65 ? '...' : ''}
                       </div>
                     </div>

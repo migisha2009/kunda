@@ -25,7 +25,9 @@ export interface Vendor {
   rating: number
   reviewCount: number
   verified: boolean
+  availability: 'available' | 'busy'
   createdAt?: any
+  featured?: boolean
 }
 
 export interface Budget {
@@ -38,6 +40,11 @@ export interface ChecklistItem {
   id: string
   task: string
   done: boolean
+  category: 'venue' | 'catering' | 'decor' | 'fashion' | 'beauty' | 'music' | 'transport' | 'other'
+  dueDate?: Date
+  notes?: string
+  urgent: boolean
+  order: number
 }
 
 export interface Guest {
@@ -51,6 +58,9 @@ export interface Guest {
   dietaryPreferences: string
   tableNumber?: number
   inviteToken: string
+  plusOne: boolean
+  plusOneName?: string
+  notes?: string
   createdAt?: any
 }
 
@@ -64,16 +74,29 @@ export interface Wedding {
   coupleId: string
   date: Date
   venue: string
+  venueAddress: string
+  ceremonyLocation?: string
   guestCount: number
   budget: Budget
   checklist: ChecklistItem[]
-  coupleName1?: string
-  coupleName2?: string
-  ceremonyTime?: string
-  receptionTime?: string
-  dresscode?: string
-  messageToGuests?: string
-  scheduleItems?: ScheduleItem[]
+  coupleName1: string
+  coupleName2: string
+  ceremonyTime: string
+  receptionTime: string
+  dresscode: 'black_tie' | 'formal' | 'semi_formal' | 'casual' | 'custom'
+  customDresscode?: string
+  messageToGuests: string
+  scheduleItems: ScheduleItem[]
+  hashtag: string
+  rsvpDeadline: Date
+  colorTheme: [string, string]
+  heroImage?: string
+  planningStartDate: Date
+  profileCompletion: number
+  budgetExpenses: Expense[]
+  currency: 'RWF' | 'USD' | 'EUR'
+  weatherData?: WeatherData
+  quoteOfTheDay?: string
 }
 
 export interface Booking {
@@ -105,4 +128,48 @@ export interface Review {
   rating: number
   comment: string
   createdAt?: any
+}
+
+export interface Expense {
+  id: string
+  name: string
+  amount: number
+  category: 'venue' | 'catering' | 'photography' | 'decor' | 'fashion' | 'beauty' | 'music' | 'transport' | 'cake' | 'other'
+  paid: boolean
+  date: Date
+  vendorId?: string
+  notes?: string
+}
+
+export interface WeatherData {
+  temperature: number
+  condition: string
+  icon: string
+  humidity: number
+  windSpeed: number
+}
+
+export interface SavedVendor {
+  vendorId: string
+  savedAt: Date
+}
+
+export interface VendorView {
+  vendorId: string
+  viewedAt: Date
+}
+
+export interface WeddingStats {
+  totalGuests: number
+  confirmedGuests: number
+  pendingGuests: number
+  declinedGuests: number
+  maybeGuests: number
+  vendorsBooked: number
+  tasksCompleted: number
+  tasksTotal: number
+  daysUntilWedding: number
+  budgetUsed: number
+  budgetRemaining: number
+  profileCompletion: number
 }
