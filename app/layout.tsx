@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Jost, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../context/AuthContext";
+import ClientOnly from "@/components/ClientOnly";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -31,9 +32,11 @@ export default function RootLayout({
         className={`${jost.variable} ${cormorant.variable} font-sans antialiased`}
         style={{ backgroundColor: '#fdf9f5', color: '#3a2a1a', margin: 0, padding: 0 }}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <ClientOnly>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ClientOnly>
       </body>
     </html>
   );
