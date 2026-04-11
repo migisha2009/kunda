@@ -127,7 +127,8 @@ export interface Booking {
   status: 'pending' | 'confirmed' | 'paid' | 'cancelled'
   amount: number
   currency: string
-  paymentRef: string
+  paymentRef?: string
+  paymentReference?: string
   createdAt?: any
 }
 

@@ -233,7 +233,8 @@ export default function AdminBookingsPage() {
       booking.currency,
       booking.status,
       formatDate(booking.createdAt),
-      booking.paymentReference || 'N/A'
+      (booking as any).paymentReference || 
+      (booking as any).paymentRef || 'N/A'
     ])
     
     const csv = [headers, ...csvData].map(row => row.join(',')).join('\n')
