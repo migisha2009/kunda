@@ -6,43 +6,8 @@ import { collection, query, getDocs, orderBy, doc, getDoc } from 'firebase/fires
 import { db } from '../../../../lib/firebase'
 import { Booking } from '../../../../types'
 import { Calendar, DollarSign, Filter, Search, Clock, CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { formatDate } from '../../../../lib/dateUtils'
 
-const formatDate = (timestamp: any): string => {
-  if (!timestamp) return 'Unknown'
-  
-  // Firestore Timestamp object
-  if (timestamp?.toDate) {
-    return timestamp.toDate().toLocaleDateString(
-      'en-US', {
-        year: 'numeric',
-        month: 'short', 
-        day: 'numeric'
-      }
-    )
-  }
-  
-  // Already a Date object
-  if (timestamp instanceof Date) {
-    return timestamp.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
-  }
-  
-  // String or number timestamp
-  try {
-    return new Date(timestamp).toLocaleDateString(
-      'en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      }
-    )
-  } catch {
-    return 'Unknown'
-  }
-}
 
 export default function AdminBookingsPage() {
   const { userProfile } = useAuth()
