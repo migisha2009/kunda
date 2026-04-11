@@ -1,5 +1,7 @@
 'use client'
 
+// Build: v2.0 - fixed date formatting
+
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../../context/AuthContext'
 import { collection, query, getDocs, orderBy, doc, getDoc } from 'firebase/firestore'
