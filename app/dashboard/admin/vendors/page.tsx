@@ -32,6 +32,7 @@ export default function AdminVendorsPage() {
       const vendorsSnapshot = await getDocs(vendorsQuery)
       const vendorsData = vendorsSnapshot.docs.map(doc => ({
         id: doc.id,
+        createdAt: null,
         ...doc.data()
       })) as Vendor[]
 

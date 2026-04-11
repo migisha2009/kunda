@@ -37,6 +37,7 @@ export default function AdminEnquiriesPage() {
         enquiriesSnapshot.docs.map(async (enquiryDoc) => {
           const enquiryData = {
             id: enquiryDoc.id,
+            createdAt: null,
             ...enquiryDoc.data()
           } as Enquiry
 

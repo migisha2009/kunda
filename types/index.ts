@@ -4,7 +4,7 @@ export interface User {
   name: string
   phone: string
   role: 'couple' | 'vendor' | 'admin'
-  createdAt: Date
+  createdAt?: any
 }
 
 export interface Pricing {

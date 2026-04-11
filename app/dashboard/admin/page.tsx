@@ -33,24 +33,28 @@ export default function AdminOverview() {
         const usersSnapshot = await getDocs(collection(db, 'users'))
         const usersData = usersSnapshot.docs.map(doc => ({
           id: doc.id,
+          createdAt: null,
           ...doc.data()
         })) as User[]
 
         const vendorsSnapshot = await getDocs(collection(db, 'vendors'))
         const vendorsData = vendorsSnapshot.docs.map(doc => ({
           id: doc.id,
+          createdAt: null,
           ...doc.data()
         })) as Vendor[]
 
         const bookingsSnapshot = await getDocs(collection(db, 'bookings'))
         const bookingsData = bookingsSnapshot.docs.map(doc => ({
           id: doc.id,
+          createdAt: null,
           ...doc.data()
         })) as Booking[]
 
         const enquiriesSnapshot = await getDocs(collection(db, 'enquiries'))
         const enquiriesData = enquiriesSnapshot.docs.map(doc => ({
           id: doc.id,
+          createdAt: null,
           ...doc.data()
         })) as Enquiry[]
 
@@ -78,6 +82,7 @@ export default function AdminOverview() {
         const recentUsersSnapshot = await getDocs(recentUsersQuery)
         const recentUsersData = recentUsersSnapshot.docs.map(doc => ({
           id: doc.id,
+          createdAt: null,
           ...doc.data()
         })) as User[]
 

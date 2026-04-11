@@ -38,6 +38,7 @@ export default function AdminBookingsPage() {
         bookingsSnapshot.docs.map(async (bookingDoc) => {
           const bookingData = {
             id: bookingDoc.id,
+            createdAt: null,
             ...bookingDoc.data()
           } as Booking
 

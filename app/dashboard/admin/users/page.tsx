@@ -32,6 +32,7 @@ export default function AdminUsersPage() {
       const usersSnapshot = await getDocs(usersQuery)
       const usersData = usersSnapshot.docs.map(doc => ({
         id: doc.id,
+        createdAt: null,
         ...doc.data()
       })) as User[]
 
