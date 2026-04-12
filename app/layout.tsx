@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Jost, Cormorant_Garamond } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../context/AuthContext";
 import ClientOnly from "@/components/ClientOnly";
 
-const jost = Jost({
+const urbanist = Urbanist({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-jost",
-});
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-urbanist",
 });
 
 export const metadata: Metadata = {
@@ -29,8 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${jost.variable} ${cormorant.variable} font-sans antialiased`}
-        style={{ backgroundColor: '#fdf9f5', color: '#3a2a1a', margin: 0, padding: 0 }}
+        className={`${urbanist.variable} font-sans antialiased`}
+        style={{ backgroundColor: '#f0f4ff', color: '#111928', margin: 0, padding: 0 }}
       >
         <ClientOnly>
           <AuthProvider>

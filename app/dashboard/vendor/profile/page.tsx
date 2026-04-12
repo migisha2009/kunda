@@ -102,32 +102,32 @@ export default function VendorProfile() {
     finally { setUploading(false) }
   }
 
-  const inp: React.CSSProperties = { width: '100%', border: '0.5px solid rgba(180,140,90,0.3)', background: '#fdf9f5', padding: '10px 14px', fontSize: 13, fontFamily: 'Jost,sans-serif', color: '#3a2a1a', outline: 'none', boxSizing: 'border-box' }
-  const lbl: React.CSSProperties = { display: 'block', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a7850', marginBottom: 6, fontFamily: 'Jost,sans-serif' }
+  const inp: React.CSSProperties = { width: '100%', borderBottom: '1px solid #c7d2fe', background: '#f7f8fd', padding: '10px 14px', fontSize: 13, fontFamily: 'Urbanist', color: '#333', outline: 'none', boxSizing: 'border-box' }
+  const lbl: React.CSSProperties = { display: 'block', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6b7eb9', marginBottom: 6, fontFamily: 'Urbanist' }
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#fdf9f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 40, height: 40, borderRadius: '50%', border: '2px solid #f0e4d0', borderTop: '2px solid #b08850', animation: 'spin 1s linear infinite' }} /></div>
+  if (loading) return <div style={{ minHeight: '100vh', background: '#f7f8fd', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 40, height: 40, borderRadius: '50%', border: '2px solid #c7d2fe', borderTop: '2px solid #4f69f6', animation: 'spin 1s linear infinite' }} /></div>
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fdf9f5', fontFamily: 'Jost,sans-serif' }}>
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px', background: '#fff', borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
-        <span style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 20, color: '#7a5c30', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>Kunda</span>
+    <div style={{ minHeight: '100vh', background: '#f7f8fd', fontFamily: 'Urbanist' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px', background: '#fff', borderBottom: '0.5px solid #c7d2fe' }}>
+        <span style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#4f69f6', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>Kunda</span>
         <div style={{ display: 'flex', gap: 24 }}>
           {[['Overview','/dashboard/vendor'],['Profile','/dashboard/vendor/profile'],['Bookings','/dashboard/vendor/bookings']].map(([l,h]) => (
             <a key={l} href={h} style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: l === 'Profile' ? '#7a5c30' : '#9a7850', textDecoration: 'none' }}>{l}</a>
           ))}
         </div>
-        <span style={{ fontSize: 13, color: '#7a5c30' }}>{userProfile?.name || 'Vendor'}</span>
+        <span style={{ fontSize: 13, color: '#1a56db' }}>{userProfile?.name || 'Vendor'}</span>
       </nav>
 
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '32px 24px' }}>
-        <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#b08850', marginBottom: 6 }}>Vendor Profile</p>
-        <h1 style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 36, fontWeight: 300, color: '#3a2a1a', marginBottom: 4 }}>Edit Your Profile</h1>
-        <p style={{ fontSize: 13, color: '#9a7850', marginBottom: 28 }}>Complete your profile to appear in vendor discovery</p>
+        <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a56db', marginBottom: 6 }}>Vendor Profile</p>
+        <h1 style={{ fontFamily: 'Urbanist', fontSize: 36, fontWeight: 300, color: '#111928', marginBottom: 4 }}>Edit Your Profile</h1>
+        <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 28 }}>Complete your profile to appear in vendor discovery</p>
 
-        {saved && <div style={{ background: '#e8f5e0', border: '0.5px solid #5dcaa5', padding: '12px 16px', marginBottom: 20, color: '#085041', fontSize: 13 }}>Profile saved!</div>}
+        {saved && <div style={{ background: '#1a56db', border: '0.5px solid #5dcaa5', padding: '12px 16px', marginBottom: 20, color: '#085041', fontSize: 13 }}>Profile saved!</div>}
 
-        <div style={{ background: '#fff', border: '0.5px solid rgba(180,140,90,0.2)', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 20, color: '#3a2a1a', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Basic Information</h2>
+        <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Basic Information</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
             <div>
               <label style={lbl}>Business Name *</label>
@@ -147,7 +147,7 @@ export default function VendorProfile() {
           <div style={{ marginBottom: 16 }}>
             <label style={lbl}>Bio</label>
             <textarea value={form.bio} onChange={e => setForm(p => ({...p, bio: e.target.value}))} placeholder="Tell couples about your business..." rows={4} style={{...inp, resize: 'vertical'}} />
-            <p style={{ fontSize: 11, color: '#b4a090', marginTop: 4 }}>{form.bio.length}/500</p>
+            <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>{form.bio.length}/500</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             <div>
@@ -169,8 +169,8 @@ export default function VendorProfile() {
           </div>
         </div>
 
-        <div style={{ background: '#fff', border: '0.5px solid rgba(180,140,90,0.2)', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 20, color: '#3a2a1a', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Contact & Social</h2>
+        <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Contact & Social</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             <div>
               <label style={lbl}>Website</label>
@@ -187,12 +187,12 @@ export default function VendorProfile() {
           </div>
         </div>
 
-        <div style={{ background: '#fff', border: '0.5px solid rgba(180,140,90,0.2)', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 20, color: '#3a2a1a', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Portfolio ({images.length}/10)</h2>
-          <label style={{ display: 'block', border: '1px dashed rgba(180,140,90,0.4)', background: '#fdf9f5', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
+        <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Portfolio ({images.length}/10)</h2>
+          <label style={{ display: 'block', border: '1px dashed rgba(180,140,90,0.4)', background: '#f0f4ff', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
             <input type="file" accept="image/*" multiple onChange={upload} style={{ display: 'none' }} disabled={images.length >= 10 || uploading} />
-            <div style={{ fontSize: 13, color: '#9a7850' }}>{uploading ? 'Uploading...' : 'Click to upload images'}</div>
-            <div style={{ fontSize: 11, color: '#b4a090' }}>PNG, JPG up to 5MB each</div>
+            <div style={{ fontSize: 13, color: '#6b7280' }}>{uploading ? 'Uploading...' : 'Click to upload images'}</div>
+            <div style={{ fontSize: 11, color: '#9ca3af' }}>PNG, JPG up to 5MB each</div>
           </label>
           {images.length > 0 && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 8, marginTop: 16 }}>
@@ -206,7 +206,7 @@ export default function VendorProfile() {
           )}
         </div>
 
-        <button onClick={save} disabled={saving} style={{ width: '100%', background: saving ? '#9a7850' : '#7a5c30', color: '#fdf9f5', border: 'none', padding: 14, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: 'Jost,sans-serif', marginBottom: 32 }}>
+        <button onClick={save} disabled={saving} style={{ width: '100%', background: saving ? '#9ca3af' : '#1a56db', color: '#fdf9f5', border: 'none', padding: 14, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: 'Urbanist', marginBottom: 32 }}>
           {saving ? 'Saving...' : 'Save Profile'}
         </button>
       </div>

@@ -83,11 +83,11 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
   }
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full" style={{ backgroundColor: '#1a0f0a' }}>
+    <div className="flex flex-col h-full" style={{ backgroundColor: '#1e3a8a' }}>
       {/* Logo */}
-      <div className="flex items-center px-6 py-4" style={{ borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
-        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#b08850' }} />
-        <span className="ml-2 text-2xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#d4b080' }}>
+      <div className="flex items-center px-6 py-4" style={{ borderBottom: '1px solid #e5edff' }}>
+        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#1a56db' }} />
+        <span className="ml-2 text-2xl font-light" style={{ fontFamily: 'Urbanist', color: '#bfdbfe' }}>
           Kunda
         </span>
       </div>
@@ -106,8 +106,8 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
                   : 'text-gray-500 hover:text-gray-300'
               }`}
               style={{
-                borderLeftColor: isActive ? '#b08850' : 'transparent',
-                backgroundColor: isActive ? 'rgba(176,136,80,0.1)' : 'transparent'
+                borderLeftColor: isActive ? '#1a56db' : 'transparent',
+                backgroundColor: isActive ? 'rgba(26,86,219,0.1)' : 'transparent'
               }}
               onClick={() => {
                 if (onClose) onClose()
@@ -118,9 +118,9 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
                 className={`mr-3 h-5 w-5 ${
                   isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'
                 }`}
-                style={{ color: isActive ? '#b08850' : 'inherit' }}
+                style={{ color: isActive ? '#1a56db' : 'inherit' }}
               />
-              <span style={{ color: isActive ? '#b08850' : 'inherit' }}>
+              <span style={{ color: isActive ? '#1a56db' : 'inherit' }}>
                 {item.name}
               </span>
             </Link>
@@ -129,28 +129,28 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
       </nav>
 
       {/* User Info & Sign Out */}
-      <div style={{ borderTop: '0.5px solid rgba(180,140,90,0.2)' }} className="p-4">
+      <div style={{ borderTop: '1px solid #e5edff' }} className="p-4">
         <div className="flex items-center mb-4">
           <div className="flex-shrink-0">
             <div 
               className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ border: '2px solid #b08850', backgroundColor: 'rgba(176,136,80,0.1)' }}
+              style={{ border: '2px solid #1a56db', backgroundColor: 'rgba(26,86,219,0.1)' }}
             >
-              <span className="text-sm font-medium" style={{ color: '#d4b080' }}>
+              <span className="text-sm font-medium" style={{ color: '#bfdbfe' }}>
                 {userProfile?.name?.charAt(0).toUpperCase()}
               </span>
             </div>
           </div>
           <div className="ml-3">
-            <p className="text-sm font-medium" style={{ color: '#d4b080' }}>{userProfile?.name}</p>
-            <p className="text-xs" style={{ color: '#9a7850' }}>Administrator</p>
+            <p className="text-sm font-medium" style={{ color: '#bfdbfe' }}>{userProfile?.name}</p>
+            <p className="text-xs" style={{ color: '#1a56db' }}>Administrator</p>
           </div>
         </div>
         <button
           onClick={handleSignOut}
           className="w-full flex items-center px-3 py-2 text-sm font-medium rounded transition-colors"
-          style={{ color: '#9a7850' }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+          style={{ color: '#1a56db' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26,86,219,0.1)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
           <LogOut className="mr-3 h-4 w-4" />
@@ -159,8 +159,8 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
         <Link
           href="/"
           className="w-full flex items-center px-3 py-2 text-xs font-medium rounded transition-colors mt-2"
-          style={{ color: '#9a7850' }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+          style={{ color: '#1a56db' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26,86,219,0.1)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
         >
           Back to site

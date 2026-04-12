@@ -112,7 +112,7 @@ export default function WeddingDetailsPage() {
 
   if (!user || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
         <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     )
@@ -120,14 +120,14 @@ export default function WeddingDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
         <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#f0f4ff' }}>
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -139,7 +139,7 @@ export default function WeddingDetailsPage() {
           {/* Wedding Date */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <Calendar className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+              <Calendar className="w-5 h-5 mr-2" style={{ color: '#1a56db' }} />
               Wedding Date
             </h2>
             <input
@@ -154,7 +154,7 @@ export default function WeddingDetailsPage() {
           {/* Venue */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <MapPin className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+              <MapPin className="w-5 h-5 mr-2" style={{ color: '#1a56db' }} />
               Venue
             </h2>
             <input
@@ -171,7 +171,7 @@ export default function WeddingDetailsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Users className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+                <Users className="w-5 h-5 mr-2" style={{ color: '#1a56db' }} />
                 Guest Count
               </h2>
               <input
@@ -187,7 +187,7 @@ export default function WeddingDetailsPage() {
 
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <DollarSign className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+                <DollarSign className="w-5 h-5 mr-2" style={{ color: '#1a56db' }} />
                 Budget
               </h2>
               <div className="space-y-3">
@@ -219,7 +219,7 @@ export default function WeddingDetailsPage() {
           {wedding && (
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Heart className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+                <Heart className="w-5 h-5 mr-2" style={{ color: '#1a56db' }} />
                 Current Wedding Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -7,6 +7,26 @@ import { db } from '../../../lib/firebase'
 import { doc, getDoc, collection, query, where, getDocs, orderBy, limit, onSnapshot } from 'firebase/firestore'
 import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle, Eye, Users, CheckCircle, Bell, ExternalLink, Clock } from 'lucide-react'
 
+// Color variables
+const primary = '#1a56db'
+const primaryDark = '#1e429f'
+const primaryLight = '#ebf5ff'
+const accent = '#3f83f8'
+const bg = '#f0f4ff'
+const textPrimary = '#111928'
+const textSecondary = '#6b7280'
+const textMuted = '#9ca3af'
+const muted = textSecondary // For backward compatibility
+const border = '#e5edff'
+const sidebarBg = '#1e3a8a'
+const sidebarText = '#bfdbfe'
+const success = '#057a55'
+const successBg = '#def7ec'
+const warning = '#c27803'
+const warningBg = '#fdf6b2'
+const danger = '#c81e1e'
+const dangerBg = '#fde8e8'
+
 const formatDate = (timestamp: any): string => {
   if (!timestamp) return 'Unknown'
   
@@ -289,15 +309,11 @@ export default function VendorDashboard() {
     
     if (vendor.businessName) completion += 20
     if (vendor.category) completion += 20
-    if (vendor.bio) completion += 15
-    if (vendor.location) completion += 15
-    if (vendor.portfolioImages && vendor.portfolioImages.length > 0) completion += 15
-    if (vendor.pricing && vendor.pricing.min > 0) completion += 15
     
-    return completion
-  }
+return completion
+}
 
-  const formatTimeAgo = (date: Date): string => {
+const formatTimeAgo = (date: Date): string => {
     const now = new Date()
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
     
@@ -328,16 +344,16 @@ export default function VendorDashboard() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: bg }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#1a56db] rounded-full animate-spin"></div>
       </div>
     )
   }
 
   if (!user || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: bg }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#1a56db] rounded-full animate-spin"></div>
       </div>
     )
   }
@@ -346,7 +362,7 @@ export default function VendorDashboard() {
   const missingFields = getMissingFields()
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+    <div className="min-h-screen" style={{ backgroundColor: bg }}>
       
       {/* KUNDA NAVBAR */}
       <nav style={{
@@ -354,8 +370,8 @@ export default function VendorDashboard() {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '14px 32px',
-        background: '#ffffff',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)'
+        background: 'white',
+        borderBottom: `1px solid ${border}`
       }}>
         {/* Left - Logo */}
         <div 
@@ -365,13 +381,13 @@ export default function VendorDashboard() {
           <div style={{
             width: '8px',
             height: '8px',
-            border: '1.5px solid #b08850',
+            border: `1.5px solid ${primary}`,
             marginRight: '12px'
           }}></div>
           <span style={{
-            fontFamily: 'Cormorant Garamond',
+            fontFamily: 'Urbanist',
             fontSize: '20px',
-            color: '#7a5c30',
+            color: primaryDark,
             letterSpacing: '0.1em'
           }}>Kunda</span>
         </div>
@@ -381,11 +397,11 @@ export default function VendorDashboard() {
           <a 
             href="/dashboard/vendor" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#7a5c30',
+              color: primaryDark,
               textDecoration: 'none'
             }}
           >
@@ -394,11 +410,11 @@ export default function VendorDashboard() {
           <a 
             href="/dashboard/vendor/profile" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#9a7850',
+              color: textSecondary,
               textDecoration: 'none'
             }}
           >
@@ -407,11 +423,11 @@ export default function VendorDashboard() {
           <a 
             href="/dashboard/vendor/bookings" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#9a7850',
+              color: textSecondary,
               textDecoration: 'none'
             }}
           >
@@ -425,25 +441,25 @@ export default function VendorDashboard() {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            background: '#f0e4d0',
-            border: '1px solid #b08850',
+            background: bg,
+            border: `1px solid ${border}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             <span style={{
-              color: '#7a5c30',
+              color: primaryDark,
               fontSize: '13px',
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontWeight: 500
             }}>
               {(vendorData?.businessName || userProfile.name).charAt(0).toUpperCase()}
             </span>
           </div>
           <span style={{
-            fontFamily: 'Jost',
+            fontFamily: 'Urbanist',
             fontSize: '13px',
-            color: '#7a5c30'
+            color: primaryDark
           }}>
             {vendorData?.businessName || userProfile.name}
           </span>
@@ -453,11 +469,11 @@ export default function VendorDashboard() {
               window.location.href = '/login'
             }}
             style={{
-              border: '0.5px solid #b08850',
-              color: '#b08850',
+              border: `0.5px solid ${primary}`,
+              color: primary,
               background: 'transparent',
               padding: '6px 14px',
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               cursor: 'pointer'
@@ -469,16 +485,16 @@ export default function VendorDashboard() {
       </nav>
 
       {/* HERO SECTION */}
-      <div style={{ padding: '32px 32px 20px', backgroundColor: '#fdf9f5' }}>
+      <div style={{ padding: '32px 32px 20px', backgroundColor: bg }}>
         <div className="flex justify-between items-start">
           <div>
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: '#b08850', fontFamily: 'Jost', fontWeight: 400 }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: primary, fontFamily: 'Urbanist', fontWeight: 400 }}>
               Vendor Dashboard
             </div>
             <div className="flex items-center gap-3 mb-3">
               <h1 
                 className="text-4xl font-light" 
-                style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300 }}
+                style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 300 }}
               >
                 {vendorData?.businessName || userProfile.name}
               </h1>
@@ -486,7 +502,7 @@ export default function VendorDashboard() {
                 <div 
                   className="flex items-center text-xs px-2 py-1"
                   style={{
-                    fontFamily: 'Jost',
+                    fontFamily: 'Urbanist',
                     background: '#e8f5e0',
                     color: '#3b6d11',
                     border: '0.5px solid #c0dd97'
@@ -497,10 +513,10 @@ export default function VendorDashboard() {
                 </div>
               )}
             </div>
-            <p className="text-sm mb-2" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+            <p className="text-sm mb-2" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
               {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to start receiving enquiries'}
             </p>
-            <p className="text-xs" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+            <p className="text-xs" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
               Welcome back! {todayDate}
             </p>
           </div>
@@ -516,7 +532,7 @@ export default function VendorDashboard() {
               onClick={() => window.location.href = '/dashboard/vendor/bookings'}
             >
               <Bell className="w-4 h-4 mr-2" style={{ color: '#633806' }} />
-              <span className="text-xs" style={{ fontFamily: 'Jost', color: '#633806' }}>
+              <span className="text-xs" style={{ fontFamily: 'Urbanist', color: '#633806' }}>
                 {unreadCount} new {unreadCount === 1 ? 'enquiry' : 'enquiries'}
               </span>
             </div>
@@ -537,10 +553,10 @@ export default function VendorDashboard() {
           onClick={() => window.location.href = '/dashboard/vendor/profile'}
         >
           <div>
-            <div className="text-xs uppercase" style={{ color: '#9a7850', fontFamily: 'Jost' }}>
+            <div className="text-xs uppercase" style={{ color: textSecondary, fontFamily: 'Urbanist' }}>
               Profile Completion
             </div>
-            <div className="text-sm mt-1" style={{ color: '#7a5c30', fontFamily: 'Jost' }}>
+            <div className="text-sm mt-1" style={{ color: primaryDark, fontFamily: 'Urbanist' }}>
               Add {missingFields.join(', ')} to attract more couples
             </div>
           </div>
@@ -550,14 +566,14 @@ export default function VendorDashboard() {
                 className="h-full transition-all duration-500"
                 style={{ 
                   width: `${stats.profileCompletion}%`, 
-                  background: '#b08850' 
+                  background: primary 
                 }}
               ></div>
             </div>
           </div>
           <div 
             className="text-2xl font-light" 
-            style={{ fontFamily: 'Cormorant Garamond', color: '#b08850' }}
+            style={{ fontFamily: 'Urbanist', color: primary }}
           >
             {stats.profileCompletion}%
           </div>
@@ -576,21 +592,21 @@ export default function VendorDashboard() {
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Jost', 
+            fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: '#9a7850' 
+            color: textSecondary 
           }}>
             Total Enquiries
           </div>
           <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
+            fontFamily: 'Urbanist', 
+            color: textPrimary,
             fontWeight: 300,
             fontSize: '30px'
           }}>
             {stats.totalEnquiries}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
             {stats.thisWeekEnquiries} this week
           </div>
         </div>
@@ -605,21 +621,21 @@ export default function VendorDashboard() {
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Jost', 
+            fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: '#9a7850' 
+            color: textSecondary 
           }}>
             Confirmed Bookings
           </div>
           <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
+            fontFamily: 'Urbanist', 
+            color: textPrimary,
             fontWeight: 300,
             fontSize: '30px'
           }}>
             {stats.confirmedBookings}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
             {stats.upcomingBookings} upcoming
           </div>
         </div>
@@ -634,21 +650,21 @@ export default function VendorDashboard() {
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Jost', 
+            fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: '#9a7850' 
+            color: textSecondary 
           }}>
             Total Revenue
           </div>
           <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
+            fontFamily: 'Urbanist', 
+            color: textPrimary,
             fontWeight: 300,
             fontSize: '30px'
           }}>
             ${stats.totalRevenue.toLocaleString()}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
             from paid bookings
           </div>
         </div>
@@ -663,21 +679,21 @@ export default function VendorDashboard() {
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Jost', 
+            fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: '#9a7850' 
+            color: textSecondary 
           }}>
             Profile Views
           </div>
           <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
+            fontFamily: 'Urbanist', 
+            color: textPrimary,
             fontWeight: 300,
             fontSize: '30px'
           }}>
             {stats.profileViews}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
             this month
           </div>
         </div>
@@ -692,21 +708,21 @@ export default function VendorDashboard() {
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Jost', 
+            fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: '#9a7850' 
+            color: textSecondary 
           }}>
             Conversion Rate
           </div>
           <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
+            fontFamily: 'Urbanist', 
+            color: textPrimary,
             fontWeight: 300,
             fontSize: '30px'
           }}>
             {stats.conversionRate.toFixed(1)}%
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Jost', color: '#b08850' }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
             enquiries to bookings
           </div>
         </div>
@@ -725,10 +741,10 @@ export default function VendorDashboard() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs uppercase mb-1" style={{ fontFamily: 'Jost', color: '#3b6d11' }}>
+                <div className="text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#3b6d11' }}>
                   Next Upcoming Booking
                 </div>
-                <div className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+                <div className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
                   {nextBooking.coupleName || 'Client'} • {formatDate(nextBooking.date)}
                 </div>
               </div>
@@ -745,9 +761,9 @@ export default function VendorDashboard() {
             onClick={() => window.location.href = '/dashboard/vendor/profile'}
             className="flex items-center text-xs px-4 py-2"
             style={{
-              fontFamily: 'Jost',
-              background: '#7a5c30',
-              color: '#fdf9f5',
+              fontFamily: 'Urbanist',
+              background: primaryDark,
+              color: bg,
               border: 'none',
               cursor: 'pointer'
             }}
@@ -759,10 +775,10 @@ export default function VendorDashboard() {
             onClick={() => window.location.href = '/dashboard/vendor/bookings'}
             className="flex items-center text-xs px-4 py-2"
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               background: 'transparent',
-              color: '#7a5c30',
-              border: '0.5px solid #b08850',
+              color: primaryDark,
+              border: `1px solid ${border}`,
               cursor: 'pointer'
             }}
           >
@@ -773,10 +789,10 @@ export default function VendorDashboard() {
             onClick={() => window.location.href = `/vendor/${user?.uid}`}
             className="flex items-center text-xs px-4 py-2"
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               background: 'transparent',
-              color: '#7a5c30',
-              border: '0.5px solid #b08850',
+              color: primaryDark,
+              border: `1px solid ${border}`,
               cursor: 'pointer'
             }}
           >
@@ -792,17 +808,17 @@ export default function VendorDashboard() {
         <div className="col-span-8">
           <div 
             className="p-5"
-            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
+            style={{ backgroundColor: bg, border: '0.5px solid rgba(180,140,90,0.15)' }}
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+              <h2 className="text-lg font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
                 Recent Enquiries
               </h2>
               {unreadCount > 0 && (
                 <div 
                   className="text-xs px-2 py-1"
                   style={{
-                    fontFamily: 'Jost',
+                    fontFamily: 'Urbanist',
                     background: '#faeeda',
                     color: '#633806',
                     border: '0.5px solid #fac775'
@@ -826,25 +842,25 @@ export default function VendorDashboard() {
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="font-medium text-sm" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                        <div className="font-medium text-sm" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
                           {enquiry.coupleName}
                         </div>
                         {enquiry.unread && (
-                          <div className="w-2 h-2 rounded-full" style={{ background: '#b08850' }}></div>
+                          <div className="w-2 h-2 rounded-full" style={{ background: primary }}></div>
                         )}
                       </div>
-                      <div className="text-xs" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                      <div className="text-xs" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                         {enquiry.message.substring(0, 65)}{enquiry.message.length > 65 ? '...' : ''}
                       </div>
                     </div>
                     <div className="text-right ml-4">
-                      <div className="text-xs mb-1" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+                      <div className="text-xs mb-1" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
                         {formatTimeAgo(enquiry.createdAt)}
                       </div>
                       <div 
                         className="text-xs px-2 py-1"
                         style={{
-                          fontFamily: 'Jost',
+                          fontFamily: 'Urbanist',
                           ...(enquiry.status === 'pending' && {
                             background: '#faeeda',
                             color: '#633806',
@@ -870,10 +886,10 @@ export default function VendorDashboard() {
             ) : (
               <div className="text-center py-12">
                 <MessageSquare size={32} style={{ color: '#b4a090' }} className="mx-auto mb-3" />
-                <div className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <div className="text-sm" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   No enquiries yet
                 </div>
-                <div className="text-xs mt-1" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+                <div className="text-xs mt-1" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
                   Your enquiries from couples will appear here
                 </div>
               </div>
@@ -885,45 +901,45 @@ export default function VendorDashboard() {
         <div className="col-span-4">
           <div 
             className="p-5"
-            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}
+            style={{ backgroundColor: bg, border: '0.5px solid rgba(180,140,90,0.15)' }}
           >
-            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
               Business Profile
             </h2>
             
             <div className="space-y-3">
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: '0.5px solid #b08850' }}
+                style={{ borderBottom: `1px solid ${border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   Category
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
                   {vendorData?.category || '—'}
                 </span>
               </div>
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: '0.5px solid #b08850' }}
+                style={{ borderBottom: `1px solid ${border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   Location
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
                   {vendorData?.location || '—'}
                 </span>
               </div>
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: '0.5px solid #b08850' }}
+                style={{ borderBottom: `1px solid ${border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   Price Range
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
                   {vendorData?.pricing && vendorData.pricing.min > 0 
                     ? `$${vendorData.pricing.min.toLocaleString()} — $${vendorData.pricing.max?.toLocaleString() || 'TBD'}`
                     : '—'
@@ -933,15 +949,15 @@ export default function VendorDashboard() {
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: '0.5px solid #b08850' }}
+                style={{ borderBottom: `1px solid ${border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   Status
                 </span>
                 <div 
                   className="text-xs px-2 py-1 uppercase"
                   style={{
-                    fontFamily: 'Jost',
+                    fontFamily: 'Urbanist',
                     background: vendorData?.verified ? '#e8f5e0' : '#faeeda',
                     color: vendorData?.verified ? '#3b6d11' : '#633806',
                     border: vendorData?.verified ? '0.5px solid #c0dd97' : '0.5px solid #fac775',
@@ -955,12 +971,12 @@ export default function VendorDashboard() {
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: '0.5px solid #b08850' }}
+                style={{ borderBottom: `1px solid ${border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   Portfolio
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
                   {vendorData?.portfolioImages?.length || 0} images
                 </span>
               </div>
@@ -968,10 +984,10 @@ export default function VendorDashboard() {
               <div 
                 className="flex justify-between items-center"
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
                   Rating
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
                   {stats.averageRating > 0 
                     ? `${stats.averageRating.toFixed(1)} (${stats.reviewCount} reviews)`
                     : 'No reviews yet'
@@ -984,10 +1000,10 @@ export default function VendorDashboard() {
               onClick={() => window.location.href = '/dashboard/vendor/profile'}
               className="w-full mt-5 text-xs uppercase font-medium transition-colors"
               style={{ 
-                background: '#7a5c30', 
-                color: '#fdf9f5', 
+                background: primaryDark, 
+                color: bg, 
                 padding: '11px',
-                fontFamily: 'Jost',
+                fontFamily: 'Urbanist',
                 border: 'none',
                 cursor: 'pointer'
               }}

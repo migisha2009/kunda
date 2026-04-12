@@ -1,6 +1,26 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+// Color variables
+const primary = '#1a56db'
+const primaryDark = '#1e429f'
+const primaryLight = '#ebf5ff'
+const accent = '#3f83f8'
+const bg = '#f0f4ff'
+const textPrimary = '#111928'
+const textSecondary = '#6b7280'
+const textMuted = '#9ca3af'
+const muted = textSecondary // For backward compatibility
+const border = '#e5edff'
+const sidebarBg = '#1e3a8a'
+const sidebarText = '#bfdbfe'
+const success = '#057a55'
+const successBg = '#def7ec'
+const warning = '#c27803'
+const warningBg = '#fdf6b2'
+const danger = '#c81e1e'
+const dangerBg = '#fde8e8'
 import { useAuth } from '../../../context/AuthContext'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { collection, query, getDocs, orderBy, limit } from 'firebase/firestore'
@@ -132,32 +152,32 @@ export default function AdminOverview() {
   return (
     <>
       {(authLoading || loading) ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: bg }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: primaryDark }} />
         </div>
       ) : !userProfile ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: bg }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: primaryDark }} />
         </div>
       ) : (
-        <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+        <div className="min-h-screen" style={{ backgroundColor: bg }}>
           <div className="max-w-7xl mx-auto px-4 py-8">
             {/* Header with refresh button */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Admin Dashboard</h1>
-                <p className="text-sm mt-2" style={{ color: '#9a7850' }}>Monitor and manage the Kunda platform</p>
+                <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: textPrimary }}>Admin Dashboard</h1>
+                <p className="text-sm mt-2" style={{ color: textSecondary }}>Monitor and manage the Kunda platform</p>
               </div>
               <div className="flex items-center space-x-4">
-                <span className="text-xs" style={{ color: '#9a7850' }}>
+                <span className="text-xs" style={{ color: textSecondary }}>
                   Last updated: {formatDate(lastUpdated)}
                 </span>
                 <button
                   onClick={refreshData}
                   className="px-4 py-2 text-sm font-medium rounded transition-colors"
-                  style={{ backgroundColor: '#7a5c30', color: '#fdf9f5' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5a4a25'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#7a5c30'}
+                  style={{ backgroundColor: primaryDark, color: bg }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = accent}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = primaryDark}
                 >
                   Refresh Data
                 </button>
@@ -166,148 +186,148 @@ export default function AdminOverview() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Total Users</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{stats.totalUsers}</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Users</p>
+                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalUsers}</p>
                   </div>
-                  <Users className="w-8 h-8" style={{ color: '#7a5c30' }} />
+                  <Users className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
               </div>
 
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Total Vendors</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{stats.totalVendors}</p>
-                    <p className="text-xs mt-1" style={{ color: '#16a34a' }}>{stats.verifiedVendors} verified</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Vendors</p>
+                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalVendors}</p>
+                    <p className="text-xs mt-1" style={{ color: success }}>{stats.verifiedVendors} verified</p>
                   </div>
-                  <Store className="w-8 h-8" style={{ color: '#7a5c30' }} />
+                  <Store className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
               </div>
 
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Total Bookings</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{stats.totalBookings}</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Bookings</p>
+                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalBookings}</p>
                   </div>
-                  <Calendar className="w-8 h-8" style={{ color: '#7a5c30' }} />
+                  <Calendar className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
               </div>
 
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Total Revenue</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Revenue</p>
+                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
                       ${stats.totalRevenue.toLocaleString()}
                     </p>
                   </div>
-                  <DollarSign className="w-8 h-8" style={{ color: '#7a5c30' }} />
+                  <DollarSign className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
               </div>
 
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Total Enquiries</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{stats.totalEnquiries}</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Enquiries</p>
+                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalEnquiries}</p>
                   </div>
-                  <MessageSquare className="w-8 h-8" style={{ color: '#7a5c30' }} />
+                  <MessageSquare className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
               </div>
 
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Vendor Verification</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Vendor Verification</p>
+                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
                       {stats.totalVendors > 0 ? Math.round((stats.verifiedVendors / stats.totalVendors) * 100) : 0}%
                     </p>
-                    <p className="text-xs mt-1" style={{ color: '#9a7850' }}>
+                    <p className="text-xs mt-1" style={{ color: textSecondary }}>
                       {stats.verifiedVendors}/{stats.totalVendors}
                     </p>
                   </div>
-                  <TrendingUp className="w-8 h-8" style={{ color: '#7a5c30' }} />
+                  <TrendingUp className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
               </div>
             </div>
 
             {/* Platform Health Metrics */}
-            <div className="p-6 mb-8" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+            <div className="p-6 mb-8" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
               <div className="flex items-center mb-4">
-                <Activity className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
-                <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Platform Health</h2>
+                <Activity className="w-5 h-5 mr-2" style={{ color: primaryDark }} />
+                <h2 className="text-xl font-semibold" style={{ fontFamily: 'Urbanist', color: textPrimary }}>Platform Health</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="flex items-center justify-between p-4" style={{ backgroundColor: '#faf6f1' }}>
+                <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Active Weddings</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{platformHealth.activeWeddings}</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Active Weddings</p>
+                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{platformHealth.activeWeddings}</p>
                   </div>
-                  <Target className="w-5 h-5" style={{ color: '#7a5c30' }} />
+                  <Target className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
-                <div className="flex items-center justify-between p-4" style={{ backgroundColor: '#faf6f1' }}>
+                <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Pending Enquiries</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{platformHealth.pendingEnquiries}</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Pending Enquiries</p>
+                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{platformHealth.pendingEnquiries}</p>
                   </div>
-                  <MessageSquare className="w-5 h-5" style={{ color: '#7a5c30' }} />
+                  <MessageSquare className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
-                <div className="flex items-center justify-between p-4" style={{ backgroundColor: '#faf6f1' }}>
+                <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Avg Booking Value</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>${Math.round(platformHealth.avgBookingValue).toLocaleString()}</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Avg Booking Value</p>
+                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>${Math.round(platformHealth.avgBookingValue).toLocaleString()}</p>
                   </div>
-                  <DollarSign className="w-5 h-5" style={{ color: '#7a5c30' }} />
+                  <DollarSign className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
-                <div className="flex items-center justify-between p-4" style={{ backgroundColor: '#faf6f1' }}>
+                <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
-                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Conversion Rate</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>{Math.round(platformHealth.conversionRate)}%</p>
+                    <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Conversion Rate</p>
+                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{Math.round(platformHealth.conversionRate)}%</p>
                   </div>
-                  <ArrowUp className="w-5 h-5" style={{ color: '#7a5c30' }} />
+                  <ArrowUp className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
               </div>
             </div>
 
             {/* Recent Users */}
-            <div style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
-              <div className="p-6" style={{ borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
-                <h2 className="text-xl font-semibold flex items-center" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
-                  <UserPlus className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+            <div style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
+              <div className="p-6" style={{ borderBottom: `1px solid ${border}` }}>
+                <h2 className="text-xl font-semibold flex items-center" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+                  <UserPlus className="w-5 h-5 mr-2" style={{ color: primaryDark }} />
                   Recent Signups
                 </h2>
               </div>
               
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead style={{ backgroundColor: '#faf6f1' }}>
+                  <thead style={{ backgroundColor: primaryLight }}>
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: textSecondary, letterSpacing: '0.15em' }}>
                         Name
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: textSecondary, letterSpacing: '0.15em' }}>
                         Email
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: textSecondary, letterSpacing: '0.15em' }}>
                         Role
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: textSecondary, letterSpacing: '0.15em' }}>
                         Joined
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                  <tbody className="divide-y" style={{ borderColor: `1px solid ${border}` }}>
                     {recentUsers.map((user) => (
-                      <tr key={user.id} className="hover:bg-gray-50" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#faf6f1'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                      <tr key={user.id} className="hover:bg-gray-50" style={{ backgroundColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = primaryLight} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{user.name}</div>
+                          <div className="text-sm font-medium" style={{ color: textPrimary }}>{user.name}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm" style={{ color: '#9a7850' }}>{user.email}</div>
+                          <div className="text-sm" style={{ color: textSecondary }}>{user.email}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold ${
@@ -318,13 +338,13 @@ export default function AdminOverview() {
                               : 'text-teal-800'
                           }`} style={{ 
                             backgroundColor: user.role === 'admin' ? 'rgba(147, 51, 234, 0.1)' :
-                                           user.role === 'vendor' ? 'rgba(245, 158, 11, 0.1)' :
-                                           'rgba(20, 184, 166, 0.1)'
+                                           user.role === 'vendor' ? warningBg :
+                                           successBg
                           }}>
                             {user.role}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: textSecondary }}>
                           {formatDate(user.createdAt)}
                         </td>
                       </tr>
@@ -333,7 +353,7 @@ export default function AdminOverview() {
                 </table>
                 
                 {recentUsers.length === 0 && (
-                  <div className="text-center py-8" style={{ color: '#9a7850' }}>
+                  <div className="text-center py-8" style={{ color: textSecondary }}>
                     <UserPlus className="w-12 h-12 mx-auto mb-2 opacity-50" />
                     <p>No recent signups</p>
                   </div>

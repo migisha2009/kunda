@@ -13,17 +13,30 @@ import {
 import { Wedding, Booking, Vendor } from '../../../../types'
 
 // Color variables
-const gold = '#b08850'
-const goldDark = '#7a5c30'
-const cream = '#fdf9f5'
-const brown = '#3a2a1a'
-const muted = '#9a7850'
+const primary = '#1a56db'
+const primaryDark = '#1e429f'
+const primaryLight = '#ebf5ff'
+const accent = '#3f83f8'
+const bg = '#f0f4ff'
+const textPrimary = '#111928'
+const textSecondary = '#6b7280'
+const textMuted = '#9ca3af'
+const muted = textSecondary // For backward compatibility
+const border = '#e5edff'
+const sidebarBg = '#1e3a8a'
+const sidebarText = '#bfdbfe'
+const success = '#057a55'
+const successBg = '#def7ec'
+const warning = '#c27803'
+const warningBg = '#fdf6b2'
+const danger = '#c81e1e'
+const dangerBg = '#fde8e8'
 
 const statusColors = {
-  pending: '#d97706',
-  confirmed: '#16a34a',
-  paid: '#6366f1',
-  cancelled: '#dc2626'
+  pending: warning,
+  confirmed: success,
+  paid: primary,
+  cancelled: danger
 }
 
 export default function MyBookings() {
@@ -132,7 +145,7 @@ export default function MyBookings() {
     return (
       <div style={{ 
         minHeight: '100vh', 
-        backgroundColor: cream, 
+        backgroundColor: bg, 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center' 
@@ -141,7 +154,7 @@ export default function MyBookings() {
           width: '40px',
           height: '40px',
           border: '3px solid #f0e4d0',
-          borderTop: `3px solid ${gold}`,
+          borderTop: `3px solid ${primary}`,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
@@ -156,7 +169,7 @@ export default function MyBookings() {
   }
 
   return (
-    <div style={{ backgroundColor: cream, color: brown, minHeight: '100vh' }}>
+    <div style={{ backgroundColor: bg, color: textPrimary, minHeight: '100vh' }}>
       {/* Google Fonts */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -174,14 +187,14 @@ export default function MyBookings() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{
-              fontFamily: 'Cormorant Garamond',
+              fontFamily: 'Urbanist',
               fontSize: '32px',
               fontWeight: 300,
-              color: brown,
+              color: textPrimary,
               marginBottom: '8px'
             }}>My Bookings</h1>
             <p style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '14px',
               color: muted
             }}>
@@ -193,16 +206,16 @@ export default function MyBookings() {
         {/* Stats Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginTop: '16px' }}>
           <div style={{
-            backgroundColor: cream,
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            backgroundColor: bg,
+            border: `1px solid ${border}`,
             padding: '16px',
             textAlign: 'center'
           }}>
             <div style={{
-              fontFamily: 'Cormorant Garamond',
+              fontFamily: 'Urbanist',
               fontSize: '28px',
               fontWeight: 300,
-              color: brown
+              color: textPrimary
             }}>{stats.total}</div>
             <div style={{
               fontSize: '10px',
@@ -219,7 +232,7 @@ export default function MyBookings() {
             textAlign: 'center'
           }}>
             <div style={{
-              fontFamily: 'Cormorant Garamond',
+              fontFamily: 'Urbanist',
               fontSize: '28px',
               fontWeight: 300,
               color: '#16a34a'
@@ -239,7 +252,7 @@ export default function MyBookings() {
             textAlign: 'center'
           }}>
             <div style={{
-              fontFamily: 'Cormorant Garamond',
+              fontFamily: 'Urbanist',
               fontSize: '28px',
               fontWeight: 300,
               color: '#6366f1'
@@ -259,7 +272,7 @@ export default function MyBookings() {
             textAlign: 'center'
           }}>
             <div style={{
-              fontFamily: 'Cormorant Garamond',
+              fontFamily: 'Urbanist',
               fontSize: '28px',
               fontWeight: 300,
               color: '#d97706'
@@ -280,7 +293,7 @@ export default function MyBookings() {
         {bookings.length === 0 ? (
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: `1px solid ${border}`,
             padding: '48px',
             textAlign: 'center'
           }}>
@@ -290,13 +303,13 @@ export default function MyBookings() {
               marginBottom: '16px'
             }}> <Calendar size={48} /> </div>
             <h3 style={{
-              fontFamily: 'Cormorant Garamond',
+              fontFamily: 'Urbanist',
               fontSize: '20px',
-              color: brown,
+              color: textPrimary,
               marginBottom: '8px'
             }}>No bookings yet</h3>
             <p style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '14px',
               color: muted
             }}>
@@ -311,7 +324,7 @@ export default function MyBookings() {
               return (
                 <div key={booking.id} style={{
                   backgroundColor: 'white',
-                  border: '0.5px solid rgba(180,140,90,0.2)',
+                  border: `1px solid ${border}`,
                   padding: '20px'
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
@@ -325,9 +338,9 @@ export default function MyBookings() {
                         }}></div>
                         <div>
                           <h3 style={{
-                            fontFamily: 'Cormorant Garamond',
+                            fontFamily: 'Urbanist',
                             fontSize: '20px',
-                            color: brown,
+                            color: textPrimary,
                             marginBottom: '4px'
                           }}>
                             {vendor?.name || 'Unknown Vendor'}
@@ -360,10 +373,10 @@ export default function MyBookings() {
                       gap: '4px'
                     }}>
                       <div style={{
-                        fontFamily: 'Cormorant Garamond',
+                        fontFamily: 'Urbanist',
                         fontSize: '24px',
                         fontWeight: 300,
-                        color: brown
+                        color: textPrimary
                       }}>
                         {wedding?.budget.currency} {booking.amount.toLocaleString()}
                       </div>
@@ -422,12 +435,12 @@ export default function MyBookings() {
                         marginBottom: '4px'
                       }}>Payment Reference</div>
                       <div style={{
-                        fontFamily: 'Jost',
+                        fontFamily: 'Urbanist',
                         fontSize: '14px',
-                        color: brown,
+                        color: textPrimary,
                         padding: '8px 12px',
-                        backgroundColor: cream,
-                        border: '0.5px solid rgba(180,140,90,0.2)'
+                        backgroundColor: bg,
+                        border: `1px solid ${border}`
                       }}>
                         {booking.paymentRef}
                       </div>
@@ -440,10 +453,10 @@ export default function MyBookings() {
                       <button
                         onClick={() => handleViewVendor(booking.vendorId)}
                         style={{
-                          border: `0.5px solid ${gold}`,
-                          color: gold,
+                          border: `1px solid ${primary}`,
+                          color: primary,
                           padding: '8px 16px',
-                          fontFamily: 'Jost',
+                          fontFamily: 'Urbanist',
                           fontSize: '11px',
                           fontWeight: 500,
                           textTransform: 'uppercase',
@@ -468,7 +481,7 @@ export default function MyBookings() {
                             border: '0.5px solid #dc2626',
                             color: '#dc2626',
                             padding: '8px 16px',
-                            fontFamily: 'Jost',
+                            fontFamily: 'Urbanist',
                             fontSize: '11px',
                             fontWeight: 500,
                             textTransform: 'uppercase',
@@ -515,16 +528,16 @@ export default function MyBookings() {
         }}>
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: `1px solid ${border}`,
             padding: '24px',
             width: '90%',
             maxWidth: '500px'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h2 style={{
-                fontFamily: 'Cormorant Garamond',
+                fontFamily: 'Urbanist',
                 fontSize: '20px',
-                color: brown
+                color: textPrimary
               }}>Cancel Booking</h2>
               <button
                 onClick={() => setShowCancelModal(false)}
@@ -540,15 +553,15 @@ export default function MyBookings() {
 
             <div style={{ marginBottom: '16px' }}>
               <p style={{
-                fontFamily: 'Jost',
+                fontFamily: 'Urbanist',
                 fontSize: '14px',
-                color: brown,
+                color: textPrimary,
                 marginBottom: '8px'
               }}>
                 Are you sure you want to cancel your booking with <strong>{vendors[selectedBooking.vendorId]?.name}</strong>?
               </p>
               <p style={{
-                fontFamily: 'Jost',
+                fontFamily: 'Urbanist',
                 fontSize: '12px',
                 color: muted,
                 marginBottom: '16px'
@@ -561,7 +574,7 @@ export default function MyBookings() {
               <div>
                 <label style={{
                   display: 'block',
-                  fontFamily: 'Jost',
+                  fontFamily: 'Urbanist',
                   fontSize: '12px',
                   color: muted,
                   marginBottom: '4px'
@@ -575,11 +588,11 @@ export default function MyBookings() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
-                    fontFamily: 'Jost',
+                    border: '1px solid rgba(180,140,90,0.3)',
+                    fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: 'white',
-                    color: brown
+                    color: textPrimary
                   }}
                 >
                   <option value="">Select a reason...</option>
@@ -595,10 +608,10 @@ export default function MyBookings() {
                 <button
                   onClick={() => setShowCancelModal(false)}
                   style={{
-                    border: `0.5px solid ${gold}`,
-                    color: gold,
+                    border: `1px solid ${primary}`,
+                    color: primary,
                     padding: '10px 20px',
-                    fontFamily: 'Jost',
+                    fontFamily: 'Urbanist',
                     fontSize: '12px',
                     fontWeight: 500,
                     textTransform: 'uppercase',
@@ -611,10 +624,10 @@ export default function MyBookings() {
                 <button
                   onClick={() => handleCancelBooking(selectedBooking.id, 'User requested cancellation')}
                   style={{
-                    backgroundColor: '#dc2626',
+                    backgroundColor: danger,
                     color: 'white',
                     padding: '10px 20px',
-                    fontFamily: 'Jost',
+                    fontFamily: 'Urbanist',
                     fontSize: '12px',
                     fontWeight: 500,
                     textTransform: 'uppercase',

@@ -209,27 +209,27 @@ export default function AdminUsersPage() {
   return (
     <>
       {(authLoading || loading) ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a56db' }} />
         </div>
       ) : !userProfile ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a56db' }} />
         </div>
       ) : (
-        <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#f0f4ff' }}>
           <div className="max-w-7xl mx-auto px-4 py-8">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>User Management</h1>
-                <p className="text-sm mt-2" style={{ color: '#9a7850' }}>Manage all users, couples, and vendors on the platform</p>
+                <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>User Management</h1>
+                <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Manage all users, couples, and vendors on the platform</p>
               </div>
               <button
                 onClick={exportToCSV}
                 className="px-4 py-2 text-sm font-medium rounded transition-colors"
-                style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                style={{ border: '0.5px solid #b08850', color: '#1a56db' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
                 <Download className="w-4 h-4 inline mr-2" />
@@ -238,18 +238,18 @@ export default function AdminUsersPage() {
             </div>
 
             {/* Filters */}
-            <div className="p-4 mb-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+            <div className="p-4 mb-6" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Search */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#9a7850' }} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#6b7280' }} />
                   <input
                     type="text"
                     placeholder="Search users..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 rounded focus:outline-none"
-                    style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                    style={{ backgroundColor: '#f7f8fd', border: '1px solid #e5edff', color: '#3a2a1a' }}
                   />
                 </div>
 
@@ -258,7 +258,7 @@ export default function AdminUsersPage() {
                   value={roleFilter}
                   onChange={(e) => setRoleFilter(e.target.value as 'all' | 'couple' | 'vendor' | 'admin')}
                   className="px-4 py-2 rounded focus:outline-none"
-                  style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                  style={{ backgroundColor: '#f7f8fd', border: '1px solid #e5edff', color: '#3a2a1a' }}
                 >
                   <option value="all">All Roles</option>
                   <option value="couple">Couples</option>
@@ -270,26 +270,26 @@ export default function AdminUsersPage() {
 
             {/* Total users count */}
             <div className="mb-4">
-              <p className="text-sm" style={{ color: '#9a7850' }}>
+              <p className="text-sm" style={{ color: '#6b7280' }}>
                 Total users: <span className="font-medium" style={{ color: '#3a2a1a' }}>{filteredUsers.length}</span>
               </p>
             </div>
 
             {/* Users Table */}
-            <div style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+            <div style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead style={{ backgroundColor: '#faf6f1' }}>
+                  <thead style={{ backgroundColor: '#f7f8fd' }}>
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Name
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Email
                       </th>
                       <th 
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
-                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        style={{ color: '#6b7280', letterSpacing: '0.15em' }}
                         onClick={() => toggleSort('role')}
                       >
                         <div className="flex items-center">
@@ -299,7 +299,7 @@ export default function AdminUsersPage() {
                       </th>
                       <th 
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
-                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        style={{ color: '#6b7280', letterSpacing: '0.15em' }}
                         onClick={() => toggleSort('joined')}
                       >
                         <div className="flex items-center">
@@ -307,7 +307,7 @@ export default function AdminUsersPage() {
                           <ArrowUpDown className="w-3 h-3 ml-1" />
                         </div>
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Actions
                       </th>
                     </tr>
@@ -329,7 +329,7 @@ export default function AdminUsersPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm" style={{ color: '#9a7850' }}>{user.email || 'Unknown'}</div>
+                            <div className="text-sm" style={{ color: '#6b7280' }}>{user.email || 'Unknown'}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span 
@@ -339,7 +339,7 @@ export default function AdminUsersPage() {
                               {(user.role || '').charAt(0).toUpperCase() + (user.role || '').slice(1)}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#6b7280' }}>
                             {formatDate(user.createdAt)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -347,8 +347,8 @@ export default function AdminUsersPage() {
                               <button
                                 onClick={() => loadUserDetails(user)}
                                 className="p-1 rounded transition-colors"
-                                style={{ color: '#7a5c30' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                style={{ color: '#1a56db' }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                               >
                                 <Eye className="w-4 h-4" />
@@ -357,7 +357,7 @@ export default function AdminUsersPage() {
                                 value={user.role || ''}
                                 onChange={(e) => changeUserRole(user.id, e.target.value)}
                                 className="px-2 py-1 text-xs rounded focus:outline-none"
-                                style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                                style={{ backgroundColor: '#f7f8fd', border: '1px solid #e5edff', color: '#3a2a1a' }}
                               >
                                 <option value="couple">Couple</option>
                                 <option value="vendor">Vendor</option>
@@ -366,8 +366,8 @@ export default function AdminUsersPage() {
                               <button
                                 onClick={() => sendPasswordReset(user.email || '')}
                                 className="p-1 rounded transition-colors"
-                                style={{ color: '#7a5c30' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                style={{ color: '#1a56db' }}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                               >
                                 <Key className="w-4 h-4" />
@@ -390,7 +390,7 @@ export default function AdminUsersPage() {
                 </table>
                 
                 {filteredUsers.length === 0 && (
-                  <div className="text-center py-8" style={{ color: '#9a7850' }}>
+                  <div className="text-center py-8" style={{ color: '#6b7280' }}>
                     <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
                     <p>No users found matching your filters</p>
                   </div>
@@ -400,7 +400,7 @@ export default function AdminUsersPage() {
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
-                  <div className="text-sm" style={{ color: '#9a7850' }}>
+                  <div className="text-sm" style={{ color: '#6b7280' }}>
                     Showing {((currentPage - 1) * usersPerPage) + 1} to {Math.min(currentPage * usersPerPage, filteredUsers.length)} of {filteredUsers.length} users
                   </div>
                   <div className="flex items-center space-x-2">
@@ -408,21 +408,21 @@ export default function AdminUsersPage() {
                       onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
-                      style={{ color: '#7a5c30' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      style={{ color: '#1a56db' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="text-sm" style={{ color: '#9a7850' }}>
+                    <span className="text-sm" style={{ color: '#6b7280' }}>
                       Page {currentPage} of {totalPages}
                     </span>
                     <button
                       onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                       disabled={currentPage === totalPages}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
-                      style={{ color: '#7a5c30' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      style={{ color: '#1a56db' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronRight className="w-4 h-4" />
@@ -436,15 +436,15 @@ export default function AdminUsersPage() {
             {showUserModal && selectedUser && (
               <div className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowUserModal(false)} />
-                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
+                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '1px solid #e5edff' }}>
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>User Details</h2>
+                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>User Details</h2>
                       <button
                         onClick={() => setShowUserModal(false)}
                         className="p-2 rounded transition-colors"
-                        style={{ color: '#9a7850' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                        style={{ color: '#6b7280' }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                       >
                         <AlertTriangle className="w-4 h-4" />
@@ -453,19 +453,19 @@ export default function AdminUsersPage() {
                     
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Name</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Name</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.name || 'Unknown'}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Email</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Email</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.email || 'Unknown'}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Phone</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Phone</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.phone}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Role</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Role</p>
                         <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
                           backgroundColor: getRoleColor(selectedUser.role || '').bg,
                           color: getRoleColor(selectedUser.role || '').text
@@ -474,11 +474,11 @@ export default function AdminUsersPage() {
                         </span>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Joined Date</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Joined Date</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{formatDate(selectedUser.createdAt)}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Status</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Status</p>
                         <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
                           backgroundColor: selectedUser.active ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                           color: selectedUser.active ? '#22c55e' : '#ef4444'
@@ -491,16 +491,16 @@ export default function AdminUsersPage() {
                     {/* Show bookings for couples */}
                     {(selectedUser.role || '') === 'couple' && userBookings.length > 0 && (
                       <div className="mb-6">
-                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Recent Bookings</p>
+                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Recent Bookings</p>
                         <div className="space-y-2">
                           {userBookings.slice(0, 5).map(booking => (
-                            <div key={booking.id} className="p-3" style={{ backgroundColor: '#faf6f1' }}>
+                            <div key={booking.id} className="p-3" style={{ backgroundColor: '#f7f8fd' }}>
                               <div className="flex justify-between items-center">
                                 <div>
                                   <p className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{(booking as any).vendorName || 'Unknown Vendor'}</p>
-                                  <p className="text-xs" style={{ color: '#9a7850' }}>{formatDate(booking.createdAt)}</p>
+                                  <p className="text-xs" style={{ color: '#6b7280' }}>{formatDate(booking.createdAt)}</p>
                                 </div>
-                                <p className="text-sm font-medium" style={{ color: '#7a5c30' }}>${booking.amount}</p>
+                                <p className="text-sm font-medium" style={{ color: '#1a56db' }}>${booking.amount}</p>
                               </div>
                             </div>
                           ))}
@@ -511,23 +511,23 @@ export default function AdminUsersPage() {
                     {/* Show vendor profile for vendors */}
                     {(selectedUser.role || '') === 'vendor' && userVendor && (
                       <div className="mb-6">
-                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Vendor Profile</p>
-                        <div className="p-3" style={{ backgroundColor: '#faf6f1' }}>
+                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Vendor Profile</p>
+                        <div className="p-3" style={{ backgroundColor: '#f7f8fd' }}>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Business Name</p>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Business Name</p>
                               <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{userVendor.businessName}</p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Category</p>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Category</p>
                               <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{userVendor.category}</p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Rating</p>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Rating</p>
                               <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{userVendor.rating} ({userVendor.reviewCount} reviews)</p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Verified</p>
+                              <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Verified</p>
                               <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
                                 backgroundColor: userVendor.verified ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                                 color: userVendor.verified ? '#22c55e' : '#ef4444'
@@ -552,7 +552,7 @@ export default function AdminUsersPage() {
                       <button
                         onClick={() => sendPasswordReset(selectedUser.email || '')}
                         className="px-4 py-2 text-sm font-medium rounded transition-colors"
-                        style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
+                        style={{ border: '0.5px solid #b08850', color: '#1a56db' }}
                       >
                         <Key className="w-4 h-4 inline mr-2" />
                         Reset Password
@@ -567,11 +567,11 @@ export default function AdminUsersPage() {
             {showDeleteConfirm && (
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                 <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowDeleteConfirm(null)} />
-                <div className="relative bg-white rounded-lg max-w-md w-full p-6" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
+                <div className="relative bg-white rounded-lg max-w-md w-full p-6" style={{ border: '1px solid #e5edff' }}>
                   <div className="text-center mb-6">
                     <AlertTriangle className="w-12 h-12 mx-auto mb-4" style={{ color: '#dc2626' }} />
                     <h3 className="text-lg font-semibold mb-2" style={{ color: '#3a2a1a' }}>Delete User?</h3>
-                    <p className="text-sm" style={{ color: '#9a7850' }}>
+                    <p className="text-sm" style={{ color: '#6b7280' }}>
                       Are you sure? This cannot be undone. This will permanently delete user account and all associated data.
                     </p>
                   </div>
@@ -595,7 +595,7 @@ export default function AdminUsersPage() {
                     <button
                       onClick={() => setShowDeleteConfirm(null)}
                       className="flex-1 px-4 py-2 text-sm font-medium rounded transition-colors"
-                      style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
+                      style={{ border: '0.5px solid #b08850', color: '#1a56db' }}
                     >
                       Cancel
                     </button>

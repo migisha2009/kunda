@@ -290,27 +290,27 @@ export default function AdminBookingsPage() {
   return (
     <>
       {(authLoading || loading) ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a56db' }} />
         </div>
       ) : !userProfile ? (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#7a5c30' }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a56db' }} />
         </div>
       ) : (
-        <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#f0f4ff' }}>
           <div className="max-w-7xl mx-auto px-4 py-8">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Booking Overview</h1>
-                <p className="text-sm mt-2" style={{ color: '#9a7850' }}>Monitor all bookings and revenue across the platform</p>
+                <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Booking Overview</h1>
+                <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Monitor all bookings and revenue across the platform</p>
               </div>
               <button
                 onClick={exportToCSV}
                 className="px-4 py-2 text-sm font-medium rounded transition-colors"
-                style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                style={{ border: '1px solid #1a56db', color: '#1a56db' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
                 <Download className="w-4 h-4 inline mr-2" />
@@ -319,29 +319,29 @@ export default function AdminBookingsPage() {
             </div>
 
             {/* Revenue Counter */}
-            <div className="p-6 mb-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+            <div className="p-6 mb-6" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Total Revenue (Paid Bookings)</p>
-                  <p className="text-5xl font-light mt-2" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a', fontSize: '40px' }}>${totalRevenue.toLocaleString()}</p>
+                  <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Total Revenue (Paid Bookings)</p>
+                  <p className="text-5xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontSize: '40px' }}>${totalRevenue.toLocaleString()}</p>
                 </div>
-                <DollarSign className="w-12 h-12" style={{ color: '#7a5c30' }} />
+                <DollarSign className="w-12 h-12" style={{ color: '#1a56db' }} />
               </div>
             </div>
 
             {/* Filters */}
-            <div className="p-4 mb-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+            <div className="p-4 mb-6" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Search */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#9a7850' }} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#6b7280' }} />
                   <input
                     type="text"
                     placeholder="Search bookings..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 rounded focus:outline-none"
-                    style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                    style={{ backgroundColor: '#f7f8fd', border: '1px solid #e5edff', color: '#3a2a1a' }}
                   />
                 </div>
 
@@ -350,7 +350,7 @@ export default function AdminBookingsPage() {
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'confirmed' | 'paid' | 'cancelled')}
                   className="px-4 py-2 rounded focus:outline-none"
-                  style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                  style={{ backgroundColor: '#f7f8fd', border: '1px solid #e5edff', color: '#3a2a1a' }}
                 >
                   <option value="all">All Status</option>
                   <option value="pending">Pending</option>
@@ -362,20 +362,20 @@ export default function AdminBookingsPage() {
             </div>
 
             {/* Bookings Table */}
-            <div style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+            <div style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead style={{ backgroundColor: '#faf6f1' }}>
+                  <thead style={{ backgroundColor: '#f7f8fd' }}>
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Couple
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Vendor
                       </th>
                       <th 
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
-                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        style={{ color: '#6b7280', letterSpacing: '0.15em' }}
                         onClick={() => toggleSort('amount')}
                       >
                         <div className="flex items-center">
@@ -383,12 +383,12 @@ export default function AdminBookingsPage() {
                           <ArrowUpDown className="w-3 h-3 ml-1" />
                         </div>
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Currency
                       </th>
                       <th 
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
-                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        style={{ color: '#6b7280', letterSpacing: '0.15em' }}
                         onClick={() => toggleSort('status')}
                       >
                         <div className="flex items-center">
@@ -398,7 +398,7 @@ export default function AdminBookingsPage() {
                       </th>
                       <th 
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer" 
-                        style={{ color: '#9a7850', letterSpacing: '0.15em' }}
+                        style={{ color: '#6b7280', letterSpacing: '0.15em' }}
                         onClick={() => toggleSort('date')}
                       >
                         <div className="flex items-center">
@@ -406,7 +406,7 @@ export default function AdminBookingsPage() {
                           <ArrowUpDown className="w-3 h-3 ml-1" />
                         </div>
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#9a7850', letterSpacing: '0.15em' }}>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
                         Actions
                       </th>
                     </tr>
@@ -427,7 +427,7 @@ export default function AdminBookingsPage() {
                               <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadBookingDetails(booking)}>
                                 {booking.coupleName}
                               </div>
-                              <div className="text-xs" style={{ color: '#9a7850' }}>{booking.coupleEmail}</div>
+                              <div className="text-xs" style={{ color: '#6b7280' }}>{booking.coupleEmail}</div>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -435,7 +435,7 @@ export default function AdminBookingsPage() {
                               <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadBookingDetails(booking)}>
                                 {booking.vendorName}
                               </div>
-                              <div className="text-xs" style={{ color: '#9a7850' }}>{booking.vendorEmail}</div>
+                              <div className="text-xs" style={{ color: '#6b7280' }}>{booking.vendorEmail}</div>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
@@ -444,7 +444,7 @@ export default function AdminBookingsPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm" style={{ color: '#9a7850' }}>{booking.currency}</div>
+                            <div className="text-sm" style={{ color: '#6b7280' }}>{booking.currency}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
@@ -457,7 +457,7 @@ export default function AdminBookingsPage() {
                               </span>
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#6b7280' }}>
                             {formatDate(booking.createdAt)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -465,7 +465,7 @@ export default function AdminBookingsPage() {
                               <button
                                 onClick={() => loadBookingDetails(booking)}
                                 className="p-1 rounded transition-colors"
-                                style={{ color: '#7a5c30' }}
+                                style={{ color: '#1a56db' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                               >
@@ -476,7 +476,7 @@ export default function AdminBookingsPage() {
                                 onChange={(e) => updateBookingStatus(booking.id, e.target.value)}
                                 disabled={updating === booking.id}
                                 className="px-2 py-1 text-xs rounded focus:outline-none disabled:opacity-50"
-                                style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                                style={{ backgroundColor: '#f7f8fd', border: '1px solid #e5edff', color: '#3a2a1a' }}
                               >
                                 <option value="pending">Pending</option>
                                 <option value="confirmed">Confirmed</option>
@@ -525,7 +525,7 @@ export default function AdminBookingsPage() {
                 </table>
                 
                 {filteredBookings.length === 0 && (
-                  <div className="text-center py-8" style={{ color: '#9a7850' }}>
+                  <div className="text-center py-8" style={{ color: '#6b7280' }}>
                     <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
                     <p>No bookings found matching your filters</p>
                   </div>
@@ -535,7 +535,7 @@ export default function AdminBookingsPage() {
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
-                  <div className="text-sm" style={{ color: '#9a7850' }}>
+                  <div className="text-sm" style={{ color: '#6b7280' }}>
                     Showing {((currentPage - 1) * bookingsPerPage) + 1} to {Math.min(currentPage * bookingsPerPage, filteredBookings.length)} of {filteredBookings.length} bookings
                   </div>
                   <div className="flex items-center space-x-2">
@@ -543,20 +543,20 @@ export default function AdminBookingsPage() {
                       onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
-                      style={{ color: '#7a5c30' }}
+                      style={{ color: '#1a56db' }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="text-sm" style={{ color: '#9a7850' }}>
+                    <span className="text-sm" style={{ color: '#6b7280' }}>
                       Page {currentPage} of {totalPages}
                     </span>
                     <button
                       onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                       disabled={currentPage === totalPages}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
-                      style={{ color: '#7a5c30' }}
+                      style={{ color: '#1a56db' }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
@@ -569,32 +569,32 @@ export default function AdminBookingsPage() {
 
             {/* Summary Stats */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm" style={{ color: '#9a7850' }}>Total Bookings</span>
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Total Bookings</span>
                   <span className="text-lg font-medium" style={{ color: '#3a2a1a' }}>{bookings.length}</span>
                 </div>
               </div>
-              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm" style={{ color: '#9a7850' }}>Pending</span>
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Pending</span>
                   <span className="text-lg font-medium" style={{ color: '#f59e0b' }}>
                     {bookings.filter(b => b.status === 'pending').length}
                   </span>
                 </div>
               </div>
-              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm" style={{ color: '#9a7850' }}>Confirmed</span>
-                  <span className="text-lg font-medium" style={{ color: '#3b82f6' }}>
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Confirmed</span>
+                  <span className="text-lg font-medium" style={{ color: '#057a55' }}>
                     {bookings.filter(b => b.status === 'confirmed').length}
                   </span>
                 </div>
               </div>
-              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-4" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm" style={{ color: '#9a7850' }}>Paid</span>
-                  <span className="text-lg font-medium" style={{ color: '#22c55e' }}>
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Paid</span>
+                  <span className="text-lg font-medium" style={{ color: '#057a55' }}>
                     {bookings.filter(b => b.status === 'paid').length}
                   </span>
                 </div>
@@ -602,17 +602,17 @@ export default function AdminBookingsPage() {
             </div>
 
             {/* Revenue by Month */}
-            <div className="mt-6 p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
-              <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Revenue by Month</h3>
+            <div className="mt-6 p-6" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
+              <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Revenue by Month</h3>
               <div className="space-y-2">
                 {Object.entries(getRevenueByMonth()).map(([month, revenue]) => (
-                  <div key={month} className="flex items-center justify-between p-3" style={{ backgroundColor: '#faf6f1' }}>
-                    <span className="text-sm" style={{ color: '#9a7850' }}>{month}</span>
+                  <div key={month} className="flex items-center justify-between p-3" style={{ backgroundColor: '#f7f8fd' }}>
+                    <span className="text-sm" style={{ color: '#6b7280' }}>{month}</span>
                     <span className="text-sm font-medium" style={{ color: '#3a2a1a' }}>${revenue.toLocaleString()}</span>
                   </div>
                 ))}
                 {Object.keys(getRevenueByMonth()).length === 0 && (
-                  <div className="text-center py-4" style={{ color: '#9a7850' }}>
+                  <div className="text-center py-4" style={{ color: '#6b7280' }}>
                     <p>No revenue data available</p>
                   </div>
                 )}
@@ -623,14 +623,14 @@ export default function AdminBookingsPage() {
             {showBookingModal && selectedBooking && (
               <div className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowBookingModal(false)} />
-                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
+                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '1px solid #e5edff' }}>
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Booking Details</h2>
+                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Booking Details</h2>
                       <button
                         onClick={() => setShowBookingModal(false)}
                         className="p-2 rounded transition-colors"
-                        style={{ color: '#9a7850' }}
+                        style={{ color: '#6b7280' }}
                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                       >
@@ -640,21 +640,21 @@ export default function AdminBookingsPage() {
                     
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Couple</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Couple</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedBooking.coupleName}</p>
-                        <p className="text-xs" style={{ color: '#9a7850' }}>{selectedBooking.coupleEmail}</p>
+                        <p className="text-xs" style={{ color: '#6b7280' }}>{selectedBooking.coupleEmail}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Vendor</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Vendor</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedBooking.vendorName}</p>
-                        <p className="text-xs" style={{ color: '#9a7850' }}>{selectedBooking.vendorEmail}</p>
+                        <p className="text-xs" style={{ color: '#6b7280' }}>{selectedBooking.vendorEmail}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Amount</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Amount</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedBooking.currency} {selectedBooking.amount.toLocaleString()}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Status</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Status</p>
                         <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
                           backgroundColor: getStatusColor(selectedBooking.status).bg,
                           color: getStatusColor(selectedBooking.status).text
@@ -663,19 +663,19 @@ export default function AdminBookingsPage() {
                         </span>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Wedding Date</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Wedding Date</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{(selectedBooking as any).weddingDate ? formatDate((selectedBooking as any).weddingDate) : 'Not set'}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Venue</p>
+                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Venue</p>
                         <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{(selectedBooking as any).venue || 'Not specified'}</p>
                       </div>
                     </div>
                     
                     {selectedBooking.paymentReference && (
                       <div className="mb-6">
-                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Payment Reference</p>
-                        <div className="p-3" style={{ backgroundColor: '#faf6f1' }}>
+                        <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Payment Reference</p>
+                        <div className="p-3" style={{ backgroundColor: '#f7f8fd' }}>
                           <p className="text-sm font-mono" style={{ color: '#3a2a1a' }}>{selectedBooking.paymentReference}</p>
                         </div>
                       </div>

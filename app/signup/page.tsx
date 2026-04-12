@@ -152,7 +152,7 @@ export default function SignupPage() {
   }, [isPasswordWeak, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: 'var(--color-cream)' }}>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#f0f4ff' }}>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Kunda</h1>

@@ -388,14 +388,14 @@ export default function VendorBookingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
         <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#f0f4ff' }}>
       {/* KUNDA NAVBAR */}
       <nav style={{
         display: 'flex',
@@ -403,7 +403,7 @@ export default function VendorBookingsPage() {
         justifyContent: 'space-between',
         padding: '14px 32px',
         background: '#ffffff',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)'
+        borderBottom: '1px solid #e5edff'
       }}>
         {/* Left - Logo */}
         <div 
@@ -413,13 +413,13 @@ export default function VendorBookingsPage() {
           <div style={{
             width: '8px',
             height: '8px',
-            border: '1.5px solid #b08850',
+            border: '1.5px solid #1a56db',
             marginRight: '12px'
           }}></div>
           <span style={{
-            fontFamily: 'Cormorant Garamond',
+            fontFamily: 'Urbanist',
             fontSize: '20px',
-            color: '#7a5c30',
+            color: '#1a56db',
             letterSpacing: '0.1em'
           }}>Kunda</span>
         </div>
@@ -429,11 +429,11 @@ export default function VendorBookingsPage() {
           <a 
             href="/dashboard/vendor" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#9a7850',
+              color: '#6b7280',
               textDecoration: 'none'
             }}
           >
@@ -442,11 +442,11 @@ export default function VendorBookingsPage() {
           <a 
             href="/dashboard/vendor/profile" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#9a7850',
+              color: '#6b7280',
               textDecoration: 'none'
             }}
           >
@@ -455,11 +455,11 @@ export default function VendorBookingsPage() {
           <a 
             href="/dashboard/vendor/bookings" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#7a5c30',
+              color: '#1a56db',
               textDecoration: 'none'
             }}
           >
@@ -468,11 +468,11 @@ export default function VendorBookingsPage() {
           <a 
             href="/dashboard/vendor/analytics" 
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.15em',
-              color: '#9a7850',
+              color: '#6b7280',
               textDecoration: 'none'
             }}
           >
@@ -486,25 +486,26 @@ export default function VendorBookingsPage() {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            background: '#f0e4d0',
-            border: '1px solid #b08850',
+            background: '#dbeafe',
+            border: '1px solid #3498db',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             <span style={{
-              color: '#7a5c30',
+              color: '#3498db',
+              color: '#1a56db',
               fontSize: '13px',
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontWeight: 500
             }}>
               {user?.email?.charAt(0).toUpperCase()}
             </span>
           </div>
           <span style={{
-            fontFamily: 'Jost',
+            fontFamily: 'Urbanist',
             fontSize: '13px',
-            color: '#7a5c30'
+            color: '#1a56db'
           }}>
             {user?.email}
           </span>
@@ -513,11 +514,11 @@ export default function VendorBookingsPage() {
               window.location.href = '/login'
             }}
             style={{
-              border: '0.5px solid #b08850',
+              border: '1px solid #1a56db',
               color: '#b08850',
               background: 'transparent',
               padding: '6px 14px',
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               fontSize: '11px',
               textTransform: 'uppercase',
               cursor: 'pointer'
@@ -532,7 +533,7 @@ export default function VendorBookingsPage() {
       <div style={{ padding: '48px 32px 32px' }}>
         <div className="text-xs uppercase tracking-wider mb-3" style={{ 
           color: '#b08850', 
-          fontFamily: 'Jost', 
+          fontFamily: 'Urbanist', 
           fontWeight: 400,
           letterSpacing: '0.15em'
         }}>
@@ -541,7 +542,7 @@ export default function VendorBookingsPage() {
         <h1 
           className="text-4xl font-light mb-3" 
           style={{ 
-            fontFamily: 'Cormorant Garamond', 
+            fontFamily: 'Urbanist', 
             color: '#3a2a1a', 
             fontWeight: 300,
             fontSize: '32px'
@@ -556,58 +557,58 @@ export default function VendorBookingsPage() {
         {/* Stats Row */}
         <div className="grid grid-cols-5 gap-3 mb-8">
           <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Jost', letterSpacing: '0.15em', color: '#9a7850' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Pending Enquiries
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
               {enquiries.filter(e => e.status === 'pending').length}
             </div>
           </div>
           
           <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Jost', letterSpacing: '0.15em', color: '#9a7850' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Replied
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
               {enquiries.filter(e => e.status === 'replied').length}
             </div>
           </div>
 
           <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Jost', letterSpacing: '0.15em', color: '#9a7850' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Total Bookings
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
               {bookings.length}
             </div>
           </div>
 
           <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Jost', letterSpacing: '0.15em', color: '#9a7850' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Total Revenue
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
               ${totalRevenue.toLocaleString()}
             </div>
           </div>
 
           <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Jost', letterSpacing: '0.15em', color: '#9a7850' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Response Rate
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 300, fontSize: '30px' }}>
               {responseRate.toFixed(1)}%
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-6 mb-6" style={{ borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
+        <div className="flex gap-6 mb-6" style={{ borderBottom: '1px solid #e5edff' }}>
           <button
             onClick={() => setActiveTab('enquiries')}
             className="pb-3 text-sm font-medium transition-colors"
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               color: activeTab === 'enquiries' ? '#7a5c30' : '#9a7850',
               borderBottom: activeTab === 'enquiries' ? '2px solid #7a5c30' : 'none'
             }}
@@ -618,7 +619,7 @@ export default function VendorBookingsPage() {
             onClick={() => setActiveTab('bookings')}
             className="pb-3 text-sm font-medium transition-colors"
             style={{
-              fontFamily: 'Jost',
+              fontFamily: 'Urbanist',
               color: activeTab === 'bookings' ? '#7a5c30' : '#9a7850',
               borderBottom: activeTab === 'bookings' ? '2px solid #7a5c30' : 'none'
             }}
@@ -631,7 +632,7 @@ export default function VendorBookingsPage() {
         <div className="flex justify-between items-center mb-6">
           <div className="flex gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#9a7850' }} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#6b7280' }} />
               <input
                 type="text"
                 placeholder="Search by couple name..."
@@ -639,10 +640,10 @@ export default function VendorBookingsPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
                 style={{
-                  border: '0.5px solid rgba(180,140,90,0.3)',
-                  background: '#fdf9f5',
+                  border: '1px solid #1a56db',
+                  background: '#e0e7ff',
                   padding: '8px 12px',
-                  fontFamily: 'Jost',
+                  fontFamily: 'Urbanist',
                   fontSize: '13px',
                   color: '#3a2a1a',
                   width: '250px'
@@ -654,10 +655,10 @@ export default function VendorBookingsPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               style={{
-                border: '0.5px solid rgba(180,140,90,0.3)',
-                background: '#fdf9f5',
+                border: '1px solid #1a56db',
+                background: '#e0e7ff',
                 padding: '8px 12px',
-                fontFamily: 'Jost',
+                fontFamily: 'Urbanist',
                 fontSize: '13px',
                 color: '#3a2a1a'
               }}
@@ -683,10 +684,10 @@ export default function VendorBookingsPage() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest')}
               style={{
-                border: '0.5px solid rgba(180,140,90,0.3)',
-                background: '#fdf9f5',
+                border: '1px solid #1a56db',
+                background: '#e0e7ff',
                 padding: '8px 12px',
-                fontFamily: 'Jost',
+                fontFamily: 'Urbanist',
                 fontSize: '13px',
                 color: '#3a2a1a'
               }}
@@ -701,10 +702,10 @@ export default function VendorBookingsPage() {
               onClick={exportBookingsAsCSV}
               className="flex items-center text-xs px-4 py-2"
               style={{
-                fontFamily: 'Jost',
-                background: 'transparent',
-                color: '#7a5c30',
-                border: '0.5px solid #b08850',
+                fontFamily: 'Urbanist',
+                background: '#e0e7ff',
+                color: '#3498db',
+                border: '0.5px solid #93c5fd',
                 cursor: 'pointer'
               }}
             >
@@ -719,7 +720,7 @@ export default function VendorBookingsPage() {
 
           {activeTab === 'enquiries' ? (
             <>
-              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', borderBottom: '0.5px solid rgba(180,140,90,0.15)', paddingBottom: '12px' }}>
+              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', borderBottom: '0.5px solid rgba(180,140,90,0.15)', paddingBottom: '12px' }}>
                 Recent Enquiries
               </h2>
               
@@ -732,13 +733,13 @@ export default function VendorBookingsPage() {
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
-                              <h3 className="font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a', fontSize: '14px' }}>
+                              <h3 className="font-medium" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontSize: '14px' }}>
                                 {enquiry.coupleName || 'Anonymous Couple'}
                               </h3>
                               <div 
                                 className="text-xs px-2 py-1"
                                 style={{
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   background: statusColors.bg,
                                   color: statusColors.color,
                                   border: `0.5px solid ${statusColors.border}`
@@ -746,13 +747,13 @@ export default function VendorBookingsPage() {
                               >
                                 {enquiry.status.charAt(0).toUpperCase() + enquiry.status.slice(1)}
                               </div>
-                              <div className="flex items-center text-xs" style={{ fontFamily: 'Jost', color: '#b4a090' }}>
+                              <div className="flex items-center text-xs" style={{ fontFamily: 'Urbanist', color: '#9ca3af' }}>
                                 <Clock className="w-3 h-3 mr-1" />
                                 {formatTimeAgo(enquiry.createdAt)}
                               </div>
                             </div>
                             
-                            <p style={{ fontFamily: 'Jost', color: '#3a2a1a', fontSize: '13px', lineHeight: '1.6', marginBottom: '12px' }}>
+                            <p style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontSize: '13px', lineHeight: '1.6', marginBottom: '12px' }}>
                               {enquiry.expanded ? enquiry.message : `${enquiry.message.substring(0, 65)}${enquiry.message.length > 65 ? '...' : ''}`}
                             </p>
                             
@@ -762,7 +763,7 @@ export default function VendorBookingsPage() {
                                   e.id === enquiry.id ? { ...e, expanded: !e.expanded } : e
                                 ))}
                                 className="text-xs mb-3"
-                                style={{ fontFamily: 'Jost', color: '#7a5c30', cursor: 'pointer' }}
+                                style={{ fontFamily: 'Urbanist', color: '#1a56db', cursor: 'pointer' }}
                               >
                                 {enquiry.expanded ? 'Show less' : 'Read more'}
                               </button>
@@ -778,10 +779,10 @@ export default function VendorBookingsPage() {
                                   placeholder="Type your reply..."
                                   className="w-full"
                                   style={{
-                                    border: '0.5px solid rgba(180,140,90,0.3)',
-                                    background: '#fdf9f5',
+                                    border: '1px solid #1a56db',
+                                    background: '#e0e7ff',
                                     padding: '10px 14px',
-                                    fontFamily: 'Jost',
+                                    fontFamily: 'Urbanist',
                                     fontSize: '13px',
                                     color: '#3a2a1a',
                                     resize: 'vertical',
@@ -794,10 +795,10 @@ export default function VendorBookingsPage() {
                                     disabled={!enquiry.replyText?.trim()}
                                     className="flex items-center text-xs px-4 py-2"
                                     style={{
-                                      fontFamily: 'Jost',
+                                      fontFamily: 'Urbanist',
                                       background: enquiry.replyText?.trim() ? '#7a5c30' : '#f0e4d0',
                                       color: enquiry.replyText?.trim() ? '#fdf9f5' : '#9a7850',
-                                      border: '0.5px solid #b08850',
+                                      border: '1px solid #1a56db',
                                       cursor: enquiry.replyText?.trim() ? 'pointer' : 'not-allowed'
                                     }}
                                   >
@@ -808,7 +809,7 @@ export default function VendorBookingsPage() {
                                     onClick={() => updateEnquiryStatus(enquiry.id, 'replied')}
                                     className="text-xs px-4 py-2"
                                     style={{
-                                      fontFamily: 'Jost',
+                                      fontFamily: 'Urbanist',
                                       background: '#e8f5e0',
                                       color: '#3b6d11',
                                       border: '0.5px solid #c0dd97',
@@ -830,7 +831,7 @@ export default function VendorBookingsPage() {
                                 onClick={() => setConvertingEnquiry(enquiry.id)}
                                 className="flex items-center text-xs px-4 py-2"
                                 style={{
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   background: '#7a5c30',
                                   color: '#fdf9f5',
                                   border: 'none',
@@ -844,7 +845,7 @@ export default function VendorBookingsPage() {
                                 onClick={() => deleteEnquiry(enquiry.id)}
                                 className="text-xs px-4 py-2"
                                 style={{
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   background: '#fef2f2',
                                   color: '#dc2626',
                                   border: '0.5px solid #fecaca',
@@ -860,7 +861,7 @@ export default function VendorBookingsPage() {
                               onClick={() => updateEnquiryStatus(enquiry.id, 'closed')}
                               className="text-xs px-4 py-2"
                               style={{
-                                fontFamily: 'Jost',
+                                fontFamily: 'Urbanist',
                                 background: '#f0efef',
                                 color: '#5f5e5a',
                                 border: '0.5px solid #d1d5db',
@@ -874,13 +875,13 @@ export default function VendorBookingsPage() {
 
                         {/* Convert to Booking Form */}
                         {convertingEnquiry === enquiry.id && (
-                          <div className="mt-4 p-4" style={{ background: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.15)' }}>
-                            <h4 className="font-medium mb-3" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
+                          <div className="mt-4 p-4" style={{ background: '#e0e7ff', border: '1px solid rgba(180,140,90,0.15)' }}>
+                            <h4 className="font-medium mb-3" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
                               Convert to Booking
                             </h4>
                             <div className="grid grid-cols-2 gap-4 mb-3">
                               <div>
-                                <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                                <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#6b7280' }}>
                                   Amount *
                                 </label>
                                 <input
@@ -889,10 +890,10 @@ export default function VendorBookingsPage() {
                                   onChange={(e) => setBookingForm(prev => ({ ...prev, amount: e.target.value }))}
                                   placeholder="1000"
                                   style={{
-                                    border: '0.5px solid rgba(180,140,90,0.3)',
+                                    border: '1px solid rgba(180,140,90,0.3)',
                                     background: '#ffffff',
                                     padding: '8px 12px',
-                                    fontFamily: 'Jost',
+                                    fontFamily: 'Urbanist',
                                     fontSize: '13px',
                                     color: '#3a2a1a',
                                     width: '100%'
@@ -900,17 +901,17 @@ export default function VendorBookingsPage() {
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                                <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#6b7280' }}>
                                   Currency
                                 </label>
                                 <select
                                   value={bookingForm.currency}
                                   onChange={(e) => setBookingForm(prev => ({ ...prev, currency: e.target.value }))}
                                   style={{
-                                    border: '0.5px solid rgba(180,140,90,0.3)',
+                                    border: '1px solid rgba(180,140,90,0.3)',
                                     background: '#ffffff',
                                     padding: '8px 12px',
-                                    fontFamily: 'Jost',
+                                    fontFamily: 'Urbanist',
                                     fontSize: '13px',
                                     color: '#3a2a1a',
                                     width: '100%'
@@ -923,7 +924,7 @@ export default function VendorBookingsPage() {
                               </div>
                             </div>
                             <div className="mb-3">
-                              <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                              <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#6b7280' }}>
                                 Booking Date *
                               </label>
                               <input
@@ -931,10 +932,10 @@ export default function VendorBookingsPage() {
                                 value={bookingForm.date}
                                 onChange={(e) => setBookingForm(prev => ({ ...prev, date: e.target.value }))}
                                 style={{
-                                  border: '0.5px solid rgba(180,140,90,0.3)',
+                                  border: '1px solid rgba(180,140,90,0.3)',
                                   background: '#ffffff',
                                   padding: '8px 12px',
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   fontSize: '13px',
                                   color: '#3a2a1a',
                                   width: '100%'
@@ -942,7 +943,7 @@ export default function VendorBookingsPage() {
                               />
                             </div>
                             <div className="mb-3">
-                              <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
+                              <label className="block text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#6b7280' }}>
                                 Notes
                               </label>
                               <textarea
@@ -951,10 +952,10 @@ export default function VendorBookingsPage() {
                                 placeholder="Additional notes for the booking..."
                                 rows={3}
                                 style={{
-                                  border: '0.5px solid rgba(180,140,90,0.3)',
+                                  border: '1px solid rgba(180,140,90,0.3)',
                                   background: '#ffffff',
                                   padding: '8px 12px',
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   fontSize: '13px',
                                   color: '#3a2a1a',
                                   width: '100%',
@@ -968,10 +969,10 @@ export default function VendorBookingsPage() {
                                 disabled={!bookingForm.amount || !bookingForm.date}
                                 className="text-xs px-4 py-2"
                                 style={{
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   background: bookingForm.amount && bookingForm.date ? '#7a5c30' : '#f0e4d0',
                                   color: bookingForm.amount && bookingForm.date ? '#fdf9f5' : '#9a7850',
-                                  border: '0.5px solid #b08850',
+                                  border: '1px solid #1a56db',
                                   cursor: bookingForm.amount && bookingForm.date ? 'pointer' : 'not-allowed'
                                 }}
                               >
@@ -984,10 +985,10 @@ export default function VendorBookingsPage() {
                                 }}
                                 className="text-xs px-4 py-2"
                                 style={{
-                                  fontFamily: 'Jost',
+                                  fontFamily: 'Urbanist',
                                   background: 'transparent',
-                                  color: '#7a5c30',
-                                  border: '0.5px solid #b08850',
+                                  color: '#1a56db',
+                                  border: '1px solid #1a56db',
                                   cursor: 'pointer'
                                 }}
                               >
@@ -1002,11 +1003,11 @@ export default function VendorBookingsPage() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <MessageSquare size={48} style={{ color: '#b4a090' }} className="mx-auto mb-4" />
-                  <h3 className="text-xl font-light mb-3" style={{ fontFamily: 'Cormorant Garamond', color: '#9a7850', fontWeight: 300, fontSize: '20px' }}>
+                  <MessageSquare size={48} style={{ color: '#9ca3af' }} className="mx-auto mb-4" />
+                  <h3 className="text-xl font-light mb-3" style={{ fontFamily: 'Urbanist', color: '#6b7280', fontWeight: 300, fontSize: '20px' }}>
                     No enquiries found
                   </h3>
-                  <p style={{ fontFamily: 'Jost', color: '#b4a090', fontSize: '13px' }}>
+                  <p style={{ fontFamily: 'Urbanist', color: '#9ca3af', fontSize: '13px' }}>
                     {searchTerm || statusFilter !== 'all' 
                       ? 'Try adjusting your filters' 
                       : 'Your enquiries from couples will appear here'
@@ -1017,7 +1018,7 @@ export default function VendorBookingsPage() {
             </>
           ) : (
             <>
-              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', borderBottom: '0.5px solid rgba(180,140,90,0.15)', paddingBottom: '12px' }}>
+              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', borderBottom: '0.5px solid rgba(180,140,90,0.15)', paddingBottom: '12px' }}>
                 Bookings Management
               </h2>
               
@@ -1027,20 +1028,20 @@ export default function VendorBookingsPage() {
                   <div className="overflow-x-auto">
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                       <thead>
-                        <tr style={{ borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
-                          <th className="text-left pb-3" style={{ fontFamily: 'Jost', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#9a7850' }}>
+                        <tr style={{ borderBottom: '1px solid #e5edff' }}>
+                          <th className="text-left pb-3" style={{ fontFamily: 'Urbanist', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#6b7280' }}>
                             Couple Name
                           </th>
-                          <th className="text-left pb-3" style={{ fontFamily: 'Jost', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#9a7850' }}>
+                          <th className="text-left pb-3" style={{ fontFamily: 'Urbanist', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#6b7280' }}>
                             Amount
                           </th>
-                          <th className="text-left pb-3" style={{ fontFamily: 'Jost', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#9a7850' }}>
+                          <th className="text-left pb-3" style={{ fontFamily: 'Urbanist', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#6b7280' }}>
                             Status
                           </th>
-                          <th className="text-left pb-3" style={{ fontFamily: 'Jost', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#9a7850' }}>
+                          <th className="text-left pb-3" style={{ fontFamily: 'Urbanist', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#6b7280' }}>
                             Date
                           </th>
-                          <th className="text-left pb-3" style={{ fontFamily: 'Jost', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#9a7850' }}>
+                          <th className="text-left pb-3" style={{ fontFamily: 'Urbanist', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#6b7280' }}>
                             Actions
                           </th>
                         </tr>
@@ -1050,17 +1051,17 @@ export default function VendorBookingsPage() {
                           const statusColors = getStatusColor(booking.status)
                           return (
                             <tr key={booking.id} style={{ borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>
-                              <td className="py-4" style={{ fontFamily: 'Jost', fontSize: '13px', color: '#3a2a1a' }}>
+                              <td className="py-4" style={{ fontFamily: 'Urbanist', fontSize: '13px', color: '#3a2a1a' }}>
                                 {booking.coupleName}
                               </td>
-                              <td className="py-4" style={{ fontFamily: 'Jost', fontSize: '13px', color: '#3a2a1a' }}>
+                              <td className="py-4" style={{ fontFamily: 'Urbanist', fontSize: '13px', color: '#3a2a1a' }}>
                                 {booking.currency} {booking.amount.toLocaleString()}
                               </td>
                               <td className="py-4">
                                 <div 
                                   className="text-xs px-2 py-1 inline-block"
                                   style={{
-                                    fontFamily: 'Jost',
+                                    fontFamily: 'Urbanist',
                                     background: statusColors.bg,
                                     color: statusColors.color,
                                     border: `0.5px solid ${statusColors.border}`
@@ -1069,7 +1070,7 @@ export default function VendorBookingsPage() {
                                   {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                                 </div>
                               </td>
-                              <td className="py-4" style={{ fontFamily: 'Jost', fontSize: '13px', color: '#3a2a1a' }}>
+                              <td className="py-4" style={{ fontFamily: 'Urbanist', fontSize: '13px', color: '#3a2a1a' }}>
                                 {formatDate(booking.date)}
                               </td>
                               <td className="py-4">
@@ -1080,7 +1081,7 @@ export default function VendorBookingsPage() {
                                         onClick={() => confirmBooking(booking.id)}
                                         className="text-xs px-3 py-1"
                                         style={{
-                                          fontFamily: 'Jost',
+                                          fontFamily: 'Urbanist',
                                           background: '#e8f5e0',
                                           color: '#3b6d11',
                                           border: '0.5px solid #c0dd97',
@@ -1093,7 +1094,7 @@ export default function VendorBookingsPage() {
                                         onClick={() => cancelBooking(booking.id)}
                                         className="text-xs px-3 py-1"
                                         style={{
-                                          fontFamily: 'Jost',
+                                          fontFamily: 'Urbanist',
                                           background: '#fef2f2',
                                           color: '#dc2626',
                                           border: '0.5px solid #fecaca',
@@ -1111,7 +1112,7 @@ export default function VendorBookingsPage() {
                                         onClick={() => copyPaymentLink(booking.paymentLink || '')}
                                         className="flex items-center text-xs px-3 py-1"
                                         style={{
-                                          fontFamily: 'Jost',
+                                          fontFamily: 'Urbanist',
                                           background: '#dbeafe',
                                           color: '#1e40af',
                                           border: '0.5px solid #93c5fd',
@@ -1125,7 +1126,7 @@ export default function VendorBookingsPage() {
                                         onClick={() => markAsPaid(booking.id)}
                                         className="text-xs px-3 py-1"
                                         style={{
-                                          fontFamily: 'Jost',
+                                          fontFamily: 'Urbanist',
                                           background: '#e8f5e0',
                                           color: '#3b6d11',
                                           border: '0.5px solid #c0dd97',
@@ -1140,10 +1141,10 @@ export default function VendorBookingsPage() {
                                   <button
                                     className="text-xs px-3 py-1"
                                     style={{
-                                      fontFamily: 'Jost',
+                                      fontFamily: 'Urbanist',
                                       background: 'transparent',
-                                      color: '#7a5c30',
-                                      border: '0.5px solid #b08850',
+                                      color: '#1a56db',
+                                      border: '1px solid #1a56db',
                                       cursor: 'pointer'
                                     }}
                                   >
@@ -1160,11 +1161,11 @@ export default function VendorBookingsPage() {
                 </>
               ) : (
                 <div className="text-center py-12">
-                  <Calendar size={48} style={{ color: '#b4a090' }} className="mx-auto mb-4" />
-                  <h3 className="text-xl font-light mb-3" style={{ fontFamily: 'Cormorant Garamond', color: '#9a7850', fontWeight: 300, fontSize: '20px' }}>
+                  <Calendar size={48} style={{ color: '#9ca3af' }} className="mx-auto mb-4" />
+                  <h3 className="text-xl font-light mb-3" style={{ fontFamily: 'Urbanist', color: '#6b7280', fontWeight: 300, fontSize: '20px' }}>
                     No bookings found
                   </h3>
-                  <p style={{ fontFamily: 'Jost', color: '#b4a090', fontSize: '13px' }}>
+                  <p style={{ fontFamily: 'Urbanist', color: '#9ca3af', fontSize: '13px' }}>
                     {searchTerm || statusFilter !== 'all' 
                       ? 'Try adjusting your filters' 
                       : 'Your bookings will appear here once you convert enquiries'
@@ -1183,10 +1184,10 @@ export default function VendorBookingsPage() {
                 disabled={currentPage === 1}
                 className="text-xs px-3 py-1"
                 style={{
-                  fontFamily: 'Jost',
+                  fontFamily: 'Urbanist',
                   background: currentPage === 1 ? '#f0e4d0' : 'transparent',
                   color: currentPage === 1 ? '#9a7850' : '#7a5c30',
-                  border: '0.5px solid #b08850',
+                  border: '1px solid #1a56db',
                   cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
                 }}
               >
@@ -1199,10 +1200,10 @@ export default function VendorBookingsPage() {
                   onClick={() => setCurrentPage(page)}
                   className="text-xs px-3 py-1"
                   style={{
-                    fontFamily: 'Jost',
+                    fontFamily: 'Urbanist',
                     background: currentPage === page ? '#7a5c30' : 'transparent',
                     color: currentPage === page ? '#fdf9f5' : '#7a5c30',
-                    border: '0.5px solid #b08850',
+                    border: '1px solid #1a56db',
                     cursor: 'pointer'
                   }}
                 >
@@ -1215,10 +1216,10 @@ export default function VendorBookingsPage() {
                 disabled={currentPage === totalPages}
                 className="text-xs px-3 py-1"
                 style={{
-                  fontFamily: 'Jost',
+                  fontFamily: 'Urbanist',
                   background: currentPage === totalPages ? '#f0e4d0' : 'transparent',
                   color: currentPage === totalPages ? '#9a7850' : '#7a5c30',
-                  border: '0.5px solid #b08850',
+                  border: '1px solid #1a56db',
                   cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
                 }}
               >

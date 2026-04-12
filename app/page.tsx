@@ -42,15 +42,15 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#f0f4ff' }}>
       {/* Navbar */}
       <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <Heart className="w-8 h-8" style={{ color: '#7a5c30' }} />
-              <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'var(--font-cormorant)', color: '#7a5c30' }}>Kunda</span>
+              <Heart className="w-8 h-8" style={{ color: '#1a56db' }} />
+              <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#1a56db' }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
@@ -59,7 +59,7 @@ export default function Home() {
               <a href="#how-it-works" className="text-gray-700 hover:text-gray-900 transition-colors">How it Works</a>
               <a href="#pricing" className="text-gray-700 hover:text-gray-900 transition-colors">Pricing</a>
               <Link href="/login" className="text-gray-700 hover:text-gray-900 transition-colors">Login</Link>
-              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: '#7a5c30' }}>
+              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: '#1a56db' }}>
                 Get Started
               </Link>
             </div>
@@ -83,7 +83,7 @@ export default function Home() {
                 <a href="#how-it-works" className="text-gray-700 hover:text-gray-900">How it Works</a>
                 <a href="#pricing" className="text-gray-700 hover:text-gray-900">Pricing</a>
                 <Link href="/login" className="text-gray-700 hover:text-gray-900">Login</Link>
-                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: '#7a5c30' }}>
+                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: '#1a56db' }}>
                   Get Started
                 </Link>
               </div>
@@ -95,7 +95,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
             Your Perfect Wedding,<br />
             Beautifully Orchestrated
           </h1>
@@ -103,10 +103,10 @@ export default function Home() {
             Connect with verified wedding vendors, manage your budget, and plan every detail of your special day with Kunda's comprehensive wedding platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/signup" className="px-8 py-4 rounded-lg text-white font-medium text-lg transition-all hover:opacity-90" style={{ backgroundColor: '#7a5c30' }}>
+            <Link href="/signup" className="px-8 py-4 rounded-lg text-white font-medium text-lg transition-all hover:opacity-90" style={{ backgroundColor: '#1a56db' }}>
               Plan My Wedding
             </Link>
-            <Link href="/signup" className="px-8 py-4 rounded-lg font-medium text-lg border-2 transition-all hover:bg-white hover:bg-opacity-10" style={{ borderColor: '#b08850', color: '#7a5c30' }}>
+            <Link href="/signup" className="px-8 py-4 rounded-lg font-medium text-lg border-2 transition-all hover:bg-white hover:bg-opacity-10" style={{ borderColor: '#b08850', color: '#1a56db' }}>
               Join as Vendor
             </Link>
           </div>
@@ -118,15 +118,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold mb-2" style={{ color: '#7a5c30' }}>2,400+</div>
+              <div className="text-4xl font-bold mb-2" style={{ color: '#1a56db' }}>2,400+</div>
               <div className="text-gray-600">Weddings Planned</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2" style={{ color: '#7a5c30' }}>380+</div>
+              <div className="text-4xl font-bold mb-2" style={{ color: '#1a56db' }}>380+</div>
               <div className="text-gray-600">Verified Vendors</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2" style={{ color: '#7a5c30' }}>98%</div>
+              <div className="text-4xl font-bold mb-2" style={{ color: '#1a56db' }}>98%</div>
               <div className="text-gray-600">Couples Satisfied</div>
             </div>
           </div>
@@ -136,17 +136,17 @@ export default function Home() {
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
             How It Works
           </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* For Couples */}
             <div>
-              <h3 className="text-2xl font-bold mb-8" style={{ color: '#7a5c30' }}>For Couples</h3>
+              <h3 className="text-2xl font-bold mb-8" style={{ color: '#1a56db' }}>For Couples</h3>
               <div className="space-y-8">
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#7a5c30' }}>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#1a56db' }}>
                     1
                   </div>
                   <div>
@@ -155,7 +155,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#7a5c30' }}>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#1a56db' }}>
                     2
                   </div>
                   <div>
@@ -164,7 +164,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#7a5c30' }}>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#1a56db' }}>
                     3
                   </div>
                   <div>
@@ -177,7 +177,7 @@ export default function Home() {
 
             {/* For Vendors */}
             <div>
-              <h3 className="text-2xl font-bold mb-8" style={{ color: '#7a5c30' }}>For Vendors</h3>
+              <h3 className="text-2xl font-bold mb-8" style={{ color: '#1a56db' }}>For Vendors</h3>
               <div className="space-y-8">
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: '#b08850' }}>
@@ -215,7 +215,7 @@ export default function Home() {
       {/* Vendor Categories */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
             Find Every Vendor You Need
           </h2>
           
@@ -246,7 +246,7 @@ export default function Home() {
       {/* Testimonials */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
             Love Stories from Happy Couples
           </h2>
           
@@ -272,13 +272,13 @@ export default function Home() {
       {/* CTA Banner */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
             Ready to plan your dream wedding?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
             Join thousands of couples who have planned their perfect day with Kunda
           </p>
-          <Link href="/signup" className="inline-flex items-center px-8 py-4 rounded-lg text-white font-medium text-lg transition-all hover:opacity-90" style={{ backgroundColor: '#7a5c30' }}>
+          <Link href="/signup" className="inline-flex items-center px-8 py-4 rounded-lg text-white font-medium text-lg transition-all hover:opacity-90" style={{ backgroundColor: '#1a56db' }}>
             Sign Up Now
             <ChevronRight className="w-5 h-5 ml-2" />
           </Link>
@@ -291,8 +291,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <Heart className="w-8 h-8" style={{ color: '#7a5c30' }} />
-                <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'var(--font-cormorant)', color: '#7a5c30' }}>Kunda</span>
+                <Heart className="w-8 h-8" style={{ color: '#1a56db' }} />
+                <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#1a56db' }}>Kunda</span>
               </div>
               <p className="text-gray-600">Your perfect wedding, beautifully orchestrated.</p>
             </div>
