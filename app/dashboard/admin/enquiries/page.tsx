@@ -294,7 +294,7 @@ export default function AdminEnquiriesPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Enquiry Overview</h1>
+                <h1 className="text-3xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '28px' }}>Enquiry Overview</h1>
                 <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Monitor all enquiries between couples and vendors</p>
               </div>
               <button
@@ -568,7 +568,7 @@ export default function AdminEnquiriesPage() {
             {/* Most Active Couples */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="p-6" style={{ backgroundColor: '#f7f8fd', border: '0.5px solid #94a3b8' }}>
-                <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Most Active Couples</h3>
+                <h3 className="text-lg mb-4" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 700, fontSize: '18px' }}>Most Active Couples</h3>
                 <div className="space-y-2">
                   {getMostActiveCouples().map(([couple, count]) => (
                     <div key={couple} className="flex items-center justify-between p-3" style={{ backgroundColor: '#f7f8fd' }}>
@@ -586,7 +586,7 @@ export default function AdminEnquiriesPage() {
 
               {/* Most Enquired Vendors */}
               <div className="p-6" style={{ backgroundColor: '#f7f8fd', border: '0.5px solid #94a3b8' }}>
-                <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Most Enquired Vendors</h3>
+                <h3 className="text-lg mb-4" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 700, fontSize: '18px' }}>Most Enquired Vendors</h3>
                 <div className="space-y-2">
                   {getMostEnquiredVendors().map(([vendor, count]) => (
                     <div key={vendor} className="flex items-center justify-between p-3" style={{ backgroundColor: '#f7f8fd' }}>
@@ -610,7 +610,7 @@ export default function AdminEnquiriesPage() {
                 <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Enquiry Details</h2>
+                      <h2 className="text-xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 700, fontSize: '18px' }}>Enquiry Details</h2>
                       <button
                         onClick={() => setShowEnquiryModal(false)}
                         className="p-2 rounded transition-colors"

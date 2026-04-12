@@ -50,7 +50,7 @@ export default function Home() {
             {/* Logo */}
             <div className="flex items-center">
               <Heart className="w-8 h-8" style={{ color: '#1a56db' }} />
-              <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#1a56db' }}>Kunda</span>
+              <span className="ml-2" style={{ fontFamily: 'Urbanist', color: '#1a56db', fontWeight: 800, fontSize: '22px' }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
@@ -95,7 +95,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 900, letterSpacing: '-0.03em' }}>
             Your Perfect Wedding,<br />
             Beautifully Orchestrated
           </h1>
@@ -136,7 +136,7 @@ export default function Home() {
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 800, fontSize: '40px' }}>
             How It Works
           </h2>
           
@@ -215,7 +215,7 @@ export default function Home() {
       {/* Vendor Categories */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 800, fontSize: '40px' }}>
             Find Every Vendor You Need
           </h2>
           
@@ -246,7 +246,7 @@ export default function Home() {
       {/* Testimonials */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl text-center mb-16" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 800, fontSize: '40px' }}>
             Love Stories from Happy Couples
           </h2>
           
@@ -272,7 +272,7 @@ export default function Home() {
       {/* CTA Banner */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>
+          <h2 className="text-4xl md:text-5xl mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontWeight: 800, fontSize: '40px' }}>
             Ready to plan your dream wedding?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
@@ -292,7 +292,7 @@ export default function Home() {
             <div>
               <div className="flex items-center mb-4">
                 <Heart className="w-8 h-8" style={{ color: '#1a56db' }} />
-                <span className="ml-2 text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#1a56db' }}>Kunda</span>
+                <span className="ml-2" style={{ fontFamily: 'Urbanist', color: '#1a56db', fontWeight: 800, fontSize: '22px' }}>Kunda</span>
               </div>
               <p className="text-gray-600">Your perfect wedding, beautifully orchestrated.</p>
             </div>

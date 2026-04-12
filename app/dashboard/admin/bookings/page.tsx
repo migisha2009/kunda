@@ -303,7 +303,7 @@ export default function AdminBookingsPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Booking Overview</h1>
+                <h1 className="text-3xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '28px' }}>Booking Overview</h1>
                 <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Monitor all bookings and revenue across the platform</p>
               </div>
               <button
@@ -323,7 +323,7 @@ export default function AdminBookingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Total Revenue (Paid Bookings)</p>
-                  <p className="text-5xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', fontSize: '40px' }}>${totalRevenue.toLocaleString()}</p>
+                  <p className="text-5xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>${totalRevenue.toLocaleString()}</p>
                 </div>
                 <DollarSign className="w-12 h-12" style={{ color: '#1a56db' }} />
               </div>
@@ -603,7 +603,7 @@ export default function AdminBookingsPage() {
 
             {/* Revenue by Month */}
             <div className="mt-6 p-6" style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
-              <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Revenue by Month</h3>
+              <h3 className="text-lg mb-4" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 700, fontSize: '18px' }}>Revenue by Month</h3>
               <div className="space-y-2">
                 {Object.entries(getRevenueByMonth()).map(([month, revenue]) => (
                   <div key={month} className="flex items-center justify-between p-3" style={{ backgroundColor: '#f7f8fd' }}>
@@ -626,7 +626,7 @@ export default function AdminBookingsPage() {
                 <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '1px solid #e5edff' }}>
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-semibold" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Booking Details</h2>
+                      <h2 className="text-xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 700, fontSize: '18px' }}>Booking Details</h2>
                       <button
                         onClick={() => setShowBookingModal(false)}
                         className="p-2 rounded transition-colors"

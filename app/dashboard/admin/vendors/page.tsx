@@ -236,7 +236,7 @@ export default function AdminVendorsPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Vendor Management</h1>
+                <h1 className="text-3xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '28px' }}>Vendor Management</h1>
                 <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Manage and verify wedding vendors on the platform</p>
               </div>
             </div>

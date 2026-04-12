@@ -155,7 +155,7 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#f0f4ff' }}>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Kunda</h1>
+          <h1 className="text-3xl mb-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '32px' }}>Join Kunda</h1>
           <p className="text-gray-600">Start planning your perfect wedding</p>
         </div>
 
@@ -186,7 +186,7 @@ export default function SignupPage() {
             <input type="hidden" {...register('role')} />
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
                 Full Name
               </label>
               <input
@@ -201,7 +201,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
                 Email Address
               </label>
               <input
@@ -216,7 +216,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
                 Phone Number
               </label>
               <input
@@ -231,7 +231,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
                 Password
               </label>
               <div className="relative">
@@ -295,7 +295,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
                 Confirm Password
               </label>
               <div className="relative">
@@ -330,7 +330,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading || isPasswordWeak}
-              className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '0.02em' }}
             >
               {isLoading ? (
                 <>

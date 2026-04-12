@@ -165,7 +165,7 @@ export default function AdminOverview() {
             {/* Header with refresh button */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: textPrimary }}>Admin Dashboard</h1>
+                <h1 className="text-3xl" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 800, fontSize: '28px' }}>Admin Dashboard</h1>
                 <p className="text-sm mt-2" style={{ color: textSecondary }}>Monitor and manage the Kunda platform</p>
               </div>
               <div className="flex items-center space-x-4">
@@ -190,7 +190,7 @@ export default function AdminOverview() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Users</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalUsers}</p>
+                    <p className="text-3xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>{stats.totalUsers}</p>
                   </div>
                   <Users className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
@@ -200,7 +200,7 @@ export default function AdminOverview() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Vendors</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalVendors}</p>
+                    <p className="text-3xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>{stats.totalVendors}</p>
                     <p className="text-xs mt-1" style={{ color: success }}>{stats.verifiedVendors} verified</p>
                   </div>
                   <Store className="w-8 h-8" style={{ color: primaryDark }} />
@@ -211,7 +211,7 @@ export default function AdminOverview() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Bookings</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalBookings}</p>
+                    <p className="text-3xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>{stats.totalBookings}</p>
                   </div>
                   <Calendar className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
@@ -221,7 +221,7 @@ export default function AdminOverview() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Revenue</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+                    <p className="text-3xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>
                       ${stats.totalRevenue.toLocaleString()}
                     </p>
                   </div>
@@ -233,7 +233,7 @@ export default function AdminOverview() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Total Enquiries</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{stats.totalEnquiries}</p>
+                    <p className="text-3xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>{stats.totalEnquiries}</p>
                   </div>
                   <MessageSquare className="w-8 h-8" style={{ color: primaryDark }} />
                 </div>
@@ -243,7 +243,7 @@ export default function AdminOverview() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Vendor Verification</p>
-                    <p className="text-3xl font-light mt-2" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+                    <p className="text-3xl mt-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.02em' }}>
                       {stats.totalVendors > 0 ? Math.round((stats.verifiedVendors / stats.totalVendors) * 100) : 0}%
                     </p>
                     <p className="text-xs mt-1" style={{ color: textSecondary }}>
@@ -259,34 +259,34 @@ export default function AdminOverview() {
             <div className="p-6 mb-8" style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
               <div className="flex items-center mb-4">
                 <Activity className="w-5 h-5 mr-2" style={{ color: primaryDark }} />
-                <h2 className="text-xl font-semibold" style={{ fontFamily: 'Urbanist', color: textPrimary }}>Platform Health</h2>
+                <h2 className="text-xl" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 700, fontSize: '18px' }}>Platform Health</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Active Weddings</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{platformHealth.activeWeddings}</p>
+                    <p className="text-xl mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 600, fontSize: '18px' }}>{platformHealth.activeWeddings}</p>
                   </div>
                   <Target className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
                 <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Pending Enquiries</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{platformHealth.pendingEnquiries}</p>
+                    <p className="text-xl mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 600, fontSize: '18px' }}>{platformHealth.pendingEnquiries}</p>
                   </div>
                   <MessageSquare className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
                 <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Avg Booking Value</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>${Math.round(platformHealth.avgBookingValue).toLocaleString()}</p>
+                    <p className="text-xl mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 600, fontSize: '18px' }}>${Math.round(platformHealth.avgBookingValue).toLocaleString()}</p>
                   </div>
                   <DollarSign className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
                 <div className="flex items-center justify-between p-4" style={{ backgroundColor: primaryLight }}>
                   <div>
                     <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: textSecondary }}>Conversion Rate</p>
-                    <p className="text-xl font-light mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary }}>{Math.round(platformHealth.conversionRate)}%</p>
+                    <p className="text-xl mt-1" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 600, fontSize: '18px' }}>{Math.round(platformHealth.conversionRate)}%</p>
                   </div>
                   <ArrowUp className="w-5 h-5" style={{ color: primaryDark }} />
                 </div>
@@ -296,7 +296,7 @@ export default function AdminOverview() {
             {/* Recent Users */}
             <div style={{ backgroundColor: 'white', border: `1px solid ${border}` }}>
               <div className="p-6" style={{ borderBottom: `1px solid ${border}` }}>
-                <h2 className="text-xl font-semibold flex items-center" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+                <h2 className="text-xl flex items-center" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 700, fontSize: '18px' }}>
                   <UserPlus className="w-5 h-5 mr-2" style={{ color: primaryDark }} />
                   Recent Signups
                 </h2>

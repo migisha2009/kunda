@@ -386,7 +386,8 @@ const formatTimeAgo = (date: Date): string => {
           }}></div>
           <span style={{
             fontFamily: 'Urbanist',
-            fontSize: '20px',
+            fontSize: '22px',
+            fontWeight: 800,
             color: primaryDark,
             letterSpacing: '0.1em'
           }}>Kunda</span>
@@ -398,9 +399,8 @@ const formatTimeAgo = (date: Date): string => {
             href="/dashboard/vendor" 
             style={{
               fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
+              fontSize: '14px',
+              fontWeight: 600,
               color: primaryDark,
               textDecoration: 'none'
             }}
@@ -411,9 +411,8 @@ const formatTimeAgo = (date: Date): string => {
             href="/dashboard/vendor/profile" 
             style={{
               fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
+              fontSize: '14px',
+              fontWeight: 600,
               color: textSecondary,
               textDecoration: 'none'
             }}
@@ -424,9 +423,8 @@ const formatTimeAgo = (date: Date): string => {
             href="/dashboard/vendor/bookings" 
             style={{
               fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
+              fontSize: '14px',
+              fontWeight: 600,
               color: textSecondary,
               textDecoration: 'none'
             }}
@@ -493,8 +491,8 @@ const formatTimeAgo = (date: Date): string => {
             </div>
             <div className="flex items-center gap-3 mb-3">
               <h1 
-                className="text-4xl font-light" 
-                style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 300 }}
+                className="text-4xl" 
+                style={{ fontFamily: 'Urbanist', color: 'white', fontWeight: 800, fontSize: '36px' }}
               >
                 {vendorData?.businessName || userProfile.name}
               </h1>
@@ -598,11 +596,12 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             Total Enquiries
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
+          <div className="text-3xl mb-1" style={{ 
             fontFamily: 'Urbanist', 
-            color: textPrimary,
-            fontWeight: 300,
-            fontSize: '30px'
+            color: '#111928',
+            fontWeight: 800,
+            fontSize: '36px',
+            letterSpacing: '-0.02em'
           }}>
             {stats.totalEnquiries}
           </div>
@@ -627,11 +626,12 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             Confirmed Bookings
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
+          <div className="text-3xl mb-1" style={{ 
             fontFamily: 'Urbanist', 
-            color: textPrimary,
-            fontWeight: 300,
-            fontSize: '30px'
+            color: '#111928',
+            fontWeight: 800,
+            fontSize: '36px',
+            letterSpacing: '-0.02em'
           }}>
             {stats.confirmedBookings}
           </div>
@@ -656,11 +656,12 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             Total Revenue
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
+          <div className="text-3xl mb-1" style={{ 
             fontFamily: 'Urbanist', 
-            color: textPrimary,
-            fontWeight: 300,
-            fontSize: '30px'
+            color: '#111928',
+            fontWeight: 800,
+            fontSize: '36px',
+            letterSpacing: '-0.02em'
           }}>
             ${stats.totalRevenue.toLocaleString()}
           </div>
@@ -685,11 +686,12 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             Profile Views
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
+          <div className="text-3xl mb-1" style={{ 
             fontFamily: 'Urbanist', 
-            color: textPrimary,
-            fontWeight: 300,
-            fontSize: '30px'
+            color: '#111928',
+            fontWeight: 800,
+            fontSize: '36px',
+            letterSpacing: '-0.02em'
           }}>
             {stats.profileViews}
           </div>
@@ -714,11 +716,12 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             Conversion Rate
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
+          <div className="text-3xl mb-1" style={{ 
             fontFamily: 'Urbanist', 
-            color: textPrimary,
-            fontWeight: 300,
-            fontSize: '30px'
+            color: '#111928',
+            fontWeight: 800,
+            fontSize: '36px',
+            letterSpacing: '-0.02em'
           }}>
             {stats.conversionRate.toFixed(1)}%
           </div>
@@ -842,7 +845,7 @@ const formatTimeAgo = (date: Date): string => {
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="font-medium text-sm" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
+                        <div className="font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 600, fontSize: '15px' }}>
                           {enquiry.coupleName}
                         </div>
                         {enquiry.unread && (

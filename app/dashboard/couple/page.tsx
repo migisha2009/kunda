@@ -817,7 +817,8 @@ export default function CoupleDashboard() {
           }}></div>
           <span style={{
             fontFamily: 'Urbanist',
-            fontSize: '20px',
+            fontSize: '22px',
+            fontWeight: 800,
             color: primaryDark,
             letterSpacing: '0.1em'
           }}>Kunda</span>
@@ -827,46 +828,36 @@ export default function CoupleDashboard() {
         <div style={{ display: 'flex', gap: '24px' }}>
           <a href="/dashboard/couple" style={{
             fontFamily: 'Urbanist',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
+            fontSize: '14px',
+            fontWeight: 600,
             color: primaryDark,
             textDecoration: 'none'
           }}>Overview</a>
           <a href="/dashboard/couple/checklist" style={{
             fontFamily: 'Urbanist',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
+            fontSize: '14px',
+            fontWeight: 600,
             color: textSecondary,
             textDecoration: 'none'
           }}>Checklist</a>
           <a href="/dashboard/couple/budget" style={{
             fontFamily: 'Urbanist',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
+            fontSize: '14px',
+            fontWeight: 600,
             color: textSecondary,
             textDecoration: 'none'
           }}>Budget</a>
           <a href="/dashboard/couple/guests" style={{
             fontFamily: 'Urbanist',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
+            fontSize: '14px',
+            fontWeight: 600,
             color: textSecondary,
             textDecoration: 'none'
           }}>Guests</a>
           <a href="/dashboard/couple/wedding" style={{
             fontFamily: 'Urbanist',
-            fontSize: '11px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
+            fontSize: '14px',
+            fontWeight: 600,
             color: textSecondary,
             textDecoration: 'none'
           }}>Details</a>
@@ -1226,9 +1217,9 @@ export default function CoupleDashboard() {
               <div style={{ marginBottom: '24px' }}>
                 <h1 style={{
                   fontFamily: 'Urbanist',
-                  fontSize: '36px',
-                  fontWeight: 300,
-                  color: textPrimary,
+                  fontSize: '40px',
+                  fontWeight: 800,
+                  color: 'white',
                   marginBottom: '8px'
                 }}>
                   Welcome, {wedding.coupleName1} & {wedding.coupleName2}
@@ -1236,15 +1227,17 @@ export default function CoupleDashboard() {
                 <p style={{
                   fontFamily: 'Urbanist',
                   fontSize: '16px',
-                  color: textSecondary,
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.8)',
                   marginBottom: '8px'
                 }}>
                   {wedding.venue} {wedding.venueAddress && `· ${wedding.venueAddress}`}
                 </p>
                 <p style={{
                   fontFamily: 'Urbanist',
-                  fontSize: '14px',
-                  color: textSecondary
+                  fontSize: '16px',
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.8)'
                 }}>
                   {formatDate(wedding.date)} · {wedding.ceremonyTime} Ceremony
                 </p>
@@ -1260,6 +1253,7 @@ export default function CoupleDashboard() {
                 <h3 style={{
                   fontFamily: 'Urbanist',
                   fontSize: '18px',
+                  fontWeight: 700,
                   color: textPrimary,
                   marginBottom: '16px',
                   textAlign: 'center'
@@ -1274,15 +1268,17 @@ export default function CoupleDashboard() {
                   }}>
                     <div style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '32px',
-                      fontWeight: 300,
-                      color: primaryDark
+                      fontSize: '36px',
+                      fontWeight: 800,
+                      color: primaryDark,
+                      letterSpacing: '-0.02em'
                     }}>{countdown.days}</div>
                     <div style={{
-                      fontSize: '10px',
-                      fontWeight: 500,
+                      fontSize: '11px',
+                      fontWeight: 600,
                       textTransform: 'uppercase',
-                      color: textSecondary,
+                      letterSpacing: '0.1em',
+                      color: 'rgba(255,255,255,0.6)',
                       marginTop: '4px'
                     }}>Days</div>
                   </div>
@@ -1294,15 +1290,17 @@ export default function CoupleDashboard() {
                   }}>
                     <div style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '32px',
-                      fontWeight: 300,
-                      color: primaryDark
+                      fontSize: '36px',
+                      fontWeight: 800,
+                      color: primaryDark,
+                      letterSpacing: '-0.02em'
                     }}>{countdown.hours}</div>
                     <div style={{
-                      fontSize: '10px',
-                      fontWeight: 500,
+                      fontSize: '11px',
+                      fontWeight: 600,
                       textTransform: 'uppercase',
-                      color: textSecondary,
+                      letterSpacing: '0.1em',
+                      color: 'rgba(255,255,255,0.6)',
                       marginTop: '4px'
                     }}>Hours</div>
                   </div>
@@ -1314,15 +1312,17 @@ export default function CoupleDashboard() {
                   }}>
                     <div style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '32px',
-                      fontWeight: 300,
-                      color: primaryDark
+                      fontSize: '36px',
+                      fontWeight: 800,
+                      color: primaryDark,
+                      letterSpacing: '-0.02em'
                     }}>{countdown.mins}</div>
                     <div style={{
-                      fontSize: '10px',
-                      fontWeight: 500,
+                      fontSize: '11px',
+                      fontWeight: 600,
                       textTransform: 'uppercase',
-                      color: textSecondary,
+                      letterSpacing: '0.1em',
+                      color: 'rgba(255,255,255,0.6)',
                       marginTop: '4px'
                     }}>Minutes</div>
                   </div>
@@ -1334,15 +1334,17 @@ export default function CoupleDashboard() {
                   }}>
                     <div style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '32px',
-                      fontWeight: 300,
-                      color: primaryDark
+                      fontSize: '36px',
+                      fontWeight: 800,
+                      color: primaryDark,
+                      letterSpacing: '-0.02em'
                     }}>{countdown.secs}</div>
                     <div style={{
-                      fontSize: '10px',
-                      fontWeight: 500,
+                      fontSize: '11px',
+                      fontWeight: 600,
                       textTransform: 'uppercase',
-                      color: textSecondary,
+                      letterSpacing: '0.1em',
+                      color: 'rgba(255,255,255,0.6)',
                       marginTop: '4px'
                     }}>Seconds</div>
                   </div>
@@ -1524,18 +1526,19 @@ export default function CoupleDashboard() {
               padding: '16px 18px'
             }}>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: '12px',
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                color: textSecondary,
+                letterSpacing: '0.06em',
+                color: '#6b7280',
                 marginBottom: '8px'
               }}>Days Until Wedding</div>
               <div style={{
                 fontFamily: 'Urbanist',
-                fontSize: '30px',
-                fontWeight: 300,
-                color: textPrimary
+                fontSize: '36px',
+                fontWeight: 800,
+                color: '#111928',
+                letterSpacing: '-0.02em'
               }}>{stats.daysUntilWedding}</div>
               <div style={{
                 fontFamily: 'Urbanist',
@@ -1552,18 +1555,19 @@ export default function CoupleDashboard() {
               padding: '16px 18px'
             }}>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: '12px',
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                color: textSecondary,
+                letterSpacing: '0.06em',
+                color: '#6b7280',
                 marginBottom: '8px'
               }}>Guest Count</div>
               <div style={{
                 fontFamily: 'Urbanist',
-                fontSize: '30px',
-                fontWeight: 300,
-                color: textPrimary
+                fontSize: '36px',
+                fontWeight: 800,
+                color: '#111928',
+                letterSpacing: '-0.02em'
               }}>{stats.confirmedGuests}/{stats.totalGuests}</div>
               <div style={{
                 fontFamily: 'Urbanist',
@@ -1580,18 +1584,19 @@ export default function CoupleDashboard() {
               padding: '16px 18px'
             }}>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: '12px',
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                color: textSecondary,
+                letterSpacing: '0.06em',
+                color: '#6b7280',
                 marginBottom: '8px'
               }}>Budget Used</div>
               <div style={{
                 fontFamily: 'Urbanist',
-                fontSize: '30px',
-                fontWeight: 300,
-                color: textPrimary
+                fontSize: '36px',
+                fontWeight: 800,
+                color: '#111928',
+                letterSpacing: '-0.02em'
               }}>{stats.budgetUsed}%</div>
               <div style={{
                 width: '100%',
