@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createEnquiry } from '../../../lib/firestore'
+import { sendWhatsApp, messages } from '../../../lib/whatsapp'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../../../lib/firebase'
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,6 +25,28 @@ export async function POST(request: NextRequest) {
       message,
       status: 'pending'
     })
+
+    // Send WhatsApp notification to vendor
+    try {
+      const vendorDoc = await getDoc(doc(db, 'users', vendorId))
+      const vendorData = vendorDoc.data()
+      const vendorPhone = vendorData?.phone
+
+      if (vendorPhone) {
+        // Get couple name for the message
+        const coupleDoc = await getDoc(doc(db, 'users', coupleId))
+        const coupleData = coupleDoc.data()
+        const coupleName = coupleData?.name || 'A Couple'
+
+        await sendWhatsApp(
+          vendorPhone,
+          messages.newEnquiry(coupleName, message)
+        )
+      }
+    } catch (whatsappError) {
+      console.error('WhatsApp notification failed:', whatsappError)
+      // Don't fail the request if WhatsApp fails
+    }
 
     return NextResponse.json({
       success: true,

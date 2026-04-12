@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { sendWhatsApp, messages } from '../../../lib/whatsapp'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -9,6 +10,7 @@ export async function POST(request: NextRequest) {
       guestId,
       guestName,
       guestEmail,
+      guestPhone,
       inviteToken,
       coupleName,
       weddingDate,
@@ -198,6 +200,23 @@ export async function POST(request: NextRequest) {
           details: JSON.stringify(error) },
         { status: 500 }
       )
+    }
+
+    // Send WhatsApp notification if guest has phone number
+    if (guestPhone) {
+      try {
+        await sendWhatsApp(
+          guestPhone,
+          messages.guestInvite(
+            coupleName, 
+            formattedDate === 'Date to be announced' ? 'Date to be announced' : weddingDate,
+            inviteLink
+          )
+        )
+      } catch (whatsappError) {
+        console.error('WhatsApp notification failed:', whatsappError)
+        // Don't fail the request if WhatsApp fails
+      }
     }
 
     return NextResponse.json({ 

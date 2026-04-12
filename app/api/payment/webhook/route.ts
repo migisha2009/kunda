@@ -3,6 +3,7 @@ import Flutterwave from 'flutterwave-node-v3'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
 import crypto from 'crypto'
+import { sendWhatsApp, messages } from '../../../../lib/whatsapp'
 
 // Initialize Flutterwave lazily to avoid build-time errors
 function getFlutterwaveInstance() {
@@ -58,6 +59,23 @@ export async function POST(request: NextRequest) {
             })
             
             console.log(`Booking ${bookingId} marked as paid`)
+            
+            // Send WhatsApp notification to vendor
+            try {
+              const vendorDoc = await getDoc(doc(db, 'users', bookingData.vendorId))
+              const vendorData = vendorDoc.data()
+              const vendorPhone = vendorData?.phone
+
+              if (vendorPhone) {
+                await sendWhatsApp(
+                  vendorPhone,
+                  messages.paymentReceived(amount.toString(), currency)
+                )
+              }
+            } catch (whatsappError) {
+              console.error('WhatsApp notification failed:', whatsappError)
+              // Don't fail the webhook if WhatsApp fails
+            }
           } else {
             console.error(`Booking ${bookingId} not found`)
           }
