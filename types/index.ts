@@ -129,6 +129,12 @@ export interface Booking {
   currency: string
   paymentRef?: string
   paymentReference?: string
+  weddingDate?: any
+  venue?: string
+  vendorName?: string
+  coupleName?: string
+  vendorEmail?: string
+  coupleEmail?: string
   createdAt?: any
 }
 
@@ -143,6 +149,15 @@ export interface Enquiry {
   budget?: number
   status: 'pending' | 'replied' | 'closed'
   createdAt?: any
+  weddingId?: string
+  vendorEmail?: string
+  coupleEmail?: string
+  vendorPhone?: string
+  couplePhone?: string
+  venue?: string
+  vendorCategory?: string
+  replyText?: string
+  expanded?: boolean
 }
 
 export interface Review {
@@ -164,6 +179,7 @@ export interface Expense {
   date: Date
   vendorId?: string
   notes?: string
+  isBooking?: boolean
 }
 
 export interface WeatherData {

@@ -78,9 +78,9 @@ export default function AdminUsersPage() {
   }
 
   const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesRole = roleFilter === 'all' || user.role === roleFilter
+    const matchesSearch = (user.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (user.email || '').toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesRole = roleFilter === 'all' || (user.role || '') === roleFilter
     
     return matchesSearch && matchesRole
   })
@@ -120,7 +120,7 @@ export default function AdminUsersPage() {
   const loadUserDetails = async (user: User) => {
     try {
       // Load user bookings if couple
-      if (user.role === 'couple') {
+      if ((user.role || '') === 'couple') {
         const bookingsQuery = query(collection(db, 'bookings'), where('coupleId', '==', user.id))
         const bookingsSnapshot = await getDocs(bookingsQuery)
         const bookingsData = bookingsSnapshot.docs.map(doc => ({
@@ -132,7 +132,7 @@ export default function AdminUsersPage() {
       }
       
       // Load vendor profile if vendor
-      if (user.role === 'vendor') {
+      if ((user.role || '') === 'vendor') {
         const vendorQuery = query(collection(db, 'vendors'), where('userId', '==', user.id))
         const vendorSnapshot = await getDocs(vendorQuery)
         if (!vendorSnapshot.empty) {
@@ -177,9 +177,9 @@ export default function AdminUsersPage() {
   const exportToCSV = () => {
     const headers = ['Name', 'Email', 'Role', 'Joined Date', 'Active']
     const csvData = filteredUsers.map(user => [
-      user.name,
-      user.email,
-      user.role,
+      user.name || '',
+      user.email || '',
+      user.role || '',
       formatDate(user.createdAt),
       user.active ? 'Yes' : 'No'
     ])
@@ -314,7 +314,7 @@ export default function AdminUsersPage() {
                   </thead>
                   <tbody className="divide-y" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
                     {paginatedUsers.map((user) => {
-                      const roleColors = getRoleColor(user.role)
+                      const roleColors = getRoleColor(user.role || '')
                       return (
                         <tr 
                           key={user.id} 
@@ -325,18 +325,18 @@ export default function AdminUsersPage() {
                         >
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadUserDetails(user)}>
-                              {user.name}
+                              {user.name || 'Unknown'}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm" style={{ color: '#9a7850' }}>{user.email}</div>
+                            <div className="text-sm" style={{ color: '#9a7850' }}>{user.email || 'Unknown'}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span 
                               className="px-2 py-1 inline-flex text-xs leading-5 font-semibold"
                               style={{ backgroundColor: roleColors.bg, color: roleColors.text }}
                             >
-                              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                              {(user.role || '').charAt(0).toUpperCase() + (user.role || '').slice(1)}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
@@ -354,7 +354,7 @@ export default function AdminUsersPage() {
                                 <Eye className="w-4 h-4" />
                               </button>
                               <select
-                                value={user.role}
+                                value={user.role || ''}
                                 onChange={(e) => changeUserRole(user.id, e.target.value)}
                                 className="px-2 py-1 text-xs rounded focus:outline-none"
                                 style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
@@ -364,7 +364,7 @@ export default function AdminUsersPage() {
                                 <option value="admin">Admin</option>
                               </select>
                               <button
-                                onClick={() => sendPasswordReset(user.email)}
+                                onClick={() => sendPasswordReset(user.email || '')}
                                 className="p-1 rounded transition-colors"
                                 style={{ color: '#7a5c30' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
@@ -454,11 +454,11 @@ export default function AdminUsersPage() {
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Name</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.name}</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.name || 'Unknown'}</p>
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Email</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.email}</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedUser.email || 'Unknown'}</p>
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Phone</p>
@@ -467,10 +467,10 @@ export default function AdminUsersPage() {
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Role</p>
                         <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1`} style={{ 
-                          backgroundColor: getRoleColor(selectedUser.role).bg,
-                          color: getRoleColor(selectedUser.role).text
+                          backgroundColor: getRoleColor(selectedUser.role || '').bg,
+                          color: getRoleColor(selectedUser.role || '').text
                         }}>
-                          {selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1)}
+                          {(selectedUser.role || '').charAt(0).toUpperCase() + (selectedUser.role || '').slice(1)}
                         </span>
                       </div>
                       <div>
@@ -489,7 +489,7 @@ export default function AdminUsersPage() {
                     </div>
                     
                     {/* Show bookings for couples */}
-                    {selectedUser.role === 'couple' && userBookings.length > 0 && (
+                    {(selectedUser.role || '') === 'couple' && userBookings.length > 0 && (
                       <div className="mb-6">
                         <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Recent Bookings</p>
                         <div className="space-y-2">
@@ -497,7 +497,7 @@ export default function AdminUsersPage() {
                             <div key={booking.id} className="p-3" style={{ backgroundColor: '#faf6f1' }}>
                               <div className="flex justify-between items-center">
                                 <div>
-                                  <p className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{booking.vendorName}</p>
+                                  <p className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{(booking as any).vendorName || 'Unknown Vendor'}</p>
                                   <p className="text-xs" style={{ color: '#9a7850' }}>{formatDate(booking.createdAt)}</p>
                                 </div>
                                 <p className="text-sm font-medium" style={{ color: '#7a5c30' }}>${booking.amount}</p>
@@ -509,7 +509,7 @@ export default function AdminUsersPage() {
                     )}
                     
                     {/* Show vendor profile for vendors */}
-                    {selectedUser.role === 'vendor' && userVendor && (
+                    {(selectedUser.role || '') === 'vendor' && userVendor && (
                       <div className="mb-6">
                         <p className="text-xs uppercase tracking-wider mb-2" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Vendor Profile</p>
                         <div className="p-3" style={{ backgroundColor: '#faf6f1' }}>
@@ -542,7 +542,7 @@ export default function AdminUsersPage() {
                     
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => window.location.href = `mailto:${selectedUser.email}`}
+                        onClick={() => window.location.href = `mailto:${selectedUser.email || ''}`}
                         className="px-4 py-2 text-sm font-medium rounded transition-colors"
                         style={{ backgroundColor: '#7a5c30', color: '#fdf9f5' }}
                       >
@@ -550,7 +550,7 @@ export default function AdminUsersPage() {
                         Email User
                       </button>
                       <button
-                        onClick={() => sendPasswordReset(selectedUser.email)}
+                        onClick={() => sendPasswordReset(selectedUser.email || '')}
                         className="px-4 py-2 text-sm font-medium rounded transition-colors"
                         style={{ border: '0.5px solid #b08850', color: '#7a5c30' }}
                       >

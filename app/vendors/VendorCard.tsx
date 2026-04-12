@@ -18,7 +18,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
       <div className="aspect-w-16 aspect-h-12 relative">
         <img
           src={imageUrl}
-          alt={vendor.businessName}
+          alt={vendor.businessName || vendor.name}
           className="w-full h-48 object-cover"
           onError={(e) => {
             // Fallback to placeholder if image fails to load
@@ -34,7 +34,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-semibold text-gray-900 text-lg">
-              {vendor.businessName.split(' ').map(word => 
+              {(vendor.businessName || vendor.name).split(' ').map(word => 
                 word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
               ).join(' ')}
             </h3>

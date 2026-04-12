@@ -148,7 +148,7 @@ export default function CoupleDashboard() {
           ceremonyLocation: weddingData.ceremonyLocation || '',
           ceremonyTime: weddingData.ceremonyTime || '',
           receptionTime: weddingData.receptionTime || '',
-          dresscode: weddingData.dresscode || 'formal',
+          dresscode: (weddingData.dresscode || 'formal') as any,
           customDresscode: weddingData.customDresscode || '',
           messageToGuests: weddingData.messageToGuests || '',
           hashtag: weddingData.hashtag || '',
@@ -250,7 +250,7 @@ export default function CoupleDashboard() {
       quoteOfTheDay: quotes[Math.floor(Math.random() * quotes.length)]
     }
 
-    setWedding(weddingData as Wedding)
+    setWedding(weddingData as unknown as Wedding)
   }
 
   const updateCountdown = () => {
@@ -329,7 +329,7 @@ export default function CoupleDashboard() {
         quoteOfTheDay: quote
       }
       
-      await setDoc(doc(db, 'weddings', user.uid), weddingData)
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), weddingData)
       window.location.reload()
     } catch (error) {
       console.error('Error creating wedding:', error)
@@ -389,7 +389,7 @@ export default function CoupleDashboard() {
     )
     
     try {
-      await updateDoc(doc(db, 'weddings', user.uid), { checklist: updatedChecklist })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { checklist: updatedChecklist })
       setWedding({ ...wedding, checklist: updatedChecklist })
       
       // Celebration animation for completed tasks
@@ -419,7 +419,7 @@ export default function CoupleDashboard() {
     
     try {
       const updatedChecklist = [...wedding.checklist, newTaskItem]
-      await updateDoc(doc(db, 'weddings', user.uid), { checklist: updatedChecklist })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { checklist: updatedChecklist })
       setWedding({ ...wedding, checklist: updatedChecklist })
       setNewTask('')
       setTaskNotes('')
@@ -435,7 +435,7 @@ export default function CoupleDashboard() {
     
     try {
       const updatedChecklist = wedding.checklist.filter(item => item.id !== taskId)
-      await updateDoc(doc(db, 'weddings', user.uid), { checklist: updatedChecklist })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { checklist: updatedChecklist })
       setWedding({ ...wedding, checklist: updatedChecklist })
     } catch (error) {
       console.error('Error deleting task:', error)
@@ -450,7 +450,7 @@ export default function CoupleDashboard() {
     )
     
     try {
-      await updateDoc(doc(db, 'weddings', user.uid), { checklist: updatedChecklist })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { checklist: updatedChecklist })
       setWedding({ ...wedding, checklist: updatedChecklist })
     } catch (error) {
       console.error('Error updating task urgency:', error)
@@ -475,7 +475,7 @@ export default function CoupleDashboard() {
       const updatedExpenses = [...(wedding.budgetExpenses || []), expense]
       const newSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
-      await updateDoc(doc(db, 'weddings', user.uid), { 
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { 
         budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: newSpent }
       })
@@ -502,7 +502,7 @@ export default function CoupleDashboard() {
       )
       const newSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
-      await updateDoc(doc(db, 'weddings', user.uid), { 
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { 
         budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: newSpent }
       })
@@ -527,7 +527,7 @@ export default function CoupleDashboard() {
       const updatedExpenses = (wedding.budgetExpenses || []).filter(exp => exp.id !== expenseId)
       const newSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
-      await updateDoc(doc(db, 'weddings', user.uid), { 
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { 
         budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: newSpent }
       })
@@ -599,7 +599,7 @@ export default function CoupleDashboard() {
         ? savedVendors.filter(id => id !== vendorId)
         : [...savedVendors, vendorId]
       
-      await setDoc(doc(db, 'savedVendors', user.uid), { vendorIds: updatedSavedVendors })
+      await setDoc(doc(db, 'savedVendors', (user || { uid: '' }).uid), { vendorIds: updatedSavedVendors })
       setSavedVendors(updatedSavedVendors)
     } catch (error) {
       console.error('Error saving vendor:', error)
@@ -624,7 +624,7 @@ export default function CoupleDashboard() {
         scheduleItems: scheduleItems.filter(item => item.time.trim() && item.event.trim())
       }
       
-      await updateDoc(doc(db, 'weddings', user.uid), updatedWedding)
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), updatedWedding)
       setWedding(updatedWedding)
       setEditingDetails(false)
     } catch (error) {
@@ -699,7 +699,7 @@ export default function CoupleDashboard() {
 
   const filteredVendors = vendors.filter(vendor => {
     const matchesCategory = vendorFilter === 'all' || vendor.category === vendorFilter
-    const matchesSearch = vendor.businessName.toLowerCase().includes(vendorSearch.toLowerCase()) ||
+    const matchesSearch = (vendor.businessName || vendor.name).toLowerCase().includes(vendorSearch.toLowerCase()) ||
                          vendor.location.toLowerCase().includes(vendorSearch.toLowerCase())
     return matchesCategory && matchesSearch
   }).slice(0, 6)
@@ -707,7 +707,7 @@ export default function CoupleDashboard() {
   const filteredGuests = guests.filter(guest => {
     const matchesStatus = guestFilter === 'all' || guest.rsvpStatus === guestFilter
     const matchesSearch = guest.name.toLowerCase().includes(guestSearch.toLowerCase()) ||
-                         guest.email.toLowerCase().includes(guestSearch.toLowerCase())
+                         (guest.email || '').toLowerCase().includes(guestSearch.toLowerCase())
     return matchesStatus && matchesSearch
   })
 
@@ -2087,8 +2087,8 @@ export default function CoupleDashboard() {
                               <Star 
                                 key={i} 
                                 size={12} 
-                                color={i < Math.floor(vendor.rating) ? gold : '#e5e7eb'} 
-                                fill={i < Math.floor(vendor.rating) ? gold : 'none'}
+                                color={i < Math.floor((vendor.rating || 0)) ? gold : '#e5e7eb'} 
+                                fill={i < Math.floor((vendor.rating || 0)) ? gold : 'none'}
                               />
                             ))}
                           </div>
@@ -2096,7 +2096,7 @@ export default function CoupleDashboard() {
                             fontFamily: 'Jost',
                             fontSize: '10px',
                             color: muted
-                          }}>{vendor.rating} ({vendor.reviewCount})</span>
+                          }}>{vendor.rating || 0} ({vendor.reviewCount || vendor.reviews || 0})</span>
                         </div>
                         
                         <div style={{
@@ -2105,7 +2105,7 @@ export default function CoupleDashboard() {
                           color: gold,
                           marginTop: '4px'
                         }}>
-                          {vendor.pricing.currency} {vendor.pricing.min} - {vendor.pricing.max}
+                          {(vendor.pricing as any)?.currency || 'RWF'} {(vendor.pricing as any)?.min || 0} - {(vendor.pricing as any)?.max || 0}
                         </div>
 
                         {vendor.featured && (

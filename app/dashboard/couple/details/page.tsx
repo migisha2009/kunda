@@ -9,7 +9,7 @@ import { formatDate } from '../../../../lib/dateUtils'
 import { 
   MapPin, Calendar, Clock, Users, Palette, Heart, 
   Save, Edit2, X, Upload, Globe, Mail,
-  Phone, Camera, Link as LinkIcon
+  Phone, Camera, Link as LinkIcon, Plus, Trash2
 } from 'lucide-react'
 import { Wedding, ScheduleItem } from '../../../../types'
 

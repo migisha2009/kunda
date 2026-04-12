@@ -28,7 +28,7 @@ export default function GuestAuthPage({ params }: { params: { token: string } })
         setGuest(guestData)
         setWedding(weddingData)
         setConfirmName(guestData.name)
-        setConfirmEmail(guestData.email)
+        setConfirmEmail(guestData.email || '')
       } catch (err) {
         setError('Failed to load invitation. Please try again later.')
         console.error('Error loading guest:', err)
@@ -50,7 +50,7 @@ export default function GuestAuthPage({ params }: { params: { token: string } })
       return
     }
 
-    if (confirmEmail.trim().toLowerCase() !== guest.email.trim().toLowerCase()) {
+    if (confirmEmail.trim().toLowerCase() !== (guest.email || '').trim().toLowerCase()) {
       setError('Email does not match our records. Please check and try again.')
       return
     }

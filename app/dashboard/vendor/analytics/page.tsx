@@ -115,15 +115,15 @@ export default function VendorAnalyticsPage() {
         // Calculate metrics
         const totalEnquiries = enquiries.length
         const totalBookings = bookings.length
-        const paidBookings = bookings.filter(b => b.status === 'paid')
-        const totalRevenue = paidBookings.reduce((sum, b) => sum + (b.amount || 0), 0)
+        const paidBookings = bookings.filter(b => (b as any).status === 'paid')
+        const totalRevenue = paidBookings.reduce((sum, b) => sum + ((b as any).amount || 0), 0)
         const conversionRate = totalEnquiries > 0 ? (totalBookings / totalEnquiries) * 100 : 0
         const avgBookingValue = paidBookings.length > 0 ? totalRevenue / paidBookings.length : 0
 
         // Generate monthly data for charts
         const monthlyData = generateMonthlyData(enquiries, bookings)
         const categoryData = generateCategoryData(bookings)
-        const funnelData = generateFunnelData(enquiries.length, bookings.length, paidBookings.length)
+        const funnelData = generateFunnelData(analytics.profileViews, enquiries.length, bookings.length, paidBookings.length)
 
         setAnalytics({
           profileViews: Math.floor(Math.random() * 500) + 100, // Mock data

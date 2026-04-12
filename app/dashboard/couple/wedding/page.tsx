@@ -60,13 +60,33 @@ export default function WeddingDetailsPage() {
         coupleId: user.uid,
         date: new Date(formData.date),
         venue: formData.venue,
+        venueAddress: wedding?.venueAddress || '',
+        ceremonyLocation: wedding?.ceremonyLocation || '',
         guestCount: parseInt(formData.guestCount),
         budget: {
           total: parseFloat(formData.budgetTotal),
-          spent: wedding?.budget.spent || 0,
+          spent: wedding?.budget?.spent || 0,
           currency: formData.currency
         },
-        checklist: wedding?.checklist || []
+        checklist: wedding?.checklist || [],
+        coupleName1: wedding?.coupleName1 || '',
+        coupleName2: wedding?.coupleName2 || '',
+        ceremonyTime: wedding?.ceremonyTime || '',
+        receptionTime: wedding?.receptionTime || '',
+        dresscode: wedding?.dresscode || 'formal',
+        customDresscode: wedding?.customDresscode || '',
+        messageToGuests: wedding?.messageToGuests || '',
+        scheduleItems: wedding?.scheduleItems || [],
+        hashtag: wedding?.hashtag || '',
+        rsvpDeadline: wedding?.rsvpDeadline || new Date(),
+        colorTheme: wedding?.colorTheme || ['#b08850', '#fdf9f5'],
+        heroImage: wedding?.heroImage || '',
+        planningStartDate: wedding?.planningStartDate || new Date(),
+        profileCompletion: wedding?.profileCompletion || 0,
+        budgetExpenses: wedding?.budgetExpenses || [],
+        expenses: wedding?.expenses || [],
+        currency: wedding?.currency || 'RWF',
+        quoteOfTheDay: wedding?.quoteOfTheDay || ''
       }
 
       if (wedding) {

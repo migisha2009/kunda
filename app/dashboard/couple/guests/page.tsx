@@ -100,6 +100,8 @@ export default function GuestManagement() {
     
     const guestItem: Guest = {
       id: Date.now().toString(),
+      weddingId: wedding.id || null,
+      coupleId: (user || { uid: '' }).uid,
       name: newGuest.name.trim(),
       email: newGuest.email.trim() || undefined,
       phone: newGuest.phone.trim() || undefined,
@@ -115,11 +117,11 @@ export default function GuestManagement() {
     
     try {
       const updatedGuests = [...(wedding.guests || []), guestItem]
-      await updateDoc(doc(db, 'weddings', user!.uid), { guests: updatedGuests })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { guests: updatedGuests })
       setWedding({ ...wedding, guests: updatedGuests })
       
       // Also add to guests subcollection
-      const guestsRef = collection(db, 'weddings', user!.uid, 'guests')
+      const guestsRef = collection(db, 'weddings', (user || { uid: '' }).uid, 'guests')
       await addDoc(guestsRef, guestItem)
       
       setNewGuest({
@@ -148,7 +150,7 @@ export default function GuestManagement() {
         item.id === guestId ? { ...item, ...updates } : item
       ) || []
       
-      await updateDoc(doc(db, 'weddings', user!.uid), { guests: updatedGuests })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { guests: updatedGuests })
       setWedding({ ...wedding, guests: updatedGuests })
       setEditingGuest(null)
     } catch (error) {
@@ -163,11 +165,11 @@ export default function GuestManagement() {
     
     try {
       const updatedGuests = wedding.guests?.filter(item => item.id !== guestId) || []
-      await updateDoc(doc(db, 'weddings', user!.uid), { guests: updatedGuests })
+      await updateDoc(doc(db, 'weddings', (user || { uid: '' }).uid), { guests: updatedGuests })
       setWedding({ ...wedding, guests: updatedGuests })
       
       // Also delete from guests subcollection
-      const guestDoc = doc(db, 'weddings', user!.uid, 'guests', guestId)
+      const guestDoc = doc(db, 'weddings', (user || { uid: '' }).uid, 'guests', guestId)
       await deleteDoc(guestDoc)
     } catch (error) {
       console.error('Error deleting guest:', error)
@@ -257,7 +259,7 @@ export default function GuestManagement() {
     if (!wedding?.guests) return { total: 0, confirmed: 0, pending: 0, declined: 0, plusOnes: 0 }
     
     const total = wedding.guests.length
-    const confirmed = wedding.guests.filter(g => g.rsvpStatus === 'confirmed').length
+    const confirmed = wedding.guests.filter(g => g.rsvpStatus === 'attending').length
     const pending = wedding.guests.filter(g => g.rsvpStatus === 'pending').length
     const declined = wedding.guests.filter(g => g.rsvpStatus === 'declined').length
     const plusOnes = wedding.guests.filter(g => g.plusOne).length
@@ -833,7 +835,7 @@ export default function GuestManagement() {
                         }}
                       >
                         <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
+                        <option value="attending">Attending</option>
                         <option value="declined">Declined</option>
                       </select>
                       <button
@@ -893,7 +895,7 @@ export default function GuestManagement() {
                           alignItems: 'center',
                           gap: '6px'
                         }}>
-                          {guest.rsvpStatus === 'confirmed' && (
+                          {guest.rsvpStatus === 'attending' && (
                             <CheckCircle size={16} color="#16a34a" />
                           )}
                           {guest.rsvpStatus === 'pending' && (
@@ -904,7 +906,7 @@ export default function GuestManagement() {
                           )}
                           <span style={{
                             fontSize: '12px',
-                            color: guest.rsvpStatus === 'confirmed' ? '#16a34a' : 
+                            color: guest.rsvpStatus === 'attending' ? '#16a34a' : 
                                    guest.rsvpStatus === 'pending' ? '#d97706' : '#dc2626',
                             fontWeight: 500
                           }}>

@@ -772,8 +772,8 @@ export default function VendorBookingsPage() {
                               <div className="mt-3 space-y-3">
                                 <textarea
                                   value={enquiry.replyText || ''}
-                                  onChange={(e) => setEnquiries(prev => prev.map(e => 
-                                    e.id === enquiry.id ? { ...e, replyText: e.currentTarget.value } : e
+                                  onChange={(e) => setEnquiries(prev => prev.map(enq => 
+                                    enq.id === enquiry.id ? { ...enq, replyText: (e.target as HTMLTextAreaElement).value } : enq
                                   ))}
                                   placeholder="Type your reply..."
                                   className="w-full"

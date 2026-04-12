@@ -84,7 +84,7 @@ export default function MyBookings() {
     try {
       // Update booking status to cancelled
       const updatedBookings = bookings.map(booking =>
-        booking.id === bookingId ? { ...booking, status: 'cancelled' } : booking
+        booking.id === bookingId ? { ...booking, status: 'cancelled' as const } : booking
       )
       
       await updateDoc(doc(db, 'weddings', user!.uid, 'bookings', bookingId), { 

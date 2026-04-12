@@ -93,14 +93,13 @@ export default function BudgetTracker() {
     
     const expenseItem: Expense = {
       id: Date.now().toString(),
-      description: newExpense.description.trim(),
+      name: newExpense.description.trim(),
       category: newExpense.category,
       amount: parseFloat(newExpense.amount),
       paid: newExpense.paid,
       date: newExpense.date ? new Date(newExpense.date) : new Date(),
-      vendor: newExpense.vendor.trim() || undefined,
+      vendorId: newExpense.vendor.trim() || undefined,
       notes: newExpense.notes.trim() || undefined,
-      isBooking: newExpense.isBooking
     }
     
     try {
@@ -203,7 +202,7 @@ export default function BudgetTracker() {
     
     const csv = 'Description,Category,Amount,Status,Date,Vendor,Notes\n' +
       wedding.expenses.map(expense => 
-        `"${expense.description}","${expense.category}","${expense.amount}","${expense.paid ? 'Paid' : 'Unpaid'}","${formatDate(expense.date)}","${expense.vendor || ''}","${expense.notes || ''}"`
+        `"${expense.name}","${expense.category}","${expense.amount}","${expense.paid ? 'Paid' : 'Unpaid'}","${formatDate(expense.date)}","${expense.vendorId || ''}","${expense.notes || ''}"`
       ).join('\n')
     
     const blob = new Blob([csv], { type: 'text/csv' })
@@ -390,7 +389,7 @@ export default function BudgetTracker() {
               fontSize: '28px',
               fontWeight: 300,
               color: brown
-            }}>{wedding.budget.currency} {stats.total.toLocaleString()}</div>
+            }}>{wedding?.budget?.currency || 'USD'} {stats.total.toLocaleString()}</div>
             <div style={{
               fontSize: '10px',
               fontWeight: 500,
@@ -410,7 +409,7 @@ export default function BudgetTracker() {
               fontSize: '28px',
               fontWeight: 300,
               color: brown
-            }}>{wedding.budget.currency} {stats.spent.toLocaleString()}</div>
+            }}>{wedding?.budget?.currency || 'USD'} {stats.spent.toLocaleString()}</div>
             <div style={{
               fontSize: '10px',
               fontWeight: 500,
@@ -430,7 +429,7 @@ export default function BudgetTracker() {
               fontSize: '28px',
               fontWeight: 300,
               color: stats.remaining >= 0 ? '#16a34a' : '#dc2626'
-            }}>{wedding.budget.currency} {Math.abs(stats.remaining).toLocaleString()}</div>
+            }}>{wedding?.budget?.currency || 'USD'} {Math.abs(stats.remaining).toLocaleString()}</div>
             <div style={{
               fontSize: '10px',
               fontWeight: 500,
@@ -450,7 +449,7 @@ export default function BudgetTracker() {
               fontSize: '28px',
               fontWeight: 300,
               color: '#16a34a'
-            }}>{wedding.budget.currency} {stats.paid.toLocaleString()}</div>
+            }}>{wedding?.budget?.currency || 'USD'} {stats.paid.toLocaleString()}</div>
             <div style={{
               fontSize: '10px',
               fontWeight: 500,
@@ -470,7 +469,7 @@ export default function BudgetTracker() {
               fontSize: '28px',
               fontWeight: 300,
               color: '#d97706'
-            }}>{wedding.budget.currency} {stats.unpaid.toLocaleString()}</div>
+            }}>{wedding?.budget?.currency || 'USD'} {stats.unpaid.toLocaleString()}</div>
             <div style={{
               fontSize: '10px',
               fontWeight: 500,
@@ -487,8 +486,8 @@ export default function BudgetTracker() {
             <label style={{ fontFamily: 'Jost', fontSize: '12px', color: muted }}>Total Budget:</label>
             <input
               type="number"
-              value={wedding.budget.total}
-              onChange={(e) => handleUpdateBudget(parseFloat(e.target.value) || 0, wedding.budget.currency)}
+              value={wedding?.budget?.total || 0}
+              onChange={(e) => handleUpdateBudget(parseFloat(e.target.value) || 0, wedding?.budget?.currency || 'USD')}
               style={{
                 padding: '4px 8px',
                 border: '0.5px solid rgba(180,140,90,0.3)',
@@ -504,8 +503,8 @@ export default function BudgetTracker() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <label style={{ fontFamily: 'Jost', fontSize: '12px', color: muted }}>Currency:</label>
             <select
-              value={wedding.budget.currency}
-              onChange={(e) => handleUpdateBudget(wedding.budget.total, e.target.value)}
+              value={wedding?.budget?.currency || 'USD'}
+              onChange={(e) => handleUpdateBudget(wedding?.budget?.total || 0, e.target.value)}
               style={{
                 padding: '4px 8px',
                 border: '0.5px solid rgba(180,140,90,0.3)',
@@ -663,8 +662,8 @@ export default function BudgetTracker() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                           <input
                             type="text"
-                            defaultValue={expense.description}
-                            onBlur={(e) => handleEditExpense(expense.id, { description: e.target.value })}
+                            defaultValue={expense.name}
+                            onBlur={(e) => handleEditExpense(expense.id, { name: e.target.value })}
                             style={{
                               padding: '8px',
                               border: '0.5px solid rgba(180,140,90,0.3)',
@@ -782,7 +781,7 @@ export default function BudgetTracker() {
                               fontWeight: 500,
                               color: brown
                             }}>
-                              {expense.description}
+                              {expense.name}
                             </span>
                             {expense.isBooking && (
                               <div style={{
@@ -820,12 +819,12 @@ export default function BudgetTracker() {
                               <Calendar size={12} />
                               {formatDate(expense.date)}
                             </span>
-                            {expense.vendor && (
+                            {expense.vendorId && (
                               <span style={{
                                 fontSize: '11px',
                                 color: muted
                               }}>
-                                {expense.vendor}
+                                {expense.vendorId}
                               </span>
                             )}
                           </div>
@@ -839,7 +838,7 @@ export default function BudgetTracker() {
                             fontWeight: 300,
                             color: brown
                           }}>
-                            {wedding.budget.currency} {expense.amount.toLocaleString()}
+                            {wedding?.budget?.currency || 'USD'} {expense.amount.toLocaleString()}
                           </div>
                           <div style={{
                             fontSize: '10px',
@@ -927,7 +926,7 @@ export default function BudgetTracker() {
                         color: brown,
                         fontWeight: 500
                       }}>
-                        {wedding.budget.currency} {amount.toLocaleString()}
+                        {wedding?.budget?.currency || 'USD'} {amount.toLocaleString()}
                       </span>
                     </div>
                     <div style={{
@@ -975,7 +974,7 @@ export default function BudgetTracker() {
                 fontWeight: 300,
                 color: brown
               }}>
-                {wedding.budget.total > 0 ? Math.round((stats.spent / stats.total) * 100) : 0}%
+                {(wedding?.budget?.total || 0) > 0 ? Math.round((stats.spent / stats.total) * 100) : 0}%
               </div>
               <div style={{
                 fontSize: '12px',
@@ -993,7 +992,7 @@ export default function BudgetTracker() {
               <div style={{
                 height: '100%',
                 backgroundColor: stats.remaining >= 0 ? gold : '#dc2626',
-                width: `${Math.min(wedding.budget.total > 0 ? (stats.spent / stats.total) * 100 : 0, 100)}%`,
+                width: `${Math.min((wedding?.budget?.total || 0) > 0 ? (stats.spent / stats.total) * 100 : 0, 100)}%`,
                 borderRadius: '4px'
               }}></div>
             </div>

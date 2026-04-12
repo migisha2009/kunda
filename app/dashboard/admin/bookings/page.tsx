@@ -664,11 +664,11 @@ export default function AdminBookingsPage() {
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Wedding Date</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedBooking.weddingDate ? formatDate(selectedBooking.weddingDate) : 'Not set'}</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{(selectedBooking as any).weddingDate ? formatDate((selectedBooking as any).weddingDate) : 'Not set'}</p>
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Venue</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedBooking.venue || 'Not specified'}</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{(selectedBooking as any).venue || 'Not specified'}</p>
                       </div>
                     </div>
                     

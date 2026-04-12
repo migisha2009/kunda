@@ -175,6 +175,7 @@ export default function VendorBrowser() {
       id: Date.now().toString(),
       vendorId: selectedVendor.id,
       vendorName: selectedVendor.name,
+      coupleId: (user || { uid: '' }).uid,
       date: new Date(enquiryForm.date),
       guests: parseInt(enquiryForm.guests),
       budget: parseFloat(enquiryForm.budget),
@@ -190,7 +191,7 @@ export default function VendorBrowser() {
       
       // Also add to vendor's enquiries
       const vendorEnquiriesRef = collection(db, 'vendors', selectedVendor.id, 'enquiries')
-      await addDoc(vendorEnquiriesRef, { ...enquiry, coupleId: user!.uid })
+      await addDoc(vendorEnquiriesRef, { ...enquiry, coupleId: (user || { uid: '' }).uid })
       
       setEnquiryForm({ date: '', guests: '', budget: '', message: '' })
       setShowEnquiryModal(false)
@@ -231,7 +232,7 @@ export default function VendorBrowser() {
   const getFilteredAndSortedVendors = () => {
     let filtered = vendors.filter(vendor => {
       const matchesSearch = vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           vendor.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (vendor.description || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
                            vendor.location.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesCategory = filterCategory === 'all' || vendor.category === filterCategory
       const matchesPrice = filterPrice === 'all' || vendor.priceRange.includes(filterPrice)
@@ -241,9 +242,9 @@ export default function VendorBrowser() {
 
     // Sort vendors
     filtered.sort((a, b) => {
-      if (sortBy === 'rating') return b.rating - a.rating
+      if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0)
       if (sortBy === 'price') return parseInt(a.priceRange.split('-')[0]) - parseInt(b.priceRange.split('-')[0])
-      if (sortBy === 'reviews') return b.reviews - a.reviews
+      if (sortBy === 'reviews') return (b.reviews || 0) - (a.reviews || 0)
       return 0
     })
 
@@ -686,7 +687,7 @@ export default function VendorBrowser() {
               <Camera size={48} color={muted} />
               
               {/* Image Navigation */}
-              {selectedVendor.images && selectedVendor.images.length > 1 && (
+              {((selectedVendor as any).images || []).length > 1 && (
                 <>
                   <button
                     onClick={() => setCurrentImageIndex(Math.max(0, currentImageIndex - 1))}
@@ -709,7 +710,7 @@ export default function VendorBrowser() {
                     <ChevronLeft size={20} color={brown} />
                   </button>
                   <button
-                    onClick={() => setCurrentImageIndex(Math.min(selectedVendor.images.length - 1, currentImageIndex + 1))}
+                    onClick={() => setCurrentImageIndex(Math.min(((selectedVendor as any).images || []).length - 1, currentImageIndex + 1))}
                     style={{
                       position: 'absolute',
                       right: '16px',

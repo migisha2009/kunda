@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../../context/AuthContext'
 import { useRequireAuth } from '../../../../hooks/useRequireAuth'
-import { collection, query, getDocs, orderBy, doc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { collection, query, where, getDocs, orderBy, doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
 import { Vendor, Booking } from '../../../../types'
 import { Store, Search, Filter, Check, X, ExternalLink, Loader2, Star, Eye, Trash2, Ban, Mail, Download, Plus, ChevronLeft, ChevronRight, ArrowUpDown, MoreVertical } from 'lucide-react'
@@ -82,11 +82,11 @@ export default function AdminVendorsPage() {
   }
 
   const filteredVendors = vendors.filter(vendor => {
-    const matchesSearch = vendor.businessName.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = !categoryFilter || vendor.category === categoryFilter
+    const matchesSearch = (vendor.businessName || '').toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = !categoryFilter || (vendor.category || '') === categoryFilter
     const matchesVerified = verifiedFilter === 'all' || 
-      (verifiedFilter === 'verified' && vendor.verified) ||
-      (verifiedFilter === 'unverified' && !vendor.verified)
+      (verifiedFilter === 'verified' && (vendor.verified || false)) ||
+      (verifiedFilter === 'unverified' && !(vendor.verified || false))
     
     return matchesSearch && matchesCategory && matchesVerified
   })
@@ -95,10 +95,10 @@ export default function AdminVendorsPage() {
     let comparison = 0
     switch (sortBy) {
       case 'name':
-        comparison = a.businessName.localeCompare(b.businessName)
+        comparison = (a.businessName || '').localeCompare(b.businessName || '')
         break
       case 'rating':
-        comparison = a.rating - b.rating
+        comparison = (b.rating || 0) - (a.rating || 0)
         break
       case 'joined':
         comparison = new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
@@ -202,13 +202,13 @@ export default function AdminVendorsPage() {
   const exportToCSV = () => {
     const headers = ['Business Name', 'Category', 'Location', 'Rating', 'Status', 'Joined', 'Verified']
     const csvData = filteredVendors.map(vendor => [
-      vendor.businessName,
-      vendor.category,
-      vendor.location,
-      vendor.rating,
-      vendor.verified ? 'Verified' : 'Unverified',
+      vendor.businessName || '',
+      vendor.category || '',
+      vendor.location || '',
+      vendor.rating || 0,
+      (vendor.verified || false) ? 'Verified' : 'Unverified',
       formatDate(vendor.createdAt),
-      vendor.verified ? 'Yes' : 'No'
+      (vendor.verified || false) ? 'Yes' : 'No'
     ])
     
     const csv = [headers, ...csvData].map(row => row.join(',')).join('\n')
@@ -425,31 +425,31 @@ export default function AdminVendorsPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium cursor-pointer" style={{ color: '#3a2a1a' }} onClick={() => loadVendorDetails(vendor)}>
-                            {vendor.businessName}
+                            {vendor.businessName || 'Unknown'}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm" style={{ color: '#9a7850' }}>{vendor.category}</div>
+                          <div className="text-sm" style={{ color: '#9a7850' }}>{vendor.category || 'Unknown'}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm" style={{ color: '#9a7850' }}>{vendor.location}</div>
+                          <div className="text-sm" style={{ color: '#9a7850' }}>{vendor.location || 'Unknown'}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <Star className="w-4 h-4 mr-1" style={{ color: '#f59e0b' }} />
-                            <span className="text-sm" style={{ color: '#3a2a1a' }}>{vendor.rating}</span>
-                            <span className="text-xs ml-1" style={{ color: '#9a7850' }}>({vendor.reviewCount})</span>
+                            <span className="text-sm" style={{ color: '#3a2a1a' }}>{vendor.rating || 0}</span>
+                            <span className="text-xs ml-1" style={{ color: '#9a7850' }}>({vendor.reviewCount || 0})</span>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold ${
-                            vendor.verified 
+                            vendor.verified || false 
                               ? 'text-green-800'
                               : 'text-amber-800'
                           }`} style={{ 
-                            backgroundColor: vendor.verified ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)'
+                            backgroundColor: (vendor.verified || false) ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)'
                           }}>
-                            {vendor.verified ? 'Verified' : 'Unverified'}
+                            {(vendor.verified || false) ? 'Verified' : 'Unverified'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm" style={{ color: '#9a7850' }}>
@@ -467,16 +467,16 @@ export default function AdminVendorsPage() {
                               <Eye className="w-4 h-4" />
                             </button>
                             <button
-                              onClick={() => toggleVerification(vendor.id, vendor.verified)}
+                              onClick={() => toggleVerification(vendor.id, vendor.verified || false)}
                               disabled={updating === vendor.id}
                               className="p-1 rounded transition-colors disabled:opacity-50"
-                              style={{ color: vendor.verified ? '#f59e0b' : '#16a34a' }}
+                              style={{ color: (vendor.verified || false) ? '#f59e0b' : '#16a34a' }}
                               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
                               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
                               {updating === vendor.id ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                              ) : vendor.verified ? (
+                              ) : (vendor.verified || false) ? (
                                 <X className="w-4 h-4" />
                               ) : (
                                 <Check className="w-4 h-4" />
@@ -569,7 +569,7 @@ export default function AdminVendorsPage() {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>
-                        {selectedVendor.businessName}
+                        {selectedVendor.businessName || 'Unknown'}
                       </h2>
                       <button
                         onClick={() => setShowVendorModal(false)}
@@ -585,28 +585,28 @@ export default function AdminVendorsPage() {
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Category</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedVendor.category}</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedVendor.category || 'Unknown'}</p>
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Location</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedVendor.location}</p>
+                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedVendor.location || 'Unknown'}</p>
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Rating</p>
                         <div className="flex items-center mt-1">
                           <Star className="w-4 h-4 mr-1" style={{ color: '#f59e0b' }} />
-                          <span className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{selectedVendor.rating}</span>
-                          <span className="text-xs ml-1" style={{ color: '#9a7850' }}>({selectedVendor.reviewCount} reviews)</span>
+                          <span className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{selectedVendor.rating || 0}</span>
+                          <span className="text-xs ml-1" style={{ color: '#9a7850' }}>({selectedVendor.reviewCount || 0} reviews)</span>
                         </div>
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#9a7850' }}>Status</p>
                         <span className={`inline-block px-2 py-1 text-xs leading-5 font-semibold mt-1 ${
-                          selectedVendor.verified ? 'text-green-800' : 'text-amber-800'
+                          (selectedVendor.verified || false) ? 'text-green-800' : 'text-amber-800'
                         }`} style={{ 
-                          backgroundColor: selectedVendor.verified ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)'
+                          backgroundColor: (selectedVendor.verified || false) ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)'
                         }}>
-                          {selectedVendor.verified ? 'Verified' : 'Unverified'}
+                          {(selectedVendor.verified || false) ? 'Verified' : 'Unverified'}
                         </span>
                       </div>
                       <div>
@@ -626,7 +626,7 @@ export default function AdminVendorsPage() {
                     
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => window.location.href = `mailto:${selectedVendor.email}`}
+                        onClick={() => window.location.href = `mailto:${selectedVendor.contact?.email || ''}`}
                         className="px-4 py-2 text-sm font-medium rounded transition-colors"
                         style={{ backgroundColor: '#7a5c30', color: '#fdf9f5' }}
                       >
