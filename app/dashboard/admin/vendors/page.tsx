@@ -239,6 +239,7 @@ export default function AdminVendorsPage() {
                 <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Vendor Management</h1>
                 <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Manage and verify wedding vendors on the platform</p>
               </div>
+            </div>
             {/* Export and Filters */}
             <div className="flex items-center justify-between mb-6">
               <button
@@ -284,7 +285,7 @@ export default function AdminVendorsPage() {
                       <tr key={vendor.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{vendor.businessName}</div>
-                          <div className="text-xs" style={{ color: '#6b7280' }}>{vendor.email}</div>
+                          <div className="text-xs" style={{ color: '#6b7280' }}>{vendor.contact?.email}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm" style={{ color: '#3a2a1a' }}>{vendor.category}</div>

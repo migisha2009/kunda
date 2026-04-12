@@ -493,7 +493,6 @@ export default function VendorBookingsPage() {
             justifyContent: 'center'
           }}>
             <span style={{
-              color: '#3498db',
               color: '#1a56db',
               fontSize: '13px',
               fontFamily: 'Urbanist',
