@@ -8,6 +8,7 @@ import VendorCard from './VendorCard'
 import VendorFilters from './VendorFilters'
 import { Vendor } from '../../types'
 import { Loader2 } from 'lucide-react'
+import { colors, typography, getStyles } from '../../lib/styles'
 
 export default function VendorsPage() {
   const searchParams = useSearchParams()
@@ -53,7 +54,7 @@ export default function VendorsPage() {
   
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading vendors...</p>
@@ -64,7 +65,7 @@ export default function VendorsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
         <div className="text-center">
           <div className="text-red-500 mb-4">
             <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,12 +86,12 @@ export default function VendorsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: colors.bg }}>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Find Wedding Vendors</h1>
-          <p className="text-gray-600">Discover the best wedding professionals for your special day</p>
+          <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '36px' }}>Find Wedding Vendors</h1>
+          <p className="text-gray-600" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>Discover the best wedding professionals for your special day</p>
         </div>
 
         {/* Filters */}

@@ -9,6 +9,7 @@ import { signInWithEmail } from '../../lib/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../lib/firebase'
 import { Loader2 } from 'lucide-react'
+import { colors, typography, getStyles } from '../../lib/styles'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -67,16 +68,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#f0f4ff' }}>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: colors.bg }}>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl mb-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '32px' }}>Welcome Back</h1>
+          <h1 className="text-3xl mb-2" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '32px' }}>Welcome Back</h1>
           <p className="text-gray-600">Sign in to your Kunda account</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+            <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
               Email Address
             </label>
             <input
@@ -91,7 +92,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+            <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
               Password
             </label>
             <input

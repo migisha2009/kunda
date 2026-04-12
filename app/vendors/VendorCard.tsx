@@ -2,6 +2,7 @@
 
 import { Vendor } from '../../types'
 import { Star, MapPin, Store } from 'lucide-react'
+import { colors, typography, getStyles } from '../../lib/styles'
 
 interface VendorCardProps {
   vendor: Vendor
@@ -33,7 +34,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
       {/* Content */}
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="font-semibold text-gray-900 text-lg">
+          <h3 className="font-semibold text-lg" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 600 }}>
               {(vendor.businessName || vendor.name).split(' ').map(word => 
                 word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
               ).join(' ')}

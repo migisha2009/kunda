@@ -10,6 +10,7 @@ import { createUser } from '../../lib/firestore'
 import { testFirebaseConnection, checkEnvironmentVariables } from '../../lib/firebase-test'
 import { User } from '../../types'
 import { Loader2, Users, Store, Eye, EyeOff, Check, X } from 'lucide-react'
+import { colors, typography, getStyles } from '../../lib/styles'
 
 const passwordRequirements = {
   minLength: (password: string) => password.length >= 8,
@@ -152,10 +153,10 @@ export default function SignupPage() {
   }, [isPasswordWeak, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#f0f4ff' }}>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: colors.bg }}>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl mb-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '32px' }}>Join Kunda</h1>
+          <h1 className="text-3xl mb-2" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '32px' }}>Join Kunda</h1>
           <p className="text-gray-600">Start planning your perfect wedding</p>
         </div>
 
@@ -186,7 +187,7 @@ export default function SignupPage() {
             <input type="hidden" {...register('role')} />
             
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Full Name
               </label>
               <input
@@ -201,7 +202,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Email Address
               </label>
               <input
@@ -216,7 +217,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Phone Number
               </label>
               <input
@@ -231,7 +232,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Password
               </label>
               <div className="relative">
@@ -295,7 +296,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Confirm Password
               </label>
               <div className="relative">

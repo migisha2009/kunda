@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../context/AuthContext'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
@@ -242,7 +243,6 @@ export default function CoupleDashboard() {
       date: new Date(),
       venue: '',
       venueAddress: '',
-      ceremonyLocation: '',
       guestCount: 0,
       budget: { total: 0, spent: 0, currency: 'RWF' },
       checklist: defaultChecklist,
@@ -365,11 +365,11 @@ export default function CoupleDashboard() {
       profileCompletion: 0
     }
 
-    const confirmedGuests = guests.filter(g => g.rsvpStatus === 'attending').length
-    const pendingGuests = guests.filter(g => g.rsvpStatus === 'pending').length
-    const declinedGuests = guests.filter(g => g.rsvpStatus === 'declined').length
-    const maybeGuests = guests.filter(g => g.rsvpStatus === 'maybe').length
-    const tasksCompleted = wedding.checklist.filter(t => t.done).length
+    const confirmedGuests = guests.filter((g: Guest) => g.rsvpStatus === 'attending').length
+    const pendingGuests = guests.filter((g: Guest) => g.rsvpStatus === 'pending').length
+    const declinedGuests = guests.filter((g: Guest) => g.rsvpStatus === 'declined').length
+    const maybeGuests = guests.filter((g: Guest) => g.rsvpStatus === 'maybe').length
+    const tasksCompleted = wedding.checklist.filter((t: ChecklistItem) => t.done).length
     const tasksTotal = wedding.checklist.length
     const budgetUsed = wedding.budget.total > 0 ? Math.round((wedding.budget.spent / wedding.budget.total) * 100) : 0
     const budgetRemaining = wedding.budget.total - wedding.budget.spent
@@ -830,7 +830,7 @@ export default function CoupleDashboard() {
             fontFamily: 'Urbanist',
             fontSize: '14px',
             fontWeight: 600,
-            color: primaryDark,
+            stroke: primaryDark,
             textDecoration: 'none'
           }}>Overview</a>
           <a href="/dashboard/couple/checklist" style={{
@@ -1124,7 +1124,7 @@ export default function CoupleDashboard() {
                 type="text"
                 placeholder="Wedding hashtag"
                 value={onboarding.hashtag}
-                onChange={(e) => setOnboarding({...onboarding, hashtag: e.target.value})}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOnboarding({...onboarding, hashtag: e.target.value})}
                 style={{
                   padding: '12px',
                   border: `1px solid ${border}`,
@@ -1278,7 +1278,7 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: 'rgba(255,255,255,0.6)',
+                      color: textSecondary,
                       marginTop: '4px'
                     }}>Days</div>
                   </div>
@@ -1300,7 +1300,7 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: 'rgba(255,255,255,0.6)',
+                      color: textSecondary,
                       marginTop: '4px'
                     }}>Hours</div>
                   </div>
@@ -1322,7 +1322,7 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: 'rgba(255,255,255,0.6)',
+                      color: textSecondary,
                       marginTop: '4px'
                     }}>Minutes</div>
                   </div>
@@ -1344,7 +1344,7 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: 'rgba(255,255,255,0.6)',
+                      color: textSecondary,
                       marginTop: '4px'
                     }}>Seconds</div>
                   </div>
@@ -1370,7 +1370,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Search size={16} />
+                  <Search size={16} color={primary} />
                   Browse Vendors
                 </button>
                 <button
@@ -1390,7 +1390,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Users size={16} />
+                  <Users size={16} color={primary} />
                   Guests
                 </button>
                 <button
@@ -1410,7 +1410,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Calendar size={16} />
+                  <Calendar size={16} color={primary} />
                   Bookings
                 </button>
                 <button
@@ -1430,7 +1430,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <DollarSign size={16} />
+                  <DollarSign size={16} color={primary} />
                   Budget
                 </button>
                 <button
@@ -1450,7 +1450,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Share2 size={16} />
+                  <Share2 size={16} color={primary} />
                   Share
                 </button>
                 <button
@@ -1470,7 +1470,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Printer size={16} />
+                  <Printer size={16} color={primary} />
                   Print
                 </button>
               </div>
@@ -1530,14 +1530,14 @@ export default function CoupleDashboard() {
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: '#6b7280',
+                color: textSecondary,
                 marginBottom: '8px'
               }}>Days Until Wedding</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '36px',
                 fontWeight: 800,
-                color: '#111928',
+                color: primaryDark,
                 letterSpacing: '-0.02em'
               }}>{stats.daysUntilWedding}</div>
               <div style={{
@@ -1559,14 +1559,14 @@ export default function CoupleDashboard() {
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: '#6b7280',
+                color: textSecondary,
                 marginBottom: '8px'
               }}>Guest Count</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '36px',
                 fontWeight: 800,
-                color: '#111928',
+                color: primaryDark,
                 letterSpacing: '-0.02em'
               }}>{stats.confirmedGuests}/{stats.totalGuests}</div>
               <div style={{
@@ -1588,14 +1588,14 @@ export default function CoupleDashboard() {
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: '#6b7280',
+                color: textSecondary,
                 marginBottom: '8px'
               }}>Budget Used</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '36px',
                 fontWeight: 800,
-                color: '#111928',
+                color: primaryDark,
                 letterSpacing: '-0.02em'
               }}>{stats.budgetUsed}%</div>
               <div style={{
@@ -2052,10 +2052,10 @@ export default function CoupleDashboard() {
                         cursor: 'pointer'
                       }}
                       onClick={() => handleViewVendor(vendor.id)}
-                      onMouseEnter={(e) => {
+                      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                         e.currentTarget.style.backgroundColor = darkMode ? '#333' : '#f9fafb'
                       }}
-                      onMouseLeave={(e) => {
+                      onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
                         e.currentTarget.style.backgroundColor = 'transparent'
                       }}
                       >
@@ -2120,6 +2120,7 @@ export default function CoupleDashboard() {
                         <div style={{
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
+                          stroke: primary,
                           color: primary,
                           marginTop: '4px'
                         }}>
