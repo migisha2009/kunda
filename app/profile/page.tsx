@@ -9,6 +9,7 @@ import { auth } from '../../lib/firebase'
 import { signOutUser } from '../../lib/auth'
 import { Heart, User, Mail, Phone, Edit2, Save, X, AlertTriangle, Loader2, Key, Trash2 } from 'lucide-react'
 import { formatDate } from '../../lib/dateUtils'
+import { colors, typography } from '../../lib/styles'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -117,8 +118,8 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Profile Settings</h1>
-          <p className="text-gray-600">Manage your account information and preferences</p>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: colors.textPrimary, fontFamily: typography.fontFamily }}>Profile Settings</h1>
+          <p className="" style={{ color: colors.textSecondary }}>Manage your account information and preferences</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -127,14 +128,14 @@ export default function ProfilePage() {
             {/* Profile Information */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <User className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+                <h2 className="text-xl font-semibold flex items-center" style={{ color: colors.textPrimary, fontFamily: typography.fontFamily }}>
+                  <User className="w-5 h-5 mr-2" style={{ color: colors.primary }}> />
                   Profile Information
                 </h2>
                 {!editing && (
                   <button
                     onClick={() => setEditing(true)}
-                    className="text-blue-600 hover:text-blue-700"
+                    className="hover:opacity-80" style={{ color: colors.primary }}
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
@@ -144,26 +145,26 @@ export default function ProfilePage() {
               {editing ? (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}
                       Name
                     </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: colors.border }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}
                       Phone Number
                     </label>
                     <input
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: colors.border }}
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -226,10 +227,10 @@ export default function ProfilePage() {
             {/* Password Settings */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Key className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
+                <Key className="w-5 h-5 mr-2" style={{ color: colors.primary }}> />
                 Password Settings
               </h2>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4" style={{ color: colors.textSecondary }}>
                 Change your password to keep your account secure
               </p>
               <button

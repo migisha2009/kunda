@@ -9,6 +9,7 @@ import { User, Vendor, Booking, Enquiry } from '../../../../types'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { TrendingUp, Users, Calendar, DollarSign, MessageSquare, Loader2 } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
+import { colors, typography } from '../../../../lib/styles'
 
 export default function AdminAnalyticsPage() {
   const { loading: authLoading } = useRequireAuth('admin')

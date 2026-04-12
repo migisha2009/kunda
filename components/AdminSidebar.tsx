@@ -17,6 +17,7 @@ import {
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { signOutUser } from '../lib/auth'
+import { colors, typography } from '../lib/styles'
 
 interface AdminSidebarProps {
   isOpen?: boolean
@@ -83,9 +84,9 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
   }
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full" style={{ backgroundColor: '#1e3a8a' }}>
+    <div className="flex flex-col h-full" style={{ backgroundColor: colors.primaryDark }}>
       {/* Logo */}
-      <div className="flex items-center px-6 py-4" style={{ borderBottom: '1px solid #e5edff' }}>
+      <div className="flex items-center px-6 py-4" style={{ borderBottom: `1px solid ${colors.border}` }}>
         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#1a56db' }} />
         <span className="ml-2 text-2xl font-light" style={{ fontFamily: 'Urbanist', color: '#bfdbfe' }}>
           Kunda

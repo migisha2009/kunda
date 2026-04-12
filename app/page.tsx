@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Heart, Camera, MapPin, Music, Cake, Flower, Home as HomeIcon, Car, Shirt, Star, Users, Menu, X, Phone, MessageCircle, ChevronRight, Settings, Calendar, DollarSign, MessageSquare, AlertCircle, Check } from 'lucide-react'
+import { colors, typography } from 'lib/styles'
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -29,12 +30,12 @@ export default function Home() {
 
   // Features
   const features = [
-    { name: 'Smart Planning Tools', icon: Settings, color: '#1a56db' },
-    { name: 'Verified Vendors', icon: Check, color: '#057a55' },
-    { name: 'Guest Management', icon: Users, color: '#c27803' },
-    { name: 'Budget Tracking', icon: DollarSign, color: '#5b21b6' },
-    { name: 'Easy Bookings', icon: Calendar, color: '#c2410c' },
-    { name: 'WhatsApp Alerts', icon: MessageSquare, color: '#c81e1e' }
+    { name: 'Smart Planning Tools', icon: Settings, color: colors.primary },
+    { name: 'Verified Vendors', icon: Check, color: colors.success },
+    { name: 'Guest Management', icon: Users, color: colors.warning },
+    { name: 'Budget Tracking', icon: DollarSign, color: colors.primaryDark },
+    { name: 'Easy Bookings', icon: Calendar, color: colors.danger },
+    { name: 'WhatsApp Alerts', icon: MessageSquare, color: colors.danger }
   ]
 
   // Testimonials
@@ -118,25 +119,25 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* 1. STICKY NAVBAR */}
-      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`} style={{ borderBottom: '1px solid #e5edff' }}>
+      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`} style={{ borderBottom: `1px solid ${colors.border}` }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#1a56db' }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
                 <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
               </div>
-              <span className="ml-2" style={{ fontFamily: 'Urbanist', color: '#1a56db', fontWeight: 800, fontSize: '22px' }}>Kunda</span>
+              <span className="ml-2" style={{ fontFamily: typography.fontFamily, color: colors.primary, fontWeight: typography.fontWeights.bold, fontSize: typography.fontSizes['2xl'] }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Vendors</Link>
-              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>How it Works</a>
-              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Pricing</a>
-              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Contact</a>
+              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>Vendors</Link>
+              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>How it Works</a>
+              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>Pricing</a>
+              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>Contact</a>
               <Link href="/login" className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium transition-colors hover:bg-blue-50">Login</Link>
-              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: '#1a56db' }}>Get Started</Link>
+              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: colors.primary }}>Get Started</Link>
             </div>
 
             {/* Mobile menu button */}
@@ -159,7 +160,7 @@ export default function Home() {
                 <a href="#pricing" className="text-gray-700 hover:text-gray-900">Pricing</a>
                 <a href="#contact" className="text-gray-700 hover:text-gray-900">Contact</a>
                 <Link href="/login" className="text-gray-700 hover:text-gray-900">Login</Link>
-                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: '#1a56db' }}>
+                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: colors.primary }}>
                   Get Started
                 </Link>
               </div>
@@ -170,7 +171,7 @@ export default function Home() {
 
       {/* 2. HERO SECTION */}
       <section style={{ 
-        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)',
+        background: `linear-gradient(135deg, ${colors.primaryDark}, ${colors.primary} 50%, ${colors.primaryLight})`,
         minHeight: '560px',
         padding: '80px 64px',
         position: 'relative',
@@ -190,16 +191,14 @@ export default function Home() {
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2" style={{ animation: 'pulse 2s infinite' }}></div>
               Rwanda's #1 Wedding Platform
             </div>
-            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight" style={{ 
-              fontWeight: 900, 
-              letterSpacing: '-0.03em',
-              fontFamily: 'Urbanist'
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ 
+              fontFamily: typography.fontFamily
             }}>
               Your Perfect Wedding,<br />
-              <span style={{ color: '#93c5fd' }}>Beautifully</span><br />
+              <span style={{ color: colors.primaryAccent }}>Beautifully</span><br />
               Orchestrated
             </h1>
-            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 400 }}>
+            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: typography.fontWeights.normal }}>
               Connect with verified wedding vendors, manage your budget, and plan every detail of your special day
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -213,7 +212,7 @@ export default function Home() {
             <div className="flex items-center">
               <div className="flex -space-x-2">
                 {[1,2,3,4].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center" style={{ backgroundColor: '#1a56db' }}>
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
                     <span className="text-white text-xs font-bold">{i}</span>
                   </div>
                 ))}
@@ -268,24 +267,24 @@ export default function Home() {
       </section>
 
       {/* 3. STATS BAR */}
-      <section id="stats" data-animate style={{ backgroundColor: '#1e3a8a', padding: '24px' }}>
+      <section id="stats" data-animate style={{ backgroundColor: colors.primaryDark, padding: '24px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease' : 'none' }}>2,400+</div>
-              <div className="text-sm uppercase" style={{ color: '#93c5fd' }}>Weddings</div>
+              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Weddings</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.2s' : 'none' }}>380+</div>
-              <div className="text-sm uppercase" style={{ color: '#93c5fd' }}>Vendors</div>
+              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Vendors</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.4s' : 'none' }}>98%</div>
-              <div className="text-sm uppercase" style={{ color: '#93c5fd' }}>Satisfied</div>
+              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Satisfied</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.6s' : 'none' }}>10+</div>
-              <div className="text-sm uppercase" style={{ color: '#93c5fd' }}>Categories</div>
+              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Categories</div>
             </div>
           </div>
         </div>
@@ -294,7 +293,7 @@ export default function Home() {
       {/* 4. FEATURES SECTION */}
       <section id="features" data-animate style={{ backgroundColor: 'white', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'Urbanist', fontWeight: 900, color: '#111928' }}>
+          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: typography.fontFamily, fontWeight: typography.fontWeights.black, color: colors.textPrimary }}>
             Everything you need for your perfect wedding
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -303,16 +302,16 @@ export default function Home() {
               return (
                 <div key={index} className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                      style={{ 
-                       backgroundColor: 'white', 
-                       borderColor: '#e5edff',
+                       backgroundColor: colors.bgCard, 
+                       borderColor: colors.border,
                        animation: visibleSections.has('features') ? `fadeInUp 0.6s ease ${index * 0.1}s both` : 'none'
                      }}>
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" 
                        style={{ backgroundColor: `${feature.color}20`, color: feature.color }}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: '#111928' }}>{feature.name}</h3>
-                  <p className="text-sm" style={{ color: '#6b7280' }}>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: colors.textPrimary }}>{feature.name}</h3>
+                  <p className="text-sm" style={{ color: colors.textSecondary }}>
                     {feature.name === 'Smart Planning Tools' && 'AI-powered timeline and task management'}
                     {feature.name === 'Verified Vendors' && 'All vendors are background-checked and reviewed'}
                     {feature.name === 'Guest Management' && 'RSVP tracking and guest list organization'}
@@ -328,7 +327,7 @@ export default function Home() {
       </section>
 
       {/* 5. VENDOR CATEGORIES SECTION */}
-      <section id="categories" data-animate style={{ backgroundColor: '#f0f4ff', padding: '80px 64px' }}>
+      <section id="categories" data-animate style={{ backgroundColor: colors.bg, padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {vendorCategories.map((category, index) => {
@@ -337,36 +336,36 @@ export default function Home() {
                 <div key={index} 
                      className="p-4 rounded-xl text-center transition-all hover:bg-blue-600 hover:text-white cursor-pointer"
                      style={{ 
-                       backgroundColor: '#f0f4ff',
-                       borderColor: '#e5edff',
-                       border: '1px solid #e5edff',
+                       backgroundColor: colors.bgCard,
+                       borderColor: colors.border,
+                       border: `1px solid ${colors.border}`,
                        animation: visibleSections.has('categories') ? `fadeInUp 0.6s ease ${index * 0.05}s both` : 'none'
                      }}
                      onMouseEnter={(e) => {
                        const target = e.currentTarget
-                       target.style.backgroundColor = '#1a56db'
-                       target.style.color = 'white'
+                       target.style.backgroundColor = colors.primary
+                       target.style.color = colors.white
                        const iconDiv = target.querySelector('div')
                        if (iconDiv) {
                          iconDiv.style.backgroundColor = 'rgba(255,255,255,0.2)'
-                         iconDiv.style.color = 'white'
+                         iconDiv.style.color = colors.white
                        }
                      }}
                      onMouseLeave={(e) => {
                        const target = e.currentTarget
-                       target.style.backgroundColor = '#f0f4ff'
-                       target.style.color = '#1e3a8a'
+                       target.style.backgroundColor = colors.bgCard
+                       target.style.color = colors.primaryDark
                        const iconDiv = target.querySelector('div')
                        if (iconDiv) {
-                         iconDiv.style.backgroundColor = 'white'
-                         iconDiv.style.color = '#1e3a8a'
+                         iconDiv.style.backgroundColor = colors.white
+                         iconDiv.style.color = colors.primaryDark
                        }
                      }}>
                   <div className="w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-2 transition-all" 
-                       style={{ backgroundColor: 'white', color: '#1e3a8a' }}>
+                       style={{ backgroundColor: colors.white, color: colors.primaryDark }}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <div className="text-xs font-bold" style={{ color: '#1e3a8a' }}>{category.name}</div>
+                  <div className="text-xs font-bold" style={{ color: colors.primaryDark }}>{category.name}</div>
                 </div>
               )
             })}
@@ -375,7 +374,7 @@ export default function Home() {
       </section>
 
       {/* 6. HOW IT WORKS SECTION */}
-      <section id="how-it-works" data-animate style={{ backgroundColor: 'white', padding: '80px 64px' }}>
+      <section id="how-it-works" data-animate style={{ backgroundColor: colors.bgCard, padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center mb-8">
             <div className="inline-flex rounded-lg bg-gray-100 p-1">
@@ -419,8 +418,8 @@ export default function Home() {
                 <div className="w-13 h-13 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                   {step.number}
                 </div>
-                <h3 className="text-lg font-bold mb-2" style={{ color: '#111928' }}>{step.title}</h3>
-                <p className="text-sm" style={{ color: '#6b7280' }}>{step.desc}</p>
+                <h3 className="text-lg font-bold mb-2" style={{ color: colors.textPrimary }}>{step.title}</h3>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -428,30 +427,30 @@ export default function Home() {
       </section>
 
       {/* 7. TESTIMONIALS SECTION */}
-      <section id="testimonials" data-animate style={{ backgroundColor: '#f0f4ff', padding: '80px 64px' }}>
+      <section id="testimonials" data-animate style={{ backgroundColor: colors.bg, padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} 
                    className="p-6 rounded-xl border"
                    style={{ 
-                     backgroundColor: 'white',
-                     borderColor: '#e5edff',
+                     backgroundColor: colors.bgCard,
+                     borderColor: colors.border,
                      animation: visibleSections.has('testimonials') ? `fadeInUp 0.6s ease ${index * 0.1}s both` : 'none'
                    }}>
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" style={{ color: '#fbbf24' }} />
+                    <Star key={i} className="w-4 h-4 fill-current" style={{ color: colors.warning }} />
                   ))}
                 </div>
-                <p className="text-sm mb-4 italic" style={{ color: '#374151' }}>"{testimonial.text}"</p>
+                <p className="text-sm mb-4 italic" style={{ color: colors.textMuted }}>"{testimonial.text}"</p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">
                     {testimonial.name.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-medium" style={{ color: '#111928' }}>{testimonial.name}</div>
-                    <div className="text-xs" style={{ color: '#6b7280' }}>{testimonial.location}</div>
+                    <div className="font-medium" style={{ color: colors.textPrimary }}>{testimonial.name}</div>
+                    <div className="text-xs" style={{ color: colors.textSecondary }}>{testimonial.location}</div>
                   </div>
                 </div>
               </div>
@@ -461,61 +460,61 @@ export default function Home() {
       </section>
 
       {/* 8. CONTACT SECTION */}
-      <section id="contact" data-animate style={{ backgroundColor: 'white', padding: '80px 64px' }}>
+      <section id="contact" data-animate style={{ backgroundColor: colors.bgCard, padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: '#111928' }}>
+          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: colors.textPrimary }}>
             Get in touch with Kunda
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: '#f0f4ff' }}>
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: '#111928' }}>Phone</div>
-                  <div className="text-sm" style={{ color: '#6b7280' }}>+250 783 312 746</div>
+                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Phone</div>
+                  <div className="text-sm" style={{ color: colors.textSecondary }}>+250 783 312 746</div>
                 </div>
               </div>
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: '#f0f4ff' }}>
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: '#111928' }}>Phone 2</div>
-                  <div className="text-sm" style={{ color: '#6b7280' }}>+250 782 526 295</div>
+                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Phone 2</div>
+                  <div className="text-sm" style={{ color: colors.textSecondary }}>+250 782 526 295</div>
                 </div>
               </div>
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: '#f0f4ff' }}>
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: '#111928' }}>Instagram</div>
-                  <div className="text-sm" style={{ color: '#6b7280' }}>@darkxente</div>
+                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Instagram</div>
+                  <div className="text-sm" style={{ color: colors.textSecondary }}>@darkxente</div>
                 </div>
               </div>
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: '#f0f4ff' }}>
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: '#111928' }}>Location</div>
-                  <div className="text-sm" style={{ color: '#6b7280' }}>Kigali, Rwanda</div>
+                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Location</div>
+                  <div className="text-sm" style={{ color: colors.textSecondary }}>Kigali, Rwanda</div>
                 </div>
               </div>
             </div>
 
             {/* Contact form */}
-            <div className="p-7 rounded-xl" style={{ backgroundColor: '#f0f4ff' }}>
+            <div className="p-7 rounded-xl" style={{ backgroundColor: colors.bg }}>
               {formSubmitted ? (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                    <Check className="w-8 h-8 text-green-600" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: colors.successBg }}>
+                    <Check className="w-8 h-8" style={{ color: colors.success }} />
                   </div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: '#111928' }}>Message Sent!</h3>
-                  <p className="text-sm" style={{ color: '#6b7280' }}>We'll get back to you soon.</p>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: colors.textPrimary }}>Message Sent!</h3>
+                  <p className="text-sm" style={{ color: colors.textSecondary }}>We'll get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleFormSubmit}>
@@ -525,8 +524,8 @@ export default function Home() {
                       placeholder="Name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full p-3 rounded-lg border border-gray-300 focus:border-blue-600 focus:outline-none"
-                      style={{ backgroundColor: 'white' }}
+                      className="w-full p-3 rounded-lg border focus:outline-none"
+                      style={{ backgroundColor: colors.white, borderColor: colors.border }}
                       required
                     />
                   </div>
@@ -536,8 +535,8 @@ export default function Home() {
                       placeholder="Email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full p-3 rounded-lg border border-gray-300 focus:border-blue-600 focus:outline-none"
-                      style={{ backgroundColor: 'white' }}
+                      className="w-full p-3 rounded-lg border focus:outline-none"
+                      style={{ backgroundColor: colors.white, borderColor: colors.border }}
                       required
                     />
                   </div>
@@ -547,15 +546,15 @@ export default function Home() {
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="w-full p-3 rounded-lg border border-gray-300 focus:border-blue-600 focus:outline-none resize-none"
-                      style={{ backgroundColor: 'white' }}
+                      className="w-full p-3 rounded-lg border focus:outline-none resize-none"
+                      style={{ backgroundColor: colors.white, borderColor: colors.border }}
                       required
                     />
                   </div>
                   <button
                     type="submit"
                     className="w-full py-3 rounded-lg text-white font-medium transition-all hover:opacity-90"
-                    style={{ backgroundColor: '#1a56db' }}
+                    style={{ backgroundColor: colors.primary }}
                   >
                     Send Message
                   </button>
@@ -598,25 +597,25 @@ export default function Home() {
       </section>
 
       {/* 10. FOOTER */}
-      <footer style={{ backgroundColor: '#0f172a', padding: '60px 64px 20px' }}>
+      <footer style={{ backgroundColor: colors.textPrimary, padding: '60px 64px 20px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Kunda info */}
             <div>
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#1a56db' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="ml-2" style={{ fontFamily: 'Urbanist', color: '#1a56db', fontWeight: 800, fontSize: '20px' }}>Kunda</span>
+                <span className="ml-2" style={{ fontFamily: typography.fontFamily, color: colors.primary, fontWeight: typography.fontWeights.bold, fontSize: typography.fontSizes.xl }}>Kunda</span>
               </div>
-              <p className="text-sm mb-4" style={{ color: '#64748b' }}>
+              <p className="text-sm mb-4" style={{ color: colors.textSecondary }}>
                 Your perfect wedding, beautifully orchestrated. Rwanda's premier wedding planning platform.
               </p>
               <div className="flex space-x-3">
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center cursor-pointer hover:bg-blue-700">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: colors.primary }}>
                   <MessageCircle className="w-4 h-4 text-white" />
                 </div>
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center cursor-pointer hover:bg-blue-700">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: colors.primary }}>
                   <Phone className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -624,47 +623,47 @@ export default function Home() {
 
             {/* For Couples */}
             <div>
-              <h3 className="font-bold mb-4" style={{ color: 'white' }}>For Couples</h3>
+              <h3 className="font-bold mb-4" style={{ color: colors.white }}>For Couples</h3>
               <ul className="space-y-2">
-                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Find Vendors</Link></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>How It Works</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Success Stories</a></li>
+                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Find Vendors</Link></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>How It Works</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Pricing</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Success Stories</a></li>
               </ul>
             </div>
 
             {/* For Vendors */}
             <div>
-              <h3 className="font-bold mb-4" style={{ color: 'white' }}>For Vendors</h3>
+              <h3 className="font-bold mb-4" style={{ color: colors.white }}>For Vendors</h3>
               <ul className="space-y-2">
-                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Join Kunda</Link></li>
-                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Vendor Dashboard</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Vendor Resources</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Pricing Plans</a></li>
+                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Join Kunda</Link></li>
+                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Vendor Dashboard</Link></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Vendor Resources</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Pricing Plans</a></li>
               </ul>
             </div>
 
             {/* Company */}
             <div>
-              <h3 className="font-bold mb-4" style={{ color: 'white' }}>Company</h3>
+              <h3 className="font-bold mb-4" style={{ color: colors.white }}>Company</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>About Us</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: '#64748b', fontSize: '14px' }}>Terms of Service</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>About Us</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Terms of Service</a></li>
               </ul>
             </div>
           </div>
 
           {/* Bottom bar */}
-          <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center" style={{ borderColor: '#1e293b' }}>
-            <p className="text-sm" style={{ color: '#64748b' }}>
+          <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center" style={{ borderColor: colors.border }}>
+            <p className="text-sm" style={{ color: colors.textSecondary }}>
               &copy; 2024 Kunda. All rights reserved.
             </p>
             <div className="flex items-center mt-4 md:mt-0">
-              <span className="text-sm" style={{ color: '#64748b' }}>Made with love in</span>
-              <MapPin className="w-4 h-4 mx-1" style={{ color: '#1a56db' }} />
-              <span className="text-sm font-medium" style={{ color: '#1a56db' }}>Kigali, Rwanda</span>
+              <span className="text-sm" style={{ color: colors.textSecondary }}>Made with love in</span>
+              <MapPin className="w-4 h-4 mx-1" style={{ color: colors.primary }} />
+              <span className="text-sm font-medium" style={{ color: colors.primary }}>Kigali, Rwanda</span>
             </div>
           </div>
         </div>

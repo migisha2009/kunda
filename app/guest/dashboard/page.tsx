@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getGuest, getWedding, updateGuestRSVP } from '@/lib/firestore'
 import { Guest, Wedding } from '@/types'
 import { formatDate } from '@/lib/dateUtils'
+import { colors, typography } from '@/lib/styles'
 
 interface CountdownTime {
   days: number
@@ -121,12 +122,12 @@ export default function GuestDashboard() {
   if (error || !guest || !wedding) {
     return (
       <div className="min-h-screen bg-[#fdf9f5] flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4">
+        <div className="rounded-2xl shadow-xl p-8 max-w-md w-full mx-4" style={{ backgroundColor: colors.bgCard }}>
           <div className="text-center">
-            <p className="text-red-600 mb-4 font-jost">{error || 'Something went wrong'}</p>
+            <p className="mb-4" style={{ color: colors.danger, fontFamily: typography.fontFamily }}>{error || 'Something went wrong'}</p>
             <button
               onClick={() => router.push('/login')}
-              className="bg-[#7a5c30] text-white px-6 py-2 rounded-lg font-jost hover:bg-[#6a4c20] transition-colors"
+              className="px-6 py-2 rounded-lg font-medium transition-colors hover:opacity-80" style={{ backgroundColor: colors.primary, color: colors.white }}>
             >
               Back to Login
             </button>
@@ -140,12 +141,12 @@ export default function GuestDashboard() {
     <div className="min-h-screen bg-[#fdf9f5]">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+        <div className="rounded-2xl shadow-lg p-8 mb-6" style={{ backgroundColor: colors.bgCard }}>
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-[#7a5c30] mb-2 font-cormorant">
+            <h1 className="text-4xl font-bold mb-2" style={{ color: colors.primary, fontFamily: 'Urbanist' }}>
               Welcome, {guest.name}
             </h1>
-            <p className="text-xl text-[#3a2a1a] mb-4 font-cormorant italic">
+            <p className="text-xl mb-4 italic" style={{ color: colors.textSecondary, fontFamily: typography.fontFamily }}>
               {wedding.coupleName1 && wedding.coupleName2 ? (
                 `${wedding.coupleName1} & ${wedding.coupleName2}'s Wedding`
               ) : (
@@ -154,24 +155,24 @@ export default function GuestDashboard() {
             </p>
             
             {/* Countdown Timer */}
-            <div className="bg-gradient-to-r from-[#7a5c30] to-[#b08850] rounded-xl p-6 text-white">
+            <div className="rounded-xl p-6 text-white" style={{ background: `linear-gradient(to right, ${colors.primaryDark}, ${colors.primary})` }}>
               <p className="text-sm mb-2 font-jost">Countdown to the Wedding</p>
               <div className="flex justify-center space-x-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold">{countdown.days}</div>
-                  <div className="text-xs font-jost">Days</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.days}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Days</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">{countdown.hours}</div>
-                  <div className="text-xs font-jost">Hours</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.hours}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Hours</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">{countdown.minutes}</div>
-                  <div className="text-xs font-jost">Minutes</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.minutes}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Minutes</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">{countdown.seconds}</div>
-                  <div className="text-xs font-jost">Seconds</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.seconds}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Seconds</div>
                 </div>
               </div>
             </div>
@@ -189,25 +190,25 @@ export default function GuestDashboard() {
               </span>
             </div>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-6" style={{ backgroundColor: colors.bgCard }}>
               <button
                 onClick={() => handleRSVPUpdate('attending')}
                 disabled={updatingRSVP}
-                className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-jost hover:bg-green-700 transition-colors disabled:opacity-50"
+                className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.success, color: colors.white }}>
               >
                 ✓ Attending
               </button>
               <button
                 onClick={() => handleRSVPUpdate('declined')}
                 disabled={updatingRSVP}
-                className="w-full bg-red-600 text-white py-3 px-4 rounded-lg font-jost hover:bg-red-700 transition-colors disabled:opacity-50"
+                className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.danger, color: colors.white }}>
               >
                 ✗ Can't Make It
               </button>
               <button
                 onClick={() => handleRSVPUpdate('maybe')}
                 disabled={updatingRSVP}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-jost hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.primary, color: colors.white }}
               >
                 ? Maybe
               </button>
@@ -319,7 +320,7 @@ export default function GuestDashboard() {
               <div className="text-center py-4">
                 <div className="inline-block bg-[#7a5c30] text-white px-8 py-4 rounded-xl">
                   <p className="text-sm font-jost">Your Table</p>
-                  <p className="text-3xl font-bold">Table {guest.tableNumber}</p>
+                  <p className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Table {guest.tableNumber}</p>
                 </div>
               </div>
             ) : (
