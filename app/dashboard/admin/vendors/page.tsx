@@ -239,39 +239,96 @@ export default function AdminVendorsPage() {
                 <h1 className="text-3xl font-light" style={{ fontFamily: 'Urbanist', color: '#3a2a1a' }}>Vendor Management</h1>
                 <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Manage and verify wedding vendors on the platform</p>
               </div>
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Category</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>{selectedVendor.category || 'Unknown'}</p>
-                      </div>
-                        <p className="text-xs uppercase tracking-wider" style={{ letterSpacing: '0.15em', color: '#6b7280' }}>Total Revenue</p>
-                        <p className="text-sm font-medium mt-1" style={{ color: '#3a2a1a' }}>${vendorRevenue.toLocaleString()}</p>
-                      </div>
-                    </div>
-                    
-                        Send Email
-                      </button>
-                      <a
-                        href={`/vendors/${selectedVendor.userId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 text-sm font-medium rounded transition-colors"
-                        style={{ border: '1px solid #1a56db', color: '#1a56db' }}
-                      >
-                        <ExternalLink className="w-4 h-4 inline mr-2" />
-                        View Public Profile
-                      </a>
-                    </div>
-                  </div>
-                </div>
+            {/* Export and Filters */}
+            <div className="flex items-center justify-between mb-6">
+              <button
+                onClick={exportToCSV}
+                className="px-4 py-2 text-sm font-medium rounded transition-colors"
+                style={{ border: '1px solid #1a56db', color: '#1a56db' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(26, 86, 219, 0.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <Download className="w-4 h-4 inline mr-2" />
+                Export CSV
+              </button>
+            </div>
+
+            {/* Vendors Table */}
+            <div style={{ backgroundColor: '#ffffff', border: '1px solid #e5edff' }}>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead style={{ backgroundColor: '#f7f8fd' }}>
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
+                        Business Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
+                        Category
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
+                        Location
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
+                        Rating
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: '#6b7280', letterSpacing: '0.15em' }}>
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y" style={{ borderColor: '#e5edff' }}>
+                    {filteredVendors.map((vendor) => (
+                      <tr key={vendor.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium" style={{ color: '#3a2a1a' }}>{vendor.businessName}</div>
+                          <div className="text-xs" style={{ color: '#6b7280' }}>{vendor.email}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm" style={{ color: '#3a2a1a' }}>{vendor.category}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm" style={{ color: '#3a2a1a' }}>{vendor.location}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Star className="w-4 h-4" style={{ color: '#1a56db' }} />
+                            <span className="ml-1 text-sm" style={{ color: '#3a2a1a' }}>{vendor.rating || 0}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            vendor.verified 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {vendor.verified ? 'Verified' : 'Unverified'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => setSelectedVendor(vendor)}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              View
+                            </button>
+                            <button
+                              onClick={() => toggleVendorSelection(vendor.id)}
+                              className="text-gray-600 hover:text-gray-800"
+                            >
+                              {selectedVendors.includes(vendor.id) ? 'Deselect' : 'Select'}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
+            </div>
           </div>
         </div>
       )}

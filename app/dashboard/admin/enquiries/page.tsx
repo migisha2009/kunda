@@ -696,4 +696,4 @@ export default function AdminEnquiriesPage() {
       )}
     </>
   )
-},
+}
