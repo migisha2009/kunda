@@ -226,7 +226,7 @@ export default function ProfilePage() {
 
             {/* Password Settings */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+              <h2 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}
                 <Key className="w-5 h-5 mr-2" style={{ color: colors.primary }}> />
                 Password Settings
               </h2>
@@ -235,7 +235,7 @@ export default function ProfilePage() {
               </p>
               <button
                 onClick={handleChangePassword}
-                className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 text-white font-medium rounded-lg transition-colors" style={{ backgroundColor: colors.primary }}
               >
                 Send Password Reset Link
               </button>
@@ -243,14 +243,14 @@ export default function ProfilePage() {
 
             {/* Messages */}
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{error}</p>
+              <div className="p-4 rounded-lg" style={{ backgroundColor: colors.dangerBg, borderColor: colors.danger }}>
+                <p className="text-sm" style={{ color: colors.danger }}>{error}</p>
               </div>
             )}
 
             {success && (
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-600">{success}</p>
+              <div className="p-4 rounded-lg" style={{ backgroundColor: colors.successBg, borderColor: colors.success }}>
+                <p className="text-sm" style={{ color: colors.success }}>{success}</p>
               </div>
             )}
           </div>
