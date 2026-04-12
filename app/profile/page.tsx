@@ -118,7 +118,7 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" style={{ color: colors.textPrimary, fontFamily: typography.fontFamily }}>Profile Settings</h1>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>Profile Settings</h1>
           <p className="" style={{ color: colors.textSecondary }}>Manage your account information and preferences</p>
         </div>
 
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                     <button
                       onClick={handleSave}
                       disabled={saving}
-                      className="flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="flex items-center px-4 py-2 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" style={{ backgroundColor: colors.primary }}
                     >
                       {saving ? (
                         <>
@@ -189,7 +189,7 @@ export default function ProfilePage() {
                     </button>
                     <button
                       onClick={handleCancel}
-                      className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                      className="flex items-center px-4 py-2 font-medium rounded-lg transition-colors" style={{ backgroundColor: colors.bg, color: colors.textPrimary }}
                     >
                       <X className="w-4 h-4 mr-2" />
                       Cancel
@@ -199,24 +199,24 @@ export default function ProfilePage() {
               ) : (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-600">Name</p>
-                    <p className="font-medium text-gray-900">{userProfile.name}</p>
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>Name</p>
+                    <p className="font-medium" style={{ color: colors.textPrimary }}>{userProfile.name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Email</p>
-                    <p className="font-medium text-gray-900">{user.email}</p>
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>Email</p>
+                    <p className="font-medium" style={{ color: colors.textPrimary }}>{user.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Phone</p>
-                    <p className="font-medium text-gray-900">{userProfile.phone || 'Not provided'}</p>
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>Phone</p>
+                    <p className="font-medium" style={{ color: colors.textPrimary }}>{userProfile.phone || 'Not provided'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Account Type</p>
-                    <p className="font-medium text-gray-900 capitalize">{userProfile.role}</p>
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>Account Type</p>
+                    <p className="font-medium" style={{ color: colors.textPrimary }}>{userProfile.role}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Member Since</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>Member Since</p>
+                    <p className="font-medium" style={{ color: colors.textPrimary }}>
                       {formatDate(userProfile.createdAt)}
                     </p>
                   </div>
