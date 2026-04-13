@@ -179,7 +179,7 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg shadow-md"
-            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.2)' }}
+            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid ${colors.border}' }}
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" style={{ color: '#7a5c30' }} />
