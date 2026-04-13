@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Wedding, Expense } from '../../../../types'
 import { colors } from '../../../../lib/styles'
+import AIChat from '../../../../components/AIChat'
 
 const categoryColors: Record<string, string> = {
   venue: '#8b5cf6',
@@ -1197,6 +1198,7 @@ export default function BudgetTracker() {
           </div>
         </div>
       )}
+      <AIChat />
     </div>
   )
 }

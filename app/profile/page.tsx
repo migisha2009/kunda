@@ -259,19 +259,19 @@ export default function ProfilePage() {
           <div className="space-y-6">
             {/* Account Stats */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="font-semibold text-gray-900 mb-4">Account Overview</h3>
+              <h3 className="font-semibold mb-4" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>Account Overview</h3>
               <div className="space-y-3">
                 <div className="flex items-center">
-                  <Heart className="w-4 h-4 mr-2 text-red-500" />
-                  <span className="text-sm text-gray-600">Account Type</span>
+                  <Heart className="w-4 h-4 mr-2" style={{ color: colors.danger }} />
+                  <span className="text-sm" style={{ color: colors.textSecondary }}>Account Type</span>
                 </div>
-                <p className="font-medium text-gray-900 capitalize">{userProfile.role}</p>
+                <p className="font-medium capitalize" style={{ color: colors.textPrimary }}>{userProfile.role}</p>
                 
                 <div className="flex items-center mt-4">
-                  <Mail className="w-4 h-4 mr-2 text-blue-500" />
-                  <span className="text-sm text-gray-600">Email Verified</span>
+                  <Mail className="w-4 h-4 mr-2" style={{ color: colors.primary }} />
+                  <span className="text-sm" style={{ color: colors.textSecondary }}>Email Verified</span>
                 </div>
-                <p className="font-medium text-green-600">Yes</p>
+                <p className="font-medium" style={{ color: colors.success }}>Yes</p>
               </div>
             </div>
 

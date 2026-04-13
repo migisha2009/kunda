@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { Wedding, Guest, Expense, Vendor, Booking, ChecklistItem, WeatherData } from '../../../types'
 import { colors } from '../../../lib/styles'
+import AIChat from '../../../components/AIChat'
 
 // Motivational quotes
 const quotes = [
@@ -2148,6 +2149,7 @@ export default function CoupleDashboard() {
           }
         }
       `}</style>
+      <AIChat />
     </div>
   )
 }

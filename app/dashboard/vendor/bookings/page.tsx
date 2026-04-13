@@ -313,6 +313,28 @@ export default function VendorBookingsPage() {
     a.click()
   }
 
+  const generateReply = async (enquiry: any) => {
+    try {
+      const res = await fetch('/api/ai/reply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          enquiryMessage: enquiry.message,
+          businessName: vendor?.businessName,
+          category: vendor?.category,
+          minPrice: vendor?.minPrice,
+          currency: vendor?.currency,
+        })
+      })
+      const data = await res.json()
+      setEnquiries(prev => prev.map(e => 
+        e.id === enquiry.id ? { ...e, replyText: data.reply || '' } : e
+      ))
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
@@ -803,6 +825,19 @@ export default function VendorBookingsPage() {
                                   >
                                     <Mail className="w-4 h-4 mr-2" />
                                     Send Reply
+                                  </button>
+                                  <button
+                                    onClick={() => generateReply(enquiry)}
+                                    className="text-xs px-4 py-2"
+                                    style={{
+                                      fontFamily: 'Urbanist',
+                                      background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+                                      color: '#fff',
+                                      border: '1px solid #1a56db',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                     AI Reply
                                   </button>
                                   <button
                                     onClick={() => updateEnquiryStatus(enquiry.id, 'replied')}

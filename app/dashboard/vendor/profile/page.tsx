@@ -16,6 +16,7 @@ export default function VendorProfile() {
   const [saved, setSaved] = useState(false)
   const [vendorId, setVendorId] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [generatingBio, setGeneratingBio] = useState(false)
   const [images, setImages] = useState<string[]>([])
   const [form, setForm] = useState({
     businessName: '',
@@ -102,6 +103,30 @@ export default function VendorProfile() {
     finally { setUploading(false) }
   }
 
+  const generateBio = async () => {
+    setGeneratingBio(true)
+    try {
+      const res = await fetch('/api/ai/vendor-bio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessName: form.businessName,
+          category: form.category,
+          location: form.location,
+          specialties: form.category,
+        })
+      })
+      const data = await res.json()
+      if (data.bio) {
+        setForm(prev => ({ ...prev, bio: data.bio }))
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setGeneratingBio(false)
+    }
+  }
+
   const inp: React.CSSProperties = { width: '100%', borderBottom: '1px solid #c7d2fe', background: '#f7f8fd', padding: '10px 14px', fontSize: 13, fontFamily: 'Urbanist', color: '#333', outline: 'none', boxSizing: 'border-box' }
   const lbl: React.CSSProperties = { display: 'block', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6b7eb9', marginBottom: 6, fontFamily: 'Urbanist' }
 
@@ -145,7 +170,26 @@ export default function VendorProfile() {
             <input value={form.location} onChange={e => setForm(p => ({...p, location: e.target.value}))} placeholder="City, Country" style={inp} />
           </div>
           <div style={{ marginBottom: 16 }}>
-            <label style={lbl}>Bio</label>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <label style={lbl}>Bio</label>
+              <button 
+                onClick={generateBio}
+                disabled={generatingBio}
+                style={{
+                  background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 6,
+                  padding: '4px 12px',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  fontFamily: 'Urbanist, sans-serif',
+                }}
+              >
+                {generatingBio ? 'Writing...' : ' Write with AI'}
+              </button>
+            </div>
             <textarea value={form.bio} onChange={e => setForm(p => ({...p, bio: e.target.value}))} placeholder="Tell couples about your business..." rows={4} style={{...inp, resize: 'vertical'}} />
             <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>{form.bio.length}/500</p>
           </div>

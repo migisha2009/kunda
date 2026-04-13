@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Wedding, Guest } from '../../../../types'
 import { colors } from '../../../../lib/styles'
+import AIChat from '../../../../components/AIChat'
 
 const dietaryOptions = [
   'None',
@@ -1321,6 +1322,7 @@ export default function GuestManagement() {
           </div>
         </div>
       )}
+      <AIChat />
     </div>
   )
 }
