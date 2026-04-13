@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getGuest, getWedding, updateGuestRSVP } from '@/lib/firestore'
 import { Guest, Wedding } from '@/types'
 import { formatDate } from '@/lib/dateUtils'
-import { colors, typography } from '@/lib/styles'
+import { colors, typography, fontSizes, fontWeights } from '@/lib/styles'
 
 interface CountdownTime {
   days: number
@@ -124,11 +124,10 @@ export default function GuestDashboard() {
       <div className="min-h-screen bg-[#fdf9f5] flex items-center justify-center">
         <div className="rounded-2xl shadow-xl p-8 max-w-md w-full mx-4" style={{ backgroundColor: colors.bgCard }}>
           <div className="text-center">
-            <p className="mb-4" style={{ color: colors.danger, fontFamily: typography.fontFamily }}>{error || 'Something went wrong'}</p>
+            <p className="mb-4" style={{ color: colors.danger, fontFamily: 'Urbanist' }}>{error || 'Something went wrong'}</p>
             <button
               onClick={() => router.push('/login')}
               className="px-6 py-2 rounded-lg font-medium transition-colors hover:opacity-80" style={{ backgroundColor: colors.primary, color: colors.white }}>
-            >
               Back to Login
             </button>
           </div>
@@ -146,7 +145,7 @@ export default function GuestDashboard() {
             <h1 className="text-4xl font-bold mb-2" style={{ color: colors.primary, fontFamily: 'Urbanist' }}>
               Welcome, {guest.name}
             </h1>
-            <p className="text-xl mb-4 italic" style={{ color: colors.textSecondary, fontFamily: typography.fontFamily }}>
+            <p className="text-xl mb-4 italic" style={{ color: colors.textSecondary, fontFamily: 'Urbanist' }}>
               {wedding.coupleName1 && wedding.coupleName2 ? (
                 `${wedding.coupleName1} & ${wedding.coupleName2}'s Wedding`
               ) : (
@@ -159,20 +158,20 @@ export default function GuestDashboard() {
               <p className="text-sm mb-2 font-jost">Countdown to the Wedding</p>
               <div className="flex justify-center space-x-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.days}</div>
-                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Days</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: 'Urbanist' }}>{countdown.days}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: 'Urbanist' }}>Days</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.hours}</div>
-                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Hours</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: 'Urbanist' }}>{countdown.hours}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: 'Urbanist' }}>Hours</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.minutes}</div>
-                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Minutes</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: 'Urbanist' }}>{countdown.minutes}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: 'Urbanist' }}>Minutes</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>{countdown.seconds}</div>
-                  <div className="text-xs" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Seconds</div>
+                  <div className="text-3xl font-bold" style={{ color: colors.white, fontFamily: 'Urbanist' }}>{countdown.seconds}</div>
+                  <div className="text-xs" style={{ color: colors.white, fontFamily: 'Urbanist' }}>Seconds</div>
                 </div>
               </div>
             </div>
@@ -195,21 +194,18 @@ export default function GuestDashboard() {
                 onClick={() => handleRSVPUpdate('attending')}
                 disabled={updatingRSVP}
                 className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.success, color: colors.white }}>
-              >
                 ✓ Attending
               </button>
               <button
                 onClick={() => handleRSVPUpdate('declined')}
                 disabled={updatingRSVP}
                 className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.danger, color: colors.white }}>
-              >
                 ✗ Can't Make It
               </button>
               <button
                 onClick={() => handleRSVPUpdate('maybe')}
                 disabled={updatingRSVP}
-                className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.primary, color: colors.white }}
-              >
+                className="w-full py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50" style={{ backgroundColor: colors.primary, color: colors.white }}>
                 ? Maybe
               </button>
             </div>
@@ -320,7 +316,7 @@ export default function GuestDashboard() {
               <div className="text-center py-4">
                 <div className="inline-block bg-[#7a5c30] text-white px-8 py-4 rounded-xl">
                   <p className="text-sm font-jost">Your Table</p>
-                  <p className="text-3xl font-bold" style={{ color: colors.white, fontFamily: typography.fontFamily }}>Table {guest.tableNumber}</p>
+                  <p className="text-3xl font-bold" style={{ color: colors.white, fontFamily: 'Urbanist' }}>Table {guest.tableNumber}</p>
                 </div>
               </div>
             ) : (

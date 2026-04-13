@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Heart, Camera, MapPin, Music, Cake, Flower, Home as HomeIcon, Car, Shirt, Star, Users, Menu, X, Phone, MessageCircle, ChevronRight, Settings, Calendar, DollarSign, MessageSquare, AlertCircle, Check } from 'lucide-react'
-import { colors, typography } from 'lib/styles'
+import { colors, typography, fontSizes, fontWeights } from '../lib/styles'
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -127,15 +127,15 @@ export default function Home() {
               <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
                 <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
               </div>
-              <span className="ml-2" style={{ fontFamily: typography.fontFamily, color: colors.primary, fontWeight: typography.fontWeights.bold, fontSize: typography.fontSizes['2xl'] }}>Kunda</span>
+              <span className="ml-2" style={{ fontFamily: 'Urbanist', color: colors.primary, fontWeight: fontWeights.bold, fontSize: fontSizes['2xl'] }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>Vendors</Link>
-              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>How it Works</a>
-              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>Pricing</a>
-              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: typography.fontWeights.semibold, fontSize: typography.fontSizes.sm }}>Contact</a>
+              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>Vendors</Link>
+              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>How it Works</a>
+              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>Pricing</a>
+              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>Contact</a>
               <Link href="/login" className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium transition-colors hover:bg-blue-50">Login</Link>
               <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: colors.primary }}>Get Started</Link>
             </div>
@@ -192,13 +192,13 @@ export default function Home() {
               Rwanda's #1 Wedding Platform
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ 
-              fontFamily: typography.fontFamily
+              fontFamily: 'Urbanist'
             }}>
               Your Perfect Wedding,<br />
               <span style={{ color: colors.primaryAccent }}>Beautifully</span><br />
               Orchestrated
             </h1>
-            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: typography.fontWeights.normal }}>
+            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: fontWeights.normal }}>
               Connect with verified wedding vendors, manage your budget, and plan every detail of your special day
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -293,7 +293,7 @@ export default function Home() {
       {/* 4. FEATURES SECTION */}
       <section id="features" data-animate style={{ backgroundColor: 'white', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: typography.fontFamily, fontWeight: typography.fontWeights.black, color: colors.textPrimary }}>
+          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'Urbanist', fontWeight: fontWeights.black, color: colors.textPrimary }}>
             Everything you need for your perfect wedding
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -606,7 +606,7 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="ml-2" style={{ fontFamily: typography.fontFamily, color: colors.primary, fontWeight: typography.fontWeights.bold, fontSize: typography.fontSizes.xl }}>Kunda</span>
+                <span className="ml-2" style={{ fontFamily: 'Urbanist', color: colors.primary, fontWeight: fontWeights.bold, fontSize: fontSizes.xl }}>Kunda</span>
               </div>
               <p className="text-sm mb-4" style={{ color: colors.textSecondary }}>
                 Your perfect wedding, beautifully orchestrated. Rwanda's premier wedding planning platform.
@@ -625,10 +625,10 @@ export default function Home() {
             <div>
               <h3 className="font-bold mb-4" style={{ color: colors.white }}>For Couples</h3>
               <ul className="space-y-2">
-                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Find Vendors</Link></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>How It Works</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Success Stories</a></li>
+                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Find Vendors</Link></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>How It Works</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Pricing</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Success Stories</a></li>
               </ul>
             </div>
 
@@ -636,10 +636,10 @@ export default function Home() {
             <div>
               <h3 className="font-bold mb-4" style={{ color: colors.white }}>For Vendors</h3>
               <ul className="space-y-2">
-                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Join Kunda</Link></li>
-                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Vendor Dashboard</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Vendor Resources</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Pricing Plans</a></li>
+                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Join Kunda</Link></li>
+                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Vendor Dashboard</Link></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Vendor Resources</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Pricing Plans</a></li>
               </ul>
             </div>
 
@@ -647,10 +647,10 @@ export default function Home() {
             <div>
               <h3 className="font-bold mb-4" style={{ color: colors.white }}>Company</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>About Us</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: typography.fontSizes.sm }}>Terms of Service</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>About Us</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Terms of Service</a></li>
               </ul>
             </div>
           </div>

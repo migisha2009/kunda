@@ -9,7 +9,7 @@ import { auth } from '../../lib/firebase'
 import { signOutUser } from '../../lib/auth'
 import { Heart, User, Mail, Phone, Edit2, Save, X, AlertTriangle, Loader2, Key, Trash2 } from 'lucide-react'
 import { formatDate } from '../../lib/dateUtils'
-import { colors, typography } from '../../lib/styles'
+import { colors, typography, fontSizes, fontWeights } from '../../lib/styles'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -128,11 +128,11 @@ export default function ProfilePage() {
             {/* Profile Information */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold flex items-center" style={{ color: colors.textPrimary, fontFamily: typography.fontFamily }}>
-                  <User className="w-5 h-5 mr-2" style={{ color: colors.primary }}> />
+                <h2 className="text-xl font-semibold flex items-center" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>
+                  <User className="w-5 h-5 mr-2" style={{ color: colors.primary }} />
                   Profile Information
                 </h2>
-                {!editing && (
+                {editing && (
                   <button
                     onClick={() => setEditing(true)}
                     className="hover:opacity-80" style={{ color: colors.primary }}
@@ -145,7 +145,7 @@ export default function ProfilePage() {
               {editing ? (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}
+                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>
                       Name
                     </label>
                     <input
@@ -157,7 +157,7 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}
+                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>
                       Phone Number
                     </label>
                     <input
@@ -226,8 +226,8 @@ export default function ProfilePage() {
 
             {/* Password Settings */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}
-                <Key className="w-5 h-5 mr-2" style={{ color: colors.primary }}> />
+              <h2 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>
+                <Key className="w-5 h-5 mr-2" style={{ color: colors.primary }} />
                 Password Settings
               </h2>
               <p className="mb-4" style={{ color: colors.textSecondary }}>
