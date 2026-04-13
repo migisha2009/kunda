@@ -89,7 +89,6 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            onBlur={updateFilters}
             style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
             onFocus={(e) => {
               e.target.style.borderColor = colors.primary
@@ -119,7 +118,6 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            onBlur={updateFilters}
             placeholder="City, State, or Country"
             style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
             onFocus={(e) => {

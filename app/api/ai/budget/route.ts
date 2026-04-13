@@ -1,4 +1,4 @@
-import { askAIJSON } from '../../../../lib/groq'
+import { askAIJSON } from '@/lib/groq'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {

@@ -1,4 +1,4 @@
-import { askAI } from '../../../../lib/groq'
+import { askAI } from '@/lib/groq'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {

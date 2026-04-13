@@ -8,7 +8,7 @@ import { db } from '../../../../lib/firebase'
 import { Booking, User, Vendor } from '../../../../types'
 import { Calendar, DollarSign, Filter, Search, Clock, CheckCircle, XCircle, Loader2, Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown, CreditCard, RotateCcw, AlertTriangle } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
-import { colors } from '../../../lib/styles'
+import { colors } from '@/lib/styles'
 
 
 export default function AdminBookingsPage() {

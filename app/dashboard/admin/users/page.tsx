@@ -8,6 +8,7 @@ import { db } from '../../../../lib/firebase'
 import { User, Vendor, Booking } from '../../../../types'
 import { Users, Search, Filter, Trash2, AlertTriangle, Loader2, Eye, Mail, Download, ChevronLeft, ChevronRight, ArrowUpDown, UserPlus, Key } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
+import { colors } from '@/lib/styles'
 
 export default function AdminUsersPage() {
   const { loading: authLoading } = useRequireAuth('admin')

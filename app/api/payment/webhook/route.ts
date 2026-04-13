@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Flutterwave from 'flutterwave-node-v3'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
-import { db } from '../../../../lib/firebase'
+import { db } from '@/lib/firebase'
 import crypto from 'crypto'
-import { sendWhatsApp, messages } from '../../../../lib/whatsapp'
+import { sendWhatsApp, messages } from '@/lib/whatsapp'
 
 // Initialize Flutterwave lazily to avoid build-time errors
 function getFlutterwaveInstance() {

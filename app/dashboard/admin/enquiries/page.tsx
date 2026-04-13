@@ -8,6 +8,7 @@ import { db } from '../../../../lib/firebase'
 import { Enquiry, User, Vendor } from '../../../../types'
 import { MessageSquare, Search, Filter, Clock, CheckCircle, XCircle, ExternalLink, Loader2, Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown, AlertTriangle, Flag, Mail } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
+import { colors } from '@/lib/styles'
 
 
 export default function AdminEnquiriesPage() {
