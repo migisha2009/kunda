@@ -28,6 +28,9 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
   const searchParams = useSearchParams()
   const [category, setCategory] = useState(currentCategory || '')
   const [location, setLocation] = useState(currentLocation || '')
+  const [rating, setRating] = useState('all')
+  const [minPrice, setMinPrice] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
 
   useEffect(() => {
     setCategory(currentCategory || '')
@@ -49,16 +52,37 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
       params.delete('location')
     }
     
+    if (rating !== 'all') {
+      params.set('rating', rating)
+    } else {
+      params.delete('rating')
+    }
+    
+    if (minPrice) {
+      params.set('minPrice', minPrice)
+    } else {
+      params.delete('minPrice')
+    }
+    
+    if (maxPrice) {
+      params.set('maxPrice', maxPrice)
+    } else {
+      params.delete('maxPrice')
+    }
+    
     router.push(`/vendors?${params.toString()}`, { scroll: false })
   }
 
   const clearFilters = () => {
     setCategory('')
     setLocation('')
+    setRating('all')
+    setMinPrice('')
+    setMaxPrice('')
     router.push('/vendors', { scroll: false })
   }
 
-  const hasActiveFilters = category || location
+  const hasActiveFilters = category || location || rating !== 'all' || minPrice || maxPrice
 
   return (
     <div style={{ padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', marginBottom: '24px', backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}>
@@ -131,6 +155,93 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
             }}
           />
         </div>
+
+        {/* Rating Filter */}
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+            Rating
+          </label>
+          <select
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
+              updateFilters()
+            }}
+          >
+            <option value="all">All Ratings</option>
+            <option value="4">4+ Stars</option>
+            <option value="3">3+ Stars</option>
+          </select>
+        </div>
+
+        {/* Price Range Filter */}
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+            Budget Range (USD)
+          </label>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <input
+              type="number"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              placeholder="Min"
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                border: `1px solid ${colors.border}`, 
+                borderRadius: '8px', 
+                fontFamily: 'Urbanist', 
+                fontSize: '16px', 
+                color: colors.textPrimary, 
+                backgroundColor: colors.white, 
+                outline: 'none' 
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = colors.primary
+                e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = colors.border
+                e.target.style.boxShadow = 'none'
+                updateFilters()
+              }}
+            />
+            <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: colors.textSecondary }}>to</span>
+            <input
+              type="number"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              placeholder="Max"
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                border: `1px solid ${colors.border}`, 
+                borderRadius: '8px', 
+                fontFamily: 'Urbanist', 
+                fontSize: '16px', 
+                color: colors.textPrimary, 
+                backgroundColor: colors.white, 
+                outline: 'none' 
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = colors.primary
+                e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = colors.border
+                e.target.style.boxShadow = 'none'
+                updateFilters()
+              }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Active Filters Display */}
@@ -159,6 +270,39 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
                 <button
                   onClick={() => {
                     setLocation('')
+                    updateFilters()
+                  }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                >
+                  <X style={{ width: '12px', height: '12px' }} />
+                </button>
+              </span>
+            )}
+            {rating !== 'all' && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+                Rating: {rating}+ Stars
+                <button
+                  onClick={() => {
+                    setRating('all')
+                    updateFilters()
+                  }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                >
+                  <X style={{ width: '12px', height: '12px' }} />
+                </button>
+              </span>
+            )}
+            {(minPrice || maxPrice) && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+                Price: ${minPrice || '0'} - ${maxPrice || '999999'}
+                <button
+                  onClick={() => {
+                    setMinPrice('')
+                    setMaxPrice('')
                     updateFilters()
                   }}
                   style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}

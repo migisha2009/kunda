@@ -236,6 +236,223 @@ export default function AdminOverview() {
               </div>
             </div>
 
+            {/* Quick Actions */}
+            <div className="p-6 mb-8" style={{ backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}>
+              <div className="flex items-center mb-6">
+                <Target className="w-5 h-5 mr-2" style={{ color: colors.primaryDark }} />
+                <h2 className="text-xl" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 700, fontSize: '18px' }}>Quick Actions</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <button
+                  onClick={() => window.location.href = '/dashboard/admin/vendors'}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                >
+                  <Store size={32} style={{ color: '#1a56db', marginBottom: '12px' }} />
+                  <span style={{ 
+                    fontFamily: 'Urbanist', 
+                    fontSize: '14px', 
+                    fontWeight: 600, 
+                    color: colors.textPrimary,
+                    textAlign: 'center',
+                    marginBottom: '4px'
+                  }}>
+                    Verify Pending Vendors
+                  </span>
+                  {stats.totalVendors - stats.verifiedVendors > 0 && (
+                    <div style={{
+                      backgroundColor: '#c81e1e',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {stats.totalVendors - stats.verifiedVendors}
+                    </div>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => window.location.href = '/dashboard/admin/users'}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                >
+                  <Users size={32} style={{ color: '#1a56db', marginBottom: '12px' }} />
+                  <span style={{ 
+                    fontFamily: 'Urbanist', 
+                    fontSize: '14px', 
+                    fontWeight: 600, 
+                    color: colors.textPrimary,
+                    textAlign: 'center',
+                    marginBottom: '4px'
+                  }}>
+                    View New Users
+                  </span>
+                  {recentUsers.length > 0 && (
+                    <div style={{
+                      backgroundColor: '#c81e1e',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {recentUsers.length}
+                    </div>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => window.location.href = '/dashboard/admin/enquiries'}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                >
+                  <MessageSquare size={32} style={{ color: '#1a56db', marginBottom: '12px' }} />
+                  <span style={{ 
+                    fontFamily: 'Urbanist', 
+                    fontSize: '14px', 
+                    fontWeight: 600, 
+                    color: colors.textPrimary,
+                    textAlign: 'center',
+                    marginBottom: '4px'
+                  }}>
+                    Review Enquiries
+                  </span>
+                  {platformHealth.pendingEnquiries > 0 && (
+                    <div style={{
+                      backgroundColor: '#c81e1e',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {platformHealth.pendingEnquiries}
+                    </div>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => window.location.href = '/dashboard/admin/bookings'}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                >
+                  <Calendar size={32} style={{ color: '#1a56db', marginBottom: '12px' }} />
+                  <span style={{ 
+                    fontFamily: 'Urbanist', 
+                    fontSize: '14px', 
+                    fontWeight: 600, 
+                    color: colors.textPrimary,
+                    textAlign: 'center',
+                    marginBottom: '4px'
+                  }}>
+                    View All Bookings
+                  </span>
+                  {stats.totalBookings > 0 && (
+                    <div style={{
+                      backgroundColor: '#1a56db',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {stats.totalBookings}
+                    </div>
+                  )}
+                </button>
+              </div>
+            </div>
+
             {/* Platform Health Metrics */}
             <div className="p-6 mb-8" style={{ backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}>
               <div className="flex items-center mb-4">

@@ -294,34 +294,28 @@ export default function GuestManagement() {
   }
 
   return (
-    <div style={{ backgroundColor: colors.bg, color: colors.textPrimary, minHeight: '100vh' }}>
-      {/* Google Fonts */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
-        rel="stylesheet" 
-      />
+    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
 
       {/* Header */}
       <div style={{
-        backgroundColor: colors.bgCard,
-        borderBottom: `0.5px solid ${colors.border}`,
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h1 style={{
               fontFamily: 'Urbanist',
-              fontSize: '32px',
-              fontWeight: 300,
-              color: colors.textPrimary,
+              fontSize: '36px',
+              fontWeight: 800,
+              color: '#0f2460',
               marginBottom: '8px'
             }}>Guest Management</h1>
             <p style={{
               fontFamily: 'Urbanist',
-              fontSize: '14px',
-              color: colors.textSecondary
+              fontSize: '15px',
+              color: '#6b7280',
+              fontWeight: 400
             }}>
               Manage your wedding guest list and RSVPs
             </p>
@@ -330,18 +324,19 @@ export default function GuestManagement() {
             <button
               onClick={exportGuests}
               style={{
-                border: `1px solid ${colors.border}`,
-                color: colors.primary,
-                padding: '8px 16px',
+                border: '1.5px solid #1a56db',
+                color: '#1a56db',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px'
               }}
             >
               <Download size={16} />
@@ -350,18 +345,19 @@ export default function GuestManagement() {
             <button
               onClick={() => setShowBulkInvite(true)}
               style={{
-                border: `1px solid ${colors.border}`,
-                color: colors.primary,
-                padding: '8px 16px',
+                border: '1.5px solid #1a56db',
+                color: '#1a56db',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px'
               }}
             >
               <Send size={16} />
@@ -370,18 +366,20 @@ export default function GuestManagement() {
             <button
               onClick={() => setShowAddGuest(true)}
               style={{
-                backgroundColor: colors.primaryDark,
-                color: colors.bg,
-                padding: '8px 16px',
+                backgroundColor: '#1a56db',
+                color: '#ffffff',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(26,86,219,0.3)'
               }}
             >
               <Plus size={16} />
@@ -393,104 +391,266 @@ export default function GuestManagement() {
         {/* Stats Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
           <div style={{
-            backgroundColor: colors.bg,
-            border: `1px solid ${colors.border}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.textPrimary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.total}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.textSecondary,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Guests</div>
           </div>
           <div style={{
-            backgroundColor: colors.successBg,
-            border: '0.5px solid rgba(34, 197, 94, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.success
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.confirmed}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.success,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Confirmed</div>
           </div>
           <div style={{
-            backgroundColor: colors.warningBg,
-            border: '0.5px solid rgba(245, 158, 11, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.warning
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.pending}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.warning,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Pending</div>
           </div>
           <div style={{
-            backgroundColor: colors.dangerBg,
-            border: '0.5px solid rgba(220, 38, 38, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.danger
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.declined}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.danger,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Declined</div>
           </div>
           <div style={{
-            backgroundColor: colors.primaryLightLegacy,
-            border: '0.5px solid rgba(99, 102, 241, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.primary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.plusOnes}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.primary,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Plus Ones
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* RSVP Progress Section */}
+      <div style={{
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
+        padding: '24px 32px'
+      }}>
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <div>
+              <h3 style={{
+                fontFamily: 'Urbanist',
+                fontSize: '16px',
+                fontWeight: 700,
+                color: '#0f2460',
+                marginBottom: '4px'
+              }}>
+                {stats.confirmed} of {stats.total} guests confirmed
+              </h3>
+              <p style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                color: '#6b7280',
+                fontWeight: 400
+              }}>
+                Track your RSVP progress
+              </p>
+            </div>
+            <div style={{
+              fontFamily: 'Urbanist',
+              fontSize: '24px',
+              fontWeight: 800,
+              color: '#1a56db'
+            }}>
+              {stats.total > 0 ? Math.round((stats.confirmed / stats.total) * 100) : 0}%
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div style={{
+            width: '100%',
+            height: '10px',
+            backgroundColor: '#e5edff',
+            borderRadius: '50px',
+            overflow: 'hidden',
+            marginBottom: '16px'
+          }}>
+            <div style={{
+              width: `${stats.total > 0 ? (stats.confirmed / stats.total) * 100 : 0}%`,
+              height: '100%',
+              backgroundColor: '#1a56db',
+              borderRadius: '50px',
+              transition: 'width 0.3s ease'
+            }}></div>
+          </div>
+
+          {/* RSVP Status Pills */}
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#d1fae5',
+              borderRadius: '20px',
+              border: '1px solid #10b981'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#10b981',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#047857'
+              }}>Confirmed ({stats.confirmed})</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#fef3c7',
+              borderRadius: '20px',
+              border: '1px solid #f59e0b'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#f59e0b',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#d97706'
+              }}>Pending ({stats.pending})</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#fee2e2',
+              borderRadius: '20px',
+              border: '1px solid #ef4444'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#ef4444',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#dc2626'
+              }}>Declined ({stats.declined})</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#dbeafe',
+              borderRadius: '20px',
+              border: '1px solid #3b82f6'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#3b82f6',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#1d4ed8'
+              }}>Maybe ({wedding?.guests?.filter(g => g.rsvpStatus === 'maybe').length || 0})</span>
             </div>
           </div>
         </div>

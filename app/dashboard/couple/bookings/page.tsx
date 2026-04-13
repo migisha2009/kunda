@@ -150,34 +150,28 @@ export default function MyBookings() {
   }
 
   return (
-    <div style={{ backgroundColor: colors.bg, color: colors.textPrimary, minHeight: '100vh' }}>
-      {/* Google Fonts */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
-        rel="stylesheet" 
-      />
+    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
 
       {/* Header */}
       <div style={{
-        backgroundColor: colors.bgCard,
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{
               fontFamily: 'Urbanist',
-              fontSize: '32px',
-              fontWeight: 300,
-              color: colors.textPrimary,
+              fontSize: '36px',
+              fontWeight: 800,
+              color: '#0f2460',
               marginBottom: '8px'
             }}>My Bookings</h1>
             <p style={{
               fontFamily: 'Urbanist',
-              fontSize: '14px',
-              color: colors.textMuted
+              fontSize: '15px',
+              color: '#6b7280',
+              fontWeight: 400
             }}>
               Manage your vendor bookings and payments
             </p>
@@ -187,82 +181,90 @@ export default function MyBookings() {
         {/* Stats Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginTop: '16px' }}>
           <div style={{
-            backgroundColor: colors.bg,
-            border: `1px solid ${colors.border}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.textPrimary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.total}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.textMuted,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Bookings</div>
           </div>
           <div style={{
-            backgroundColor: colors.bgCard,
-            border: '0.5px solid rgba(34, 197, 94, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.success
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.confirmed}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.success,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Confirmed</div>
           </div>
           <div style={{
-            backgroundColor: colors.bgCard,
-            border: '0.5px solid rgba(99, 102, 241, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.primary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.paid}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.primary,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Paid</div>
           </div>
           <div style={{
-            backgroundColor: colors.bgCard,
-            border: '0.5px solid rgba(245, 158, 11, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: colors.warning
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget.currency} {stats.totalSpent.toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: colors.warning,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Spent</div>
           </div>
@@ -428,6 +430,124 @@ export default function MyBookings() {
                       </div>
                     </div>
                   )}
+
+                  {/* Booking Status Timeline */}
+                  <div style={{ 
+                    borderTop: '1px solid #e5edff', 
+                    paddingTop: '16px', 
+                    marginTop: '16px' 
+                  }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      position: 'relative',
+                      marginBottom: '8px'
+                    }}>
+                      {/* Timeline Line */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '20px',
+                        right: '20px',
+                        height: '2px',
+                        backgroundColor: '#e5edff',
+                        zIndex: 1
+                      }}></div>
+                      
+                      {/* Timeline Steps */}
+                      {['pending', 'confirmed', 'paid'].map((step, index) => {
+                        const isCompleted = 
+                          step === 'pending' || 
+                          (step === 'confirmed' && (booking.status === 'confirmed' || booking.status === 'paid')) ||
+                          (step === 'paid' && booking.status === 'paid')
+                        
+                        const isCurrent = 
+                          (step === 'pending' && booking.status === 'pending') ||
+                          (step === 'confirmed' && booking.status === 'confirmed') ||
+                          (step === 'paid' && booking.status === 'paid')
+                        
+                        const stepLabels = {
+                          pending: 'Pending',
+                          confirmed: 'Confirmed', 
+                          paid: 'Paid'
+                        }
+                        
+                        return (
+                          <div key={step} style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            position: 'relative',
+                            zIndex: 2,
+                            flex: 1
+                          }}>
+                            {/* Circle */}
+                            <div style={{
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '50%',
+                              backgroundColor: isCompleted ? '#1a56db' : '#e5edff',
+                              border: isCompleted ? 'none' : '2px solid #e5edff',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginBottom: '8px',
+                              position: 'relative'
+                            }}>
+                              {isCompleted && (
+                                <div style={{
+                                  width: '8px',
+                                  height: '8px',
+                                  backgroundColor: '#ffffff',
+                                  clipPath: 'polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 60%)'
+                                }}></div>
+                              )}
+                              {isCurrent && (
+                                <div style={{
+                                  position: 'absolute',
+                                  width: '32px',
+                                  height: '32px',
+                                  borderRadius: '50%',
+                                  backgroundColor: 'rgba(26, 86, 219, 0.2)',
+                                  animation: 'pulse 2s infinite'
+                                }}></div>
+                              )}
+                            </div>
+                            
+                            {/* Label */}
+                            <span style={{
+                              fontFamily: 'Urbanist',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              color: isCompleted ? '#1a56db' : '#6b7280',
+                              textTransform: 'uppercase'
+                            }}>
+                              {stepLabels[step as keyof typeof stepLabels]}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    
+                    {/* Add pulse animation */}
+                    <style jsx>{`
+                      @keyframes pulse {
+                        0% {
+                          transform: scale(0.95);
+                          box-shadow: 0 0 0 0 rgba(26, 86, 219, 0.7);
+                        }
+                        70% {
+                          transform: scale(1);
+                          box-shadow: 0 0 0 10px rgba(26, 86, 219, 0);
+                        }
+                        100% {
+                          transform: scale(0.95);
+                          box-shadow: 0 0 0 0 rgba(26, 86, 219, 0);
+                        }
+                      }
+                    `}</style>
+                  </div>
 
                   {/* Actions */}
                   <div style={{ display: 'flex', gap: '12px', justifyContent: 'space-between' }}>

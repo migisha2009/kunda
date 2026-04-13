@@ -3,6 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Urbanist', sans-serif !important;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f0f4ff;
+  color: #111928;
+  font-family: 'Urbanist', sans-serif;
+}
+
 :root {
   /* Colors - Kunda Design System */
   --color-primary: #1a56db;

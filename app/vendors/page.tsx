@@ -13,6 +13,7 @@ import { colors, typography, getStyles } from '../../lib/styles'
 export default function VendorsPage() {
   const searchParams = useSearchParams()
   const [vendors, setVendors] = useState<Vendor[]>([])
+  const [filteredVendors, setFilteredVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -49,7 +50,37 @@ export default function VendorsPage() {
     }
 
     loadVendors()
-  }, [searchParams])
+  }, [])
+
+  // Apply client-side filtering
+  useEffect(() => {
+    const rating = searchParams.get('rating')
+    const minPrice = searchParams.get('minPrice')
+    const maxPrice = searchParams.get('maxPrice')
+
+    let filtered = vendors
+
+    // Apply rating filter
+    if (rating && rating !== 'all') {
+      const minRating = parseFloat(rating)
+      filtered = filtered.filter(vendor => 
+        vendor.rating && vendor.rating >= minRating
+      )
+    }
+
+    // Apply price range filter
+    if (minPrice || maxPrice) {
+      const min = minPrice ? parseFloat(minPrice) : 0
+      const max = maxPrice ? parseFloat(maxPrice) : Infinity
+      filtered = filtered.filter(vendor => 
+        vendor.pricing && 
+        vendor.pricing.min >= min && 
+        vendor.pricing.max <= max
+      )
+    }
+
+    setFilteredVendors(filtered)
+  }, [vendors, searchParams])
 
   
   if (loading) {
@@ -110,15 +141,15 @@ export default function VendorsPage() {
 
         {/* Results Count */}
         <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: colors.textSecondary }}>
-            {vendors.length} vendor{vendors.length !== 1 ? 's' : ''} found
+          <p style={{ color: colors.textSecondary, fontFamily: 'Urbanist', fontSize: '14px' }}>
+            {filteredVendors.length} vendor{filteredVendors.length !== 1 ? 's' : ''} found
           </p>
         </div>
 
         {/* Vendor Grid */}
-        {vendors.length > 0 ? (
+        {filteredVendors.length > 0 ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-            {vendors.map((vendor) => (
+            {filteredVendors.map((vendor) => (
               <VendorCard key={vendor.id} vendor={vendor} />
             ))}
           </div>

@@ -417,6 +417,40 @@ export default function VendorDashboard() {
 
         {/* Right - User Info */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => window.location.href = '/dashboard/vendor/bookings'}
+              style={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                padding: '6px',
+                cursor: 'pointer',
+                position: 'relative'
+              }}
+            >
+              <Bell size={20} color={colors.primaryDark} />
+              {unreadCount > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-6px',
+                  right: '-6px',
+                  backgroundColor: '#c81e1e',
+                  color: '#ffffff',
+                  borderRadius: '50%',
+                  width: '18px',
+                  height: '18px',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </div>
+              )}
+            </button>
+          </div>
+          
           <div style={{
             width: '32px',
             height: '32px',
