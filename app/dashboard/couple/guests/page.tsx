@@ -306,7 +306,7 @@ export default function GuestManagement() {
       {/* Header */}
       <div style={{
         backgroundColor: colors.bgCard,
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        borderBottom: `0.5px solid ${colors.border}`,
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -499,7 +499,7 @@ export default function GuestManagement() {
       {/* Filters */}
       <div style={{
         backgroundColor: colors.bgCard,
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        borderBottom: `0.5px solid ${colors.border}`,
         padding: '16px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
@@ -514,7 +514,7 @@ export default function GuestManagement() {
                 style={{
                   width: '100%',
                   padding: '12px 12px 12px 44px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: `1px solid ${colors.border}`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
                   backgroundColor: colors.bgCard,
@@ -529,7 +529,7 @@ export default function GuestManagement() {
               onChange={(e) => setFilterStatus(e.target.value as any)}
               style={{
                 padding: '12px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                border: `1px solid ${colors.border}`,
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
                 backgroundColor: colors.bgCard,
@@ -547,7 +547,7 @@ export default function GuestManagement() {
               onChange={(e) => setFilterDietary(e.target.value)}
               style={{
                 padding: '12px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                border: `1px solid ${colors.border}`,
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
                 backgroundColor: colors.bgCard,
@@ -565,7 +565,7 @@ export default function GuestManagement() {
               onChange={(e) => setFilterTable(e.target.value)}
               style={{
                 padding: '12px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                border: `1px solid ${colors.border}`,
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
                 backgroundColor: colors.bgCard,
@@ -660,7 +660,7 @@ export default function GuestManagement() {
             <div style={{
               backgroundColor: colors.bg,
               padding: '16px',
-              borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+              borderBottom: `0.5px solid ${colors.border}`,
               display: 'grid',
               gridTemplateColumns: '40px 2fr 1fr 1fr 1fr 1fr 1fr 120px',
               gap: '16px',
@@ -732,7 +732,7 @@ export default function GuestManagement() {
               return (
                 <div key={guest.id} style={{
                   padding: '16px',
-                  borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+                  borderBottom: `0.5px solid ${colors.border}`,
                   display: 'grid',
                   gridTemplateColumns: '40px 2fr 1fr 1fr 1fr 1fr 1fr 120px',
                   gap: '16px',
@@ -755,7 +755,7 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { name: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           backgroundColor: colors.bgCard,
@@ -768,7 +768,7 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { email: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           backgroundColor: colors.bgCard,
@@ -781,7 +781,7 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { phone: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           backgroundColor: colors.bgCard,
@@ -793,7 +793,7 @@ export default function GuestManagement() {
                         onChange={(e) => handleEditGuest(guest.id, { dietaryPreferences: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           backgroundColor: colors.bgCard,
@@ -810,7 +810,7 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { tableNumber: parseInt(e.target.value) || undefined })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           backgroundColor: colors.bgCard,
@@ -822,7 +822,7 @@ export default function GuestManagement() {
                         onChange={(e) => handleEditGuest(guest.id, { rsvpStatus: e.target.value as any })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           backgroundColor: colors.bgCard,
@@ -1021,7 +1021,7 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,
@@ -1035,7 +1035,7 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, email: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,
@@ -1052,7 +1052,7 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,
@@ -1066,7 +1066,7 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, tableNumber: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,
@@ -1082,7 +1082,7 @@ export default function GuestManagement() {
                 onChange={(e) => setNewGuest({ ...newGuest, address: e.target.value })}
                 style={{
                   padding: '12px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: `1px solid ${colors.border}`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
                   backgroundColor: colors.bgCard,
@@ -1096,7 +1096,7 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, dietaryPreferences: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,
@@ -1113,7 +1113,7 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, rsvpStatus: e.target.value as any })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,
@@ -1145,7 +1145,7 @@ export default function GuestManagement() {
                     onChange={(e) => setNewGuest({ ...newGuest, plusOneName: e.target.value })}
                     style={{
                       padding: '12px',
-                      border: '1px solid rgba(180,140,90,0.3)',
+                      border: `1px solid ${colors.border}`,
                       fontFamily: 'Urbanist',
                       fontSize: '14px',
                       backgroundColor: colors.bgCard,
@@ -1163,7 +1163,7 @@ export default function GuestManagement() {
                 rows={3}
                 style={{
                   padding: '12px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: `1px solid ${colors.border}`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
                   backgroundColor: colors.bgCard,
@@ -1271,7 +1271,7 @@ export default function GuestManagement() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: colors.bgCard,

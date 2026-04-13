@@ -14,7 +14,6 @@ import {
   Settings, Camera, Sparkles, Gift, Music, Cake, Flower, Car, Palette
 } from 'lucide-react'
 import { Wedding, Guest, Expense, Vendor, Booking, ChecklistItem, WeatherData } from '../../../types'
-import { colors } from '../../../lib/styles'
 import AIChat from '../../../components/AIChat'
 
 // Motivational quotes
@@ -724,7 +723,7 @@ export default function CoupleDashboard() {
     return (
       <div style={{ 
         minHeight: '100vh', 
-        backgroundColor: colors.bg, 
+        backgroundColor: 'var(--color-background)', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center' 
@@ -732,8 +731,8 @@ export default function CoupleDashboard() {
         <div style={{
           width: '40px',
           height: '40px',
-          border: `3px solid ${colors.border}`,
-          borderTop: `3px solid ${colors.primary}`,
+          border: `3px solid var(--color-border)`,
+          borderTop: `3px solid var(--color-primary)`,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
@@ -748,7 +747,7 @@ export default function CoupleDashboard() {
   }
 
   return (
-    <div style={{ backgroundColor: darkMode ? colors.primaryDark : colors.bg, color: darkMode ? colors.white : colors.textPrimary, minHeight: '100vh' }}>
+    <div className="page-wrapper">
       {/* Google Fonts */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -768,11 +767,11 @@ export default function CoupleDashboard() {
           zIndex: 1000,
           animation: 'celebrate 2s ease-out'
         }}>
-          <Sparkles size={48} color={colors.primary} />
+          <Sparkles size={48} color={'var(--color-primary)'} />
           <div style={{
             fontFamily: 'Urbanist',
             fontSize: '24px',
-            color: colors.primary,
+            color: 'var(--color-primary)',
             textAlign: 'center',
             marginTop: '16px'
           }}>Task Completed! </div>
@@ -782,8 +781,8 @@ export default function CoupleDashboard() {
       {/* TOP NAVBAR */}
       <div style={{
         width: '100%',
-        backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-        borderBottom: `0.5px solid ${colors.border}`,
+        backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+        borderBottom: `0.5px solid var(--color-border)`,
         padding: '14px 32px',
         display: 'flex',
         alignItems: 'center',
@@ -794,14 +793,14 @@ export default function CoupleDashboard() {
           <div style={{
             width: '8px',
             height: '8px',
-            border: `1.5px solid ${colors.primary}`,
+            border: `1.5px solid var(--color-primary)`,
             borderRadius: '50%'
           }}></div>
           <span style={{
             fontFamily: 'Urbanist',
             fontSize: '22px',
             fontWeight: 800,
-            color: colors.primaryDark,
+            color: 'var(--color-primary-dark)',
             letterSpacing: '0.1em'
           }}>Kunda</span>
         </div>
@@ -812,35 +811,35 @@ export default function CoupleDashboard() {
             fontFamily: 'Urbanist',
             fontSize: '14px',
             fontWeight: 600,
-            color: colors.textPrimary,
+            color: 'var(--color-text)',
             textDecoration: 'none'
           }}>Overview</a>
           <a href="/dashboard/couple/checklist" style={{
             fontFamily: 'Urbanist',
             fontSize: '14px',
             fontWeight: 600,
-            color: colors.textSecondary,
+            color: 'var(--color-muted)',
             textDecoration: 'none'
           }}>Checklist</a>
           <a href="/dashboard/couple/budget" style={{
             fontFamily: 'Urbanist',
             fontSize: '14px',
             fontWeight: 600,
-            color: colors.textSecondary,
+            color: 'var(--color-muted)',
             textDecoration: 'none'
           }}>Budget</a>
           <a href="/dashboard/couple/guests" style={{
             fontFamily: 'Urbanist',
             fontSize: '14px',
             fontWeight: 600,
-            color: colors.textSecondary,
+            color: 'var(--color-muted)',
             textDecoration: 'none'
           }}>Guests</a>
           <a href="/dashboard/couple/wedding" style={{
             fontFamily: 'Urbanist',
             fontSize: '14px',
             fontWeight: 600,
-            color: colors.textSecondary,
+            color: 'var(--color-muted)',
             textDecoration: 'none'
           }}>Details</a>
           <a href="/dashboard/couple/bookings" style={{
@@ -849,7 +848,7 @@ export default function CoupleDashboard() {
             fontWeight: 500,
             textTransform: 'uppercase',
             letterSpacing: '0.15em',
-            color: colors.textSecondary,
+            color: 'var(--color-muted)',
             textDecoration: 'none'
           }}>Bookings</a>
         </div>
@@ -859,40 +858,40 @@ export default function CoupleDashboard() {
           <button
             onClick={() => setDarkMode(!darkMode)}
             style={{
-              border: `1px solid ${colors.border}`,
+              border: `1px solid var(--color-border)`,
               backgroundColor: 'transparent',
               padding: '6px',
               cursor: 'pointer'
             }}
           >
-            {darkMode ? <Sun size={16} color={colors.primary} /> : <Moon size={16} color={colors.primary} />}
+            {darkMode ? <Sun size={16} color={'var(--color-primary)'} /> : <Moon size={16} color={'var(--color-primary)'} />}
           </button>
           
           <div style={{
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            border: `1px solid ${colors.primary}`,
-            backgroundColor: colors.bg,
+            border: `1px solid var(--color-primary)`,
+            backgroundColor: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: 'Urbanist',
             fontSize: '13px',
-            color: colors.primaryDark
+            color: 'var(--color-primary-dark)'
           }}>
             {userProfile?.name?.charAt(0)?.toUpperCase()}
           </div>
           <span style={{
             fontFamily: 'Urbanist',
             fontSize: '13px',
-            color: colors.textPrimary
+            color: 'var(--color-text)'
           }}>{userProfile?.name}</span>
           <button
             onClick={signOutUser}
             style={{
-              border: `0.5px solid ${colors.primary}`,
-              color: colors.primary,
+              border: `0.5px solid var(--color-border)`,
+              color: 'var(--color-primary)',
               padding: '6px 14px',
               fontFamily: 'Urbanist',
               fontSize: '11px',
@@ -910,10 +909,10 @@ export default function CoupleDashboard() {
 
       {/* WEDDING SETUP OR MAIN DASHBOARD */}
       {!wedding || (!wedding.coupleName1 && !wedding.coupleName2) ? (
-        <div style={{ padding: '32px', backgroundColor: darkMode ? colors.primaryDark : colors.bg }}>
+        <div style={{ padding: '32px', backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)' }}>
           <div style={{
-            backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-            border: `1px solid ${colors.border}`,
+            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+            border: `1px solid var(--color-border)`,
             padding: '32px',
             maxWidth: '600px',
             margin: '0 auto'
@@ -922,7 +921,7 @@ export default function CoupleDashboard() {
               fontFamily: 'Urbanist',
               fontSize: '28px',
               fontWeight: 300,
-              color: colors.textPrimary,
+              color: 'var(--color-text)',
               marginBottom: '24px',
               textAlign: 'center'
             }}>Set Up Your Wedding</h2>
@@ -935,11 +934,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, coupleName1: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -949,11 +948,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, coupleName2: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -962,11 +961,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, date: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -976,11 +975,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, venue: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -990,11 +989,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, venueAddress: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -1004,11 +1003,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, guestCount: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -1018,11 +1017,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, totalBudget: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <select
@@ -1030,11 +1029,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, currency: e.target.value as 'RWF' | 'USD' | 'EUR'})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               >
                 <option value="RWF">RWF</option>
@@ -1048,11 +1047,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, ceremonyTime: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -1062,11 +1061,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, receptionTime: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <select
@@ -1074,11 +1073,11 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, dresscode: e.target.value as any})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               >
                 <option value="black_tie">Black Tie</option>
@@ -1094,11 +1093,11 @@ export default function CoupleDashboard() {
                 rows={3}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary,
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)',
                   resize: 'vertical'
                 }}
               />
@@ -1109,11 +1108,11 @@ export default function CoupleDashboard() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOnboarding({...onboarding, hashtag: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <input
@@ -1123,18 +1122,18 @@ export default function CoupleDashboard() {
                 onChange={(e) => setOnboarding({...onboarding, rsvpDeadline: e.target.value})}
                 style={{
                   padding: '12px',
-                  border: `1px solid ${colors.border}`,
+                  border: `1px solid var(--color-border)`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  color: darkMode ? colors.white : colors.textPrimary
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                 }}
               />
               <button
                 onClick={createWedding}
                 style={{
-                  backgroundColor: colors.primary,
-                  color: colors.bg,
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'var(--color-text)',
                   padding: '12px 28px',
                   fontFamily: 'Urbanist',
                   fontSize: '12px',
@@ -1154,7 +1153,7 @@ export default function CoupleDashboard() {
           {/* HERO SECTION WITH WEDDING OVERVIEW */}
           <div style={{ 
             padding: '32px', 
-            backgroundColor: darkMode ? colors.primaryDark : colors.bg,
+            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)',
             backgroundImage: wedding.heroImage ? `url(${wedding.heroImage})` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -1180,7 +1179,7 @@ export default function CoupleDashboard() {
                   fontWeight: 500,
                   textTransform: 'uppercase',
                   letterSpacing: '0.2em',
-                  color: colors.textSecondary,
+                  color: 'var(--color-muted)',
                   marginBottom: '8px'
                 }}>
                   {todayInfo.dayOfWeek} {todayInfo.date}
@@ -1188,7 +1187,7 @@ export default function CoupleDashboard() {
                 <div style={{
                   fontFamily: 'Urbanist',
                   fontSize: '13px',
-                  color: colors.textSecondary,
+                  color: 'var(--color-muted)',
                   marginBottom: '16px'
                 }}>
                   {todayInfo.daysAgo} days ago you started planning your wedding
@@ -1201,7 +1200,7 @@ export default function CoupleDashboard() {
                   fontFamily: 'Urbanist',
                   fontSize: '40px',
                   fontWeight: 800,
-                  color: colors.textPrimary,
+                  color: 'var(--color-text)',
                   marginBottom: '8px'
                 }}>
                   Welcome, {wedding.coupleName1} & {wedding.coupleName2}
@@ -1210,7 +1209,7 @@ export default function CoupleDashboard() {
                   fontFamily: 'Urbanist',
                   fontSize: '16px',
                   fontWeight: 400,
-                  color: colors.textSecondary,
+                  color: 'var(--color-muted)',
                   marginBottom: '8px'
                 }}>
                   {wedding.venue} {wedding.venueAddress && `· ${wedding.venueAddress}`}
@@ -1219,7 +1218,7 @@ export default function CoupleDashboard() {
                   fontFamily: 'Urbanist',
                   fontSize: '16px',
                   fontWeight: 400,
-                  color: colors.textSecondary
+                  color: 'var(--color-muted)'
                 }}>
                   {formatDate(wedding.date)} · {wedding.ceremonyTime} Ceremony
                 </p>
@@ -1227,8 +1226,8 @@ export default function CoupleDashboard() {
 
               {/* Live countdown timer */}
               <div style={{
-                backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                border: `1px solid ${colors.border}`,
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: `1px solid var(--color-border)`,
                 padding: '20px',
                 marginBottom: '24px'
               }}>
@@ -1236,15 +1235,15 @@ export default function CoupleDashboard() {
                   fontFamily: 'Urbanist',
                   fontSize: '18px',
                   fontWeight: 700,
-                  color: colors.textPrimary,
+                  color: 'var(--color-text)',
                   marginBottom: '16px',
                   textAlign: 'center'
                 }}>Countdown to Your Special Day</h3>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
                   <div style={{
-                    backgroundColor: colors.bg,
-                    border: `1px solid ${colors.border}`,
+                    backgroundColor: '#ffffff',
+                    border: `1px solid var(--color-border)`,
                     padding: '16px',
                     textAlign: 'center'
                   }}>
@@ -1252,7 +1251,7 @@ export default function CoupleDashboard() {
                       fontFamily: 'Urbanist',
                       fontSize: '36px',
                       fontWeight: 800,
-                      color: colors.primary,
+                      color: 'var(--color-primary)',
                       letterSpacing: '-0.02em'
                     }}>{countdown.days}</div>
                     <div style={{
@@ -1260,13 +1259,13 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: colors.textSecondary,
+                      color: 'var(--color-muted)',
                       marginTop: '4px'
                     }}>Days</div>
                   </div>
                   <div style={{
-                    backgroundColor: colors.bg,
-                    border: `1px solid ${colors.border}`,
+                    backgroundColor: '#ffffff',
+                    border: `1px solid var(--color-border)`,
                     padding: '16px',
                     textAlign: 'center'
                   }}>
@@ -1274,7 +1273,7 @@ export default function CoupleDashboard() {
                       fontFamily: 'Urbanist',
                       fontSize: '36px',
                       fontWeight: 800,
-                      color: colors.primary,
+                      color: 'var(--color-primary)',
                       letterSpacing: '-0.02em'
                     }}>{countdown.hours}</div>
                     <div style={{
@@ -1282,13 +1281,13 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: colors.textSecondary,
+                      color: 'var(--color-muted)',
                       marginTop: '4px'
                     }}>Hours</div>
                   </div>
                   <div style={{
-                    backgroundColor: colors.bg,
-                    border: `1px solid ${colors.border}`,
+                    backgroundColor: '#ffffff',
+                    border: `1px solid var(--color-border)`,
                     padding: '16px',
                     textAlign: 'center'
                   }}>
@@ -1296,7 +1295,7 @@ export default function CoupleDashboard() {
                       fontFamily: 'Urbanist',
                       fontSize: '36px',
                       fontWeight: 800,
-                      color: colors.primary,
+                      color: 'var(--color-primary)',
                       letterSpacing: '-0.02em'
                     }}>{countdown.mins}</div>
                     <div style={{
@@ -1304,13 +1303,13 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: colors.textSecondary,
+                      color: 'var(--color-muted)',
                       marginTop: '4px'
                     }}>Minutes</div>
                   </div>
                   <div style={{
-                    backgroundColor: colors.bg,
-                    border: `1px solid ${colors.border}`,
+                    backgroundColor: '#ffffff',
+                    border: `1px solid var(--color-border)`,
                     padding: '16px',
                     textAlign: 'center'
                   }}>
@@ -1318,7 +1317,7 @@ export default function CoupleDashboard() {
                       fontFamily: 'Urbanist',
                       fontSize: '36px',
                       fontWeight: 800,
-                      color: colors.primary,
+                      color: 'var(--color-primary)',
                       letterSpacing: '-0.02em'
                     }}>{countdown.secs}</div>
                     <div style={{
@@ -1326,7 +1325,7 @@ export default function CoupleDashboard() {
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
-                      color: colors.textSecondary,
+                      color: 'var(--color-muted)',
                       marginTop: '4px'
                     }}>Seconds</div>
                   </div>
@@ -1338,8 +1337,8 @@ export default function CoupleDashboard() {
                 <button
                   onClick={() => window.location.href = '/vendors'}
                   style={{
-                    backgroundColor: colors.primary,
-                    color: colors.bg,
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-text)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1352,14 +1351,14 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Search size={16} color={colors.primary} />
+                  <Search size={16} color={'var(--color-primary)'} />
                   Browse Vendors
                 </button>
                 <button
                   onClick={() => window.location.href = '/dashboard/couple/guests'}
                   style={{
-                    backgroundColor: colors.primary,
-                    color: colors.bg,
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-text)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1372,14 +1371,14 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Users size={16} color={colors.primary} />
+                  <Users size={16} color={'var(--color-primary)'} />
                   Guests
                 </button>
                 <button
                   onClick={() => window.location.href = '/dashboard/couple/bookings'}
                   style={{
-                    backgroundColor: colors.primary,
-                    color: colors.bg,
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-text)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1392,14 +1391,14 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Calendar size={16} color={colors.primary} />
+                  <Calendar size={16} color={'var(--color-primary)'} />
                   Bookings
                 </button>
                 <button
                   onClick={() => window.location.href = '/dashboard/couple/budget'}
                   style={{
-                    backgroundColor: colors.primary,
-                    color: colors.bg,
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-text)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1412,14 +1411,14 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <DollarSign size={16} color={colors.primary} />
+                  <DollarSign size={16} color={'var(--color-primary)'} />
                   Budget
                 </button>
                 <button
                   onClick={shareWeddingPage}
                   style={{
-                    border: `0.5px solid ${colors.primary}`,
-                    color: colors.primary,
+                    border: `0.5px solid var(--color-border)`,
+                    color: 'var(--color-primary)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1432,14 +1431,14 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Share2 size={16} color={colors.primary} />
+                  <Share2 size={16} color={'var(--color-primary)'} />
                   Share
                 </button>
                 <button
                   onClick={printWeddingSummary}
                   style={{
-                    border: `0.5px solid ${colors.primary}`,
-                    color: colors.primary,
+                    border: `0.5px solid var(--color-border)`,
+                    color: 'var(--color-primary)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1452,7 +1451,7 @@ export default function CoupleDashboard() {
                     gap: '8px'
                   }}
                 >
-                  <Printer size={16} color={colors.primary} />
+                  <Printer size={16} color={'var(--color-primary)'} />
                   Print
                 </button>
               </div>
@@ -1460,24 +1459,24 @@ export default function CoupleDashboard() {
               {/* Wedding photo upload slot */}
               {!wedding.heroImage && (
                 <div style={{
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  border: `1px solid ${colors.border}`,
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  border: `1px solid var(--color-border)`,
                   padding: '32px',
                   textAlign: 'center',
                   marginBottom: '24px'
                 }}>
-                  <Upload size={48} color={colors.primary} style={{ margin: '0 auto 16px' }} />
+                  <Upload size={48} color={'var(--color-primary)'} style={{ margin: '0 auto 16px' }} />
                   <p style={{
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    color: colors.textSecondary,
+                    color: 'var(--color-muted)',
                     marginBottom: '16px'
                   }}>
                     Upload your wedding photo
                   </p>
                   <button style={{
-                    backgroundColor: colors.primary,
-                    color: colors.bg,
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-text)',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '11px',
@@ -1496,15 +1495,15 @@ export default function CoupleDashboard() {
           {/* STATS ROW */}
           <div style={{ 
             padding: '0 32px 32px', 
-            backgroundColor: darkMode ? colors.primaryDark : colors.bg,
+            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)',
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: '12px'
           }}>
             {/* Days until wedding */}
             <div style={{
-              backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-              border: `1px solid ${colors.border}`,
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+              border: `1px solid var(--color-border)`,
               padding: '16px 18px'
             }}>
               <div style={{
@@ -1512,28 +1511,28 @@ export default function CoupleDashboard() {
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginBottom: '8px'
               }}>Days Until Wedding</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '36px',
                 fontWeight: 800,
-                color: colors.primary,
+                color: 'var(--color-primary)',
                 letterSpacing: '-0.02em'
               }}>{stats.daysUntilWedding}</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginTop: '4px'
               }}>{formatDate(wedding.date)}</div>
             </div>
 
             {/* Guest count */}
             <div style={{
-              backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-              border: `1px solid ${colors.border}`,
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+              border: `1px solid var(--color-border)`,
               padding: '16px 18px'
             }}>
               <div style={{
@@ -1541,28 +1540,28 @@ export default function CoupleDashboard() {
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginBottom: '8px'
               }}>Guest Count</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '36px',
                 fontWeight: 800,
-                color: colors.primary,
+                color: 'var(--color-primary)',
                 letterSpacing: '-0.02em'
               }}>{stats.confirmedGuests}/{stats.totalGuests}</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginTop: '4px'
               }}>confirmed invited</div>
             </div>
 
             {/* Budget used */}
             <div style={{
-              backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-              border: `1px solid ${colors.border}`,
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+              border: `1px solid var(--color-border)`,
               padding: '16px 18px'
             }}>
               <div style={{
@@ -1570,34 +1569,34 @@ export default function CoupleDashboard() {
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginBottom: '8px'
               }}>Budget Used</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '36px',
                 fontWeight: 800,
-                color: colors.primary,
+                color: 'var(--color-primary)',
                 letterSpacing: '-0.02em'
               }}>{stats.budgetUsed}%</div>
               <div style={{
                 width: '100%',
                 height: '5px',
-                backgroundColor: colors.bg,
+                backgroundColor: '#ffffff',
                 marginTop: '8px'
               }}>
                 <div style={{
                   width: `${stats.budgetUsed}%`,
                   height: '100%',
-                  backgroundColor: stats.budgetUsed > 80 ? colors.danger : stats.budgetUsed > 60 ? colors.warning : colors.success,
+                  backgroundColor: stats.budgetUsed > 80 ? 'var(--color-danger)' : stats.budgetUsed > 60 ? 'var(--color-warning)' : 'var(--color-success)',
                 }}></div>
               </div>
             </div>
 
             {/* Vendors booked */}
             <div style={{
-              backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-              border: `1px solid ${colors.border}`,
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+              border: `1px solid var(--color-border)`,
               padding: '16px 18px'
             }}>
               <div style={{
@@ -1605,27 +1604,27 @@ export default function CoupleDashboard() {
                 fontSize: '11px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginBottom: '8px'
               }}>Vendors Booked</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '30px',
                 fontWeight: 300,
-                color: colors.textPrimary
+                color: 'var(--color-text)',
               }}>{stats.vendorsBooked}</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginTop: '4px'
               }}>service providers</div>
             </div>
 
             {/* Tasks completed */}
             <div style={{
-              backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-              border: `1px solid ${colors.border}`,
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+              border: `1px solid var(--color-border)`,
               padding: '16px 18px'
             }}>
               <div style={{
@@ -1633,33 +1632,33 @@ export default function CoupleDashboard() {
                 fontSize: '11px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginBottom: '8px'
               }}>Tasks Completed</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '30px',
                 fontWeight: 300,
-                color: colors.textPrimary
+                color: 'var(--color-text)',
               }}>{stats.tasksCompleted}/{stats.tasksTotal}</div>
               <div style={{
                 width: '100%',
                 height: '5px',
-                backgroundColor: colors.bg,
+                backgroundColor: '#ffffff',
                 marginTop: '8px'
               }}>
                 <div style={{
                   width: `${stats.tasksTotal > 0 ? (stats.tasksCompleted / stats.tasksTotal) * 100 : 0}%`,
                   height: '100%',
-                  backgroundColor: colors.success,
+                  backgroundColor: 'var(--color-success)',
                 }}></div>
               </div>
             </div>
 
             {/* Profile completion */}
             <div style={{
-              backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-              border: `1px solid ${colors.border}`,
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+              border: `1px solid var(--color-border)`,
               padding: '16px 18px'
             }}>
               <div style={{
@@ -1667,25 +1666,25 @@ export default function CoupleDashboard() {
                 fontSize: '11px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: colors.textSecondary,
+                color: 'var(--color-muted)',
                 marginBottom: '8px'
               }}>Profile Completion</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '30px',
                 fontWeight: 300,
-                color: colors.textPrimary
+                color: 'var(--color-text)',
               }}>{stats.profileCompletion}%</div>
               <div style={{
                 width: '100%',
                 height: '5px',
-                backgroundColor: colors.bg,
+                backgroundColor: '#ffffff',
                 marginTop: '8px'
               }}>
                 <div style={{
                   width: `${stats.profileCompletion}%`,
                   height: '100%',
-                  backgroundColor: colors.success,
+                  backgroundColor: 'var(--color-success)',
                 }}></div>
               </div>
             </div>
@@ -1697,21 +1696,21 @@ export default function CoupleDashboard() {
             gridTemplateColumns: '1fr 320px',
             gap: '16px',
             padding: '0 32px 32px',
-            backgroundColor: darkMode ? colors.primaryDark : colors.bg
+            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)'
           }}>
             {/* LEFT COLUMN - Main content */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* Next upcoming task */}
               {wedding.checklist.filter(t => !t.done).length > 0 && (
                 <div style={{
-                  backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                  border: `1px solid ${colors.border}`,
+                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                  border: `1px solid var(--color-border)`,
                   padding: '20px'
                 }}>
                   <h3 style={{
                     fontFamily: 'Urbanist',
                     fontSize: '16px',
-                    color: colors.textPrimary,
+                    color: 'var(--color-text)',
                     marginBottom: '12px'
                   }}>Next Upcoming Task</h3>
                   {(() => {
@@ -1729,7 +1728,7 @@ export default function CoupleDashboard() {
                           <div style={{
                             width: '8px',
                             height: '8px',
-                            backgroundColor: colors.danger,
+                            backgroundColor: 'var(--color-danger)',
                             borderRadius: '50%'
                           }}></div>
                         )}
@@ -1737,14 +1736,14 @@ export default function CoupleDashboard() {
                           <div style={{
                             fontFamily: 'Urbanist',
                             fontSize: '14px',
-                            color: colors.textPrimary,
+                            color: 'var(--color-text)',
                             marginBottom: '4px'
                           }}>{nextTask.task}</div>
                           {nextTask.dueDate && (
                             <div style={{
                               fontFamily: 'Urbanist',
                               fontSize: '11px',
-                              color: colors.textSecondary
+                              color: 'var(--color-muted)',
                             }}>
                               Due: {formatDate(nextTask.dueDate)}
                             </div>
@@ -1758,32 +1757,32 @@ export default function CoupleDashboard() {
 
               {/* Weather widget */}
               <div style={{
-                backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                border: `1px solid ${colors.border}`,
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: `1px solid var(--color-border)`,
                 padding: '20px'
               }}>
                 <h3 style={{
                   fontFamily: 'Urbanist',
                   fontSize: '16px',
-                  color: colors.textPrimary,
+                  color: 'var(--color-text)',
                   marginBottom: '12px'
                 }}>Weather on Your Wedding Day</h3>
                 {weather ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{
                       fontSize: '32px',
-                      color: colors.primary
+                      color: 'var(--color-primary)',
                     }}>{weather.icon}</div>
                     <div>
                       <div style={{
                         fontFamily: 'Urbanist',
                         fontSize: '24px',
-                        color: colors.textPrimary
+                        color: 'var(--color-text)',
                       }}>{weather.temperature}°C</div>
                       <div style={{
                         fontFamily: 'Urbanist',
                         fontSize: '12px',
-                        color: colors.textSecondary
+                        color: 'var(--color-muted)',
                       }}>{weather.condition}</div>
                     </div>
                   </div>
@@ -1791,7 +1790,7 @@ export default function CoupleDashboard() {
                   <div style={{
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
-                    color: colors.textSecondary
+                    color: 'var(--color-muted)',
                   }}>
                     Weather forecast will be available closer to your wedding date
                   </div>
@@ -1800,20 +1799,20 @@ export default function CoupleDashboard() {
 
               {/* Motivational quote */}
               <div style={{
-                backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                border: `1px solid ${colors.border}`,
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: `1px solid var(--color-border)`,
                 padding: '20px'
               }}>
                 <h3 style={{
                   fontFamily: 'Urbanist',
                   fontSize: '16px',
-                  color: colors.textPrimary,
+                  color: 'var(--color-text)',
                   marginBottom: '12px'
                 }}>Quote of the Day</h3>
                 <p style={{
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  color: colors.textPrimary,
+                  color: 'var(--color-text)',
                   fontStyle: 'italic',
                   lineHeight: 1.5
                 }}>{quote}</p>
@@ -1821,22 +1820,22 @@ export default function CoupleDashboard() {
 
               {/* Recent checklist items */}
               <div style={{
-                backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                border: `1px solid ${colors.border}`,
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: `1px solid var(--color-border)`,
                 padding: '20px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h3 style={{
                     fontFamily: 'Urbanist',
                     fontSize: '16px',
-                    color: colors.textPrimary
+                    color: 'var(--color-text)',
                   }}>Recent Tasks</h3>
                   <button
                     onClick={() => window.location.href = '/dashboard/couple/checklist'}
                     style={{
                       fontFamily: 'Urbanist',
                       fontSize: '11px',
-                      color: colors.primary,
+                      color: 'var(--color-primary)',
                       textTransform: 'uppercase',
                       backgroundColor: 'transparent',
                       border: 'none',
@@ -1859,8 +1858,8 @@ export default function CoupleDashboard() {
                         style={{
                           width: '16px',
                           height: '16px',
-                          border: item.done ? 'none' : `0.5px solid ${colors.primary}`,
-                          backgroundColor: item.done ? colors.primary : 'transparent',
+                          border: item.done ? 'none' : `0.5px solid var(--color-primary)`,
+                          backgroundColor: item.done ? 'var(--color-primary)' : 'transparent',
                           cursor: 'pointer',
                           position: 'relative',
                           display: 'flex',
@@ -1872,7 +1871,7 @@ export default function CoupleDashboard() {
                           <div style={{
                             width: '8px',
                             height: '8px',
-                            backgroundColor: colors.bg,
+                            backgroundColor: '#ffffff',
                             clipPath: 'polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 60%)'
                           }}></div>
                         )}
@@ -1880,14 +1879,14 @@ export default function CoupleDashboard() {
                       <span style={{
                         fontFamily: 'Urbanist',
                         fontSize: '13px',
-                        color: item.done ? colors.textSecondary : colors.textPrimary,
+                        color: item.done ? 'var(--color-muted)' : 'var(--color-text)',
                         textDecoration: item.done ? 'line-through' : 'none'
                       }}>{item.task}</span>
                       {item.urgent && (
                         <div style={{
                           width: '6px',
                           height: '6px',
-                          backgroundColor: colors.danger,
+                          backgroundColor: 'var(--color-danger)',
                           borderRadius: '50%'
                         }}></div>
                       )}
@@ -1898,22 +1897,22 @@ export default function CoupleDashboard() {
 
               {/* Recent guests */}
               <div style={{
-                backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                border: `1px solid ${colors.border}`,
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: `1px solid var(--color-border)`,
                 padding: '20px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h3 style={{
                     fontFamily: 'Urbanist',
                     fontSize: '16px',
-                    color: colors.textPrimary
+                    color: 'var(--color-text)',
                   }}>Recent Guests</h3>
                   <button
                     onClick={() => window.location.href = '/dashboard/couple/guests'}
                     style={{
                       fontFamily: 'Urbanist',
                       fontSize: '11px',
-                      color: colors.primary,
+                      color: 'var(--color-primary)',
                       textTransform: 'uppercase',
                       backgroundColor: 'transparent',
                       border: 'none',
@@ -1935,18 +1934,18 @@ export default function CoupleDashboard() {
                         <div style={{
                           fontFamily: 'Urbanist',
                           fontSize: '13px',
-                          color: colors.textPrimary
+                          color: 'var(--color-text)',
                         }}>{guest.name}</div>
                         <div style={{
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
-                          color: colors.textSecondary
+                          color: 'var(--color-muted)',
                         }}>{guest.rsvpStatus}</div>
                       </div>
                       <div style={{
                         padding: '4px 8px',
-                        backgroundColor: guest.rsvpStatus === 'attending' ? colors.success : 
-                                       guest.rsvpStatus === 'declined' ? colors.danger : colors.bg,
+                        backgroundColor: guest.rsvpStatus === 'attending' ? 'var(--color-success)' : 
+                                       guest.rsvpStatus === 'declined' ? 'var(--color-danger)' : 'var(--color-background)',
                         borderRadius: '4px',
                         fontSize: '10px',
                         textTransform: 'uppercase',
@@ -1963,15 +1962,15 @@ export default function CoupleDashboard() {
             {/* RIGHT COLUMN - Vendor Panel */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{
-                backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                border: `1px solid ${colors.border}`,
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: `1px solid var(--color-border)`,
                 padding: '20px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h3 style={{
                     fontFamily: 'Urbanist',
                     fontSize: '16px',
-                    color: colors.textPrimary
+                    color: 'var(--color-text)',
                   }}>Featured Vendors</h3>
                   <button
                     onClick={() => setShowVendorPanel(!showVendorPanel)}
@@ -1981,7 +1980,7 @@ export default function CoupleDashboard() {
                       cursor: 'pointer'
                     }}
                   >
-                    {showVendorPanel ? <ChevronUp size={16} color={colors.primary} /> : <ChevronDown size={16} color={colors.primary} />}
+                    {showVendorPanel ? <ChevronUp size={16} color={'var(--color-primary)'} /> : <ChevronDown size={16} color={'var(--color-primary)'} />}
                   </button>
                 </div>
 
@@ -1995,11 +1994,11 @@ export default function CoupleDashboard() {
                         style={{
                           flex: 1,
                           padding: '6px',
-                          border: `1px solid ${colors.border}`,
+                          border: `1px solid var(--color-border)`,
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
-                          backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                          color: darkMode ? colors.white : colors.textPrimary
+                          backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                          color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                         }}
                       >
                         <option value="all">All Categories</option>
@@ -2017,11 +2016,11 @@ export default function CoupleDashboard() {
                         style={{
                           flex: 1,
                           padding: '6px',
-                          border: `1px solid ${colors.border}`,
+                          border: `1px solid var(--color-border)`,
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
-                          backgroundColor: darkMode ? colors.primaryDark : colors.bgCard,
-                          color: darkMode ? colors.white : colors.textPrimary
+                          backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                          color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
                         }}
                       />
                     </div>
@@ -2029,13 +2028,13 @@ export default function CoupleDashboard() {
                     {/* Vendor cards */}
                     {filteredVendors.map((vendor) => (
                       <div key={vendor.id} style={{
-                        border: `1px solid ${colors.border}`,
+                        border: `1px solid var(--color-border)`,
                         padding: '12px',
                         cursor: 'pointer'
                       }}
                       onClick={() => handleViewVendor(vendor.id)}
                       onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                        e.currentTarget.style.backgroundColor = darkMode ? colors.primaryDark : colors.bgCard
+                        e.currentTarget.style.backgroundColor = darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)'
                       }}
                       onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
                         e.currentTarget.style.backgroundColor = 'transparent'
@@ -2047,19 +2046,19 @@ export default function CoupleDashboard() {
                               fontFamily: 'Urbanist',
                               fontSize: '13px',
                               fontWeight: 500,
-                              color: colors.textPrimary,
+                              color: 'var(--color-text)',
                               marginBottom: '4px'
                             }}>{vendor.businessName}</div>
                             <div style={{
                               fontFamily: 'Urbanist',
                               fontSize: '11px',
-                              color: colors.textSecondary,
+                              color: 'var(--color-muted)',
                               marginBottom: '4px'
                             }}>{vendor.category}</div>
                             <div style={{
                               fontFamily: 'Urbanist',
                               fontSize: '11px',
-                              color: colors.textSecondary
+                              color: 'var(--color-muted)',
                             }}>{vendor.location}</div>
                           </div>
                           <button
@@ -2075,8 +2074,8 @@ export default function CoupleDashboard() {
                           >
                             <Heart 
                               size={16} 
-                              color={savedVendors.includes(vendor.id) ? colors.primary : colors.textSecondary}
-                              fill={savedVendors.includes(vendor.id) ? colors.primary : 'none'}
+                              color={savedVendors.includes(vendor.id) ? 'var(--color-primary)' : 'var(--color-muted)'}
+                              fill={savedVendors.includes(vendor.id) ? 'var(--color-primary)' : 'none'}
                             />
                           </button>
                         </div>
@@ -2087,23 +2086,22 @@ export default function CoupleDashboard() {
                               <Star 
                                 key={i} 
                                 size={12} 
-                                color={i < Math.floor((vendor.rating || 0)) ? colors.primary : colors.textSecondary} 
-                                fill={i < Math.floor((vendor.rating || 0)) ? colors.primary : 'none'}
+                                color={i < Math.floor((vendor.rating || 0)) ? 'var(--color-primary)' : 'var(--color-muted)'} 
+                                fill={i < Math.floor((vendor.rating || 0)) ? 'var(--color-primary)' : 'none'}
                               />
                             ))}
                           </div>
                           <span style={{
                             fontFamily: 'Urbanist',
                             fontSize: '10px',
-                            color: colors.textSecondary
+                            color: 'var(--color-muted)'
                           }}>{vendor.rating || 0} ({vendor.reviewCount || vendor.reviews || 0})</span>
                         </div>
                         
                         <div style={{
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
-                          stroke: colors.primary,
-                          color: colors.primary,
+                          color: 'var(--color-primary)',
                           marginTop: '4px'
                         }}>
                           {(vendor.pricing as any)?.currency || 'RWF'} {(vendor.pricing as any)?.min || 0} - {(vendor.pricing as any)?.max || 0}
@@ -2112,7 +2110,7 @@ export default function CoupleDashboard() {
                         {vendor.featured && (
                           <div style={{
                             display: 'inline-block',
-                            backgroundColor: colors.primary,
+                            backgroundColor: 'var(--color-primary)',
                             color: 'white',
                             padding: '2px 6px',
                             fontSize: '9px',

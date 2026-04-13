@@ -54,10 +54,10 @@ export default function VendorsPage() {
   
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading vendors...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
+        <div style={{ textAlign: 'center' }}>
+          <Loader2 style={{ width: '32px', height: '32px' }} className="animate-spin mx-auto mb-4" />
+          <p style={{ color: colors.textSecondary }}>Loading vendors...</p>
         </div>
       </div>
     )
@@ -65,18 +65,26 @@ export default function VendorsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
-        <div className="text-center">
-          <div className="text-red-500 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ color: colors.danger, marginBottom: '16px' }}>
+            <svg style={{ width: '64px', height: '64px' }} className="mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Error Loading Vendors</h3>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <h3 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, marginBottom: '8px' }}>Error Loading Vendors</h3>
+          <p style={{ color: colors.textSecondary, marginBottom: '16px' }}>{error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            style={{ padding: '12px 16px', backgroundColor: colors.primary, color: colors.white, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', fontWeight: 600, cursor: 'pointer' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = colors.primaryDark
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = colors.primary
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
           >
             Try Again
           </button>
@@ -86,12 +94,12 @@ export default function VendorsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.bg }}>
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div style={{ minHeight: '100vh', backgroundColor: colors.bg }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px' }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '36px' }}>Find Wedding Vendors</h1>
-          <p className="text-gray-600" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>Discover the best wedding professionals for your special day</p>
+        <div style={{ marginBottom: '32px' }}>
+          <h1 style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '36px', marginBottom: '8px' }}>Find Wedding Vendors</h1>
+          <p style={{ fontFamily: 'Urbanist', color: colors.textSecondary, fontSize: '14px' }}>Discover the best wedding professionals for your special day</p>
         </div>
 
         {/* Filters */}
@@ -101,28 +109,28 @@ export default function VendorsPage() {
         />
 
         {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
+        <div style={{ marginBottom: '24px' }}>
+          <p style={{ color: colors.textSecondary }}>
             {vendors.length} vendor{vendors.length !== 1 ? 's' : ''} found
           </p>
         </div>
 
         {/* Vendor Grid */}
         {vendors.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
             {vendors.map((vendor) => (
               <VendorCard key={vendor.id} vendor={vendor} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <div style={{ color: colors.textMuted, marginBottom: '16px' }}>
+              <svg style={{ width: '64px', height: '64px' }} className="mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No vendors yet</h3>
-            <p className="text-gray-600">Check back soon as we add wedding vendors to our platform</p>
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, marginBottom: '8px' }}>No vendors yet</h3>
+            <p style={{ color: colors.textSecondary }}>Check back soon as we add wedding vendors to our platform</p>
           </div>
         )}
       </div>

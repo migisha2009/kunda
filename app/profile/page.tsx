@@ -107,73 +107,105 @@ export default function ProfilePage() {
 
   if (!user || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-cream)' }}>
-        <Loader2 className="w-8 h-8 animate-spin" />
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
+        <Loader2 style={{ width: '32px', height: '32px' }} className="animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-cream)' }}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div style={{ minHeight: '100vh', backgroundColor: colors.bg }}>
+      <div style={{ maxWidth: '896px', margin: '0 auto', padding: '32px' }}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>Profile Settings</h1>
-          <p className="" style={{ color: colors.textSecondary }}>Manage your account information and preferences</p>
+        <div style={{ marginBottom: '32px' }}>
+          <h1 style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: colors.textPrimary, fontFamily: 'Urbanist' }}>Profile Settings</h1>
+          <p style={{ color: colors.textSecondary, fontSize: '14px', fontWeight: 400 }}>Manage your account information and preferences</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '32px' }}>
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Profile Information */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold flex items-center" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>
-                  <User className="w-5 h-5 mr-2" style={{ color: colors.primary }} />
+            <div style={{ backgroundColor: colors.white, padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: `1px solid ${colors.border}` }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 600, display: 'flex', alignItems: 'center', color: colors.textPrimary, fontFamily: 'Urbanist' }}>
+                  <User style={{ width: '20px', height: '20px', marginRight: '8px', color: colors.primary }} />
                   Profile Information
                 </h2>
-                {editing && (
+                {!editing && (
                   <button
                     onClick={() => setEditing(true)}
-                    className="hover:opacity-80" style={{ color: colors.primary }}
+                    style={{ cursor: 'pointer', color: colors.primary, backgroundColor: 'transparent', border: 'none' }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                   >
-                    <Edit2 className="w-4 h-4" />
+                    <Edit2 style={{ width: '16px', height: '16px' }} />
                   </button>
                 )}
               </div>
 
               {editing ? (
-                <div className="space-y-4">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
                       Name
                     </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: colors.border }}
+                      style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = colors.primary
+                        e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = colors.border
+                        e.target.style.boxShadow = 'none'
+                      }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
                       Phone Number
                     </label>
                     <input
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: colors.border }}
+                      style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
                       placeholder="Enter your phone number"
+                      onFocus={(e) => {
+                        e.target.style.borderColor = colors.primary
+                        e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = colors.border
+                        e.target.style.boxShadow = 'none'
+                      }}
                     />
                   </div>
 
-                  <div className="flex gap-3">
+                  <div style={{ display: 'flex', gap: '12px' }}>
                     <button
                       onClick={handleSave}
                       disabled={saving}
-                      className="flex items-center px-4 py-2 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" style={{ backgroundColor: colors.primary }}
+                      style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', color: colors.white, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', backgroundColor: colors.primary, opacity: saving ? 0.5 : 1, cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 4px 12px rgba(26,86,219,0.3)' }}
+                      onMouseEnter={(e) => {
+                        if (!saving) {
+                          e.currentTarget.style.backgroundColor = colors.primaryDark
+                          e.currentTarget.style.transform = 'translateY(-1px)'
+                          e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!saving) {
+                          e.currentTarget.style.backgroundColor = colors.primary
+                          e.currentTarget.style.transform = 'translateY(0)'
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,86,219,0.3)'
+                        }
+                      }}
                     >
                       {saving ? (
                         <>
@@ -189,7 +221,15 @@ export default function ProfilePage() {
                     </button>
                     <button
                       onClick={handleCancel}
-                      className="flex items-center px-4 py-2 font-medium rounded-lg transition-colors" style={{ backgroundColor: colors.bg, color: colors.textPrimary }}
+                      style={{ display: 'flex', alignItems: 'center', padding: '12px 16px', fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', backgroundColor: colors.bg, color: colors.textPrimary, cursor: 'pointer', border: `1px solid ${colors.border}` }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = colors.border
+                        e.currentTarget.style.transform = 'translateY(-1px)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = colors.bg
+                        e.currentTarget.style.transform = 'translateY(0)'
+                      }}
                     >
                       <X className="w-4 h-4 mr-2" />
                       Cancel
@@ -197,26 +237,26 @@ export default function ProfilePage() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
-                    <p className="text-sm" style={{ color: colors.textSecondary }}>Name</p>
-                    <p className="font-medium" style={{ color: colors.textPrimary }}>{userProfile.name}</p>
+                    <p style={{ fontSize: '14px', color: colors.textSecondary }}>Name</p>
+                    <p style={{ fontWeight: 600, color: colors.textPrimary }}>{userProfile.name}</p>
                   </div>
                   <div>
-                    <p className="text-sm" style={{ color: colors.textSecondary }}>Email</p>
-                    <p className="font-medium" style={{ color: colors.textPrimary }}>{user.email}</p>
+                    <p style={{ fontSize: '14px', color: colors.textSecondary }}>Email</p>
+                    <p style={{ fontWeight: 600, color: colors.textPrimary }}>{user.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm" style={{ color: colors.textSecondary }}>Phone</p>
-                    <p className="font-medium" style={{ color: colors.textPrimary }}>{userProfile.phone || 'Not provided'}</p>
+                    <p style={{ fontSize: '14px', color: colors.textSecondary }}>Phone</p>
+                    <p style={{ fontWeight: 600, color: colors.textPrimary }}>{userProfile.phone || 'Not provided'}</p>
                   </div>
                   <div>
-                    <p className="text-sm" style={{ color: colors.textSecondary }}>Account Type</p>
-                    <p className="font-medium" style={{ color: colors.textPrimary }}>{userProfile.role}</p>
+                    <p style={{ fontSize: '14px', color: colors.textSecondary }}>Account Type</p>
+                    <p style={{ fontWeight: 600, color: colors.textPrimary }}>{userProfile.role}</p>
                   </div>
                   <div>
-                    <p className="text-sm" style={{ color: colors.textSecondary }}>Member Since</p>
-                    <p className="font-medium" style={{ color: colors.textPrimary }}>
+                    <p style={{ fontSize: '14px', color: colors.textSecondary }}>Member Since</p>
+                    <p style={{ fontWeight: 600, color: colors.textPrimary }}>
                       {formatDate(userProfile.createdAt)}
                     </p>
                   </div>
@@ -225,17 +265,27 @@ export default function ProfilePage() {
             </div>
 
             {/* Password Settings */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>
-                <Key className="w-5 h-5 mr-2" style={{ color: colors.primary }} />
+            <div style={{ backgroundColor: colors.white, padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: `1px solid ${colors.border}` }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '16px', display: 'flex', alignItems: 'center', color: colors.textPrimary, fontFamily: 'Urbanist' }}>
+                <Key style={{ width: '20px', height: '20px', marginRight: '8px', color: colors.primary }} />
                 Password Settings
               </h2>
-              <p className="mb-4" style={{ color: colors.textSecondary }}>
+              <p style={{ marginBottom: '16px', color: colors.textSecondary, fontSize: '14px' }}>
                 Change your password to keep your account secure
               </p>
               <button
                 onClick={handleChangePassword}
-                className="px-4 py-2 text-white font-medium rounded-lg transition-colors" style={{ backgroundColor: colors.primary }}
+                style={{ padding: '12px 16px', color: colors.white, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', backgroundColor: colors.primary, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26,86,219,0.3)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.primaryDark
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.primary
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,86,219,0.3)'
+                }}
               >
                 Send Password Reset Link
               </button>
@@ -243,52 +293,60 @@ export default function ProfilePage() {
 
             {/* Messages */}
             {error && (
-              <div className="p-4 rounded-lg" style={{ backgroundColor: colors.dangerBg, borderColor: colors.danger }}>
-                <p className="text-sm" style={{ color: colors.danger }}>{error}</p>
+              <div style={{ padding: '16px', borderRadius: '8px', backgroundColor: colors.dangerBg, border: `1px solid ${colors.danger}30` }}>
+                <p style={{ fontSize: '14px', color: colors.danger }}>{error}</p>
               </div>
             )}
 
             {success && (
-              <div className="p-4 rounded-lg" style={{ backgroundColor: colors.successBg, borderColor: colors.success }}>
-                <p className="text-sm" style={{ color: colors.success }}>{success}</p>
+              <div style={{ padding: '16px', borderRadius: '8px', backgroundColor: colors.successBg, border: `1px solid ${colors.success}30` }}>
+                <p style={{ fontSize: '14px', color: colors.success }}>{success}</p>
               </div>
             )}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Account Stats */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="font-semibold mb-4" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>Account Overview</h3>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <Heart className="w-4 h-4 mr-2" style={{ color: colors.danger }} />
-                  <span className="text-sm" style={{ color: colors.textSecondary }}>Account Type</span>
+            <div style={{ backgroundColor: colors.white, padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: `1px solid ${colors.border}` }}>
+              <h3 style={{ fontWeight: 600, marginBottom: '16px', color: colors.textPrimary, fontFamily: 'Urbanist' }}>Account Overview</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Heart style={{ width: '16px', height: '16px', marginRight: '8px', color: colors.danger }} />
+                  <span style={{ fontSize: '14px', color: colors.textSecondary }}>Account Type</span>
                 </div>
-                <p className="font-medium capitalize" style={{ color: colors.textPrimary }}>{userProfile.role}</p>
+                <p style={{ fontWeight: 600, textTransform: 'capitalize', color: colors.textPrimary }}>{userProfile.role}</p>
                 
-                <div className="flex items-center mt-4">
-                  <Mail className="w-4 h-4 mr-2" style={{ color: colors.primary }} />
-                  <span className="text-sm" style={{ color: colors.textSecondary }}>Email Verified</span>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '16px' }}>
+                  <Mail style={{ width: '16px', height: '16px', marginRight: '8px', color: colors.primary }} />
+                  <span style={{ fontSize: '14px', color: colors.textSecondary }}>Email Verified</span>
                 </div>
-                <p className="font-medium" style={{ color: colors.success }}>Yes</p>
+                <p style={{ fontWeight: 600, color: colors.success }}>Yes</p>
               </div>
             </div>
 
             {/* Danger Zone */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-red-200">
-              <h3 className="font-semibold text-red-900 mb-4 flex items-center">
-                <AlertTriangle className="w-5 h-5 mr-2" />
+            <div style={{ backgroundColor: colors.white, padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: `1px solid ${colors.danger}30` }}>
+              <h3 style={{ fontWeight: 600, color: colors.danger, marginBottom: '16px', display: 'flex', alignItems: 'center' }}>
+                <AlertTriangle style={{ width: '20px', height: '20px', marginRight: '8px' }} />
                 Danger Zone
               </h3>
-              <p className="text-red-600 text-sm mb-4">
+              <p style={{ color: colors.danger, fontSize: '14px', marginBottom: '16px' }}>
                 Once you delete your account, there is no going back. Please be certain.
               </p>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="w-full px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
+                style={{ width: '100%', padding: '12px 16px', backgroundColor: colors.danger, color: colors.white, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', cursor: 'pointer' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#b91c1c'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.danger
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
               >
-                <Trash2 className="w-4 h-4 mr-2 inline" />
+                <Trash2 style={{ width: '16px', height: '16px', marginRight: '8px', display: 'inline-block' }} />
                 Delete Account
               </button>
             </div>
@@ -297,21 +355,33 @@ export default function ProfilePage() {
 
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
-              <div className="text-center mb-6">
-                <AlertTriangle className="w-12 h-12 text-red-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Delete Account?</h3>
-                <p className="text-gray-600">
+          <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 50 }}>
+            <div style={{ backgroundColor: colors.white, borderRadius: '12px', boxShadow: '0 25px 50px rgba(0,0,0,0.25)', maxWidth: '448px', width: '100%', padding: '24px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                <AlertTriangle style={{ width: '48px', height: '48px', color: colors.danger, margin: '0 auto 16px' }} />
+                <h3 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, marginBottom: '8px' }}>Delete Account?</h3>
+                <p style={{ color: colors.textSecondary, fontSize: '14px' }}>
                   This action cannot be undone. This will permanently delete your account and remove all your data from our servers.
                 </p>
               </div>
               
-              <div className="flex gap-3">
+              <div style={{ display: 'flex', gap: '12px' }}>
                 <button
                   onClick={handleDeleteAccount}
                   disabled={deleting}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  style={{ flex: 1, padding: '12px 16px', backgroundColor: colors.danger, color: colors.white, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', cursor: deleting ? 'not-allowed' : 'pointer', opacity: deleting ? 0.5 : 1 }}
+                  onMouseEnter={(e) => {
+                    if (!deleting) {
+                      e.currentTarget.style.backgroundColor = '#b91c1c'
+                      e.currentTarget.style.transform = 'translateY(-1px)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!deleting) {
+                      e.currentTarget.style.backgroundColor = colors.danger
+                      e.currentTarget.style.transform = 'translateY(0)'
+                    }
+                  }}
                 >
                   {deleting ? (
                     <>
@@ -324,7 +394,15 @@ export default function ProfilePage() {
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors"
+                  style={{ flex: 1, padding: '12px 16px', backgroundColor: colors.border, color: colors.textPrimary, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', cursor: 'pointer' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = colors.textSecondary
+                    e.currentTarget.style.transform = 'translateY(-1px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = colors.border
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
                 >
                   Cancel
                 </button>

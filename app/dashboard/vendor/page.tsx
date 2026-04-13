@@ -526,7 +526,7 @@ export default function VendorDashboard() {
           className="flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity"
           style={{ 
             background: '#faf0e0', 
-            border: '0.5px solid rgba(180,140,90,0.3)', 
+            border: '0.5px solid ${colors.border}', 
             padding: '14px 20px',
             margin: '0 32px 20px'
           }}
@@ -567,7 +567,7 @@ export default function VendorDashboard() {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
@@ -597,7 +597,7 @@ export default function VendorDashboard() {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
@@ -627,7 +627,7 @@ export default function VendorDashboard() {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
@@ -657,7 +657,7 @@ export default function VendorDashboard() {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
@@ -687,7 +687,7 @@ export default function VendorDashboard() {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
@@ -793,7 +793,7 @@ export default function VendorDashboard() {
         <div className="col-span-8">
           <div 
             className="p-5"
-            style={{ backgroundColor: colors.bg, border: '0.5px solid rgba(180,140,90,0.15)' }}
+            style={{ backgroundColor: colors.bg, border: '0.5px solid ${colors.border}' }}
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
@@ -822,7 +822,7 @@ export default function VendorDashboard() {
                     className={`flex items-start justify-between p-3 cursor-pointer hover:bg-white transition-colors ${
                       enquiry.unread ? 'bg-white' : ''
                     }`}
-                    style={{ border: '0.5px solid rgba(180,140,90,0.15)' }}
+                    style={{ border: '0.5px solid ${colors.border}' }}
                     onClick={() => window.location.href = '/dashboard/vendor/bookings'}
                   >
                     <div className="flex-1">
@@ -886,7 +886,7 @@ export default function VendorDashboard() {
         <div className="col-span-4">
           <div 
             className="p-5"
-            style={{ backgroundColor: colors.bg, border: '0.5px solid rgba(180,140,90,0.15)' }}
+            style={{ backgroundColor: colors.bg, border: '0.5px solid ${colors.border}' }}
           >
             <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
               Business Profile

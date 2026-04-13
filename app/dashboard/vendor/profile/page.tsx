@@ -152,7 +152,7 @@ export default function VendorProfile() {
         {saved && <div style={{ background: '#1a56db', border: '0.5px solid #5dcaa5', padding: '12px 16px', marginBottom: 20, color: '#085041', fontSize: 13 }}>Profile saved!</div>}
 
         <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Basic Information</h2>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Basic Information</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
             <div>
               <label style={lbl}>Business Name *</label>
@@ -214,7 +214,7 @@ export default function VendorProfile() {
         </div>
 
         <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Contact & Social</h2>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Contact & Social</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             <div>
               <label style={lbl}>Website</label>
@@ -232,8 +232,8 @@ export default function VendorProfile() {
         </div>
 
         <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Portfolio ({images.length}/10)</h2>
-          <label style={{ display: 'block', border: '1px dashed rgba(180,140,90,0.4)', background: '#f0f4ff', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Portfolio ({images.length}/10)</h2>
+          <label style={{ display: 'block', border: '1px dashed ${colors.border}', background: '#f0f4ff', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
             <input type="file" accept="image/*" multiple onChange={upload} style={{ display: 'none' }} disabled={images.length >= 10 || uploading} />
             <div style={{ fontSize: 13, color: '#6b7280' }}>{uploading ? 'Uploading...' : 'Click to upload images'}</div>
             <div style={{ fontSize: 11, color: '#9ca3af' }}>PNG, JPG up to 5MB each</div>

@@ -17,6 +17,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
 import { Enquiry } from '../../../../types'
+import { colors } from '../../../../lib/styles'
 import { 
   MessageSquare, Clock, CheckCircle, XCircle, User, Calendar, 
   Search, Filter, Reply, ChevronDown, DollarSign, CreditCard, 
@@ -577,7 +578,7 @@ export default function VendorBookingsPage() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-5 gap-3 mb-8">
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
+          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: colors.border, padding: '16px 18px' }}>
             <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Pending Enquiries
             </div>
@@ -586,7 +587,7 @@ export default function VendorBookingsPage() {
             </div>
           </div>
           
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
+          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: colors.border, padding: '16px 18px' }}>
             <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Replied
             </div>
@@ -595,7 +596,7 @@ export default function VendorBookingsPage() {
             </div>
           </div>
 
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
+          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: colors.border, padding: '16px 18px' }}>
             <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Total Bookings
             </div>
@@ -604,7 +605,7 @@ export default function VendorBookingsPage() {
             </div>
           </div>
 
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
+          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: colors.border, padding: '16px 18px' }}>
             <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Total Revenue
             </div>
@@ -613,7 +614,7 @@ export default function VendorBookingsPage() {
             </div>
           </div>
 
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(180,140,90,0.2)', padding: '16px 18px' }}>
+          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: colors.border, padding: '16px 18px' }}>
             <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280' }}>
               Response Rate
             </div>
@@ -737,11 +738,11 @@ export default function VendorBookingsPage() {
         </div>
 
         {/* Content */}
-        <div style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)', padding: '24px' }}>
+        <div style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}', padding: '24px' }}>
 
           {activeTab === 'enquiries' ? (
             <>
-              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', borderBottom: '0.5px solid rgba(180,140,90,0.15)', paddingBottom: '12px' }}>
+              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', borderBottom: `0.5px solid ${colors.border}`, paddingBottom: '12px' }}>
                 Recent Enquiries
               </h2>
               
@@ -1052,7 +1053,7 @@ export default function VendorBookingsPage() {
             </>
           ) : (
             <>
-              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', borderBottom: '0.5px solid rgba(180,140,90,0.15)', paddingBottom: '12px' }}>
+              <h2 className="text-lg font-medium mb-6" style={{ fontFamily: 'Urbanist', color: '#3a2a1a', borderBottom: `0.5px solid ${colors.border}`, paddingBottom: '12px' }}>
                 Bookings Management
               </h2>
               

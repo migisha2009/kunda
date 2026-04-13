@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Heart, Camera, MapPin, Music, Cake, Flower, Home as HomeIcon, Car, Shirt, Star, Users, Menu, X, Phone, MessageCircle, ChevronRight, Settings, Calendar, DollarSign, MessageSquare, AlertCircle, Check } from 'lucide-react'
-import { colors, typography, fontSizes, fontWeights } from '../lib/styles'
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -30,12 +29,12 @@ export default function Home() {
 
   // Features
   const features = [
-    { name: 'Smart Planning Tools', icon: Settings, color: colors.primary },
-    { name: 'Verified Vendors', icon: Check, color: colors.success },
-    { name: 'Guest Management', icon: Users, color: colors.warning },
-    { name: 'Budget Tracking', icon: DollarSign, color: colors.primaryDark },
-    { name: 'Easy Bookings', icon: Calendar, color: colors.danger },
-    { name: 'WhatsApp Alerts', icon: MessageSquare, color: colors.danger }
+    { name: 'Smart Planning Tools', icon: Settings, color: 'var(--color-primary)' },
+    { name: 'Verified Vendors', icon: Check, color: 'var(--color-success)' },
+    { name: 'Guest Management', icon: Users, color: 'var(--color-warning)' },
+    { name: 'Budget Tracking', icon: DollarSign, color: 'var(--color-primary-dark)' },
+    { name: 'Easy Bookings', icon: Calendar, color: 'var(--color-danger)' },
+    { name: 'WhatsApp Alerts', icon: MessageSquare, color: 'var(--color-danger)' }
   ]
 
   // Testimonials
@@ -119,25 +118,25 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* 1. STICKY NAVBAR */}
-      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`} style={{ borderBottom: `1px solid ${colors.border}` }}>
+      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`} style={{ borderBottom: `1px solid var(--color-border)` }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
                 <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
               </div>
-              <span className="ml-2" style={{ fontFamily: 'Urbanist', color: colors.primary, fontWeight: fontWeights.bold, fontSize: fontSizes['2xl'] }}>Kunda</span>
+              <span className="ml-2" style={{ fontFamily: 'var(--font-family)', color: 'var(--color-primary)', fontWeight: 'var(--font-weight-bold)', fontSize: 'var(--font-size-2xl)' }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>Vendors</Link>
-              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>How it Works</a>
-              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>Pricing</a>
-              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: colors.textSecondary, fontWeight: fontWeights.semibold, fontSize: fontSizes.sm }}>Contact</a>
+              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>Vendors</Link>
+              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>How it Works</a>
+              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>Pricing</a>
+              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>Contact</a>
               <Link href="/login" className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium transition-colors hover:bg-blue-50">Login</Link>
-              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: colors.primary }}>Get Started</Link>
+              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: 'var(--color-primary)' }}>Get Started</Link>
             </div>
 
             {/* Mobile menu button */}
@@ -160,7 +159,7 @@ export default function Home() {
                 <a href="#pricing" className="text-gray-700 hover:text-gray-900">Pricing</a>
                 <a href="#contact" className="text-gray-700 hover:text-gray-900">Contact</a>
                 <Link href="/login" className="text-gray-700 hover:text-gray-900">Login</Link>
-                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: colors.primary }}>
+                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: 'var(--color-primary)' }}>
                   Get Started
                 </Link>
               </div>
@@ -170,8 +169,7 @@ export default function Home() {
       </nav>
 
       {/* 2. HERO SECTION */}
-      <section style={{ 
-        background: `linear-gradient(135deg, ${colors.primaryDark}, ${colors.primary} 50%, ${colors.primaryLight})`,
+      <section className="hero-section" style={{ 
         minHeight: '560px',
         padding: '80px 64px',
         position: 'relative',
@@ -192,27 +190,27 @@ export default function Home() {
               Rwanda's #1 Wedding Platform
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ 
-              fontFamily: 'Urbanist'
+              fontFamily: 'var(--font-family)'
             }}>
               Your Perfect Wedding,<br />
-              <span style={{ color: colors.primaryAccent }}>Beautifully</span><br />
+              <span style={{ color: 'var(--color-primary-pale)' }}>Beautifully</span><br />
               Orchestrated
             </h1>
-            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: fontWeights.normal }}>
+            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 'var(--font-weight-regular)' }}>
               Connect with verified wedding vendors, manage your budget, and plan every detail of your special day
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Link href="/signup" className="px-6 py-3 rounded-lg text-blue-600 font-medium transition-all hover:bg-blue-50" style={{ backgroundColor: 'white' }}>
+              <Link href="/signup" className="btn-primary">
                 Plan My Wedding
               </Link>
-              <Link href="/signup" className="px-6 py-3 rounded-lg text-white font-medium border border-white transition-all hover:bg-white hover:text-blue-600">
+              <Link href="/signup" className="btn-secondary">
                 Join as Vendor
               </Link>
             </div>
             <div className="flex items-center">
               <div className="flex -space-x-2">
                 {[1,2,3,4].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
                     <span className="text-white text-xs font-bold">{i}</span>
                   </div>
                 ))}
@@ -225,11 +223,7 @@ export default function Home() {
 
           {/* Right side floating card */}
           <div className="lg:w-1/2 lg:pl-10" style={{ animation: 'fadeInUp 0.8s ease 0.2s both' }}>
-            <div className="p-6 rounded-2xl" style={{ 
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              backdropFilter: 'blur(10px)'
-            }}>
+            <div className="card-glass">
               <div className="text-white text-sm font-medium mb-4">Next Wedding Countdown</div>
               <div className="grid grid-cols-4 gap-3 mb-6">
                 <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
@@ -267,51 +261,49 @@ export default function Home() {
       </section>
 
       {/* 3. STATS BAR */}
-      <section id="stats" data-animate style={{ backgroundColor: colors.primaryDark, padding: '24px' }}>
+      <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary-dark)', padding: '24px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease' : 'none' }}>2,400+</div>
-              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Weddings</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Weddings</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.2s' : 'none' }}>380+</div>
-              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Vendors</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Vendors</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.4s' : 'none' }}>98%</div>
-              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Satisfied</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Satisfied</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.6s' : 'none' }}>10+</div>
-              <div className="text-sm uppercase" style={{ color: colors.primaryAccent }}>Categories</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Categories</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 4. FEATURES SECTION */}
-      <section id="features" data-animate style={{ backgroundColor: 'white', padding: '80px 64px' }}>
+      <section id="features" data-animate className="page-wrapper" style={{ backgroundColor: 'white', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'Urbanist', fontWeight: fontWeights.black, color: colors.textPrimary }}>
+          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)', color: 'var(--color-text)' }}>
             Everything you need for your perfect wedding
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => {
               const Icon = feature.icon
               return (
-                <div key={index} className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+                <div key={index} className="card" 
                      style={{ 
-                       backgroundColor: colors.bgCard, 
-                       borderColor: colors.border,
                        animation: visibleSections.has('features') ? `fadeInUp 0.6s ease ${index * 0.1}s both` : 'none'
                      }}>
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" 
                        style={{ backgroundColor: `${feature.color}20`, color: feature.color }}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: colors.textPrimary }}>{feature.name}</h3>
-                  <p className="text-sm" style={{ color: colors.textSecondary }}>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-text)' }}>{feature.name}</h3>
+                  <p className="text-sm" style={{ color: 'var(--color-muted)' }}>
                     {feature.name === 'Smart Planning Tools' && 'AI-powered timeline and task management'}
                     {feature.name === 'Verified Vendors' && 'All vendors are background-checked and reviewed'}
                     {feature.name === 'Guest Management' && 'RSVP tracking and guest list organization'}
@@ -327,7 +319,7 @@ export default function Home() {
       </section>
 
       {/* 5. VENDOR CATEGORIES SECTION */}
-      <section id="categories" data-animate style={{ backgroundColor: colors.bg, padding: '80px 64px' }}>
+      <section id="categories" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {vendorCategories.map((category, index) => {
@@ -336,36 +328,36 @@ export default function Home() {
                 <div key={index} 
                      className="p-4 rounded-xl text-center transition-all hover:bg-blue-600 hover:text-white cursor-pointer"
                      style={{ 
-                       backgroundColor: colors.bgCard,
-                       borderColor: colors.border,
-                       border: `1px solid ${colors.border}`,
+                       backgroundColor: 'var(--color-card)',
+                       borderColor: 'var(--color-border)',
+                       border: `1px solid var(--color-border)`,
                        animation: visibleSections.has('categories') ? `fadeInUp 0.6s ease ${index * 0.05}s both` : 'none'
                      }}
                      onMouseEnter={(e) => {
                        const target = e.currentTarget
-                       target.style.backgroundColor = colors.primary
-                       target.style.color = colors.white
+                       target.style.backgroundColor = 'var(--color-primary)'
+                       target.style.color = '#ffffff'
                        const iconDiv = target.querySelector('div')
                        if (iconDiv) {
                          iconDiv.style.backgroundColor = 'rgba(255,255,255,0.2)'
-                         iconDiv.style.color = colors.white
+                         iconDiv.style.color = '#ffffff'
                        }
                      }}
                      onMouseLeave={(e) => {
                        const target = e.currentTarget
-                       target.style.backgroundColor = colors.bgCard
-                       target.style.color = colors.primaryDark
+                       target.style.backgroundColor = 'var(--color-card)'
+                       target.style.color = 'var(--color-primary-dark)'
                        const iconDiv = target.querySelector('div')
                        if (iconDiv) {
-                         iconDiv.style.backgroundColor = colors.white
-                         iconDiv.style.color = colors.primaryDark
+                         iconDiv.style.backgroundColor = '#ffffff'
+                         iconDiv.style.color = 'var(--color-primary-dark)'
                        }
                      }}>
                   <div className="w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-2 transition-all" 
-                       style={{ backgroundColor: colors.white, color: colors.primaryDark }}>
+                       style={{ backgroundColor: '#ffffff', color: 'var(--color-primary-dark)' }}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <div className="text-xs font-bold" style={{ color: colors.primaryDark }}>{category.name}</div>
+                  <div className="text-xs font-bold" style={{ color: 'var(--color-primary-dark)' }}>{category.name}</div>
                 </div>
               )
             })}
@@ -374,7 +366,7 @@ export default function Home() {
       </section>
 
       {/* 6. HOW IT WORKS SECTION */}
-      <section id="how-it-works" data-animate style={{ backgroundColor: colors.bgCard, padding: '80px 64px' }}>
+      <section id="how-it-works" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center mb-8">
             <div className="inline-flex rounded-lg bg-gray-100 p-1">
@@ -418,8 +410,8 @@ export default function Home() {
                 <div className="w-13 h-13 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                   {step.number}
                 </div>
-                <h3 className="text-lg font-bold mb-2" style={{ color: colors.textPrimary }}>{step.title}</h3>
-                <p className="text-sm" style={{ color: colors.textSecondary }}>{step.desc}</p>
+                <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-text)' }}>{step.title}</h3>
+                <p className="text-sm" style={{ color: 'var(--color-muted)' }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -427,30 +419,28 @@ export default function Home() {
       </section>
 
       {/* 7. TESTIMONIALS SECTION */}
-      <section id="testimonials" data-animate style={{ backgroundColor: colors.bg, padding: '80px 64px' }}>
+      <section id="testimonials" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} 
-                   className="p-6 rounded-xl border"
+                   className="card"
                    style={{ 
-                     backgroundColor: colors.bgCard,
-                     borderColor: colors.border,
                      animation: visibleSections.has('testimonials') ? `fadeInUp 0.6s ease ${index * 0.1}s both` : 'none'
                    }}>
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" style={{ color: colors.warning }} />
+                    <Star key={i} className="w-4 h-4 fill-current" style={{ color: 'var(--color-warning)' }} />
                   ))}
                 </div>
-                <p className="text-sm mb-4 italic" style={{ color: colors.textMuted }}>"{testimonial.text}"</p>
+                <p className="text-sm mb-4 italic" style={{ color: 'var(--color-muted)' }}>"{testimonial.text}"</p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">
                     {testimonial.name.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-medium" style={{ color: colors.textPrimary }}>{testimonial.name}</div>
-                    <div className="text-xs" style={{ color: colors.textSecondary }}>{testimonial.location}</div>
+                    <div className="font-medium" style={{ color: 'var(--color-text)' }}>{testimonial.name}</div>
+                    <div className="text-xs" style={{ color: 'var(--color-muted)' }}>{testimonial.location}</div>
                   </div>
                 </div>
               </div>
@@ -460,61 +450,61 @@ export default function Home() {
       </section>
 
       {/* 8. CONTACT SECTION */}
-      <section id="contact" data-animate style={{ backgroundColor: colors.bgCard, padding: '80px 64px' }}>
+      <section id="contact" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: colors.textPrimary }}>
+          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: 'var(--color-text)' }}>
             Get in touch with Kunda
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Phone</div>
-                  <div className="text-sm" style={{ color: colors.textSecondary }}>+250 783 312 746</div>
+                  <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Phone</div>
+                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>+250 783 312 746</div>
                 </div>
               </div>
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Phone 2</div>
-                  <div className="text-sm" style={{ color: colors.textSecondary }}>+250 782 526 295</div>
+                  <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Phone 2</div>
+                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>+250 782 526 295</div>
                 </div>
               </div>
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Instagram</div>
-                  <div className="text-sm" style={{ color: colors.textSecondary }}>@darkxente</div>
+                  <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Instagram</div>
+                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>@darkxente</div>
                 </div>
               </div>
-              <div className="p-4 rounded-xl flex items-center" style={{ backgroundColor: colors.bg }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: colors.primary }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium" style={{ color: colors.textPrimary }}>Location</div>
-                  <div className="text-sm" style={{ color: colors.textSecondary }}>Kigali, Rwanda</div>
+                  <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Location</div>
+                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>Kigali, Rwanda</div>
                 </div>
               </div>
             </div>
 
             {/* Contact form */}
-            <div className="p-7 rounded-xl" style={{ backgroundColor: colors.bg }}>
+            <div className="card" style={{ backgroundColor: 'var(--color-background)' }}>
               {formSubmitted ? (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: colors.successBg }}>
-                    <Check className="w-8 h-8" style={{ color: colors.success }} />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--color-success-bg)' }}>
+                    <Check className="w-8 h-8" style={{ color: 'var(--color-success)' }} />
                   </div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: colors.textPrimary }}>Message Sent!</h3>
-                  <p className="text-sm" style={{ color: colors.textSecondary }}>We'll get back to you soon.</p>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-text)' }}>Message Sent!</h3>
+                  <p className="text-sm" style={{ color: 'var(--color-muted)' }}>We'll get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleFormSubmit}>
@@ -524,8 +514,8 @@ export default function Home() {
                       placeholder="Name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full p-3 rounded-lg border focus:outline-none"
-                      style={{ backgroundColor: colors.white, borderColor: colors.border }}
+                      className="input"
+                      style={{ backgroundColor: '#ffffff', borderColor: 'var(--color-border)' }}
                       required
                     />
                   </div>
@@ -535,8 +525,8 @@ export default function Home() {
                       placeholder="Email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full p-3 rounded-lg border focus:outline-none"
-                      style={{ backgroundColor: colors.white, borderColor: colors.border }}
+                      className="input"
+                      style={{ backgroundColor: '#ffffff', borderColor: 'var(--color-border)' }}
                       required
                     />
                   </div>
@@ -547,14 +537,14 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
                       className="w-full p-3 rounded-lg border focus:outline-none resize-none"
-                      style={{ backgroundColor: colors.white, borderColor: colors.border }}
+                      style={{ backgroundColor: '#ffffff', borderColor: 'var(--color-border)' }}
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-lg text-white font-medium transition-all hover:opacity-90"
-                    style={{ backgroundColor: colors.primary }}
+                    className="w-full py-3 rounded-lg text-white font-medium transition-all hover:opacity-90 btn-primary"
+                    style={{ backgroundColor: 'var(--color-primary)' }}
                   >
                     Send Message
                   </button>
@@ -566,8 +556,7 @@ export default function Home() {
       </section>
 
       {/* 9. CTA BANNER */}
-      <section style={{ 
-        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)',
+      <section className="hero-section" style={{ 
         padding: '80px 64px',
         position: 'relative',
         overflow: 'hidden'
@@ -579,17 +568,17 @@ export default function Home() {
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl font-bold text-white mb-6" style={{ fontFamily: 'Urbanist', fontWeight: 900 }}>
+          <h2 className="text-4xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)' }}>
             Begin your forever, beautifully
           </h2>
           <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)' }}>
             Join 2,400+ couples who have planned their perfect day with Kunda
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/signup" className="px-6 py-3 rounded-lg text-blue-600 font-medium transition-all hover:bg-blue-50" style={{ backgroundColor: 'white' }}>
+            <Link href="/signup" className="btn-primary">
               Start Planning
             </Link>
-            <Link href="/signup" className="px-6 py-3 rounded-lg text-white font-medium border border-white transition-all hover:bg-white hover:text-blue-600">
+            <Link href="/signup" className="btn-secondary">
               Join as Vendor
             </Link>
           </div>
@@ -597,25 +586,25 @@ export default function Home() {
       </section>
 
       {/* 10. FOOTER */}
-      <footer style={{ backgroundColor: colors.textPrimary, padding: '60px 64px 20px' }}>
+      <footer style={{ backgroundColor: 'var(--color-text)', padding: '60px 64px 20px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Kunda info */}
             <div>
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: colors.primary }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="ml-2" style={{ fontFamily: 'Urbanist', color: colors.primary, fontWeight: fontWeights.bold, fontSize: fontSizes.xl }}>Kunda</span>
+                <span className="ml-2" style={{ fontFamily: 'var(--font-family)', color: 'var(--color-primary)', fontWeight: 'var(--font-weight-bold)', fontSize: 'var(--font-size-xl)' }}>Kunda</span>
               </div>
-              <p className="text-sm mb-4" style={{ color: colors.textSecondary }}>
+              <p className="text-sm mb-4" style={{ color: 'var(--color-muted)' }}>
                 Your perfect wedding, beautifully orchestrated. Rwanda's premier wedding planning platform.
               </p>
               <div className="flex space-x-3">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: colors.primary }}>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <MessageCircle className="w-4 h-4 text-white" />
                 </div>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: colors.primary }}>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: 'var(--color-primary)' }}>
                   <Phone className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -623,47 +612,47 @@ export default function Home() {
 
             {/* For Couples */}
             <div>
-              <h3 className="font-bold mb-4" style={{ color: colors.white }}>For Couples</h3>
+              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>For Couples</h3>
               <ul className="space-y-2">
-                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Find Vendors</Link></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>How It Works</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Success Stories</a></li>
+                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Find Vendors</Link></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>How It Works</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Pricing</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Success Stories</a></li>
               </ul>
             </div>
 
             {/* For Vendors */}
             <div>
-              <h3 className="font-bold mb-4" style={{ color: colors.white }}>For Vendors</h3>
+              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>For Vendors</h3>
               <ul className="space-y-2">
-                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Join Kunda</Link></li>
-                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Vendor Dashboard</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Vendor Resources</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Pricing Plans</a></li>
+                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Join Kunda</Link></li>
+                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Vendor Dashboard</Link></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Vendor Resources</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Pricing Plans</a></li>
               </ul>
             </div>
 
             {/* Company */}
             <div>
-              <h3 className="font-bold mb-4" style={{ color: colors.white }}>Company</h3>
+              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>Company</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>About Us</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: colors.textSecondary, fontSize: fontSizes.sm }}>Terms of Service</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>About Us</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Terms of Service</a></li>
               </ul>
             </div>
           </div>
 
           {/* Bottom bar */}
-          <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center" style={{ borderColor: colors.border }}>
-            <p className="text-sm" style={{ color: colors.textSecondary }}>
+          <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center" style={{ borderColor: 'var(--color-border)' }}>
+            <p className="text-sm" style={{ color: 'var(--color-muted)' }}>
               &copy; 2024 Kunda. All rights reserved.
             </p>
             <div className="flex items-center mt-4 md:mt-0">
-              <span className="text-sm" style={{ color: colors.textSecondary }}>Made with love in</span>
-              <MapPin className="w-4 h-4 mx-1" style={{ color: colors.primary }} />
-              <span className="text-sm font-medium" style={{ color: colors.primary }}>Kigali, Rwanda</span>
+              <span className="text-sm" style={{ color: 'var(--color-muted)' }}>Made with love in</span>
+              <MapPin className="w-4 h-4 mx-1" style={{ color: 'var(--color-primary)' }} />
+              <span className="text-sm font-medium" style={{ color: 'var(--color-primary)' }}>Kigali, Rwanda</span>
             </div>
           </div>
         </div>

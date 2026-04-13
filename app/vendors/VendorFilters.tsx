@@ -61,34 +61,45 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
   const hasActiveFilters = category || location
 
   return (
-    <div className="p-6 rounded-xl shadow-sm mb-6" style={{ backgroundColor: colors.bgCard, borderColor: colors.border }}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <Filter className="w-5 h-5 mr-2" style={{ color: colors.textSecondary }} />
-          <h2 className="text-lg font-semibold" style={{ color: colors.textPrimary, fontFamily: 'Urbanist' }}>Filters</h2>
+    <div style={{ padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', marginBottom: '24px', backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Filter style={{ width: '20px', height: '20px', marginRight: '8px', color: colors.textSecondary }} />
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, fontFamily: 'Urbanist' }}>Filters</h2>
         </div>
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="flex items-center text-sm hover:opacity-80 transition-colors" style={{ color: colors.textSecondary }}
+            style={{ display: 'flex', alignItems: 'center', fontSize: '14px', transition: 'opacity 0.2s ease', color: colors.textSecondary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
           >
-            <X className="w-4 h-4 mr-1" style={{ color: colors.textSecondary }} />
+            <X style={{ width: '16px', height: '16px', marginRight: '4px', color: colors.textSecondary }} />
             Clear All
           </button>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
         {/* Category Filter */}
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
             Category
           </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             onBlur={updateFilters}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: colors.border }}
+            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
+              updateFilters()
+            }}
           >
             <option value="">All Categories</option>
             {CATEGORIES.map((cat) => (
@@ -101,7 +112,7 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
 
         {/* Location Filter */}
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: colors.textPrimary }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
             Location
           </label>
           <input
@@ -110,40 +121,53 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
             onChange={(e) => setLocation(e.target.value)}
             onBlur={updateFilters}
             placeholder="City, State, or Country"
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: colors.border }}
+            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
+              updateFilters()
+            }}
           />
         </div>
       </div>
 
       {/* Active Filters Display */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t" style={{ borderColor: colors.border }}>
-          <div className="flex flex-wrap gap-2">
+        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: `1px solid ${colors.border}` }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {category && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primary }}>
                 Category: {category}
                 <button
                   onClick={() => {
                     setCategory('')
                     updateFilters()
                   }}
-                  className="ml-2 hover:opacity-80" style={{ color: colors.primary }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
-                  <X className="w-3 h-3" />
+                  <X style={{ width: '12px', height: '12px' }} />
                 </button>
               </span>
             )}
             {location && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm" style={{ backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
                 Location: {location}
                 <button
                   onClick={() => {
                     setLocation('')
                     updateFilters()
                   }}
-                  className="ml-2 hover:opacity-80" style={{ color: colors.primary }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
-                  <X className="w-3 h-3" />
+                  <X style={{ width: '12px', height: '12px' }} />
                 </button>
               </span>
             )}

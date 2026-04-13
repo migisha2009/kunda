@@ -231,7 +231,7 @@ export default function WeddingDetails() {
       {/* Header */}
       <div style={{
         backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        borderBottom: '0.5px solid ${colors.border}',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -308,7 +308,7 @@ export default function WeddingDetails() {
             {/* Couple Information */}
             <div style={{
               backgroundColor: 'white',
-              border: '0.5px solid rgba(180,140,90,0.2)',
+              border: '0.5px solid ${colors.border}',
               padding: '24px'
             }}>
               <h2 style={{
@@ -341,7 +341,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -367,7 +367,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -382,7 +382,7 @@ export default function WeddingDetails() {
             {/* Wedding Date & Time */}
             <div style={{
               backgroundColor: 'white',
-              border: '0.5px solid rgba(180,140,90,0.2)',
+              border: '0.5px solid ${colors.border}',
               padding: '24px'
             }}>
               <h2 style={{
@@ -415,7 +415,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -441,7 +441,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -469,7 +469,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -495,7 +495,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -510,7 +510,7 @@ export default function WeddingDetails() {
             {/* Guest Count */}
             <div style={{
               backgroundColor: 'white',
-              border: '0.5px solid rgba(180,140,90,0.2)',
+              border: '0.5px solid ${colors.border}',
               padding: '24px'
             }}>
               <h2 style={{
@@ -542,7 +542,7 @@ export default function WeddingDetails() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,
@@ -559,7 +559,7 @@ export default function WeddingDetails() {
             {/* Venue Information */}
             <div style={{
               backgroundColor: 'white',
-              border: '0.5px solid rgba(180,140,90,0.2)',
+              border: '0.5px solid ${colors.border}',
               padding: '24px'
             }}>
               <h2 style={{
@@ -591,7 +591,7 @@ export default function WeddingDetails() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,
@@ -617,7 +617,7 @@ export default function WeddingDetails() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,
@@ -662,7 +662,7 @@ export default function WeddingDetails() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,
@@ -676,7 +676,7 @@ export default function WeddingDetails() {
             {/* Dress Code */}
             <div style={{
               backgroundColor: 'white',
-              border: '0.5px solid rgba(180,140,90,0.2)',
+              border: '0.5px solid ${colors.border}',
               padding: '24px'
             }}>
               <h2 style={{
@@ -700,7 +700,7 @@ export default function WeddingDetails() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,
@@ -732,7 +732,7 @@ export default function WeddingDetails() {
                     style={{
                       width: '100%',
                       padding: '12px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: editing ? 'white' : cream,
@@ -751,7 +751,7 @@ export default function WeddingDetails() {
           {/* Color Theme */}
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px'
           }}>
             <h2 style={{
@@ -776,7 +776,7 @@ export default function WeddingDetails() {
                     cursor: editing ? 'pointer' : 'not-allowed',
                     border: formData.colorTheme[0] === theme.colors[0] && formData.colorTheme[1] === theme.colors[1] 
                       ? `2px solid ${gold}` 
-                      : '0.5px solid rgba(180,140,90,0.2)',
+                      : '0.5px solid ${colors.border}',
                     borderRadius: '4px',
                     padding: '8px',
                     textAlign: 'center'
@@ -815,7 +815,7 @@ export default function WeddingDetails() {
           {/* Wedding Hashtag */}
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px'
           }}>
             <h2 style={{
@@ -834,7 +834,7 @@ export default function WeddingDetails() {
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '0.5px solid rgba(180,140,90,0.3)',
+                border: '0.5px solid ${colors.border}',
                 fontFamily: 'Jost',
                 fontSize: '14px',
                 backgroundColor: editing ? 'white' : cream,
@@ -847,7 +847,7 @@ export default function WeddingDetails() {
           {/* Hero Image */}
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px'
           }}>
             <h2 style={{
@@ -875,7 +875,7 @@ export default function WeddingDetails() {
                     width: '100%',
                     height: '200px',
                     objectFit: 'cover',
-                    border: '0.5px solid rgba(180,140,90,0.2)'
+                    border: '0.5px solid ${colors.border}'
                   }}
                 />
                 {editing && (
@@ -886,7 +886,7 @@ export default function WeddingDetails() {
                       top: '8px',
                       right: '8px',
                       backgroundColor: 'white',
-                      border: '0.5px solid rgba(180,140,90,0.2)',
+                      border: '0.5px solid ${colors.border}',
                       borderRadius: '50%',
                       width: '24px',
                       height: '24px',
@@ -905,7 +905,7 @@ export default function WeddingDetails() {
                 width: '100%',
                 height: '200px',
                 backgroundColor: '#f0e4d0',
-                border: '0.5px solid rgba(180,140,90,0.2)',
+                border: '0.5px solid ${colors.border}',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -953,7 +953,7 @@ export default function WeddingDetails() {
         {/* Message to Guests */}
         <div style={{
           backgroundColor: 'white',
-          border: '0.5px solid rgba(180,140,90,0.2)',
+          border: '0.5px solid ${colors.border}',
           padding: '24px',
           marginTop: '32px'
         }}>
@@ -979,7 +979,7 @@ export default function WeddingDetails() {
             style={{
               width: '100%',
               padding: '12px',
-              border: '0.5px solid rgba(180,140,90,0.3)',
+              border: '0.5px solid ${colors.border}',
               fontFamily: 'Jost',
               fontSize: '14px',
               backgroundColor: editing ? 'white' : cream,
@@ -993,7 +993,7 @@ export default function WeddingDetails() {
         {/* Schedule Builder */}
         <div style={{
           backgroundColor: 'white',
-          border: '0.5px solid rgba(180,140,90,0.2)',
+          border: '0.5px solid ${colors.border}',
           padding: '24px',
           marginTop: '32px'
         }}>
@@ -1046,7 +1046,7 @@ export default function WeddingDetails() {
                   style={{
                     flex: '0 0 120px',
                     padding: '8px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,
@@ -1062,7 +1062,7 @@ export default function WeddingDetails() {
                   style={{
                     flex: 1,
                     padding: '8px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: editing ? 'white' : cream,

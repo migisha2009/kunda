@@ -15,7 +15,7 @@ export const askAI = async (
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userMessage }
       ],
-      model: 'llama3-8b-8192',
+      model: 'llama3-70b-8192',
       max_tokens: maxTokens,
       temperature: 0.7,
     })
@@ -41,7 +41,7 @@ export const askAIJSON = async (
         },
         { role: 'user', content: userMessage }
       ],
-      model: 'llama3-8b-8192',
+      model: 'llama3-70b-8192',
       max_tokens: maxTokens,
       temperature: 0.3,
       response_format: { type: 'json_object' }

@@ -5,6 +5,7 @@ import { useAuth } from '../../../../context/AuthContext'
 import { useRequireAuth } from '../../../../hooks/useRequireAuth'
 import { collection, doc, getDoc, getDocs, updateDoc, setDoc } from 'firebase/firestore'
 import { db } from '../../../../lib/firebase'
+import { colors } from '../../../../lib/styles'
 import { Settings, Save, Loader2, Mail, Shield, Bell, Globe, CreditCard, Users, FileText, AlertTriangle } from 'lucide-react'
 
 export default function AdminSettingsPage() {
@@ -140,7 +141,7 @@ export default function AdminSettingsPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Platform Settings */}
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}' }}>
                 <div className="flex items-center mb-6">
                   <Globe className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
                   <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Platform Information</h2>
@@ -154,7 +155,7 @@ export default function AdminSettingsPage() {
                       value={settings.platform.name}
                       onChange={(e) => updateSetting('platform', 'name', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -165,7 +166,7 @@ export default function AdminSettingsPage() {
                       onChange={(e) => updateSetting('platform', 'description', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
                       rows={3}
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -176,7 +177,7 @@ export default function AdminSettingsPage() {
                       value={settings.platform.email}
                       onChange={(e) => updateSetting('platform', 'email', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -187,7 +188,7 @@ export default function AdminSettingsPage() {
                       value={settings.platform.phone}
                       onChange={(e) => updateSetting('platform', 'phone', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -198,14 +199,14 @@ export default function AdminSettingsPage() {
                       value={settings.platform.address}
                       onChange={(e) => updateSetting('platform', 'address', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Notification Settings */}
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}' }}>
                 <div className="flex items-center mb-6">
                   <Bell className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
                   <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Notifications</h2>
@@ -317,7 +318,7 @@ export default function AdminSettingsPage() {
               </div>
 
               {/* Security Settings */}
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}' }}>
                 <div className="flex items-center mb-6">
                   <Shield className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
                   <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Security</h2>
@@ -365,7 +366,7 @@ export default function AdminSettingsPage() {
                       value={settings.security.sessionTimeout}
                       onChange={(e) => updateSetting('security', 'sessionTimeout', parseInt(e.target.value))}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -376,7 +377,7 @@ export default function AdminSettingsPage() {
                       value={settings.security.maxLoginAttempts}
                       onChange={(e) => updateSetting('security', 'maxLoginAttempts', parseInt(e.target.value))}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -387,14 +388,14 @@ export default function AdminSettingsPage() {
                       value={settings.security.passwordMinLength}
                       onChange={(e) => updateSetting('security', 'passwordMinLength', parseInt(e.target.value))}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Payment Settings */}
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}' }}>
                 <div className="flex items-center mb-6">
                   <CreditCard className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
                   <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Payment Gateway</h2>
@@ -427,7 +428,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => updateSetting('payments', 'stripePublicKey', e.target.value)}
                         placeholder="pk_test_..."
                         className="w-full px-4 py-2 rounded focus:outline-none"
-                        style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                        style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                       />
                     </div>
                   )}
@@ -458,7 +459,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => updateSetting('payments', 'flutterwavePublicKey', e.target.value)}
                         placeholder="FLWPUBK_TEST-..."
                         className="w-full px-4 py-2 rounded focus:outline-none"
-                        style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                        style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                       />
                     </div>
                   )}
@@ -469,7 +470,7 @@ export default function AdminSettingsPage() {
                       value={settings.payments.currency}
                       onChange={(e) => updateSetting('payments', 'currency', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     >
                       <option value="USD">USD - US Dollar</option>
                       <option value="EUR">EUR - Euro</option>
@@ -486,14 +487,14 @@ export default function AdminSettingsPage() {
                       onChange={(e) => updateSetting('payments', 'taxRate', parseFloat(e.target.value))}
                       step="0.1"
                       className="w-full px-4 py-2 rounded focus:outline-none"
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Feature Settings */}
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}' }}>
                 <div className="flex items-center mb-6">
                   <Settings className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
                   <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Features</h2>
@@ -588,7 +589,7 @@ export default function AdminSettingsPage() {
               </div>
 
               {/* Content Settings */}
-              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid rgba(180,140,90,0.2)' }}>
+              <div className="p-6" style={{ backgroundColor: '#ffffff', border: '0.5px solid ${colors.border}' }}>
                 <div className="flex items-center mb-6">
                   <FileText className="w-5 h-5 mr-2" style={{ color: '#7a5c30' }} />
                   <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-cormorant)', color: '#3a2a1a' }}>Content</h2>
@@ -602,7 +603,7 @@ export default function AdminSettingsPage() {
                       onChange={(e) => updateSetting('content', 'welcomeMessage', e.target.value)}
                       className="w-full px-4 py-2 rounded focus:outline-none"
                       rows={3}
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -614,7 +615,7 @@ export default function AdminSettingsPage() {
                       placeholder="Enter terms of service content..."
                       className="w-full px-4 py-2 rounded focus:outline-none"
                       rows={4}
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -626,7 +627,7 @@ export default function AdminSettingsPage() {
                       placeholder="Enter privacy policy content..."
                       className="w-full px-4 py-2 rounded focus:outline-none"
                       rows={4}
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -638,7 +639,7 @@ export default function AdminSettingsPage() {
                       placeholder="Enter vendor guidelines..."
                       className="w-full px-4 py-2 rounded focus:outline-none"
                       rows={3}
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                   
@@ -650,7 +651,7 @@ export default function AdminSettingsPage() {
                       placeholder="Enter couple guide content..."
                       className="w-full px-4 py-2 rounded focus:outline-none"
                       rows={3}
-                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                      style={{ backgroundColor: '#faf6f1', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                     />
                   </div>
                 </div>
