@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import AdminSidebar from '../../../components/AdminSidebar'
 import ClientOnly from '@/components/ClientOnly'
+import { colors } from '../../../lib/styles'
 import { RefreshCw } from 'lucide-react'
 
 export default function AdminLayout({
@@ -64,7 +65,7 @@ export default function AdminLayout({
         {/* Main content */}
         <div className="lg:pl-[220px]">
           {/* Topbar */}
-          <div className="sticky top-0 z-10" style={{ backgroundColor: '#ffffff', borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
+          <div className="sticky top-0 z-10" style={{ backgroundColor: '#ffffff', borderBottom: '0.5px solid ${colors.border}' }}>
             <div className="flex items-center justify-between h-16 px-6">
               {/* Mobile menu button */}
               <button
@@ -91,7 +92,7 @@ export default function AdminLayout({
                   onClick={() => window.location.reload()}
                   className="p-2 rounded transition-colors"
                   style={{ color: '#7a5c30' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.border}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
                   <RefreshCw className="w-4 h-4" />

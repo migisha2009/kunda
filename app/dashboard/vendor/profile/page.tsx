@@ -16,6 +16,7 @@ export default function VendorProfile() {
   const [saved, setSaved] = useState(false)
   const [vendorId, setVendorId] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [generatingBio, setGeneratingBio] = useState(false)
   const [images, setImages] = useState<string[]>([])
   const [form, setForm] = useState({
     businessName: '',
@@ -102,6 +103,64 @@ export default function VendorProfile() {
     finally { setUploading(false) }
   }
 
+  const generateBio = async () => {
+    setGeneratingBio(true)
+    try {
+      const res = await fetch('/api/ai/vendor-bio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessName: form.businessName,
+          category: form.category,
+          location: form.location,
+          specialties: form.category,
+        })
+      })
+      const data = await res.json()
+      if (data.bio) {
+        setForm(prev => ({ ...prev, bio: data.bio }))
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setGeneratingBio(false)
+    }
+  }
+
+  const calculateProfileCompletion = () => {
+    let completion = 0
+    const fields = [
+      { key: 'businessName', value: form.businessName, weight: 20 },
+      { key: 'category', value: form.category !== 'Photography', weight: 15 },
+      { key: 'bio', value: form.bio.length > 50, weight: 20 },
+      { key: 'location', value: form.location, weight: 15 },
+      { key: 'pricing', value: form.minPrice > 0 && form.maxPrice > 0, weight: 15 },
+      { key: 'contact', value: form.website || form.instagram || form.whatsapp, weight: 10 },
+      { key: 'portfolio', value: images.length >= 3, weight: 5 }
+    ]
+    
+    fields.forEach(field => {
+      if (field.value) {
+        completion += field.weight
+      }
+    })
+    
+    return completion
+  }
+
+  const profileCompletion = calculateProfileCompletion()
+  const getMissingFields = () => {
+    const missing = []
+    if (!form.businessName) missing.push('Business Name')
+    if (form.category === 'Photography') missing.push('Category')
+    if (form.bio.length < 50) missing.push('Bio (50+ chars)')
+    if (!form.location) missing.push('Location')
+    if (form.minPrice === 0 || form.maxPrice === 0) missing.push('Pricing')
+    if (!form.website && !form.instagram && !form.whatsapp) missing.push('Contact Info')
+    if (images.length < 3) missing.push('Portfolio (3+ images)')
+    return missing
+  }
+
   const inp: React.CSSProperties = { width: '100%', borderBottom: '1px solid #c7d2fe', background: '#f7f8fd', padding: '10px 14px', fontSize: 13, fontFamily: 'Urbanist', color: '#333', outline: 'none', boxSizing: 'border-box' }
   const lbl: React.CSSProperties = { display: 'block', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6b7eb9', marginBottom: 6, fontFamily: 'Urbanist' }
 
@@ -124,10 +183,104 @@ export default function VendorProfile() {
         <h1 style={{ fontFamily: 'Urbanist', fontSize: 36, fontWeight: 300, color: '#111928', marginBottom: 4 }}>Edit Your Profile</h1>
         <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 28 }}>Complete your profile to appear in vendor discovery</p>
 
+        {/* Profile Completion Bar */}
+        <div style={{
+          background: '#ffffff',
+          border: '1px solid #e5edff',
+          borderRadius: '12px',
+          padding: '20px',
+          marginBottom: '24px'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <div>
+              <h3 style={{ fontFamily: 'Urbanist', fontSize: '16px', fontWeight: 600, color: '#111928', marginBottom: '4px' }}>
+                Profile Completion
+              </h3>
+              <p style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280' }}>
+                Complete your profile to get more enquiries from couples
+              </p>
+            </div>
+            <div style={{
+              fontFamily: 'Urbanist',
+              fontSize: '32px',
+              fontWeight: 800,
+              color: profileCompletion === 100 ? '#057a55' : '#1a56db'
+            }}>
+              {profileCompletion}%
+            </div>
+          </div>
+          
+          {/* Progress Bar */}
+          <div style={{
+            width: '100%',
+            height: '12px',
+            backgroundColor: '#e5edff',
+            borderRadius: '50px',
+            overflow: 'hidden',
+            marginBottom: '12px'
+          }}>
+            <div style={{
+              width: `${profileCompletion}%`,
+              height: '100%',
+              backgroundColor: profileCompletion === 100 ? '#057a55' : '#1a56db',
+              borderRadius: '50px',
+              transition: 'width 0.3s ease'
+            }}></div>
+          </div>
+          
+          {/* Missing Fields */}
+          {profileCompletion < 100 && (
+            <div style={{ marginTop: '12px' }}>
+              <p style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', marginBottom: '8px' }}>
+                Still missing:
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {getMissingFields().map((field, index) => (
+                  <span key={index} style={{
+                    backgroundColor: '#fef3c7',
+                    color: '#d97706',
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    fontFamily: 'Urbanist'
+                  }}>
+                    {field}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {profileCompletion === 100 && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginTop: '12px'
+            }}>
+              <div style={{
+                width: '20px',
+                height: '20px',
+                backgroundColor: '#057a55',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <span style={{ color: '#ffffff', fontSize: '12px' }}>×</span>
+              </div>
+              <p style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#057a55', fontWeight: 500 }}>
+                Your profile is complete! You're ready to receive enquiries.
+              </p>
+            </div>
+          )}
+        </div>
+
         {saved && <div style={{ background: '#1a56db', border: '0.5px solid #5dcaa5', padding: '12px 16px', marginBottom: 20, color: '#085041', fontSize: 13 }}>Profile saved!</div>}
 
         <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Basic Information</h2>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Basic Information</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
             <div>
               <label style={lbl}>Business Name *</label>
@@ -145,7 +298,26 @@ export default function VendorProfile() {
             <input value={form.location} onChange={e => setForm(p => ({...p, location: e.target.value}))} placeholder="City, Country" style={inp} />
           </div>
           <div style={{ marginBottom: 16 }}>
-            <label style={lbl}>Bio</label>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <label style={lbl}>Bio</label>
+              <button 
+                onClick={generateBio}
+                disabled={generatingBio}
+                style={{
+                  background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 6,
+                  padding: '4px 12px',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  fontFamily: 'Urbanist, sans-serif',
+                }}
+              >
+                {generatingBio ? 'Writing...' : ' Write with AI'}
+              </button>
+            </div>
             <textarea value={form.bio} onChange={e => setForm(p => ({...p, bio: e.target.value}))} placeholder="Tell couples about your business..." rows={4} style={{...inp, resize: 'vertical'}} />
             <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>{form.bio.length}/500</p>
           </div>
@@ -170,7 +342,7 @@ export default function VendorProfile() {
         </div>
 
         <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Contact & Social</h2>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Contact & Social</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             <div>
               <label style={lbl}>Website</label>
@@ -188,8 +360,8 @@ export default function VendorProfile() {
         </div>
 
         <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid rgba(180,140,90,0.15)' }}>Portfolio ({images.length}/10)</h2>
-          <label style={{ display: 'block', border: '1px dashed rgba(180,140,90,0.4)', background: '#f0f4ff', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
+          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Portfolio ({images.length}/10)</h2>
+          <label style={{ display: 'block', border: '1px dashed ${colors.border}', background: '#f0f4ff', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
             <input type="file" accept="image/*" multiple onChange={upload} style={{ display: 'none' }} disabled={images.length >= 10 || uploading} />
             <div style={{ fontSize: 13, color: '#6b7280' }}>{uploading ? 'Uploading...' : 'Click to upload images'}</div>
             <div style={{ fontSize: 11, color: '#9ca3af' }}>PNG, JPG up to 5MB each</div>

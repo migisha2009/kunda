@@ -7,25 +7,7 @@ import { db } from '../../../lib/firebase'
 import { doc, getDoc, collection, query, where, getDocs, orderBy, limit, onSnapshot } from 'firebase/firestore'
 import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle, Eye, Users, CheckCircle, Bell, ExternalLink, Clock } from 'lucide-react'
 
-// Color variables
-const primary = '#1a56db'
-const primaryDark = '#1e429f'
-const primaryLight = '#ebf5ff'
-const accent = '#3f83f8'
-const bg = '#f0f4ff'
-const textPrimary = '#111928'
-const textSecondary = '#6b7280'
-const textMuted = '#9ca3af'
-const muted = textSecondary // For backward compatibility
-const border = '#e5edff'
-const sidebarBg = '#1e3a8a'
-const sidebarText = '#bfdbfe'
-const success = '#057a55'
-const successBg = '#def7ec'
-const warning = '#c27803'
-const warningBg = '#fdf6b2'
-const danger = '#c81e1e'
-const dangerBg = '#fde8e8'
+import { colors, typography, getStyles } from '../../../lib/styles'
 
 const formatDate = (timestamp: any): string => {
   if (!timestamp) return 'Unknown'
@@ -310,10 +292,10 @@ export default function VendorDashboard() {
     if (vendor.businessName) completion += 20
     if (vendor.category) completion += 20
     
-return completion
-}
+    return completion
+  }
 
-const formatTimeAgo = (date: Date): string => {
+  const formatTimeAgo = (date: Date): string => {
     const now = new Date()
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
     
@@ -344,7 +326,7 @@ const formatTimeAgo = (date: Date): string => {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: bg }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
         <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#1a56db] rounded-full animate-spin"></div>
       </div>
     )
@@ -352,7 +334,7 @@ const formatTimeAgo = (date: Date): string => {
 
   if (!user || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: bg }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
         <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#1a56db] rounded-full animate-spin"></div>
       </div>
     )
@@ -362,7 +344,7 @@ const formatTimeAgo = (date: Date): string => {
   const missingFields = getMissingFields()
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bg }}>
+    <div className="min-h-screen" style={{ backgroundColor: colors.bg }}>
       
       {/* KUNDA NAVBAR */}
       <nav style={{
@@ -371,7 +353,7 @@ const formatTimeAgo = (date: Date): string => {
         justifyContent: 'space-between',
         padding: '14px 32px',
         background: 'white',
-        borderBottom: `1px solid ${border}`
+        borderBottom: `1px solid ${colors.border}`
       }}>
         {/* Left - Logo */}
         <div 
@@ -381,14 +363,14 @@ const formatTimeAgo = (date: Date): string => {
           <div style={{
             width: '8px',
             height: '8px',
-            border: `1.5px solid ${primary}`,
+            border: `1.5px solid ${colors.primary}`,
             marginRight: '12px'
           }}></div>
           <span style={{
             fontFamily: 'Urbanist',
             fontSize: '22px',
             fontWeight: 800,
-            color: primaryDark,
+            color: colors.primaryDark,
             letterSpacing: '0.1em'
           }}>Kunda</span>
         </div>
@@ -401,7 +383,7 @@ const formatTimeAgo = (date: Date): string => {
               fontFamily: 'Urbanist',
               fontSize: '14px',
               fontWeight: 600,
-              color: primaryDark,
+              color: colors.primaryDark,
               textDecoration: 'none'
             }}
           >
@@ -413,7 +395,7 @@ const formatTimeAgo = (date: Date): string => {
               fontFamily: 'Urbanist',
               fontSize: '14px',
               fontWeight: 600,
-              color: textSecondary,
+              color: colors.textSecondary,
               textDecoration: 'none'
             }}
           >
@@ -425,7 +407,7 @@ const formatTimeAgo = (date: Date): string => {
               fontFamily: 'Urbanist',
               fontSize: '14px',
               fontWeight: 600,
-              color: textSecondary,
+              color: colors.textSecondary,
               textDecoration: 'none'
             }}
           >
@@ -435,18 +417,52 @@ const formatTimeAgo = (date: Date): string => {
 
         {/* Right - User Info */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => window.location.href = '/dashboard/vendor/bookings'}
+              style={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                padding: '6px',
+                cursor: 'pointer',
+                position: 'relative'
+              }}
+            >
+              <Bell size={20} color={colors.primaryDark} />
+              {unreadCount > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  top: '-6px',
+                  right: '-6px',
+                  backgroundColor: '#c81e1e',
+                  color: '#ffffff',
+                  borderRadius: '50%',
+                  width: '18px',
+                  height: '18px',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </div>
+              )}
+            </button>
+          </div>
+          
           <div style={{
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            background: bg,
-            border: `1px solid ${border}`,
+            background: colors.bg,
+            border: `1px solid ${colors.border}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             <span style={{
-              color: primaryDark,
+              color: colors.primaryDark,
               fontSize: '13px',
               fontFamily: 'Urbanist',
               fontWeight: 500
@@ -457,7 +473,7 @@ const formatTimeAgo = (date: Date): string => {
           <span style={{
             fontFamily: 'Urbanist',
             fontSize: '13px',
-            color: primaryDark
+            color: colors.primaryDark
           }}>
             {vendorData?.businessName || userProfile.name}
           </span>
@@ -467,8 +483,8 @@ const formatTimeAgo = (date: Date): string => {
               window.location.href = '/login'
             }}
             style={{
-              border: `0.5px solid ${primary}`,
-              color: primary,
+              border: `0.5px solid ${colors.primary}`,
+              color: colors.primary,
               background: 'transparent',
               padding: '6px 14px',
               fontFamily: 'Urbanist',
@@ -483,10 +499,10 @@ const formatTimeAgo = (date: Date): string => {
       </nav>
 
       {/* HERO SECTION */}
-      <div style={{ padding: '32px 32px 20px', backgroundColor: bg }}>
+      <div style={{ padding: '32px 32px 20px', backgroundColor: colors.bg }}>
         <div className="flex justify-between items-start">
           <div>
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: primary, fontFamily: 'Urbanist', fontWeight: 400 }}>
+            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.primary, fontFamily: 'Urbanist', fontWeight: 400 }}>
               Vendor Dashboard
             </div>
             <div className="flex items-center gap-3 mb-3">
@@ -511,7 +527,7 @@ const formatTimeAgo = (date: Date): string => {
                 </div>
               )}
             </div>
-            <p className="text-sm mb-2" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+            <p className="text-sm mb-2" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
               {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to start receiving enquiries'}
             </p>
             <p className="text-xs" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
@@ -544,17 +560,17 @@ const formatTimeAgo = (date: Date): string => {
           className="flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity"
           style={{ 
             background: '#faf0e0', 
-            border: '0.5px solid rgba(180,140,90,0.3)', 
+            border: '0.5px solid ${colors.border}', 
             padding: '14px 20px',
             margin: '0 32px 20px'
           }}
           onClick={() => window.location.href = '/dashboard/vendor/profile'}
         >
           <div>
-            <div className="text-xs uppercase" style={{ color: textSecondary, fontFamily: 'Urbanist' }}>
+            <div className="text-xs uppercase" style={{ color: colors.textSecondary, fontFamily: 'Urbanist' }}>
               Profile Completion
             </div>
-            <div className="text-sm mt-1" style={{ color: primaryDark, fontFamily: 'Urbanist' }}>
+            <div className="text-sm mt-1" style={{ color: colors.primaryDark, fontFamily: 'Urbanist' }}>
               Add {missingFields.join(', ')} to attract more couples
             </div>
           </div>
@@ -564,14 +580,14 @@ const formatTimeAgo = (date: Date): string => {
                 className="h-full transition-all duration-500"
                 style={{ 
                   width: `${stats.profileCompletion}%`, 
-                  background: primary 
+                  background: colors.primary 
                 }}
               ></div>
             </div>
           </div>
           <div 
             className="text-2xl font-light" 
-            style={{ fontFamily: 'Urbanist', color: primary }}
+            style={{ fontFamily: 'Urbanist', color: colors.primary }}
           >
             {stats.profileCompletion}%
           </div>
@@ -585,14 +601,14 @@ const formatTimeAgo = (date: Date): string => {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
             fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: textSecondary 
+            color: colors.textSecondary 
           }}>
             Total Enquiries
           </div>
@@ -605,7 +621,7 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             {stats.totalEnquiries}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             {stats.thisWeekEnquiries} this week
           </div>
         </div>
@@ -615,14 +631,14 @@ const formatTimeAgo = (date: Date): string => {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
             fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: textSecondary 
+            color: colors.textSecondary 
           }}>
             Confirmed Bookings
           </div>
@@ -635,7 +651,7 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             {stats.confirmedBookings}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             {stats.upcomingBookings} upcoming
           </div>
         </div>
@@ -645,14 +661,14 @@ const formatTimeAgo = (date: Date): string => {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
             fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: textSecondary 
+            color: colors.textSecondary 
           }}>
             Total Revenue
           </div>
@@ -665,7 +681,7 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             ${stats.totalRevenue.toLocaleString()}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             from paid bookings
           </div>
         </div>
@@ -675,14 +691,14 @@ const formatTimeAgo = (date: Date): string => {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
             fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: textSecondary 
+            color: colors.textSecondary 
           }}>
             Profile Views
           </div>
@@ -695,7 +711,7 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             {stats.profileViews}
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             this month
           </div>
         </div>
@@ -705,14 +721,14 @@ const formatTimeAgo = (date: Date): string => {
           className="border cursor-pointer hover:shadow-md transition-shadow"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
+            borderColor: colors.border, 
             padding: '16px 18px'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
             fontFamily: 'Urbanist', 
             letterSpacing: '0.15em',
-            color: textSecondary 
+            color: colors.textSecondary 
           }}>
             Conversion Rate
           </div>
@@ -725,7 +741,7 @@ const formatTimeAgo = (date: Date): string => {
           }}>
             {stats.conversionRate.toFixed(1)}%
           </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: primary }}>
+          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             enquiries to bookings
           </div>
         </div>
@@ -747,7 +763,7 @@ const formatTimeAgo = (date: Date): string => {
                 <div className="text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#3b6d11' }}>
                   Next Upcoming Booking
                 </div>
-                <div className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+                <div className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
                   {nextBooking.coupleName || 'Client'} • {formatDate(nextBooking.date)}
                 </div>
               </div>
@@ -765,8 +781,8 @@ const formatTimeAgo = (date: Date): string => {
             className="flex items-center text-xs px-4 py-2"
             style={{
               fontFamily: 'Urbanist',
-              background: primaryDark,
-              color: bg,
+              background: colors.primaryDark,
+              color: colors.bg,
               border: 'none',
               cursor: 'pointer'
             }}
@@ -780,8 +796,8 @@ const formatTimeAgo = (date: Date): string => {
             style={{
               fontFamily: 'Urbanist',
               background: 'transparent',
-              color: primaryDark,
-              border: `1px solid ${border}`,
+              color: colors.primaryDark,
+              border: `1px solid ${colors.border}`,
               cursor: 'pointer'
             }}
           >
@@ -794,8 +810,8 @@ const formatTimeAgo = (date: Date): string => {
             style={{
               fontFamily: 'Urbanist',
               background: 'transparent',
-              color: primaryDark,
-              border: `1px solid ${border}`,
+              color: colors.primaryDark,
+              border: `1px solid ${colors.border}`,
               cursor: 'pointer'
             }}
           >
@@ -811,10 +827,10 @@ const formatTimeAgo = (date: Date): string => {
         <div className="col-span-8">
           <div 
             className="p-5"
-            style={{ backgroundColor: bg, border: '0.5px solid rgba(180,140,90,0.15)' }}
+            style={{ backgroundColor: colors.bg, border: '0.5px solid ${colors.border}' }}
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+              <h2 className="text-lg font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
                 Recent Enquiries
               </h2>
               {unreadCount > 0 && (
@@ -840,19 +856,19 @@ const formatTimeAgo = (date: Date): string => {
                     className={`flex items-start justify-between p-3 cursor-pointer hover:bg-white transition-colors ${
                       enquiry.unread ? 'bg-white' : ''
                     }`}
-                    style={{ border: '0.5px solid rgba(180,140,90,0.15)' }}
+                    style={{ border: '0.5px solid ${colors.border}' }}
                     onClick={() => window.location.href = '/dashboard/vendor/bookings'}
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 600, fontSize: '15px' }}>
+                        <div className="font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 600, fontSize: '15px' }}>
                           {enquiry.coupleName}
                         </div>
                         {enquiry.unread && (
-                          <div className="w-2 h-2 rounded-full" style={{ background: primary }}></div>
+                          <div className="w-2 h-2 rounded-full" style={{ background: colors.primary }}></div>
                         )}
                       </div>
-                      <div className="text-xs" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                      <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                         {enquiry.message.substring(0, 65)}{enquiry.message.length > 65 ? '...' : ''}
                       </div>
                     </div>
@@ -889,7 +905,7 @@ const formatTimeAgo = (date: Date): string => {
             ) : (
               <div className="text-center py-12">
                 <MessageSquare size={32} style={{ color: '#b4a090' }} className="mx-auto mb-3" />
-                <div className="text-sm" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <div className="text-sm" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   No enquiries yet
                 </div>
                 <div className="text-xs mt-1" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
@@ -904,45 +920,45 @@ const formatTimeAgo = (date: Date): string => {
         <div className="col-span-4">
           <div 
             className="p-5"
-            style={{ backgroundColor: bg, border: '0.5px solid rgba(180,140,90,0.15)' }}
+            style={{ backgroundColor: colors.bg, border: '0.5px solid ${colors.border}' }}
           >
-            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Urbanist', color: textPrimary }}>
+            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
               Business Profile
             </h2>
             
             <div className="space-y-3">
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${border}` }}
+                style={{ borderBottom: `1px solid ${colors.border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   Category
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
                   {vendorData?.category || '—'}
                 </span>
               </div>
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${border}` }}
+                style={{ borderBottom: `1px solid ${colors.border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   Location
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
                   {vendorData?.location || '—'}
                 </span>
               </div>
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${border}` }}
+                style={{ borderBottom: `1px solid ${colors.border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   Price Range
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
                   {vendorData?.pricing && vendorData.pricing.min > 0 
                     ? `$${vendorData.pricing.min.toLocaleString()} — $${vendorData.pricing.max?.toLocaleString() || 'TBD'}`
                     : '—'
@@ -952,9 +968,9 @@ const formatTimeAgo = (date: Date): string => {
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${border}` }}
+                style={{ borderBottom: `1px solid ${colors.border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   Status
                 </span>
                 <div 
@@ -974,12 +990,12 @@ const formatTimeAgo = (date: Date): string => {
               
               <div 
                 className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${border}` }}
+                style={{ borderBottom: `1px solid ${colors.border}` }}
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   Portfolio
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
                   {vendorData?.portfolioImages?.length || 0} images
                 </span>
               </div>
@@ -987,10 +1003,10 @@ const formatTimeAgo = (date: Date): string => {
               <div 
                 className="flex justify-between items-center"
               >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: textSecondary }}>
+                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
                   Rating
                 </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: textPrimary, fontWeight: 500 }}>
+                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
                   {stats.averageRating > 0 
                     ? `${stats.averageRating.toFixed(1)} (${stats.reviewCount} reviews)`
                     : 'No reviews yet'
@@ -1003,8 +1019,8 @@ const formatTimeAgo = (date: Date): string => {
               onClick={() => window.location.href = '/dashboard/vendor/profile'}
               className="w-full mt-5 text-xs uppercase font-medium transition-colors"
               style={{ 
-                background: primaryDark, 
-                color: bg, 
+                background: colors.primaryDark, 
+                color: colors.bg, 
                 padding: '11px',
                 fontFamily: 'Urbanist',
                 border: 'none',

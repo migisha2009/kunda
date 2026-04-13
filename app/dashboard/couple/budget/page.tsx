@@ -8,31 +8,26 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { formatDate } from '../../../../lib/dateUtils'
 import { 
   Plus, X, Edit2, Trash2, Calendar, DollarSign, TrendingUp, 
-  TrendingDown, Filter, Download, PieChart, CreditCard, Wallet,
-  AlertCircle, CheckCircle
+  TrendingDown, Filter, Download, CreditCard, Wallet,
+  AlertCircle, CheckCircle, PieChart as PieChartIcon
 } from 'lucide-react'
 import { Wedding, Expense } from '../../../../types'
+import AIChat from '../../../../components/AIChat'
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts'
 
-// Color variables
-const primary = '#1a56db'
-const primaryDark = '#1e429f'
-const primaryLight = '#ebf5ff'
-const accent = '#3f83f8'
-const bg = '#f0f4ff'
-const textPrimary = '#111928'
-const textSecondary = '#6b7280'
-const textMuted = '#9ca3af'
-const muted = textSecondary // For backward compatibility
-const border = '#e5edff'
-const sidebarBg = '#1e3a8a'
-const sidebarText = '#bfdbfe'
-const success = '#057a55'
-const successBg = '#def7ec'
-const warning = '#c27803'
-const warningBg = '#fdf6b2'
-const danger = '#c81e1e'
-const dangerBg = '#fde8e8'
-const gold = '#f59e0b'
+// Color definitions
+const colors = {
+  bg: '#f0f4ff',
+  bgCard: '#ffffff',
+  border: '#e5edff',
+  primary: '#1a56db',
+  primaryDark: '#0f2460',
+  textPrimary: '#111928',
+  textSecondary: '#6b7280',
+  success: '#057a55',
+  warning: '#c27803',
+  danger: '#c81e1e'
+}
 
 const categoryColors: Record<string, string> = {
   venue: '#8b5cf6',
@@ -93,7 +88,12 @@ export default function BudgetTracker() {
       const weddingDoc = doc(db, 'weddings', user.uid)
       const weddingSnapshot = await getDoc(weddingDoc)
       if (weddingSnapshot.exists()) {
-        setWedding(weddingSnapshot.data() as Wedding)
+        const weddingData = {
+          id: weddingSnapshot.id,
+          createdAt: null,
+          ...weddingSnapshot.data()
+        } as unknown as Wedding
+        setWedding(weddingData)
       }
     } catch (error) {
       console.error('Error loading wedding data:', error)
@@ -117,15 +117,21 @@ export default function BudgetTracker() {
     }
     
     try {
-      const updatedExpenses = [...wedding.expenses, expenseItem]
+      // Use budgetExpenses if it exists, otherwise use expenses
+      const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
+      const updatedExpenses = [...currentExpenses, expenseItem]
       const totalSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
       await updateDoc(doc(db, 'weddings', user!.uid), { 
-        expenses: updatedExpenses,
+        budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: totalSpent }
       })
       
-      setWedding({ ...wedding, expenses: updatedExpenses, budget: { ...wedding.budget, spent: totalSpent } })
+      setWedding({ 
+        ...wedding, 
+        budgetExpenses: updatedExpenses, 
+        budget: { ...wedding.budget, spent: totalSpent } 
+      })
       setNewExpense({ description: '', category: 'other', amount: '', paid: false, date: '', vendor: '', notes: '', isBooking: false })
       setShowAddExpense(false)
     } catch (error) {
@@ -137,17 +143,22 @@ export default function BudgetTracker() {
     if (!wedding) return
     
     try {
-      const updatedExpenses = wedding.expenses.map(item =>
+      const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
+      const updatedExpenses = currentExpenses.map(item =>
         item.id === expenseId ? { ...item, ...updates } : item
       )
       const totalSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
       await updateDoc(doc(db, 'weddings', user!.uid), { 
-        expenses: updatedExpenses,
+        budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: totalSpent }
       })
       
-      setWedding({ ...wedding, expenses: updatedExpenses, budget: { ...wedding.budget, spent: totalSpent } })
+      setWedding({ 
+        ...wedding, 
+        budgetExpenses: updatedExpenses, 
+        budget: { ...wedding.budget, spent: totalSpent } 
+      })
       setEditingExpense(null)
     } catch (error) {
       console.error('Error editing expense:', error)
@@ -160,15 +171,20 @@ export default function BudgetTracker() {
     if (!confirm('Are you sure you want to delete this expense?')) return
     
     try {
-      const updatedExpenses = wedding.expenses.filter(item => item.id !== expenseId)
+      const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
+      const updatedExpenses = currentExpenses.filter(item => item.id !== expenseId)
       const totalSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
       await updateDoc(doc(db, 'weddings', user!.uid), { 
-        expenses: updatedExpenses,
+        budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: totalSpent }
       })
       
-      setWedding({ ...wedding, expenses: updatedExpenses, budget: { ...wedding.budget, spent: totalSpent } })
+      setWedding({ 
+        ...wedding, 
+        budgetExpenses: updatedExpenses, 
+        budget: { ...wedding.budget, spent: totalSpent } 
+      })
     } catch (error) {
       console.error('Error deleting expense:', error)
     }
@@ -177,21 +193,26 @@ export default function BudgetTracker() {
   const handleTogglePaid = async (expenseId: string) => {
     if (!wedding) return
     
-    const expense = wedding.expenses.find(item => item.id === expenseId)
+    const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
+    const expense = currentExpenses.find(item => item.id === expenseId)
     if (!expense) return
     
     try {
-      const updatedExpenses = wedding.expenses.map(item =>
+      const updatedExpenses = currentExpenses.map(item =>
         item.id === expenseId ? { ...item, paid: !item.paid } : item
       )
       const totalSpent = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       
       await updateDoc(doc(db, 'weddings', user!.uid), { 
-        expenses: updatedExpenses,
+        budgetExpenses: updatedExpenses,
         budget: { ...wedding.budget, spent: totalSpent }
       })
       
-      setWedding({ ...wedding, expenses: updatedExpenses, budget: { ...wedding.budget, spent: totalSpent } })
+      setWedding({ 
+        ...wedding, 
+        budgetExpenses: updatedExpenses, 
+        budget: { ...wedding.budget, spent: totalSpent } 
+      })
     } catch (error) {
       console.error('Error updating expense status:', error)
     }
@@ -214,8 +235,9 @@ export default function BudgetTracker() {
   const exportBudget = () => {
     if (!wedding) return
     
+    const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
     const csv = 'Description,Category,Amount,Status,Date,Vendor,Notes\n' +
-      wedding.expenses.map(expense => 
+      currentExpenses.map(expense => 
         `"${expense.name}","${expense.category}","${expense.amount}","${expense.paid ? 'Paid' : 'Unpaid'}","${formatDate(expense.date)}","${expense.vendorId || ''}","${expense.notes || ''}"`
       ).join('\n')
     
@@ -230,7 +252,8 @@ export default function BudgetTracker() {
   const getFilteredAndSortedExpenses = () => {
     if (!wedding) return []
     
-    let filtered = wedding.expenses.filter(expense => {
+    const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
+    let filtered = currentExpenses.filter(expense => {
       const matchesCategory = filterCategory === 'all' || expense.category === filterCategory
       const matchesStatus = filterStatus === 'all' || 
                            (filterStatus === 'paid' && expense.paid) || 
@@ -253,8 +276,9 @@ export default function BudgetTracker() {
   const getCategoryBreakdown = () => {
     if (!wedding) return []
     
+    const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
     const breakdown: Record<string, number> = {}
-    wedding.expenses.forEach(expense => {
+    currentExpenses.forEach(expense => {
       breakdown[expense.category] = (breakdown[expense.category] || 0) + expense.amount
     })
     
@@ -268,8 +292,9 @@ export default function BudgetTracker() {
   const getBudgetStats = () => {
     if (!wedding) return { total: 0, spent: 0, remaining: 0, paid: 0, unpaid: 0 }
     
-    const paid = wedding.expenses.filter(e => e.paid).reduce((sum, e) => sum + e.amount, 0)
-    const unpaid = wedding.expenses.filter(e => !e.paid).reduce((sum, e) => sum + e.amount, 0)
+    const currentExpenses = wedding.budgetExpenses || wedding.expenses || []
+    const paid = currentExpenses.filter(e => e.paid).reduce((sum, e) => sum + e.amount, 0)
+    const unpaid = currentExpenses.filter(e => !e.paid).reduce((sum, e) => sum + e.amount, 0)
     const remaining = wedding.budget.total - wedding.budget.spent
     
     return {
@@ -290,7 +315,7 @@ export default function BudgetTracker() {
     return (
       <div style={{ 
         minHeight: '100vh', 
-        backgroundColor: bg, 
+        backgroundColor: colors.bg, 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center' 
@@ -298,8 +323,8 @@ export default function BudgetTracker() {
         <div style={{
           width: '40px',
           height: '40px',
-          border: '3px solid #f0e4d0',
-          borderTop: `3px solid ${primary}`,
+          border: `3px solid ${colors.border}`,
+          borderTop: `3px solid ${colors.primary}`,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
@@ -314,34 +339,28 @@ export default function BudgetTracker() {
   }
 
   return (
-    <div style={{ backgroundColor: bg, color: textPrimary, minHeight: '100vh' }}>
-      {/* Google Fonts */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
-        rel="stylesheet" 
-      />
+    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
 
       {/* Header */}
       <div style={{
-        backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h1 style={{
               fontFamily: 'Urbanist',
-              fontSize: '32px',
-              fontWeight: 300,
-              color: textPrimary,
+              fontSize: '36px',
+              fontWeight: 800,
+              color: '#0f2460',
               marginBottom: '8px'
             }}>Budget Tracker</h1>
             <p style={{
               fontFamily: 'Urbanist',
-              fontSize: '14px',
-              color: muted
+              fontSize: '15px',
+              color: '#6b7280',
+              fontWeight: 400
             }}>
               Manage your wedding budget and expenses
             </p>
@@ -350,18 +369,19 @@ export default function BudgetTracker() {
             <button
               onClick={exportBudget}
               style={{
-                border: `1px solid ${primary}`,
-                color: primary,
-                padding: '8px 16px',
+                border: '1.5px solid #1a56db',
+                color: '#1a56db',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px'
               }}
             >
               <Download size={16} />
@@ -370,18 +390,20 @@ export default function BudgetTracker() {
             <button
               onClick={() => setShowAddExpense(true)}
               style={{
-                backgroundColor: primaryDark,
-                color: bg,
-                padding: '8px 16px',
+                backgroundColor: '#1a56db',
+                color: '#ffffff',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(26,86,219,0.3)'
               }}
             >
               <Plus size={16} />
@@ -393,102 +415,112 @@ export default function BudgetTracker() {
         {/* Budget Overview Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
           <div style={{
-            backgroundColor: bg,
-            border: `1px solid ${border}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: textPrimary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget?.currency || 'USD'} {stats.total.toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: muted,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Budget</div>
           </div>
           <div style={{
-            backgroundColor: bg,
-            border: `1px solid ${border}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: textPrimary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget?.currency || 'USD'} {stats.spent.toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: muted,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Spent</div>
           </div>
           <div style={{
-            backgroundColor: stats.remaining >= 0 ? '#dcfce7' : '#fee2e2',
-            border: `0.5px solid ${stats.remaining >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(220, 38, 38, 0.2)'}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: stats.remaining >= 0 ? '#16a34a' : '#dc2626'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget?.currency || 'USD'} {Math.abs(stats.remaining).toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: stats.remaining >= 0 ? '#16a34a' : '#dc2626',
+              color: '#6b7280',
               marginTop: '4px'
             }}>{stats.remaining >= 0 ? 'Remaining' : 'Over Budget'}</div>
           </div>
           <div style={{
-            backgroundColor: '#dcfce7',
-            border: '0.5px solid rgba(34, 197, 94, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#16a34a'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget?.currency || 'USD'} {stats.paid.toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#16a34a',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Paid</div>
           </div>
           <div style={{
-            backgroundColor: '#fef3c7',
-            border: '0.5px solid rgba(245, 158, 11, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#d97706'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget?.currency || 'USD'} {stats.unpaid.toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#d97706',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Unpaid</div>
           </div>
@@ -497,35 +529,37 @@ export default function BudgetTracker() {
         {/* Budget Settings */}
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ fontFamily: 'Urbanist', fontSize: '12px', color: muted }}>Total Budget:</label>
+            <label style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', fontWeight: 500 }}>Total Budget:</label>
             <input
               type="number"
               value={wedding?.budget?.total || 0}
               onChange={(e) => handleUpdateBudget(parseFloat(e.target.value) || 0, wedding?.budget?.currency || 'USD')}
               style={{
-                padding: '4px 8px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                padding: '10px 14px',
+                border: '1px solid #e5edff',
+                borderRadius: '8px',
                 fontFamily: 'Urbanist',
-                fontSize: '12px',
-                backgroundColor: 'white',
-                color: textPrimary,
-                width: '100px'
+                fontSize: '14px',
+                backgroundColor: '#ffffff',
+                color: '#111928',
+                width: '120px'
               }}
             />
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ fontFamily: 'Urbanist', fontSize: '12px', color: muted }}>Currency:</label>
+            <label style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', fontWeight: 500 }}>Currency:</label>
             <select
               value={wedding?.budget?.currency || 'USD'}
               onChange={(e) => handleUpdateBudget(wedding?.budget?.total || 0, e.target.value)}
               style={{
-                padding: '4px 8px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                padding: '10px 14px',
+                border: '1px solid #e5edff',
+                borderRadius: '8px',
                 fontFamily: 'Urbanist',
-                fontSize: '12px',
-                backgroundColor: 'white',
-                color: textPrimary
+                fontSize: '14px',
+                backgroundColor: '#ffffff',
+                color: '#111928'
               }}
             >
               {currencies.map(curr => (
@@ -534,7 +568,7 @@ export default function BudgetTracker() {
             </select>
           </div>
 
-          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Urbanist', fontSize: '12px' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', fontWeight: 500 }}>
             <input
               type="checkbox"
               checked={autoBooking}
@@ -546,13 +580,148 @@ export default function BudgetTracker() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '32px', padding: '32px' }}>
+      {/* Budget Breakdown Chart */}
+      <div style={{ padding: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+          {/* Progress Bar Section */}
+          <div style={{
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
+            padding: '24px'
+          }}>
+            <h3 style={{
+              fontFamily: 'Urbanist',
+              fontSize: '20px',
+              fontWeight: 700,
+              color: '#0f2460',
+              marginBottom: '16px'
+            }}>Budget Progress</h3>
+            
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: '#6b7280' }}>Total Budget</span>
+                <span style={{ fontFamily: 'Urbanist', fontSize: '16px', fontWeight: 600, color: '#0f2460' }}>
+                  {wedding?.budget?.currency || 'USD'} {stats.total.toLocaleString()}
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: '#6b7280' }}>Total Spent</span>
+                <span style={{ fontFamily: 'Urbanist', fontSize: '16px', fontWeight: 600, color: '#0f2460' }}>
+                  {wedding?.budget?.currency || 'USD'} {stats.spent.toLocaleString()}
+                </span>
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280' }}>Progress</span>
+                <span style={{ 
+                  fontFamily: 'Urbanist', 
+                  fontSize: '12px', 
+                  fontWeight: 800, 
+                  color: stats.remaining >= 0 ? '#1a56db' : '#c81e1e' 
+                }}>
+                  {Math.round((stats.spent / stats.total) * 100)}%
+                </span>
+              </div>
+              <div style={{
+                width: '100%',
+                height: '10px',
+                backgroundColor: '#e5edff',
+                borderRadius: '50px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  width: `${Math.min((stats.spent / stats.total) * 100, 100)}%`,
+                  height: '100%',
+                  backgroundColor: stats.remaining >= 0 ? '#1a56db' : '#c81e1e',
+                  borderRadius: '50px',
+                  transition: 'width 0.3s ease'
+                }}></div>
+              </div>
+              <div style={{ 
+                marginTop: '8px',
+                fontFamily: 'Urbanist', 
+                fontSize: '11px', 
+                color: stats.remaining >= 0 ? '#057a55' : '#c81e1e',
+                fontWeight: 500
+              }}>
+                {stats.remaining >= 0 
+                  ? `You have ${wedding?.budget?.currency || 'USD'} ${Math.abs(stats.remaining).toLocaleString()} remaining`
+                  : `You are ${wedding?.budget?.currency || 'USD'} ${Math.abs(stats.remaining).toLocaleString()} over budget`
+                }
+              </div>
+            </div>
+          </div>
+
+          {/* Pie Chart Section */}
+          <div style={{
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
+            padding: '24px'
+          }}>
+            <h3 style={{
+              fontFamily: 'Urbanist',
+              fontSize: '20px',
+              fontWeight: 700,
+              color: '#0f2460',
+              marginBottom: '16px'
+            }}>Spending by Category</h3>
+            
+            {categoryBreakdown.length > 0 ? (
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={categoryBreakdown.map(item => ({
+                      name: item.category.charAt(0).toUpperCase() + item.category.slice(1),
+                      value: item.amount
+                    }))}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) => `${name}: ${percent ? (percent * 100).toFixed(0) : 0}%`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {categoryBreakdown.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={[
+                        '#1a56db', '#3f83f8', '#0f2460', '#1e3a8a', '#ebf5ff', '#6b7280', '#e5edff'
+                      ][index % 7]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => value ? [`${wedding?.budget?.currency} ${value.toLocaleString()}`, 'Amount'] : ['', 'Amount']} />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div style={{
+                height: '200px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                color: '#6b7280'
+              }}>
+                <Wallet size={48} style={{ marginBottom: '16px' }} />
+                <p style={{ fontFamily: 'Urbanist', fontSize: '14px', textAlign: 'center' }}>
+                  No expenses yet. Add your first expense to see the breakdown.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '32px', padding: '0 32px 32px' }}>
         {/* Main Expenses List */}
         <div>
           {/* Filters */}
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '16px',
             marginBottom: '16px'
           }}>
@@ -563,11 +732,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setFilterCategory(e.target.value)}
                   style={{
                     padding: '6px 12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 >
                   <option value="all">All Categories</option>
@@ -587,11 +756,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setFilterStatus(e.target.value as any)}
                   style={{
                     padding: '6px 12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 >
                   <option value="all">All Status</option>
@@ -604,11 +773,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setSortBy(e.target.value as any)}
                   style={{
                     padding: '6px 12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 >
                   <option value="date">Sort by Date</option>
@@ -632,26 +801,26 @@ export default function BudgetTracker() {
           {/* Expenses List */}
           {filteredExpenses.length === 0 ? (
             <div style={{
-              backgroundColor: 'white',
-              border: `1px solid ${border}`,
+              backgroundColor: colors.bgCard,
+              border: `1px solid ${colors.border}`,
               padding: '48px',
               textAlign: 'center'
             }}>
               <div style={{
                 fontSize: '48px',
-                color: muted,
+                color: colors.textSecondary,
                 marginBottom: '16px'
               }}> <Wallet size={48} /> </div>
               <h3 style={{
                 fontFamily: 'Urbanist',
                 fontSize: '20px',
-                color: textPrimary,
+                color: colors.textPrimary,
                 marginBottom: '8px'
               }}>No expenses found</h3>
               <p style={{
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
-                color: muted
+                color: colors.textSecondary
               }}>
                 {filterCategory !== 'all' || filterStatus !== 'all' 
                   ? 'Try adjusting your filters or add your first expense.'
@@ -666,8 +835,8 @@ export default function BudgetTracker() {
                 
                 return (
                   <div key={expense.id} style={{
-                    backgroundColor: 'white',
-                    border: `1px solid ${border}`,
+                    backgroundColor: colors.bgCard,
+                    border: `1px solid ${colors.border}`,
                     padding: '16px',
                     opacity: !showPaid && expense.paid ? 0.5 : 1
                   }}>
@@ -680,11 +849,11 @@ export default function BudgetTracker() {
                             onBlur={(e) => handleEditExpense(expense.id, { name: e.target.value })}
                             style={{
                               padding: '8px',
-                              border: '1px solid rgba(180,140,90,0.3)',
+                              border: '1px solid ' + colors.border,
                               fontFamily: 'Urbanist',
                               fontSize: '14px',
-                              backgroundColor: 'white',
-                              color: textPrimary
+                              backgroundColor: colors.bgCard,
+                              color: colors.textPrimary
                             }}
                           />
                           <input
@@ -693,11 +862,11 @@ export default function BudgetTracker() {
                             onBlur={(e) => handleEditExpense(expense.id, { amount: parseFloat(e.target.value) || 0 })}
                             style={{
                               padding: '8px',
-                              border: '1px solid rgba(180,140,90,0.3)',
+                              border: '1px solid ' + colors.border,
                               fontFamily: 'Urbanist',
                               fontSize: '14px',
-                              backgroundColor: 'white',
-                              color: textPrimary
+                              backgroundColor: colors.bgCard,
+                              color: colors.textPrimary
                             }}
                           />
                         </div>
@@ -707,11 +876,11 @@ export default function BudgetTracker() {
                             onChange={(e) => handleEditExpense(expense.id, { category: e.target.value as any })}
                             style={{
                               padding: '6px',
-                              border: '1px solid rgba(180,140,90,0.3)',
+                              border: '1px solid ' + colors.border,
                               fontFamily: 'Urbanist',
                               fontSize: '12px',
-                              backgroundColor: 'white',
-                              color: textPrimary
+                              backgroundColor: colors.bgCard,
+                              color: colors.textPrimary
                             }}
                           >
                             <option value="venue">Venue</option>
@@ -730,18 +899,18 @@ export default function BudgetTracker() {
                             onChange={(e) => handleEditExpense(expense.id, { date: new Date(e.target.value) })}
                             style={{
                               padding: '6px',
-                              border: '1px solid rgba(180,140,90,0.3)',
+                              border: '1px solid ' + colors.border,
                               fontFamily: 'Urbanist',
                               fontSize: '12px',
-                              backgroundColor: 'white',
-                              color: textPrimary
+                              backgroundColor: colors.bgCard,
+                              color: colors.textPrimary
                             }}
                           />
                           <button
                             onClick={() => setEditingExpense(null)}
                             style={{
-                              backgroundColor: primaryDark,
-                              color: bg,
+                              backgroundColor: colors.primaryDark,
+                              color: colors.bg,
                               padding: '6px 12px',
                               fontFamily: 'Urbanist',
                               fontSize: '11px',
@@ -763,8 +932,8 @@ export default function BudgetTracker() {
                           style={{
                             width: '20px',
                             height: '20px',
-                            border: expense.paid ? 'none' : `0.5px solid ${gold}`,
-                            backgroundColor: expense.paid ? '#16a34a' : 'transparent',
+                            border: expense.paid ? 'none' : `0.5px solid ${colors.warning}`,
+                            backgroundColor: expense.paid ? colors.success : 'transparent',
                             cursor: 'pointer',
                             position: 'relative',
                             display: 'flex',
@@ -793,7 +962,7 @@ export default function BudgetTracker() {
                               fontFamily: 'Urbanist',
                               fontSize: '15px',
                               fontWeight: 500,
-                              color: textPrimary
+                              color: colors.textPrimary
                             }}>
                               {expense.name}
                             </span>
@@ -803,11 +972,11 @@ export default function BudgetTracker() {
                                 alignItems: 'center',
                                 gap: '4px',
                                 padding: '2px 6px',
-                                backgroundColor: '#dbeafe',
+                                backgroundColor: colors.warning,
                                 borderRadius: '4px',
                                 fontSize: '10px',
                                 fontWeight: 500,
-                                color: '#2563eb'
+                                color: colors.textPrimary
                               }}>
                                 <CreditCard size={10} />
                                 Booking
@@ -818,14 +987,14 @@ export default function BudgetTracker() {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <span style={{
                               fontSize: '11px',
-                              color: muted,
+                              color: colors.textSecondary,
                               textTransform: 'capitalize'
                             }}>
                               {expense.category}
                             </span>
                             <span style={{
                               fontSize: '11px',
-                              color: muted,
+                              color: colors.textSecondary,
                               display: 'flex',
                               alignItems: 'center',
                               gap: '4px'
@@ -836,7 +1005,7 @@ export default function BudgetTracker() {
                             {expense.vendorId && (
                               <span style={{
                                 fontSize: '11px',
-                                color: muted
+                                color: colors.textSecondary
                               }}>
                                 {expense.vendorId}
                               </span>
@@ -850,13 +1019,13 @@ export default function BudgetTracker() {
                             fontFamily: 'Urbanist',
                             fontSize: '18px',
                             fontWeight: 300,
-                            color: textPrimary
+                            color: colors.textPrimary
                           }}>
                             {wedding?.budget?.currency || 'USD'} {expense.amount.toLocaleString()}
                           </div>
                           <div style={{
                             fontSize: '10px',
-                            color: expense.paid ? '#16a34a' : '#d97706',
+                            color: expense.paid ? colors.success : colors.danger,
                             fontWeight: 500
                           }}>
                             {expense.paid ? 'Paid' : 'Unpaid'}
@@ -874,7 +1043,7 @@ export default function BudgetTracker() {
                               padding: '4px'
                             }}
                           >
-                            <Edit2 size={16} color={muted} />
+                            <Edit2 size={16} color={colors.textSecondary} />
                           </button>
                           <button
                             onClick={() => handleDeleteExpense(expense.id)}
@@ -885,7 +1054,7 @@ export default function BudgetTracker() {
                               padding: '4px'
                             }}
                           >
-                            <Trash2 size={16} color={muted} />
+                            <Trash2 size={16} color={colors.textSecondary} />
                           </button>
                         </div>
                       </div>
@@ -901,20 +1070,20 @@ export default function BudgetTracker() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Category Breakdown */}
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '16px'
           }}>
             <h3 style={{
               fontFamily: 'Urbanist',
               fontSize: '18px',
-              color: textPrimary,
+              color: colors.textPrimary,
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
             }}>
-              <PieChart size={18} />
+              <PieChartIcon size={18} />
               Category Breakdown
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -930,14 +1099,14 @@ export default function BudgetTracker() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{
                         fontSize: '12px',
-                        color: textPrimary,
+                        color: colors.textPrimary,
                         textTransform: 'capitalize'
                       }}>
                         {category}
                       </span>
                       <span style={{
                         fontSize: '12px',
-                        color: textPrimary,
+                        color: colors.textPrimary,
                         fontWeight: 500
                       }}>
                         {wedding?.budget?.currency || 'USD'} {amount.toLocaleString()}
@@ -945,7 +1114,7 @@ export default function BudgetTracker() {
                     </div>
                     <div style={{
                       height: '4px',
-                      backgroundColor: '#f0e4d0',
+                      backgroundColor: colors.bg,
                       borderRadius: '2px',
                       marginTop: '4px',
                       overflow: 'hidden'
@@ -965,14 +1134,14 @@ export default function BudgetTracker() {
 
           {/* Budget Progress */}
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '16px'
           }}>
             <h3 style={{
               fontFamily: 'Urbanist',
               fontSize: '18px',
-              color: textPrimary,
+              color: colors.textPrimary,
               marginBottom: '16px',
               display: 'flex',
               alignItems: 'center',
@@ -986,26 +1155,26 @@ export default function BudgetTracker() {
                 fontFamily: 'Urbanist',
                 fontSize: '32px',
                 fontWeight: 300,
-                color: textPrimary
+                color: colors.textPrimary
               }}>
                 {(wedding?.budget?.total || 0) > 0 ? Math.round((stats.spent / stats.total) * 100) : 0}%
               </div>
               <div style={{
                 fontSize: '12px',
-                color: muted
+                color: colors.textSecondary
               }}>
                 of budget spent
               </div>
             </div>
             <div style={{
               height: '8px',
-              backgroundColor: '#f0e4d0',
+              backgroundColor: colors.bg,
               borderRadius: '4px',
               overflow: 'hidden'
             }}>
               <div style={{
                 height: '100%',
-                backgroundColor: stats.remaining >= 0 ? gold : '#dc2626',
+                backgroundColor: stats.remaining >= 0 ? colors.success : colors.danger,
                 width: `${Math.min((wedding?.budget?.total || 0) > 0 ? (stats.spent / stats.total) * 100 : 0, 100)}%`,
                 borderRadius: '4px'
               }}></div>
@@ -1029,8 +1198,8 @@ export default function BudgetTracker() {
           zIndex: 1000
         }}>
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '24px',
             width: '90%',
             maxWidth: '500px'
@@ -1039,7 +1208,7 @@ export default function BudgetTracker() {
               <h2 style={{
                 fontFamily: 'Urbanist',
                 fontSize: '20px',
-                color: textPrimary
+                color: colors.textPrimary
               }}>Add New Expense</h2>
               <button
                 onClick={() => setShowAddExpense(false)}
@@ -1049,7 +1218,7 @@ export default function BudgetTracker() {
                   cursor: 'pointer'
                 }}
               >
-                <X size={20} color={muted} />
+                <X size={20} color={colors.textSecondary} />
               </button>
             </div>
 
@@ -1062,11 +1231,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
                 <input
@@ -1076,11 +1245,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
               </div>
@@ -1091,11 +1260,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value as any })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 >
                   <option value="venue">Venue</option>
@@ -1115,11 +1284,11 @@ export default function BudgetTracker() {
                   onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: '1px solid ' + colors.border,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
               </div>
@@ -1131,11 +1300,11 @@ export default function BudgetTracker() {
                 onChange={(e) => setNewExpense({ ...newExpense, vendor: e.target.value })}
                 style={{
                   padding: '12px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: '1px solid ' + colors.border,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: 'white',
-                  color: textPrimary
+                  backgroundColor: colors.bgCard,
+                  color: colors.textPrimary
                 }}
               />
 
@@ -1146,11 +1315,11 @@ export default function BudgetTracker() {
                 rows={3}
                 style={{
                   padding: '12px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: '1px solid ' + colors.border,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: 'white',
-                  color: textPrimary,
+                  backgroundColor: colors.bgCard,
+                  color: colors.textPrimary,
                   resize: 'vertical'
                 }}
               />
@@ -1181,8 +1350,8 @@ export default function BudgetTracker() {
                 <button
                   onClick={() => setShowAddExpense(false)}
                   style={{
-                    border: `1px solid ${primary}`,
-                    color: primary,
+                    border: `1px solid ${colors.primary}`,
+                    color: colors.primary,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -1198,8 +1367,8 @@ export default function BudgetTracker() {
                   onClick={handleAddExpense}
                   disabled={!newExpense.description.trim() || !newExpense.amount}
                   style={{
-                    backgroundColor: primaryDark,
-                    color: bg,
+                    backgroundColor: colors.primaryDark,
+                    color: colors.bg,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -1217,6 +1386,7 @@ export default function BudgetTracker() {
           </div>
         </div>
       )}
+      <AIChat />
     </div>
   )
 }

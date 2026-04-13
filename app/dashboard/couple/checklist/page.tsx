@@ -9,7 +9,7 @@ import { formatDate } from '../../../../lib/dateUtils'
 import { 
   Plus, X, Edit2, Trash2, Calendar, Clock, AlertCircle, 
   ChevronDown, ChevronUp, Filter, Download, CheckSquare,
-  Flower, Music, Camera, Car, Cake, Palette, Heart, Gift, MapPin
+  Flower, Music, Camera, Car, Cake, Palette, Heart, Gift, MapPin, Sparkles
 } from 'lucide-react'
 import { Wedding, ChecklistItem } from '../../../../types'
 
@@ -63,6 +63,7 @@ export default function WeddingChecklist() {
     notes: '',
     urgent: false
   })
+  const [isGenerating, setIsGenerating] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -196,6 +197,53 @@ export default function WeddingChecklist() {
       setWedding({ ...wedding, checklist: updatedTasks })
     } catch (error) {
       console.error('Error reordering tasks:', error)
+    }
+  }
+
+  const handleGenerateWithAI = async () => {
+    if (!wedding) return
+    
+    setIsGenerating(true)
+    try {
+      const response = await fetch('/api/ai/checklist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          weddingDate: wedding.date,
+          guestCount: wedding.guestCount || 100,
+          alreadyBooked: [],
+          preferences: []
+        })
+      })
+      
+      if (!response.ok) throw new Error('Failed to generate checklist')
+      
+      const result = await response.json()
+      
+      if (result.tasks && Array.isArray(result.tasks)) {
+        const newTasks: ChecklistItem[] = result.tasks.map((task: any, index: number) => ({
+          id: `ai-${Date.now()}-${index}`,
+          task: task.task || task.description || 'Generated task',
+          done: false,
+          category: (task.category as ChecklistItem['category']) || 'other',
+          dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
+          notes: task.description || task.notes || undefined,
+          urgent: task.priority === 'high' || task.urgent || false,
+          order: wedding.checklist.length + index + 1
+        }))
+        
+        const updatedChecklist = [...wedding.checklist, ...newTasks]
+        await updateDoc(doc(db, 'weddings', user!.uid), { checklist: updatedChecklist })
+        setWedding({ ...wedding, checklist: updatedChecklist })
+        
+        // Show success message
+        alert('Checklist generated successfully!')
+      }
+    } catch (error) {
+      console.error('Error generating checklist:', error)
+      alert('Failed to generate checklist. Please try again.')
+    } finally {
+      setIsGenerating(false)
     }
   }
 
@@ -380,6 +428,45 @@ export default function WeddingChecklist() {
             >
               <Plus size={16} />
               Add Task
+            </button>
+            <button
+              onClick={handleGenerateWithAI}
+              disabled={isGenerating}
+              style={{
+                background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                color: '#ffffff',
+                padding: '12px 20px',
+                fontFamily: 'Jost',
+                fontSize: '11px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                border: 'none',
+                cursor: isGenerating ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                borderRadius: '8px',
+                opacity: isGenerating ? 0.7 : 1
+              }}
+            >
+              {isGenerating ? (
+                <>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid #ffffff',
+                    borderTop: '2px solid transparent',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }}></div>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles size={16} />
+                  Generate with AI
+                </>
+              )}
             </button>
           </div>
         </div>

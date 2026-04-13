@@ -19,6 +19,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    console.log('Creating enquiry:', { vendorId, coupleId, message })
+
     await createEnquiry({
       vendorId,
       coupleId,
@@ -26,7 +28,9 @@ export async function POST(request: NextRequest) {
       status: 'pending'
     })
 
-    // Send WhatsApp notification to vendor
+    console.log('Enquiry created successfully')
+
+    // Send WhatsApp notification to vendor (non-blocking)
     try {
       const vendorDoc = await getDoc(doc(db, 'users', vendorId))
       const vendorData = vendorDoc.data()
@@ -42,6 +46,9 @@ export async function POST(request: NextRequest) {
           vendorPhone,
           messages.newEnquiry(coupleName, message)
         )
+        console.log('WhatsApp notification sent successfully')
+      } else {
+        console.log('No vendor phone number found for WhatsApp notification')
       }
     } catch (whatsappError) {
       console.error('WhatsApp notification failed:', whatsappError)
@@ -53,7 +60,11 @@ export async function POST(request: NextRequest) {
       message: 'Enquiry created successfully'
     })
   } catch (error) {
-    console.error('Error creating enquiry:', error)
+    console.error('Enquiry API error:', error)
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+    })
     return NextResponse.json(
       { 
         success: false, 

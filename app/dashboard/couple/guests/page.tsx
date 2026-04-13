@@ -12,26 +12,8 @@ import {
   UserPlus, Send, Copy, CheckSquare, Square
 } from 'lucide-react'
 import { Wedding, Guest } from '../../../../types'
-
-// Color variables
-const primary = '#1a56db'
-const primaryDark = '#1e429f'
-const primaryLight = '#ebf5ff'
-const accent = '#3f83f8'
-const bg = '#f0f4ff'
-const textPrimary = '#111928'
-const textSecondary = '#6b7280'
-const textMuted = '#9ca3af'
-const muted = textSecondary // For backward compatibility
-const border = '#e5edff'
-const sidebarBg = '#1e3a8a'
-const sidebarText = '#bfdbfe'
-const success = '#057a55'
-const successBg = '#def7ec'
-const warning = '#c27803'
-const warningBg = '#fdf6b2'
-const danger = '#c81e1e'
-const dangerBg = '#fde8e8'
+import { colors } from '../../../../lib/styles'
+import AIChat from '../../../../components/AIChat'
 
 const dietaryOptions = [
   'None',
@@ -288,7 +270,7 @@ export default function GuestManagement() {
     return (
       <div style={{ 
         minHeight: '100vh', 
-        backgroundColor: bg, 
+        backgroundColor: colors.bg, 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center' 
@@ -296,8 +278,8 @@ export default function GuestManagement() {
         <div style={{
           width: '40px',
           height: '40px',
-          border: '3px solid #f0e4d0',
-          borderTop: `3px solid ${primary}`,
+          border: `3px solid ${colors.border}`,
+          borderBottom: `3px solid ${colors.primary}`,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
@@ -312,34 +294,28 @@ export default function GuestManagement() {
   }
 
   return (
-    <div style={{ backgroundColor: bg, color: textPrimary, minHeight: '100vh' }}>
-      {/* Google Fonts */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
-        rel="stylesheet" 
-      />
+    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
 
       {/* Header */}
       <div style={{
-        backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
             <h1 style={{
               fontFamily: 'Urbanist',
-              fontSize: '32px',
-              fontWeight: 300,
-              color: textPrimary,
+              fontSize: '36px',
+              fontWeight: 800,
+              color: '#0f2460',
               marginBottom: '8px'
             }}>Guest Management</h1>
             <p style={{
               fontFamily: 'Urbanist',
-              fontSize: '14px',
-              color: muted
+              fontSize: '15px',
+              color: '#6b7280',
+              fontWeight: 400
             }}>
               Manage your wedding guest list and RSVPs
             </p>
@@ -348,18 +324,19 @@ export default function GuestManagement() {
             <button
               onClick={exportGuests}
               style={{
-                border: `1px solid ${primary}`,
-                color: primary,
-                padding: '8px 16px',
+                border: '1.5px solid #1a56db',
+                color: '#1a56db',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px'
               }}
             >
               <Download size={16} />
@@ -368,18 +345,19 @@ export default function GuestManagement() {
             <button
               onClick={() => setShowBulkInvite(true)}
               style={{
-                border: `1px solid ${primary}`,
-                color: primary,
-                padding: '8px 16px',
+                border: '1.5px solid #1a56db',
+                color: '#1a56db',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px'
               }}
             >
               <Send size={16} />
@@ -388,18 +366,20 @@ export default function GuestManagement() {
             <button
               onClick={() => setShowAddGuest(true)}
               style={{
-                backgroundColor: primaryDark,
-                color: bg,
-                padding: '8px 16px',
+                backgroundColor: '#1a56db',
+                color: '#ffffff',
+                padding: '12px 24px',
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
-                fontWeight: 500,
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px'
+                gap: '6px',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(26,86,219,0.3)'
               }}
             >
               <Plus size={16} />
@@ -411,102 +391,112 @@ export default function GuestManagement() {
         {/* Stats Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
           <div style={{
-            backgroundColor: bg,
-            border: `1px solid ${border}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: textPrimary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.total}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: muted,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Guests</div>
           </div>
           <div style={{
-            backgroundColor: '#dcfce7',
-            border: '0.5px solid rgba(34, 197, 94, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#16a34a'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.confirmed}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#16a34a',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Confirmed</div>
           </div>
           <div style={{
-            backgroundColor: '#fef3c7',
-            border: '0.5px solid rgba(245, 158, 11, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#d97706'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.pending}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#d97706',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Pending</div>
           </div>
           <div style={{
-            backgroundColor: '#fee2e2',
-            border: '0.5px solid rgba(220, 38, 38, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#dc2626'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.declined}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#dc2626',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Declined</div>
           </div>
           <div style={{
-            backgroundColor: '#e0e7ff',
-            border: '0.5px solid rgba(99, 102, 241, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#6366f1'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.plusOnes}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#6366f1',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Plus Ones
             </div>
@@ -514,16 +504,168 @@ export default function GuestManagement() {
         </div>
       </div>
 
+      {/* RSVP Progress Section */}
+      <div style={{
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
+        padding: '24px 32px'
+      }}>
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <div>
+              <h3 style={{
+                fontFamily: 'Urbanist',
+                fontSize: '16px',
+                fontWeight: 700,
+                color: '#0f2460',
+                marginBottom: '4px'
+              }}>
+                {stats.confirmed} of {stats.total} guests confirmed
+              </h3>
+              <p style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                color: '#6b7280',
+                fontWeight: 400
+              }}>
+                Track your RSVP progress
+              </p>
+            </div>
+            <div style={{
+              fontFamily: 'Urbanist',
+              fontSize: '24px',
+              fontWeight: 800,
+              color: '#1a56db'
+            }}>
+              {stats.total > 0 ? Math.round((stats.confirmed / stats.total) * 100) : 0}%
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div style={{
+            width: '100%',
+            height: '10px',
+            backgroundColor: '#e5edff',
+            borderRadius: '50px',
+            overflow: 'hidden',
+            marginBottom: '16px'
+          }}>
+            <div style={{
+              width: `${stats.total > 0 ? (stats.confirmed / stats.total) * 100 : 0}%`,
+              height: '100%',
+              backgroundColor: '#1a56db',
+              borderRadius: '50px',
+              transition: 'width 0.3s ease'
+            }}></div>
+          </div>
+
+          {/* RSVP Status Pills */}
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#d1fae5',
+              borderRadius: '20px',
+              border: '1px solid #10b981'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#10b981',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#047857'
+              }}>Confirmed ({stats.confirmed})</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#fef3c7',
+              borderRadius: '20px',
+              border: '1px solid #f59e0b'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#f59e0b',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#d97706'
+              }}>Pending ({stats.pending})</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#fee2e2',
+              borderRadius: '20px',
+              border: '1px solid #ef4444'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#ef4444',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#dc2626'
+              }}>Declined ({stats.declined})</span>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              backgroundColor: '#dbeafe',
+              borderRadius: '20px',
+              border: '1px solid #3b82f6'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#3b82f6',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{
+                fontFamily: 'Urbanist',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#1d4ed8'
+              }}>Maybe ({wedding?.guests?.filter(g => g.rsvpStatus === 'maybe').length || 0})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Filters */}
       <div style={{
-        backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        backgroundColor: colors.bgCard,
+        borderBottom: `0.5px solid ${colors.border}`,
         padding: '16px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flex: 1 }}>
             <div style={{ position: 'relative', minWidth: '200px' }}>
-              <Search size={20} color={muted} style={{ position: 'absolute', left: '12px', top: '12px' }} />
+              <Search size={20} color={colors.textSecondary} style={{ position: 'absolute', left: '12px', top: '12px' }} />
               <input
                 type="text"
                 placeholder="Search guests by name, email, or phone..."
@@ -532,11 +674,11 @@ export default function GuestManagement() {
                 style={{
                   width: '100%',
                   padding: '12px 12px 12px 44px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: `1px solid ${colors.border}`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: 'white',
-                  color: textPrimary,
+                  backgroundColor: colors.bgCard,
+                  color: colors.textPrimary,
                   boxSizing: 'border-box'
                 }}
               />
@@ -547,11 +689,11 @@ export default function GuestManagement() {
               onChange={(e) => setFilterStatus(e.target.value as any)}
               style={{
                 padding: '12px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                border: `1px solid ${colors.border}`,
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
-                backgroundColor: 'white',
-                color: textPrimary
+                backgroundColor: colors.bgCard,
+                color: colors.textPrimary
               }}
             >
               <option value="all">All Status</option>
@@ -565,11 +707,11 @@ export default function GuestManagement() {
               onChange={(e) => setFilterDietary(e.target.value)}
               style={{
                 padding: '12px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                border: `1px solid ${colors.border}`,
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
-                backgroundColor: 'white',
-                color: textPrimary
+                backgroundColor: colors.bgCard,
+                color: colors.textPrimary
               }}
             >
               <option value="all">All Dietary</option>
@@ -583,11 +725,11 @@ export default function GuestManagement() {
               onChange={(e) => setFilterTable(e.target.value)}
               style={{
                 padding: '12px',
-                border: '1px solid rgba(180,140,90,0.3)',
+                border: `1px solid ${colors.border}`,
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
-                backgroundColor: 'white',
-                color: textPrimary
+                backgroundColor: colors.bgCard,
+                color: colors.textPrimary
               }}
             >
               <option value="all">All Tables</option>
@@ -604,7 +746,7 @@ export default function GuestManagement() {
               <span style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
-                color: muted
+                color: colors.textSecondary
               }}>
                 {selectedGuests.length} selected
               </span>
@@ -619,8 +761,8 @@ export default function GuestManagement() {
                   }
                 }}
                 style={{
-                  backgroundColor: primaryDark,
-                  color: bg,
+                  backgroundColor: colors.primaryDark,
+                  color: colors.bg,
                   padding: '8px 16px',
                   fontFamily: 'Urbanist',
                   fontSize: '11px',
@@ -641,26 +783,26 @@ export default function GuestManagement() {
       <div style={{ padding: '32px' }}>
         {filteredGuests.length === 0 ? (
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '48px',
             textAlign: 'center'
           }}>
             <div style={{
               fontSize: '48px',
-              color: muted,
+              color: colors.textSecondary,
               marginBottom: '16px'
             }}> <Users size={48} /> </div>
             <h3 style={{
               fontFamily: 'Urbanist',
               fontSize: '20px',
-              color: textPrimary,
+              color: colors.textPrimary,
               marginBottom: '8px'
             }}>No guests found</h3>
             <p style={{
               fontFamily: 'Urbanist',
               fontSize: '14px',
-              color: muted
+              color: colors.textSecondary
             }}>
               {searchTerm || filterStatus !== 'all' || filterDietary !== 'all' || filterTable !== 'all'
                 ? 'Try adjusting your filters or add your first guest.'
@@ -670,15 +812,15 @@ export default function GuestManagement() {
           </div>
         ) : (
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             overflow: 'hidden'
           }}>
             {/* Table Header */}
             <div style={{
-              backgroundColor: bg,
+              backgroundColor: colors.bg,
               padding: '16px',
-              borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+              borderBottom: `0.5px solid ${colors.border}`,
               display: 'grid',
               gridTemplateColumns: '40px 2fr 1fr 1fr 1fr 1fr 1fr 120px',
               gap: '16px',
@@ -697,49 +839,49 @@ export default function GuestManagement() {
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Name</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Email</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Phone</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Dietary</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Table</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Status</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                color: muted
+                color: colors.textSecondary
               }}>Actions</div>
             </div>
 
@@ -750,7 +892,7 @@ export default function GuestManagement() {
               return (
                 <div key={guest.id} style={{
                   padding: '16px',
-                  borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+                  borderBottom: `0.5px solid ${colors.border}`,
                   display: 'grid',
                   gridTemplateColumns: '40px 2fr 1fr 1fr 1fr 1fr 1fr 120px',
                   gap: '16px',
@@ -773,11 +915,11 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { name: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
-                          backgroundColor: 'white',
-                          color: textPrimary
+                          backgroundColor: colors.bgCard,
+                          color: colors.textPrimary
                         }}
                       />
                       <input
@@ -786,11 +928,11 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { email: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
-                          backgroundColor: 'white',
-                          color: textPrimary
+                          backgroundColor: colors.bgCard,
+                          color: colors.textPrimary
                         }}
                       />
                       <input
@@ -799,11 +941,11 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { phone: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
-                          backgroundColor: 'white',
-                          color: textPrimary
+                          backgroundColor: colors.bgCard,
+                          color: colors.textPrimary
                         }}
                       />
                       <select
@@ -811,11 +953,11 @@ export default function GuestManagement() {
                         onChange={(e) => handleEditGuest(guest.id, { dietaryPreferences: e.target.value })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
-                          backgroundColor: 'white',
-                          color: textPrimary
+                          backgroundColor: colors.bgCard,
+                          color: colors.textPrimary
                         }}
                       >
                         {dietaryOptions.map(option => (
@@ -828,11 +970,11 @@ export default function GuestManagement() {
                         onBlur={(e) => handleEditGuest(guest.id, { tableNumber: parseInt(e.target.value) || undefined })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
-                          backgroundColor: 'white',
-                          color: textPrimary
+                          backgroundColor: colors.bgCard,
+                          color: colors.textPrimary
                         }}
                       />
                       <select
@@ -840,11 +982,11 @@ export default function GuestManagement() {
                         onChange={(e) => handleEditGuest(guest.id, { rsvpStatus: e.target.value as any })}
                         style={{
                           padding: '8px',
-                          border: '1px solid rgba(180,140,90,0.3)',
+                          border: `1px solid ${colors.border}`,
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
-                          backgroundColor: 'white',
-                          color: textPrimary
+                          backgroundColor: colors.bgCard,
+                          color: colors.textPrimary
                         }}
                       >
                         <option value="pending">Pending</option>
@@ -854,8 +996,8 @@ export default function GuestManagement() {
                       <button
                         onClick={() => setEditingGuest(null)}
                         style={{
-                          backgroundColor: primaryDark,
-                          color: bg,
+                          backgroundColor: colors.primaryDark,
+                          color: colors.bg,
                           padding: '6px 12px',
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
@@ -875,32 +1017,32 @@ export default function GuestManagement() {
                           fontFamily: 'Urbanist',
                           fontSize: '14px',
                           fontWeight: 500,
-                          color: textPrimary,
+                          color: colors.textPrimary,
                           marginBottom: '4px'
                         }}>{guest.name}</div>
                         {guest.plusOne && guest.plusOneName && (
                           <div style={{
                             fontSize: '11px',
-                            color: muted,
+                            color: colors.textSecondary,
                             fontStyle: 'italic'
                           }}>+1 {guest.plusOneName}</div>
                         )}
                       </div>
                       <div style={{
                         fontSize: '12px',
-                        color: muted
+                        color: colors.textSecondary
                       }}>{guest.email || '-'}</div>
                       <div style={{
                         fontSize: '12px',
-                        color: muted
+                        color: colors.textSecondary
                       }}>{guest.phone || '-'}</div>
                       <div style={{
                         fontSize: '12px',
-                        color: muted
+                        color: colors.textSecondary
                       }}>{guest.dietaryPreferences}</div>
                       <div style={{
                         fontSize: '12px',
-                        color: muted
+                        color: colors.textSecondary
                       }}>{guest.tableNumber || '-'}</div>
                       <div>
                         <div style={{
@@ -909,18 +1051,18 @@ export default function GuestManagement() {
                           gap: '6px'
                         }}>
                           {guest.rsvpStatus === 'attending' && (
-                            <CheckCircle size={16} color="#16a34a" />
+                            <CheckCircle size={16} color={colors.success} />
                           )}
                           {guest.rsvpStatus === 'pending' && (
-                            <AlertCircle size={16} color="#d97706" />
+                            <AlertCircle size={16} color={colors.warning} />
                           )}
                           {guest.rsvpStatus === 'declined' && (
-                            <XCircle size={16} color="#dc2626" />
+                            <XCircle size={16} color={colors.danger} />
                           )}
                           <span style={{
                             fontSize: '12px',
-                            color: guest.rsvpStatus === 'attending' ? '#16a34a' : 
-                                   guest.rsvpStatus === 'pending' ? '#d97706' : '#dc2626',
+                            color: guest.rsvpStatus === 'attending' ? colors.success : 
+                                   guest.rsvpStatus === 'pending' ? colors.warning : colors.danger,
                             fontWeight: 500
                           }}>
                             {guest.rsvpStatus}
@@ -943,7 +1085,7 @@ export default function GuestManagement() {
                           }}
                           title="Copy email"
                         >
-                          <Copy size={14} color={muted} />
+                          <Copy size={14} color={colors.textSecondary} />
                         </button>
                         <button
                           onClick={() => handleSendInvite(guest)}
@@ -955,7 +1097,7 @@ export default function GuestManagement() {
                           }}
                           title="Send invitation"
                         >
-                          <Mail size={14} color={muted} />
+                          <Mail size={14} color={colors.textSecondary} />
                         </button>
                         <button
                           onClick={() => setEditingGuest(guest.id)}
@@ -967,7 +1109,7 @@ export default function GuestManagement() {
                           }}
                           title="Edit guest"
                         >
-                          <Edit2 size={14} color={muted} />
+                          <Edit2 size={14} color={colors.textSecondary} />
                         </button>
                         <button
                           onClick={() => handleDeleteGuest(guest.id)}
@@ -979,7 +1121,7 @@ export default function GuestManagement() {
                           }}
                           title="Delete guest"
                         >
-                          <Trash2 size={14} color={muted} />
+                          <Trash2 size={14} color={colors.textSecondary} />
                         </button>
                       </div>
                     </>
@@ -1006,8 +1148,8 @@ export default function GuestManagement() {
           zIndex: 1000
         }}>
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '24px',
             width: '90%',
             maxWidth: '600px'
@@ -1016,7 +1158,7 @@ export default function GuestManagement() {
               <h2 style={{
                 fontFamily: 'Urbanist',
                 fontSize: '20px',
-                color: textPrimary
+                color: colors.textPrimary
               }}>Add New Guest</h2>
               <button
                 onClick={() => setShowAddGuest(false)}
@@ -1026,7 +1168,7 @@ export default function GuestManagement() {
                   cursor: 'pointer'
                 }}
               >
-                <X size={20} color={muted} />
+                <X size={20} color={colors.textSecondary} />
               </button>
             </div>
 
@@ -1039,11 +1181,11 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
                 <input
@@ -1053,11 +1195,11 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, email: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
               </div>
@@ -1070,11 +1212,11 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, phone: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
                 <input
@@ -1084,11 +1226,11 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, tableNumber: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 />
               </div>
@@ -1100,11 +1242,11 @@ export default function GuestManagement() {
                 onChange={(e) => setNewGuest({ ...newGuest, address: e.target.value })}
                 style={{
                   padding: '12px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: `1px solid ${colors.border}`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: 'white',
-                  color: textPrimary
+                  backgroundColor: colors.bgCard,
+                  color: colors.textPrimary
                 }}
               />
 
@@ -1114,11 +1256,11 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, dietaryPreferences: e.target.value })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 >
                   {dietaryOptions.map(option => (
@@ -1131,11 +1273,11 @@ export default function GuestManagement() {
                   onChange={(e) => setNewGuest({ ...newGuest, rsvpStatus: e.target.value as any })}
                   style={{
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary
                   }}
                 >
                   <option value="pending">Pending</option>
@@ -1163,11 +1305,11 @@ export default function GuestManagement() {
                     onChange={(e) => setNewGuest({ ...newGuest, plusOneName: e.target.value })}
                     style={{
                       padding: '12px',
-                      border: '1px solid rgba(180,140,90,0.3)',
+                      border: `1px solid ${colors.border}`,
                       fontFamily: 'Urbanist',
                       fontSize: '14px',
-                      backgroundColor: 'white',
-                      color: textPrimary,
+                      backgroundColor: colors.bgCard,
+                      color: colors.textPrimary,
                       flex: 1
                     }}
                   />
@@ -1181,11 +1323,11 @@ export default function GuestManagement() {
                 rows={3}
                 style={{
                   padding: '12px',
-                  border: '1px solid rgba(180,140,90,0.3)',
+                  border: `1px solid ${colors.border}`,
                   fontFamily: 'Urbanist',
                   fontSize: '14px',
-                  backgroundColor: 'white',
-                  color: textPrimary,
+                  backgroundColor: colors.bgCard,
+                  color: colors.textPrimary,
                   resize: 'vertical'
                 }}
               />
@@ -1194,8 +1336,8 @@ export default function GuestManagement() {
                 <button
                   onClick={() => setShowAddGuest(false)}
                   style={{
-                    border: `1px solid ${primary}`,
-                    color: primary,
+                    border: `1px solid ${colors.border}`,
+                    color: colors.primary,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -1211,8 +1353,8 @@ export default function GuestManagement() {
                   onClick={handleAddGuest}
                   disabled={!newGuest.name.trim()}
                   style={{
-                    backgroundColor: primaryDark,
-                    color: bg,
+                    backgroundColor: colors.primaryDark,
+                    color: colors.bg,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -1246,8 +1388,8 @@ export default function GuestManagement() {
           zIndex: 1000
         }}>
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '24px',
             width: '90%',
             maxWidth: '500px'
@@ -1256,7 +1398,7 @@ export default function GuestManagement() {
               <h2 style={{
                 fontFamily: 'Urbanist',
                 fontSize: '20px',
-                color: textPrimary
+                color: colors.textPrimary
               }}>Send Bulk Invitations</h2>
               <button
                 onClick={() => setShowBulkInvite(false)}
@@ -1266,7 +1408,7 @@ export default function GuestManagement() {
                   cursor: 'pointer'
                 }}
               >
-                <X size={20} color={muted} />
+                <X size={20} color={colors.textSecondary} />
               </button>
             </div>
 
@@ -1276,7 +1418,7 @@ export default function GuestManagement() {
                   display: 'block',
                   fontFamily: 'Urbanist',
                   fontSize: '12px',
-                  color: muted,
+                  color: colors.textSecondary,
                   marginBottom: '4px'
                 }}>
                   Email Addresses (comma separated)
@@ -1289,11 +1431,11 @@ export default function GuestManagement() {
                   style={{
                     width: '100%',
                     padding: '12px',
-                    border: '1px solid rgba(180,140,90,0.3)',
+                    border: `1px solid ${colors.border}`,
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
-                    backgroundColor: 'white',
-                    color: textPrimary,
+                    backgroundColor: colors.bgCard,
+                    color: colors.textPrimary,
                     resize: 'vertical',
                     boxSizing: 'border-box'
                   }}
@@ -1304,8 +1446,8 @@ export default function GuestManagement() {
                 <button
                   onClick={() => setShowBulkInvite(false)}
                   style={{
-                    border: `1px solid ${primary}`,
-                    color: primary,
+                    border: `1px solid ${colors.border}`,
+                    color: colors.primary,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -1321,8 +1463,8 @@ export default function GuestManagement() {
                   onClick={handleBulkInvite}
                   disabled={!bulkInviteEmails.trim()}
                   style={{
-                    backgroundColor: primaryDark,
-                    color: bg,
+                    backgroundColor: colors.primaryDark,
+                    color: colors.bg,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -1340,6 +1482,7 @@ export default function GuestManagement() {
           </div>
         </div>
       )}
+      <AIChat />
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { db } from '../../../../lib/firebase'
 import { Booking, User, Vendor } from '../../../../types'
 import { Calendar, DollarSign, Filter, Search, Clock, CheckCircle, XCircle, Loader2, Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown, CreditCard, RotateCcw, AlertTriangle } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
+import { colors } from '@/lib/styles'
 
 
 export default function AdminBookingsPage() {
@@ -411,7 +412,7 @@ export default function AdminBookingsPage() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                  <tbody className="divide-y" style={{ borderColor: '${colors.border}' }}>
                     {paginatedBookings.map((booking) => {
                       const statusColors = getStatusColor(booking.status)
                       return (
@@ -466,7 +467,7 @@ export default function AdminBookingsPage() {
                                 onClick={() => loadBookingDetails(booking)}
                                 className="p-1 rounded transition-colors"
                                 style={{ color: '#1a56db' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                               >
                                 <Eye className="w-4 h-4" />
@@ -534,7 +535,7 @@ export default function AdminBookingsPage() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: `${colors.border}` }}>
                   <div className="text-sm" style={{ color: '#6b7280' }}>
                     Showing {((currentPage - 1) * bookingsPerPage) + 1} to {Math.min(currentPage * bookingsPerPage, filteredBookings.length)} of {filteredBookings.length} bookings
                   </div>
@@ -544,7 +545,7 @@ export default function AdminBookingsPage() {
                       disabled={currentPage === 1}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
                       style={{ color: '#1a56db' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronLeft className="w-4 h-4" />
@@ -557,7 +558,7 @@ export default function AdminBookingsPage() {
                       disabled={currentPage === totalPages}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
                       style={{ color: '#1a56db' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronRight className="w-4 h-4" />
@@ -631,7 +632,7 @@ export default function AdminBookingsPage() {
                         onClick={() => setShowBookingModal(false)}
                         className="p-2 rounded transition-colors"
                         style={{ color: '#6b7280' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                       >
                         <AlertTriangle className="w-4 h-4" />

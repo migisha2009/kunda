@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Filter, X } from 'lucide-react'
+import { colors, typography } from '../../lib/styles'
 
 const CATEGORIES = [
   'Photography',
@@ -27,6 +28,9 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
   const searchParams = useSearchParams()
   const [category, setCategory] = useState(currentCategory || '')
   const [location, setLocation] = useState(currentLocation || '')
+  const [rating, setRating] = useState('all')
+  const [minPrice, setMinPrice] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
 
   useEffect(() => {
     setCategory(currentCategory || '')
@@ -48,46 +52,77 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
       params.delete('location')
     }
     
+    if (rating !== 'all') {
+      params.set('rating', rating)
+    } else {
+      params.delete('rating')
+    }
+    
+    if (minPrice) {
+      params.set('minPrice', minPrice)
+    } else {
+      params.delete('minPrice')
+    }
+    
+    if (maxPrice) {
+      params.set('maxPrice', maxPrice)
+    } else {
+      params.delete('maxPrice')
+    }
+    
     router.push(`/vendors?${params.toString()}`, { scroll: false })
   }
 
   const clearFilters = () => {
     setCategory('')
     setLocation('')
+    setRating('all')
+    setMinPrice('')
+    setMaxPrice('')
     router.push('/vendors', { scroll: false })
   }
 
-  const hasActiveFilters = category || location
+  const hasActiveFilters = category || location || rating !== 'all' || minPrice || maxPrice
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <Filter className="w-5 h-5 text-gray-600 mr-2" />
-          <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+    <div style={{ padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', marginBottom: '24px', backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Filter style={{ width: '20px', height: '20px', marginRight: '8px', color: colors.textSecondary }} />
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, fontFamily: 'Urbanist' }}>Filters</h2>
         </div>
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            style={{ display: 'flex', alignItems: 'center', fontSize: '14px', transition: 'opacity 0.2s ease', color: colors.textSecondary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
           >
-            <X className="w-4 h-4 mr-1" />
+            <X style={{ width: '16px', height: '16px', marginRight: '4px', color: colors.textSecondary }} />
             Clear All
           </button>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
         {/* Category Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
             Category
           </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            onBlur={updateFilters}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
+              updateFilters()
+            }}
           >
             <option value="">All Categories</option>
             {CATEGORIES.map((cat) => (
@@ -100,49 +135,181 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
 
         {/* Location Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
             Location
           </label>
           <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            onBlur={updateFilters}
             placeholder="City, State, or Country"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
+              updateFilters()
+            }}
           />
+        </div>
+
+        {/* Rating Filter */}
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+            Rating
+          </label>
+          <select
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
+              updateFilters()
+            }}
+          >
+            <option value="all">All Ratings</option>
+            <option value="4">4+ Stars</option>
+            <option value="3">3+ Stars</option>
+          </select>
+        </div>
+
+        {/* Price Range Filter */}
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+            Budget Range (USD)
+          </label>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <input
+              type="number"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              placeholder="Min"
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                border: `1px solid ${colors.border}`, 
+                borderRadius: '8px', 
+                fontFamily: 'Urbanist', 
+                fontSize: '16px', 
+                color: colors.textPrimary, 
+                backgroundColor: colors.white, 
+                outline: 'none' 
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = colors.primary
+                e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = colors.border
+                e.target.style.boxShadow = 'none'
+                updateFilters()
+              }}
+            />
+            <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: colors.textSecondary }}>to</span>
+            <input
+              type="number"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              placeholder="Max"
+              style={{ 
+                flex: 1, 
+                padding: '12px 16px', 
+                border: `1px solid ${colors.border}`, 
+                borderRadius: '8px', 
+                fontFamily: 'Urbanist', 
+                fontSize: '16px', 
+                color: colors.textPrimary, 
+                backgroundColor: colors.white, 
+                outline: 'none' 
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = colors.primary
+                e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = colors.border
+                e.target.style.boxShadow = 'none'
+                updateFilters()
+              }}
+            />
+          </div>
         </div>
       </div>
 
       {/* Active Filters Display */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <div className="flex flex-wrap gap-2">
+        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: `1px solid ${colors.border}` }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {category && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primary }}>
                 Category: {category}
                 <button
                   onClick={() => {
                     setCategory('')
                     updateFilters()
                   }}
-                  className="ml-2 text-blue-600 hover:text-blue-800"
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
-                  <X className="w-3 h-3" />
+                  <X style={{ width: '12px', height: '12px' }} />
                 </button>
               </span>
             )}
             {location && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
                 Location: {location}
                 <button
                   onClick={() => {
                     setLocation('')
                     updateFilters()
                   }}
-                  className="ml-2 text-blue-600 hover:text-blue-800"
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
-                  <X className="w-3 h-3" />
+                  <X style={{ width: '12px', height: '12px' }} />
+                </button>
+              </span>
+            )}
+            {rating !== 'all' && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+                Rating: {rating}+ Stars
+                <button
+                  onClick={() => {
+                    setRating('all')
+                    updateFilters()
+                  }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                >
+                  <X style={{ width: '12px', height: '12px' }} />
+                </button>
+              </span>
+            )}
+            {(minPrice || maxPrice) && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+                Price: ${minPrice || '0'} - ${maxPrice || '999999'}
+                <button
+                  onClick={() => {
+                    setMinPrice('')
+                    setMaxPrice('')
+                    updateFilters()
+                  }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                >
+                  <X style={{ width: '12px', height: '12px' }} />
                 </button>
               </span>
             )}

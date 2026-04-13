@@ -8,6 +8,7 @@ import { db } from '../../../../lib/firebase'
 import { Enquiry, User, Vendor } from '../../../../types'
 import { MessageSquare, Search, Filter, Clock, CheckCircle, XCircle, ExternalLink, Loader2, Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown, AlertTriangle, Flag, Mail } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
+import { colors } from '@/lib/styles'
 
 
 export default function AdminEnquiriesPage() {
@@ -301,7 +302,7 @@ export default function AdminEnquiriesPage() {
                 onClick={exportToCSV}
                 className="px-4 py-2 text-sm font-medium rounded transition-colors"
                 style={{ border: '0.5px solid #b08850', color: '#1a56db' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
                 <Download className="w-4 h-4 inline mr-2" />
@@ -446,7 +447,7 @@ export default function AdminEnquiriesPage() {
                                 onClick={() => loadEnquiryDetails(enquiry)}
                                 className="p-1 rounded transition-colors"
                                 style={{ color: '#1a56db' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                               >
                                 <Eye className="w-4 h-4" />
@@ -466,7 +467,7 @@ export default function AdminEnquiriesPage() {
                                 onClick={() => flagEnquiry(enquiry.id)}
                                 className="p-1 rounded transition-colors"
                                 style={{ color: flaggedEnquiries.includes(enquiry.id) ? '#dc2626' : '#9a7850' }}
-                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                               >
                                 <Flag className="w-4 h-4" />
@@ -508,7 +509,7 @@ export default function AdminEnquiriesPage() {
                       disabled={currentPage === 1}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
                       style={{ color: '#1a56db' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronLeft className="w-4 h-4" />
@@ -521,7 +522,7 @@ export default function AdminEnquiriesPage() {
                       disabled={currentPage === totalPages}
                       className="p-2 rounded disabled:opacity-50 transition-colors"
                       style={{ color: '#1a56db' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <ChevronRight className="w-4 h-4" />
@@ -607,7 +608,7 @@ export default function AdminEnquiriesPage() {
             {showEnquiryModal && selectedEnquiry && (
               <div className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowEnquiryModal(false)} />
-                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid rgba(180,140,90,0.2)' }}>
+                <div className="relative bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" style={{ border: '0.5px solid ${colors.border}' }}>
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h2 className="text-xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 700, fontSize: '18px' }}>Enquiry Details</h2>
@@ -615,7 +616,7 @@ export default function AdminEnquiriesPage() {
                         onClick={() => setShowEnquiryModal(false)}
                         className="p-2 rounded transition-colors"
                         style={{ color: '#6b7280' }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(180,140,90,0.1)'}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                       >
                         <AlertTriangle className="w-4 h-4" />
@@ -664,7 +665,7 @@ export default function AdminEnquiriesPage() {
                         }}
                         disabled={updating === selectedEnquiry.id}
                         className="px-4 py-2 text-sm font-medium rounded focus:outline-none disabled:opacity-50"
-                        style={{ backgroundColor: '#f7f8fd', border: '0.5px solid rgba(180,140,90,0.2)', color: '#3a2a1a' }}
+                        style={{ backgroundColor: '#f7f8fd', border: '0.5px solid ${colors.border}', color: '#3a2a1a' }}
                       >
                         <option value="pending">Pending</option>
                         <option value="replied">Replied</option>

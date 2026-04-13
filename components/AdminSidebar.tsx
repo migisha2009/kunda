@@ -17,6 +17,7 @@ import {
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { signOutUser } from '../lib/auth'
+import { colors, typography } from '../lib/styles'
 
 interface AdminSidebarProps {
   isOpen?: boolean
@@ -30,13 +31,13 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
 
   const navigation = [
     {
-      name: 'LayoutDashboard',
+      name: 'Dashboard',
       href: '/dashboard/admin',
       icon: LayoutDashboard,
       current: pathname === '/dashboard/admin'
     },
     {
-      name: 'Store',
+      name: 'Vendors',
       href: '/dashboard/admin/vendors',
       icon: Store,
       current: pathname === '/dashboard/admin/vendors'
@@ -48,19 +49,19 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
       current: pathname === '/dashboard/admin/users'
     },
     {
-      name: 'Calendar',
+      name: 'Bookings',
       href: '/dashboard/admin/bookings',
       icon: Calendar,
       current: pathname === '/dashboard/admin/bookings'
     },
     {
-      name: 'MessageSquare',
+      name: 'Enquiries',
       href: '/dashboard/admin/enquiries',
       icon: MessageSquare,
       current: pathname === '/dashboard/admin/enquiries'
     },
     {
-      name: 'BarChart',
+      name: 'Analytics',
       href: '/dashboard/admin/analytics',
       icon: BarChart,
       current: pathname === '/dashboard/admin/analytics'
@@ -83,11 +84,11 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
   }
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full" style={{ backgroundColor: '#1e3a8a' }}>
+    <div className="flex flex-col h-full" style={{ backgroundColor: '#0f2460' }}>
       {/* Logo */}
       <div className="flex items-center px-6 py-4" style={{ borderBottom: '1px solid #e5edff' }}>
         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#1a56db' }} />
-        <span className="ml-2 text-2xl font-light" style={{ fontFamily: 'Urbanist', color: '#bfdbfe' }}>
+        <span className="ml-2 text-2xl font-light" style={{ fontFamily: 'Urbanist', color: '#ffffff', fontWeight: 800 }}>
           Kunda
         </span>
       </div>
@@ -107,7 +108,7 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
               }`}
               style={{
                 borderLeftColor: isActive ? '#1a56db' : 'transparent',
-                backgroundColor: isActive ? 'rgba(26,86,219,0.1)' : 'transparent'
+                backgroundColor: isActive ? 'rgba(255,255,255,0.15)' : 'transparent'
               }}
               onClick={() => {
                 if (onClose) onClose()
@@ -115,12 +116,10 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
               }}
             >
               <item.icon
-                className={`mr-3 h-5 w-5 ${
-                  isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'
-                }`}
-                style={{ color: isActive ? '#1a56db' : 'inherit' }}
+                className={`mr-3 h-5 w-5`}
+                style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)' }}
               />
-              <span style={{ color: isActive ? '#1a56db' : 'inherit' }}>
+              <span style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)' }}>
                 {item.name}
               </span>
             </Link>
@@ -178,7 +177,7 @@ export default function AdminSidebar({ isOpen = true, onClose }: AdminSidebarPro
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg shadow-md"
-            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid rgba(180,140,90,0.2)' }}
+            style={{ backgroundColor: '#fdf9f5', border: '0.5px solid ${colors.border}' }}
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" style={{ color: '#7a5c30' }} />

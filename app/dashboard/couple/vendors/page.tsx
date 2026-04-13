@@ -294,7 +294,7 @@ export default function VendorBrowser() {
       {/* Header */}
       <div style={{
         backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        borderBottom: '0.5px solid ${colors.border}',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -328,7 +328,7 @@ export default function VendorBrowser() {
               style={{
                 width: '100%',
                 padding: '12px 12px 12px 44px',
-                border: '0.5px solid rgba(180,140,90,0.3)',
+                border: '0.5px solid ${colors.border}',
                 fontFamily: 'Jost',
                 fontSize: '14px',
                 backgroundColor: 'white',
@@ -343,7 +343,7 @@ export default function VendorBrowser() {
             onChange={(e) => setFilterCategory(e.target.value)}
             style={{
               padding: '12px',
-              border: '0.5px solid rgba(180,140,90,0.3)',
+              border: '0.5px solid ${colors.border}',
               fontFamily: 'Jost',
               fontSize: '14px',
               backgroundColor: 'white',
@@ -367,7 +367,7 @@ export default function VendorBrowser() {
             onChange={(e) => setFilterPrice(e.target.value)}
             style={{
               padding: '12px',
-              border: '0.5px solid rgba(180,140,90,0.3)',
+              border: '0.5px solid ${colors.border}',
               fontFamily: 'Jost',
               fontSize: '14px',
               backgroundColor: 'white',
@@ -388,7 +388,7 @@ export default function VendorBrowser() {
             onChange={(e) => setSortBy(e.target.value as any)}
             style={{
               padding: '12px',
-              border: '0.5px solid rgba(180,140,90,0.3)',
+              border: '0.5px solid ${colors.border}',
               fontFamily: 'Jost',
               fontSize: '14px',
               backgroundColor: 'white',
@@ -404,7 +404,7 @@ export default function VendorBrowser() {
 
       {/* Recently Viewed */}
       {recentlyViewed.length > 0 && (
-        <div style={{ padding: '32px', backgroundColor: 'white', borderBottom: '0.5px solid rgba(180,140,90,0.2)' }}>
+        <div style={{ padding: '32px', backgroundColor: 'white', borderBottom: '0.5px solid ${colors.border}' }}>
           <h3 style={{
             fontFamily: 'Cormorant Garamond',
             fontSize: '18px',
@@ -425,7 +425,7 @@ export default function VendorBrowser() {
               return (
                 <div key={vendor.id} style={{
                   minWidth: '200px',
-                  border: '0.5px solid rgba(180,140,90,0.2)',
+                  border: '0.5px solid ${colors.border}',
                   padding: '12px',
                   cursor: 'pointer'
                 }} onClick={() => handleViewProfile(vendor)}>
@@ -462,7 +462,7 @@ export default function VendorBrowser() {
         {filteredVendors.length === 0 ? (
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '48px',
             textAlign: 'center'
           }}>
@@ -490,7 +490,7 @@ export default function VendorBrowser() {
             {filteredVendors.map((vendor) => (
               <div key={vendor.id} style={{
                 backgroundColor: 'white',
-                border: '0.5px solid rgba(180,140,90,0.2)',
+                border: '0.5px solid ${colors.border}',
                 overflow: 'hidden'
               }}>
                 {/* Vendor Image */}
@@ -530,7 +530,7 @@ export default function VendorBrowser() {
                       top: '12px',
                       right: '12px',
                       backgroundColor: 'white',
-                      border: '0.5px solid rgba(180,140,90,0.2)',
+                      border: '0.5px solid ${colors.border}',
                       borderRadius: '50%',
                       width: '32px',
                       height: '32px',
@@ -638,7 +638,7 @@ export default function VendorBrowser() {
                       onClick={() => handleShare(vendor)}
                       style={{
                         backgroundColor: 'transparent',
-                        border: '0.5px solid rgba(180,140,90,0.3)',
+                        border: '0.5px solid ${colors.border}',
                         padding: '8px',
                         cursor: 'pointer'
                       }}
@@ -669,7 +669,7 @@ export default function VendorBrowser() {
         }}>
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             width: '90%',
             maxWidth: '800px',
             maxHeight: '90vh',
@@ -697,7 +697,7 @@ export default function VendorBrowser() {
                       top: '50%',
                       transform: 'translateY(-50%)',
                       backgroundColor: 'white',
-                      border: '0.5px solid rgba(180,140,90,0.2)',
+                      border: '0.5px solid ${colors.border}',
                       borderRadius: '50%',
                       width: '40px',
                       height: '40px',
@@ -717,7 +717,7 @@ export default function VendorBrowser() {
                       top: '50%',
                       transform: 'translateY(-50%)',
                       backgroundColor: 'white',
-                      border: '0.5px solid rgba(180,140,90,0.2)',
+                      border: '0.5px solid ${colors.border}',
                       borderRadius: '50%',
                       width: '40px',
                       height: '40px',
@@ -739,7 +739,7 @@ export default function VendorBrowser() {
                   top: '16px',
                   right: '16px',
                   backgroundColor: 'white',
-                  border: '0.5px solid rgba(180,140,90,0.2)',
+                  border: '0.5px solid ${colors.border}',
                   borderRadius: '50%',
                   width: '32px',
                   height: '32px',
@@ -841,7 +841,7 @@ export default function VendorBrowser() {
                         padding: '6px 12px',
                         fontSize: '12px',
                         color: brown,
-                        border: '0.5px solid rgba(180,140,90,0.2)'
+                        border: '0.5px solid ${colors.border}'
                       }}>
                         {service}
                       </span>
@@ -919,7 +919,7 @@ export default function VendorBrowser() {
                   onClick={() => handleSaveVendor(selectedVendor.id)}
                   style={{
                     backgroundColor: 'transparent',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     padding: '12px 20px',
                     fontFamily: 'Jost',
                     fontSize: '12px',
@@ -942,7 +942,7 @@ export default function VendorBrowser() {
                   onClick={() => handleShare(selectedVendor)}
                   style={{
                     backgroundColor: 'transparent',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     padding: '12px',
                     cursor: 'pointer'
                   }}
@@ -971,7 +971,7 @@ export default function VendorBrowser() {
         }}>
           <div style={{
             backgroundColor: 'white',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px',
             width: '90%',
             maxWidth: '500px'
@@ -1011,7 +1011,7 @@ export default function VendorBrowser() {
                     style={{
                       width: '100%',
                       padding: '8px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: 'white',
@@ -1035,7 +1035,7 @@ export default function VendorBrowser() {
                     style={{
                       width: '100%',
                       padding: '8px',
-                      border: '0.5px solid rgba(180,140,90,0.3)',
+                      border: '0.5px solid ${colors.border}',
                       fontFamily: 'Jost',
                       fontSize: '14px',
                       backgroundColor: 'white',
@@ -1062,7 +1062,7 @@ export default function VendorBrowser() {
                   style={{
                     width: '100%',
                     padding: '8px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: 'white',
@@ -1088,7 +1088,7 @@ export default function VendorBrowser() {
                   style={{
                     width: '100%',
                     padding: '8px',
-                    border: '0.5px solid rgba(180,140,90,0.3)',
+                    border: '0.5px solid ${colors.border}',
                     fontFamily: 'Jost',
                     fontSize: '14px',
                     backgroundColor: 'white',

@@ -1,7 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import { Vendor } from '../../types'
 import { Star, MapPin, Store } from 'lucide-react'
+import { colors, typography, getStyles } from '../../lib/styles'
 
 interface VendorCardProps {
   vendor: Vendor
@@ -13,71 +15,89 @@ export default function VendorCard({ vendor }: VendorCardProps) {
     : '/placeholder-vendor.jpg'
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
-      {/* Image */}
-      <div className="aspect-w-16 aspect-h-12 relative">
-        <img
-          src={imageUrl}
-          alt={vendor.businessName || vendor.name}
-          className="w-full h-48 object-cover"
-          onError={(e) => {
-            // Fallback to placeholder if image fails to load
-            e.currentTarget.src = '/placeholder-vendor.jpg'
-          }}
-        />
-        <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-          {vendor.category.charAt(0).toUpperCase() + vendor.category.slice(1).toLowerCase()}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-semibold text-gray-900 text-lg">
-              {(vendor.businessName || vendor.name).split(' ').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-              ).join(' ')}
-            </h3>
-          {vendor.verified && (
-            <div className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
-              Verified
-            </div>
-          )}
-        </div>
-
-        <div className="flex items-center text-sm text-gray-600 mb-3">
-          <MapPin className="w-4 h-4 mr-1" />
-          {vendor.location.split(',').map(part => 
-            part.trim().split(' ').map(word => 
-              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            ).join(' ')
-          ).join(', ')}
-        </div>
-
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center">
-            {(!vendor.rating || vendor.rating === 0) ? (
-              <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
-                New
-              </div>
-            ) : (
-              <>
-                <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                <span className="font-medium text-gray-900">{vendor.rating.toFixed(1)}</span>
-                <span className="text-sm text-gray-500 ml-1">({vendor.reviewCount || 0})</span>
-              </>
-            )}
+    <Link href={`/vendors/${vendor.id}`}>
+      <div style={{ backgroundColor: colors.white, borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: `1px solid ${colors.border}`, overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow 0.2s ease' }}
+           onMouseEnter={(e) => {
+             e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)'
+           }}
+           onMouseLeave={(e) => {
+             e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)'
+           }}>
+        {/* Image */}
+        <div style={{ position: 'relative', height: '192px' }}>
+          <img
+            src={imageUrl}
+            alt={vendor.businessName || vendor.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={(e) => {
+              // Fallback to placeholder if image fails to load
+              e.currentTarget.src = '/placeholder-vendor.jpg'
+            }}
+          />
+          <div style={{ position: 'absolute', top: '8px', right: '8px', backgroundColor: colors.white, padding: '4px 8px', borderRadius: '50px', fontSize: '12px', fontWeight: 600, color: colors.textPrimary }}>
+            {vendor.category.charAt(0).toUpperCase() + vendor.category.slice(1).toLowerCase()}
           </div>
         </div>
 
-        <div className="text-sm text-gray-600 mb-4">
-          {vendor.pricing?.currency || '$'} {vendor.pricing?.min?.toLocaleString() || 0} - {vendor.pricing?.max?.toLocaleString() || 0}
-        </div>
+        {/* Content */}
+        <div style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <h3 style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 600, fontSize: '18px' }}>
+                {(vendor.businessName || vendor.name).split(' ').map(word => 
+                  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                ).join(' ')}
+              </h3>
+            {vendor.verified && (
+              <div style={{ backgroundColor: colors.primaryLight, color: colors.primary, fontSize: '12px', padding: '4px 8px', borderRadius: '50px', fontWeight: 600 }}>
+                Verified
+              </div>
+            )}
+          </div>
 
-        <button className="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-sm">
-          View Profile
-        </button>
+          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px', color: colors.textSecondary, marginBottom: '12px' }}>
+            <MapPin style={{ width: '16px', height: '16px', marginRight: '4px' }} />
+            {vendor.location.split(',').map(part => 
+              part.trim().split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              ).join(' ')
+            ).join(', ')}
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {(!vendor.rating || vendor.rating === 0) ? (
+                <div style={{ backgroundColor: colors.successBg, color: colors.success, fontSize: '12px', padding: '4px 8px', borderRadius: '50px', fontWeight: 600 }}>
+                  New
+                </div>
+              ) : (
+                <>
+                  <Star style={{ width: '16px', height: '16px', color: colors.warning, marginRight: '4px', fill: 'currentColor' }} />
+                  <span style={{ fontWeight: 600, color: colors.textPrimary }}>{vendor.rating.toFixed(1)}</span>
+                  <span style={{ fontSize: '14px', color: colors.textMuted, marginLeft: '4px' }}>({vendor.reviewCount || 0})</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div style={{ fontSize: '14px', color: colors.textSecondary, marginBottom: '16px' }}>
+            {vendor.pricing?.currency || '$'} {vendor.pricing?.min?.toLocaleString() || 0} - {vendor.pricing?.max?.toLocaleString() || 0}
+          </div>
+
+          <button style={{ width: '100%', padding: '12px 16px', backgroundColor: colors.primary, color: colors.white, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(26,86,219,0.3)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = colors.primaryDark
+                    e.currentTarget.style.transform = 'translateY(-1px)'
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = colors.primary
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,86,219,0.3)'
+                  }}>
+            View Profile
+          </button>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }

@@ -235,7 +235,7 @@ export default function VendorReviewsPage() {
         justifyContent: 'space-between',
         padding: '14px 32px',
         background: '#ffffff',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)'
+        borderBottom: '0.5px solid ${colors.border}'
       }}>
         {/* Left - Logo */}
         <div 
@@ -382,7 +382,7 @@ export default function VendorReviewsPage() {
         <div 
           style={{
             backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px',
             textAlign: 'center'
           }}
@@ -407,7 +407,7 @@ export default function VendorReviewsPage() {
         <div 
           style={{
             backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px'
           }}
         >
@@ -446,7 +446,7 @@ export default function VendorReviewsPage() {
         <div 
           style={{
             backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px'
           }}
         >
@@ -487,7 +487,7 @@ export default function VendorReviewsPage() {
         <div 
           style={{
             backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
+            border: '0.5px solid ${colors.border}',
             padding: '24px'
           }}
         >
@@ -501,7 +501,7 @@ export default function VendorReviewsPage() {
                 <div 
                   key={review.id}
                   style={{
-                    borderBottom: '0.5px solid rgba(180,140,90,0.15)',
+                    borderBottom: '0.5px solid ${colors.border}',
                     paddingBottom: '24px'
                   }}
                 >
@@ -541,7 +541,7 @@ export default function VendorReviewsPage() {
                           fontFamily: 'Jost',
                           background: '#f0e4d0',
                           color: '#7a5c30',
-                          border: '0.5px solid rgba(180,140,90,0.3)',
+                          border: '0.5px solid ${colors.border}',
                           cursor: 'pointer'
                         }}
                       >
@@ -575,7 +575,7 @@ export default function VendorReviewsPage() {
                       className="p-3 mb-4"
                       style={{
                         background: '#f8fafc',
-                        border: '0.5px solid rgba(180,140,90,0.15)'
+                        border: '0.5px solid ${colors.border}'
                       }}
                     >
                       <div className="text-xs font-medium mb-1" style={{ fontFamily: 'Jost', color: '#7a5c30' }}>
@@ -597,7 +597,7 @@ export default function VendorReviewsPage() {
                             placeholder="Write your reply..."
                             className="w-full"
                             style={{
-                              border: '0.5px solid rgba(180,140,90,0.3)',
+                              border: '0.5px solid ${colors.border}',
                               background: '#fdf9f5',
                               padding: '10px 14px',
                               fontFamily: 'Jost',

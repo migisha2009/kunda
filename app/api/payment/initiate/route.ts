@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Flutterwave from 'flutterwave-node-v3'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
-import { db } from '../../../../lib/firebase'
+import { db } from '@/lib/firebase'
 
 // Initialize Flutterwave lazily to avoid build-time errors
 function getFlutterwaveInstance() {

@@ -8,6 +8,7 @@ import { db } from '../../../../lib/firebase'
 import { User, Vendor, Booking } from '../../../../types'
 import { Users, Search, Filter, Trash2, AlertTriangle, Loader2, Eye, Mail, Download, ChevronLeft, ChevronRight, ArrowUpDown, UserPlus, Key } from 'lucide-react'
 import { formatDate } from '../../../../lib/dateUtils'
+import { colors } from '@/lib/styles'
 
 export default function AdminUsersPage() {
   const { loading: authLoading } = useRequireAuth('admin')
@@ -312,7 +313,7 @@ export default function AdminUsersPage() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                  <tbody className="divide-y" style={{ borderColor: colors.border, }}>
                     {paginatedUsers.map((user) => {
                       const roleColors = getRoleColor(user.role || '')
                       return (
@@ -399,7 +400,7 @@ export default function AdminUsersPage() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: 'rgba(180,140,90,0.1)' }}>
+                <div className="px-6 py-4 flex items-center justify-between border-t" style={{ borderColor: colors.border, }}>
                   <div className="text-sm" style={{ color: '#6b7280' }}>
                     Showing {((currentPage - 1) * usersPerPage) + 1} to {Math.min(currentPage * usersPerPage, filteredUsers.length)} of {filteredUsers.length} users
                   </div>

@@ -10,6 +10,7 @@ import { createUser } from '../../lib/firestore'
 import { testFirebaseConnection, checkEnvironmentVariables } from '../../lib/firebase-test'
 import { User } from '../../types'
 import { Loader2, Users, Store, Eye, EyeOff, Check, X } from 'lucide-react'
+import { colors, typography, getStyles } from '../../lib/styles'
 
 const passwordRequirements = {
   minLength: (password: string) => password.length >= 8,
@@ -152,124 +153,178 @@ export default function SignupPage() {
   }, [isPasswordWeak, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#f0f4ff' }}>
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
-        <div className="text-center">
-          <h1 className="text-3xl mb-2" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '32px' }}>Join Kunda</h1>
-          <p className="text-gray-600">Start planning your perfect wedding</p>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', backgroundColor: colors.bg }}>
+      <div style={{ maxWidth: '448px', width: '100%', display: 'flex', flexDirection: 'column', gap: '32px', backgroundColor: colors.white, padding: '32px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h1 style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '32px', marginBottom: '8px' }}>Join Kunda</h1>
+          <p style={{ color: colors.textSecondary, fontSize: '14px', fontWeight: 400 }}>Start planning your perfect wedding</p>
         </div>
 
         {!selectedRole ? (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-center text-gray-800">I am a...</h2>
-            <div className="grid grid-cols-2 gap-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 600, textAlign: 'center', color: colors.textPrimary }}>I am a...</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <button
                 onClick={() => handleRoleSelect('couple')}
-                className="flex flex-col items-center p-6 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all"
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px', border: '2px solid #e5e7eb', borderRadius: '12px', transition: 'all 0.2s ease', backgroundColor: colors.white, cursor: 'pointer' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = colors.primary
+                  e.currentTarget.style.backgroundColor = colors.primaryLight + '20'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#e5e7eb'
+                  e.currentTarget.style.backgroundColor = colors.white
+                }}
               >
-                <Users className="w-12 h-12 text-blue-600 mb-3" />
-                <span className="font-medium text-gray-900">Couple</span>
-                <span className="text-sm text-gray-500 mt-1">Planning our wedding</span>
+                <Users style={{ width: '48px', height: '48px', color: colors.primary, marginBottom: '12px' }} />
+                <span style={{ fontWeight: 600, color: colors.textPrimary }}>Couple</span>
+                <span style={{ fontSize: '14px', color: colors.textSecondary, marginTop: '4px' }}>Planning our wedding</span>
               </button>
               <button
                 onClick={() => handleRoleSelect('vendor')}
-                className="flex flex-col items-center p-6 border-2 border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all"
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px', border: '2px solid #e5e7eb', borderRadius: '12px', transition: 'all 0.2s ease', backgroundColor: colors.white, cursor: 'pointer' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = colors.success
+                  e.currentTarget.style.backgroundColor = colors.successBg
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#e5e7eb'
+                  e.currentTarget.style.backgroundColor = colors.white
+                }}
               >
-                <Store className="w-12 h-12 text-green-600 mb-3" />
-                <span className="font-medium text-gray-900">Vendor</span>
-                <span className="text-sm text-gray-500 mt-1">Offering wedding services</span>
+                <Store style={{ width: '48px', height: '48px', color: colors.success, marginBottom: '12px' }} />
+                <span style={{ fontWeight: 600, color: colors.textPrimary }}>Vendor</span>
+                <span style={{ fontSize: '14px', color: colors.textSecondary, marginTop: '4px' }}>Offering wedding services</span>
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <input type="hidden" {...register('role')} />
             
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Full Name
               </label>
               <input
                 {...register('name')}
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
                 placeholder="John Doe"
+                onFocus={(e) => {
+                  e.target.style.borderColor = colors.primary
+                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = colors.border
+                  e.target.style.boxShadow = 'none'
+                }}
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.name.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Email Address
               </label>
               <input
                 {...register('email')}
                 type="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
                 placeholder="john@example.com"
+                onFocus={(e) => {
+                  e.target.style.borderColor = colors.primary
+                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = colors.border
+                  e.target.style.boxShadow = 'none'
+                }}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.email.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Phone Number
               </label>
               <input
                 {...register('phone')}
                 type="tel"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
                 placeholder="+1234567890"
+                onFocus={(e) => {
+                  e.target.style.borderColor = colors.primary
+                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = colors.border
+                  e.target.style.boxShadow = 'none'
+                }}
               />
               {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.phone.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Password
               </label>
-              <div className="relative">
+              <div style={{ position: 'relative' }}>
                 <input
                   {...register('password')}
                   type={showPassword ? 'text' : 'password'}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ width: '100%', padding: '12px 16px', paddingRight: '40px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
                   placeholder="••••••••"
+                  onFocus={(e) => {
+                    e.target.style.borderColor = colors.primary
+                    e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = colors.border
+                    e.target.style.boxShadow = 'none'
+                  }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: colors.textSecondary, cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = colors.textPrimary}
+                  onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff style={{ width: '16px', height: '16px' }} /> : <Eye style={{ width: '16px', height: '16px' }} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.password.message}</p>
               )}
               
               {/* Password Strength Indicator */}
               {password && passwordStrength && (
-                <div className="mt-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-gray-700">Password Strength</span>
-                    <span className={`text-xs font-medium ${
-                      passwordStrength.score <= 2 ? 'text-red-600' :
-                      passwordStrength.score === 3 ? 'text-yellow-600' :
-                      'text-green-600'
-                    }`}>
+                <div style={{ marginTop: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 600, color: colors.textPrimary }}>Password Strength</span>
+                    <span style={{ fontSize: '12px', fontWeight: 600, color: 
+                      passwordStrength.score <= 2 ? colors.danger :
+                      passwordStrength.score === 3 ? colors.warning :
+                      colors.success
+                    }}>
                       {passwordStrength.label}
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div style={{ width: '100%', backgroundColor: '#e5e7eb', borderRadius: '50px', height: '8px' }}>
                     <div
-                      className={`h-2 rounded-full transition-all duration-300 ${passwordStrength.color}`}
-                      style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                      style={{ height: '8px', borderRadius: '50px', transition: 'all 0.3s ease', backgroundColor: 
+                        passwordStrength.score <= 2 ? colors.danger :
+                        passwordStrength.score === 3 ? colors.warning :
+                        colors.success,
+                        width: `${(passwordStrength.score / 5) * 100}%`
+                      }}
                     />
                   </div>
                 </div>
@@ -277,15 +332,15 @@ export default function SignupPage() {
               
               {/* Requirements Checklist */}
               {password && (
-                <div className="mt-3 space-y-1">
+                <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {requirements.map((req, index) => (
-                    <div key={index} className="flex items-center text-xs">
+                    <div key={index} style={{ display: 'flex', alignItems: 'center', fontSize: '12px' }}>
                       {req.met ? (
-                        <Check className="w-3 h-3 text-green-500 mr-2" />
+                        <Check style={{ width: '12px', height: '12px', color: colors.success, marginRight: '8px' }} />
                       ) : (
-                        <X className="w-3 h-3 text-red-500 mr-2" />
+                        <X style={{ width: '12px', height: '12px', color: colors.danger, marginRight: '8px' }} />
                       )}
-                      <span className={req.met ? 'text-green-700' : 'text-gray-600'}>
+                      <span style={{ color: req.met ? colors.success : colors.textSecondary }}>
                         {req.label}
                       </span>
                     </div>
@@ -295,42 +350,66 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
                 Confirm Password
               </label>
-              <div className="relative">
+              <div style={{ position: 'relative' }}>
                 <input
                   {...register('confirmPassword')}
                   type={showConfirmPassword ? 'text' : 'password'}
-                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ width: '100%', padding: '12px 16px', paddingRight: '40px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
                   placeholder="••••••••"
+                  onFocus={(e) => {
+                    e.target.style.borderColor = colors.primary
+                    e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = colors.border
+                    e.target.style.boxShadow = 'none'
+                  }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: colors.textSecondary, cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = colors.textPrimary}
+                  onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
                 >
-                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showConfirmPassword ? <EyeOff style={{ width: '16px', height: '16px' }} /> : <Eye style={{ width: '16px', height: '16px' }} />}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.confirmPassword.message}</p>
               )}
               {confirmPassword && password !== confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">Passwords don't match</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>Passwords don't match</p>
               )}
             </div>
 
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{error}</p>
+              <div style={{ padding: '12px', backgroundColor: colors.dangerBg, border: `1px solid ${colors.danger}30`, borderRadius: '8px' }}>
+                <p style={{ fontSize: '14px', color: colors.danger }}>{error}</p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isLoading || isPasswordWeak}
-              className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '0.02em' }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '12px 16px', backgroundColor: colors.primary, color: colors.white, borderRadius: '8px', fontSize: '15px', fontWeight: 700, letterSpacing: '0.02em', fontFamily: 'Urbanist', cursor: (isLoading || isPasswordWeak) ? 'not-allowed' : 'pointer', opacity: (isLoading || isPasswordWeak) ? 0.5 : 1, transition: 'all 0.2s ease', boxShadow: '0 4px 12px rgba(26,86,219,0.3)' }}
+              onMouseEnter={(e) => {
+                if (!isLoading && !isPasswordWeak) {
+                  e.currentTarget.style.backgroundColor = colors.primaryDark
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isLoading && !isPasswordWeak) {
+                  e.currentTarget.style.backgroundColor = colors.primary
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,86,219,0.3)'
+                }
+              }}
             >
               {isLoading ? (
                 <>
@@ -345,17 +424,21 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setSelectedRole(null)}
-              className="w-full px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              style={{ width: '100%', padding: '12px 16px', color: colors.textSecondary, transition: 'color 0.2s ease', fontFamily: 'Urbanist', fontSize: '14px', fontWeight: 500, cursor: 'pointer', backgroundColor: 'transparent', border: 'none' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.textPrimary}
+              onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
             >
               Back to role selection
             </button>
           </form>
         )}
 
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: '14px', color: colors.textSecondary }}>
             Already have an account?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/login" style={{ color: colors.primary, fontWeight: 600, textDecoration: 'none' }}
+               onMouseEnter={(e) => e.currentTarget.style.color = colors.primaryDark}
+               onMouseLeave={(e) => e.currentTarget.style.color = colors.primary}>
               Sign in
             </a>
           </p>

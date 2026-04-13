@@ -11,32 +11,13 @@ import {
   X, Phone, Mail, MapPin, Trash2, ExternalLink
 } from 'lucide-react'
 import { Wedding, Booking, Vendor } from '../../../../types'
-
-// Color variables
-const primary = '#1a56db'
-const primaryDark = '#1e429f'
-const primaryLight = '#ebf5ff'
-const accent = '#3f83f8'
-const bg = '#f0f4ff'
-const textPrimary = '#111928'
-const textSecondary = '#6b7280'
-const textMuted = '#9ca3af'
-const muted = textSecondary // For backward compatibility
-const border = '#e5edff'
-const sidebarBg = '#1e3a8a'
-const sidebarText = '#bfdbfe'
-const success = '#057a55'
-const successBg = '#def7ec'
-const warning = '#c27803'
-const warningBg = '#fdf6b2'
-const danger = '#c81e1e'
-const dangerBg = '#fde8e8'
+import { colors } from '../../../../lib/styles'
 
 const statusColors = {
-  pending: warning,
-  confirmed: success,
-  paid: primary,
-  cancelled: danger
+  pending: colors.warning,
+  confirmed: colors.success,
+  paid: colors.primary,
+  cancelled: colors.danger
 }
 
 export default function MyBookings() {
@@ -145,7 +126,7 @@ export default function MyBookings() {
     return (
       <div style={{ 
         minHeight: '100vh', 
-        backgroundColor: bg, 
+        backgroundColor: colors.bg, 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center' 
@@ -154,7 +135,7 @@ export default function MyBookings() {
           width: '40px',
           height: '40px',
           border: '3px solid #f0e4d0',
-          borderTop: `3px solid ${primary}`,
+          borderTop: `3px solid ${colors.primary}`,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
@@ -169,34 +150,28 @@ export default function MyBookings() {
   }
 
   return (
-    <div style={{ backgroundColor: bg, color: textPrimary, minHeight: '100vh' }}>
-      {/* Google Fonts */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
-        rel="stylesheet" 
-      />
+    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
 
       {/* Header */}
       <div style={{
-        backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5edff',
         padding: '24px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 style={{
               fontFamily: 'Urbanist',
-              fontSize: '32px',
-              fontWeight: 300,
-              color: textPrimary,
+              fontSize: '36px',
+              fontWeight: 800,
+              color: '#0f2460',
               marginBottom: '8px'
             }}>My Bookings</h1>
             <p style={{
               fontFamily: 'Urbanist',
-              fontSize: '14px',
-              color: muted
+              fontSize: '15px',
+              color: '#6b7280',
+              fontWeight: 400
             }}>
               Manage your vendor bookings and payments
             </p>
@@ -206,82 +181,90 @@ export default function MyBookings() {
         {/* Stats Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginTop: '16px' }}>
           <div style={{
-            backgroundColor: bg,
-            border: `1px solid ${border}`,
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: textPrimary
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.total}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: muted,
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Bookings</div>
           </div>
           <div style={{
-            backgroundColor: '#dcfce7',
-            border: '0.5px solid rgba(34, 197, 94, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#16a34a'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.confirmed}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#16a34a',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Confirmed</div>
           </div>
           <div style={{
-            backgroundColor: '#e0e7ff',
-            border: '0.5px solid rgba(99, 102, 241, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#6366f1'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{stats.paid}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#6366f1',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Paid</div>
           </div>
           <div style={{
-            backgroundColor: '#fef3c7',
-            border: '0.5px solid rgba(245, 158, 11, 0.2)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e5edff',
+            borderRadius: '12px',
             padding: '16px',
-            textAlign: 'center'
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
           }}>
             <div style={{
               fontFamily: 'Urbanist',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#d97706'
+              fontSize: '48px',
+              fontWeight: 900,
+              color: '#0f2460'
             }}>{wedding?.budget.currency} {stats.totalSpent.toLocaleString()}</div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
+              fontSize: '11px',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              color: '#d97706',
+              color: '#6b7280',
               marginTop: '4px'
             }}>Total Spent</div>
           </div>
@@ -292,26 +275,26 @@ export default function MyBookings() {
       <div style={{ padding: '32px' }}>
         {bookings.length === 0 ? (
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '48px',
             textAlign: 'center'
           }}>
             <div style={{
               fontSize: '48px',
-              color: muted,
+              color: colors.textMuted,
               marginBottom: '16px'
             }}> <Calendar size={48} /> </div>
             <h3 style={{
               fontFamily: 'Urbanist',
               fontSize: '20px',
-              color: textPrimary,
+              color: colors.textPrimary,
               marginBottom: '8px'
             }}>No bookings yet</h3>
             <p style={{
               fontFamily: 'Urbanist',
               fontSize: '14px',
-              color: muted
+              color: colors.textMuted
             }}>
               Start booking vendors for your wedding to see them here.
             </p>
@@ -323,8 +306,8 @@ export default function MyBookings() {
               
               return (
                 <div key={booking.id} style={{
-                  backgroundColor: 'white',
-                  border: `1px solid ${border}`,
+                  backgroundColor: colors.bgCard,
+                  border: `1px solid ${colors.border}`,
                   padding: '20px'
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
@@ -340,14 +323,15 @@ export default function MyBookings() {
                           <h3 style={{
                             fontFamily: 'Urbanist',
                             fontSize: '20px',
-                            color: textPrimary,
+                            fontWeight: 300,
+                            color: colors.textPrimary,
                             marginBottom: '4px'
                           }}>
                             {vendor?.name || 'Unknown Vendor'}
                           </h3>
                           <div style={{
                             fontSize: '12px',
-                            color: muted,
+                            color: colors.textMuted,
                             textTransform: 'capitalize'
                           }}>
                             {vendor?.category || 'Service'}
@@ -356,7 +340,7 @@ export default function MyBookings() {
                       </div>
                       
                       {booking.createdAt && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: muted }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: colors.textMuted }}>
                           <Calendar size={14} />
                           <span style={{ fontSize: '12px' }}>
                             Booked on {formatDate(booking.createdAt)}
@@ -376,7 +360,7 @@ export default function MyBookings() {
                         fontFamily: 'Urbanist',
                         fontSize: '24px',
                         fontWeight: 300,
-                        color: textPrimary
+                        color: colors.textPrimary
                       }}>
                         {wedding?.budget.currency} {booking.amount.toLocaleString()}
                       </div>
@@ -399,8 +383,8 @@ export default function MyBookings() {
                     <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
                       {vendor.contact?.phone && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Phone size={14} color={muted} />
-                          <span style={{ fontSize: '12px', color: muted }}>
+                          <Phone size={14} color={colors.textMuted} />
+                          <span style={{ fontSize: '12px', color: colors.textMuted }}>
                             {vendor.contact.phone}
                           </span>
                         </div>
@@ -408,8 +392,8 @@ export default function MyBookings() {
                       
                       {vendor.contact?.email && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Mail size={14} color={muted} />
-                          <span style={{ fontSize: '12px', color: muted }}>
+                          <Mail size={14} color={colors.textMuted} />
+                          <span style={{ fontSize: '12px', color: colors.textMuted }}>
                             {vendor.contact.email}
                           </span>
                         </div>
@@ -417,8 +401,8 @@ export default function MyBookings() {
                       
                       {vendor.location && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <MapPin size={14} color={muted} />
-                          <span style={{ fontSize: '12px', color: muted }}>
+                          <MapPin size={14} color={colors.textMuted} />
+                          <span style={{ fontSize: '12px', color: colors.textMuted }}>
                             {vendor.location}
                           </span>
                         </div>
@@ -431,21 +415,139 @@ export default function MyBookings() {
                     <div style={{ marginBottom: '16px' }}>
                       <div style={{
                         fontSize: '12px',
-                        color: muted,
+                        color: colors.textMuted,
                         marginBottom: '4px'
                       }}>Payment Reference</div>
                       <div style={{
                         fontFamily: 'Urbanist',
                         fontSize: '14px',
-                        color: textPrimary,
+                        color: colors.textPrimary,
                         padding: '8px 12px',
-                        backgroundColor: bg,
-                        border: `1px solid ${border}`
+                        backgroundColor: colors.bg,
+                        border: `1px solid ${colors.border}`
                       }}>
                         {booking.paymentRef}
                       </div>
                     </div>
                   )}
+
+                  {/* Booking Status Timeline */}
+                  <div style={{ 
+                    borderTop: '1px solid #e5edff', 
+                    paddingTop: '16px', 
+                    marginTop: '16px' 
+                  }}>
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      position: 'relative',
+                      marginBottom: '8px'
+                    }}>
+                      {/* Timeline Line */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '20px',
+                        right: '20px',
+                        height: '2px',
+                        backgroundColor: '#e5edff',
+                        zIndex: 1
+                      }}></div>
+                      
+                      {/* Timeline Steps */}
+                      {['pending', 'confirmed', 'paid'].map((step, index) => {
+                        const isCompleted = 
+                          step === 'pending' || 
+                          (step === 'confirmed' && (booking.status === 'confirmed' || booking.status === 'paid')) ||
+                          (step === 'paid' && booking.status === 'paid')
+                        
+                        const isCurrent = 
+                          (step === 'pending' && booking.status === 'pending') ||
+                          (step === 'confirmed' && booking.status === 'confirmed') ||
+                          (step === 'paid' && booking.status === 'paid')
+                        
+                        const stepLabels = {
+                          pending: 'Pending',
+                          confirmed: 'Confirmed', 
+                          paid: 'Paid'
+                        }
+                        
+                        return (
+                          <div key={step} style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            position: 'relative',
+                            zIndex: 2,
+                            flex: 1
+                          }}>
+                            {/* Circle */}
+                            <div style={{
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '50%',
+                              backgroundColor: isCompleted ? '#1a56db' : '#e5edff',
+                              border: isCompleted ? 'none' : '2px solid #e5edff',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginBottom: '8px',
+                              position: 'relative'
+                            }}>
+                              {isCompleted && (
+                                <div style={{
+                                  width: '8px',
+                                  height: '8px',
+                                  backgroundColor: '#ffffff',
+                                  clipPath: 'polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 60%)'
+                                }}></div>
+                              )}
+                              {isCurrent && (
+                                <div style={{
+                                  position: 'absolute',
+                                  width: '32px',
+                                  height: '32px',
+                                  borderRadius: '50%',
+                                  backgroundColor: 'rgba(26, 86, 219, 0.2)',
+                                  animation: 'pulse 2s infinite'
+                                }}></div>
+                              )}
+                            </div>
+                            
+                            {/* Label */}
+                            <span style={{
+                              fontFamily: 'Urbanist',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              color: isCompleted ? '#1a56db' : '#6b7280',
+                              textTransform: 'uppercase'
+                            }}>
+                              {stepLabels[step as keyof typeof stepLabels]}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    
+                    {/* Add pulse animation */}
+                    <style jsx>{`
+                      @keyframes pulse {
+                        0% {
+                          transform: scale(0.95);
+                          box-shadow: 0 0 0 0 rgba(26, 86, 219, 0.7);
+                        }
+                        70% {
+                          transform: scale(1);
+                          box-shadow: 0 0 0 10px rgba(26, 86, 219, 0);
+                        }
+                        100% {
+                          transform: scale(0.95);
+                          box-shadow: 0 0 0 0 rgba(26, 86, 219, 0);
+                        }
+                      }
+                    `}</style>
+                  </div>
 
                   {/* Actions */}
                   <div style={{ display: 'flex', gap: '12px', justifyContent: 'space-between' }}>
@@ -453,8 +555,8 @@ export default function MyBookings() {
                       <button
                         onClick={() => handleViewVendor(booking.vendorId)}
                         style={{
-                          border: `1px solid ${primary}`,
-                          color: primary,
+                          border: `1px solid ${colors.primary}`,
+                          color: colors.primaryDark,
                           padding: '8px 16px',
                           fontFamily: 'Urbanist',
                           fontSize: '11px',
@@ -527,8 +629,8 @@ export default function MyBookings() {
           zIndex: 1000
         }}>
           <div style={{
-            backgroundColor: 'white',
-            border: `1px solid ${border}`,
+            backgroundColor: colors.bgCard,
+            border: `1px solid ${colors.border}`,
             padding: '24px',
             width: '90%',
             maxWidth: '500px'
@@ -537,7 +639,7 @@ export default function MyBookings() {
               <h2 style={{
                 fontFamily: 'Urbanist',
                 fontSize: '20px',
-                color: textPrimary
+                color: colors.textPrimary
               }}>Cancel Booking</h2>
               <button
                 onClick={() => setShowCancelModal(false)}
@@ -547,7 +649,7 @@ export default function MyBookings() {
                   cursor: 'pointer'
                 }}
               >
-                <X size={20} color={muted} />
+                <X size={20} color={colors.textMuted} />
               </button>
             </div>
 
@@ -555,7 +657,7 @@ export default function MyBookings() {
               <p style={{
                 fontFamily: 'Urbanist',
                 fontSize: '14px',
-                color: textPrimary,
+                color: colors.textPrimary,
                 marginBottom: '8px'
               }}>
                 Are you sure you want to cancel your booking with <strong>{vendors[selectedBooking.vendorId]?.name}</strong>?
@@ -563,7 +665,7 @@ export default function MyBookings() {
               <p style={{
                 fontFamily: 'Urbanist',
                 fontSize: '12px',
-                color: muted,
+                color: colors.textMuted,
                 marginBottom: '16px'
               }}>
                 This action cannot be undone. Please provide a reason for cancellation.
@@ -576,7 +678,7 @@ export default function MyBookings() {
                   display: 'block',
                   fontFamily: 'Urbanist',
                   fontSize: '12px',
-                  color: muted,
+                  color: colors.textMuted,
                   marginBottom: '4px'
                 }}>Reason for cancellation</label>
                 <select
@@ -592,7 +694,7 @@ export default function MyBookings() {
                     fontFamily: 'Urbanist',
                     fontSize: '14px',
                     backgroundColor: 'white',
-                    color: textPrimary
+                    color: colors.textPrimary
                   }}
                 >
                   <option value="">Select a reason...</option>
@@ -608,8 +710,8 @@ export default function MyBookings() {
                 <button
                   onClick={() => setShowCancelModal(false)}
                   style={{
-                    border: `1px solid ${primary}`,
-                    color: primary,
+                    border: `1px solid ${colors.primary}`,
+                    color: colors.primaryDark,
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
                     fontSize: '12px',
@@ -624,7 +726,7 @@ export default function MyBookings() {
                 <button
                   onClick={() => handleCancelBooking(selectedBooking.id, 'User requested cancellation')}
                   style={{
-                    backgroundColor: danger,
+                    backgroundColor: colors.danger,
                     color: 'white',
                     padding: '10px 20px',
                     fontFamily: 'Urbanist',
