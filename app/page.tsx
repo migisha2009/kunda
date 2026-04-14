@@ -29,12 +29,12 @@ export default function Home() {
 
   // Features
   const features = [
-    { name: 'Smart Planning Tools', icon: Settings, color: 'var(--color-primary)' },
+    { name: 'Smart Planning Tools', icon: Settings, color: 'var(--color-accent)' },
     { name: 'Verified Vendors', icon: Check, color: 'var(--color-success)' },
-    { name: 'Guest Management', icon: Users, color: 'var(--color-warning)' },
-    { name: 'Budget Tracking', icon: DollarSign, color: 'var(--color-primary-dark)' },
-    { name: 'Easy Bookings', icon: Calendar, color: 'var(--color-danger)' },
-    { name: 'WhatsApp Alerts', icon: MessageSquare, color: 'var(--color-danger)' }
+    { name: 'Guest Management', icon: Users, color: 'var(--color-accent)' },
+    { name: 'Budget Tracking', icon: DollarSign, color: 'var(--color-accent)' },
+    { name: 'Easy Bookings', icon: Calendar, color: 'var(--color-accent)' },
+    { name: 'WhatsApp Alerts', icon: MessageSquare, color: 'var(--color-accent)' }
   ]
 
   // Testimonials
@@ -114,7 +114,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* 1. STICKY NAVBAR */}
-      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`} style={{ borderBottom: `1px solid var(--color-border)` }}>
+      <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`} style={{ backgroundColor: 'var(--color-background)', borderBottom: `1px solid var(--color-border)` }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -122,24 +122,25 @@ export default function Home() {
               <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
                 <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
               </div>
-              <span className="ml-2" style={{ fontFamily: 'var(--font-family)', color: 'var(--color-primary)', fontWeight: 'var(--font-weight-bold)', fontSize: 'var(--font-size-2xl)' }}>Kunda</span>
+              <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)', fontWeight: '700', fontSize: 'var(--font-size-2xl)' }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="/vendors" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>Vendors</Link>
-              <a href="#how-it-works" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>How it Works</a>
-              <a href="#pricing" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>Pricing</a>
-              <a href="#contact" className="hover:text-blue-600 transition-colors" style={{ color: 'var(--color-muted)', fontWeight: 'var(--font-weight-semibold)', fontSize: 'var(--font-size-sm)' }}>Contact</a>
-              <Link href="/login" className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium transition-colors hover:bg-blue-50">Login</Link>
-              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: 'var(--color-primary)' }}>Get Started</Link>
+              <Link href="/vendors" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)', fontWeight: '600', fontSize: 'var(--font-size-sm)' }}>Vendors</Link>
+              <a href="#how-it-works" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)', fontWeight: '600', fontSize: 'var(--font-size-sm)' }}>How it Works</a>
+              <a href="#pricing" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)', fontWeight: '600', fontSize: 'var(--font-size-sm)' }}>Pricing</a>
+              <a href="#contact" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)', fontWeight: '600', fontSize: 'var(--font-size-sm)' }}>Contact</a>
+              <Link href="/login" className="px-4 py-2 rounded-lg border font-medium transition-colors hover:bg-purple-50" style={{ borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }}>Login</Link>
+              <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium transition-colors" style={{ backgroundColor: 'var(--color-accent)' }}>Get Started</Link>
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-gray-700 hover:text-gray-900"
+                className="hover:text-purple-600 transition-colors"
+                style={{ color: 'var(--color-heading)' }}
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -148,14 +149,14 @@ export default function Home() {
 
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t">
+            <div className="md:hidden py-4 border-t" style={{ borderColor: 'var(--color-border)' }}>
               <div className="flex flex-col space-y-3">
-                <Link href="/vendors" className="text-gray-700 hover:text-gray-900">Vendors</Link>
-                <a href="#how-it-works" className="text-gray-700 hover:text-gray-900">How it Works</a>
-                <a href="#pricing" className="text-gray-700 hover:text-gray-900">Pricing</a>
-                <a href="#contact" className="text-gray-700 hover:text-gray-900">Contact</a>
-                <Link href="/login" className="text-gray-700 hover:text-gray-900">Login</Link>
-                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center" style={{ backgroundColor: 'var(--color-primary)' }}>
+                <Link href="/vendors" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)' }}>Vendors</Link>
+                <a href="#how-it-works" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)' }}>How it Works</a>
+                <a href="#pricing" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)' }}>Pricing</a>
+                <a href="#contact" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)' }}>Contact</a>
+                <Link href="/login" className="hover:text-purple-600 transition-colors" style={{ color: 'var(--color-heading)' }}>Login</Link>
+                <Link href="/signup" className="px-4 py-2 rounded-lg text-white font-medium text-center transition-colors" style={{ backgroundColor: 'var(--color-accent)' }}>
                   Get Started
                 </Link>
               </div>
@@ -164,7 +165,7 @@ export default function Home() {
         </div>
       </nav>
       {/* 2. HERO SECTION */}
-      <section className="hero-section" style={{ minHeight: '560px', padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
+      <section className="hero-section" style={{ minHeight: '560px', padding: '80px 64px', position: 'relative', overflow: 'hidden', background: 'var(--gradient-hero)' }}>
         {/* Floating Particles */}
         <FloatingParticles />
         
@@ -178,16 +179,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between relative z-10">
           {/* Left side */}
           <div className="lg:w-1/2 mb-10 lg:mb-0" style={{ animation: 'fadeInUp 0.6s ease' }}>
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium mb-6">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-2" style={{ animation: 'pulse 2s infinite' }}></div>
+            <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-6" style={{ backgroundColor: 'var(--color-success-bg)', color: 'var(--color-success)' }}>
+              <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: 'var(--color-success)', animation: 'pulse 2s infinite' }}></div>
               Rwanda's #1 Wedding Platform
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ fontFamily: 'var(--font-family)' }}>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF' }}>
               Your Perfect Wedding,<br />
-              <span style={{ color: 'var(--color-primary-pale)' }}>Beautifully</span><br />
+              <span style={{ color: 'var(--color-accent)' }}>Beautifully</span><br />
               Orchestrated
             </h1>
-            <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 'var(--font-weight-regular)' }}>
+            <p className="text-lg mb-8" style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.85)', fontWeight: '400' }}>
               Connect with verified wedding vendors, manage your budget, and plan every detail of your special day
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
