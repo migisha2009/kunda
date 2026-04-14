@@ -161,10 +161,10 @@ export default function VendorProfile() {
     return missing
   }
 
-  const inp: React.CSSProperties = { width: '100%', border: '1px solid #e5edff', background: '#ffffff', padding: '12px 16px', fontSize: 14, fontFamily: 'Urbanist', color: '#111928', outline: 'none', boxSizing: 'border-box', borderRadius: '8px', transition: 'border-color 0.2s ease' }
-  const lbl: React.CSSProperties = { display: 'block', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#1a56db', marginBottom: 8, fontFamily: 'Urbanist' }
+  const inp: React.CSSProperties = { width: '100%', border: '1px solid var(--color-border)', background: 'rgba(255,255,255,0.9)', padding: '12px 16px', fontSize: 14, fontFamily: 'var(--font-family-body)', color: 'var(--color-heading)', outline: 'none', boxSizing: 'border-box', borderRadius: '8px', transition: 'border-color 0.2s ease' }
+  const lbl: React.CSSProperties = { display: 'block', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-accent)', marginBottom: 8, fontFamily: 'var(--font-family-body)' }
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 44, height: 44, borderRadius: '50%', border: '3px solid #ebf5ff', borderTop: '3px solid #1a56db', animation: 'spin 1s linear infinite' }} /></div>
+  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--color-background)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 44, height: 44, borderRadius: '50%', border: '3px solid rgba(245, 166, 35, 0.2)', borderTop: '3px solid var(--color-accent)', animation: 'spin 1s linear infinite' }} /></div>
 
   const dashFooter = (
   <footer style={{
