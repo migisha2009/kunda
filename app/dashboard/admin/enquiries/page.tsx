@@ -290,26 +290,55 @@ export default function AdminEnquiriesPage() {
           <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#1a56db' }} />
         </div>
       ) : (
-        <div className="min-h-screen" style={{ backgroundColor: '#dbeafe' }}>
-          <div className="max-w-7xl mx-auto px-4 py-8">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h1 className="text-3xl" style={{ fontFamily: 'Urbanist', color: '#111928', fontWeight: 800, fontSize: '28px' }}>Enquiry Overview</h1>
-                <p className="text-sm mt-2" style={{ color: '#6b7280' }}>Monitor all enquiries between couples and vendors</p>
-              </div>
-              <button
-                onClick={exportToCSV}
-                className="px-4 py-2 text-sm font-medium rounded transition-colors"
-                style={{ border: '0.5px solid #b08850', color: '#1a56db' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.border}`}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-              >
-                <Download className="w-4 h-4 inline mr-2" />
-                Export CSV
-              </button>
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-background)' }}>
+          {/* Hero Section Header */}
+          <section className="hero-section" style={{ 
+            minHeight: '200px',
+            padding: '60px 64px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {/* Decorative background rings */}
+            <div className="absolute inset-0">
+              <div className="absolute top-10 left-20 w-24 h-24 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
+              <div className="absolute top-20 right-32 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 1s' }}></div>
             </div>
 
+            <div className="max-w-7xl mx-auto relative z-10">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h1 style={{
+                    fontFamily: 'var(--font-family)',
+                    fontSize: 'var(--font-size-4xl)',
+                    fontWeight: 'var(--font-weight-black)',
+                    color: '#ffffff',
+                    margin: 0,
+                    marginBottom: '8px'
+                  }}>Enquiry Overview</h1>
+                  <p style={{
+                    fontFamily: 'var(--font-family)',
+                    fontSize: 'var(--font-size-lg)',
+                    color: 'rgba(255,255,255,0.75)',
+                    margin: 0
+                  }}>Monitor all enquiries between couples and vendors</p>
+                </div>
+                <button
+                  onClick={exportToCSV}
+                  className="btn-secondary"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div className="max-w-7xl mx-auto px-4 py-8">
             {/* Filters */}
             <div className="p-4 mb-6" style={{ backgroundColor: '#f7f8fd', border: '0.5px solid #94a3b8' }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -6,7 +6,7 @@ import { useRequireAuth } from '../../../../hooks/useRequireAuth'
 import { db } from '../../../../lib/firebase'
 import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { TrendingUp, TrendingDown, Users, DollarSign, Eye, Calendar, Clock, Star } from 'lucide-react'
+import { TrendingUp, TrendingDown, Users, DollarSign, Eye, Calendar, Clock, Star, Heart, Menu, X } from 'lucide-react'
 
 const formatDate = (timestamp: any): string => {
   if (!timestamp) return 'Unknown'
@@ -188,495 +188,425 @@ export default function VendorAnalyticsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ 
+        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)'
+      }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-white rounded-full animate-spin"></div>
       </div>
     )
   }
 
   if (!user || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#fdf9f5' }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ 
+        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)'
+      }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-white rounded-full animate-spin"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fdf9f5' }}>
+    <div className="min-h-screen">
+      <style jsx>{`
+        @keyframes heartbeat {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+        @keyframes pulse {
+          0% { opacity: 0.08; }
+          50% { opacity: 0.16; }
+          100% { opacity: 0.08; }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes countUp {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
       
       {/* KUNDA NAVBAR */}
-      <nav style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '14px 32px',
-        background: '#ffffff',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)'
-      }}>
-        {/* Left - Logo */}
-        <div 
-          className="flex items-center cursor-pointer"
-          onClick={() => window.location.href = '/'}
-        >
-          <div style={{
-            width: '8px',
-            height: '8px',
-            border: '1.5px solid #b08850',
-            marginRight: '12px'
-          }}></div>
-          <span style={{
-            fontFamily: 'Cormorant Garamond',
-            fontSize: '20px',
-            color: '#7a5c30',
-            letterSpacing: '0.1em'
-          }}>Kunda</span>
-        </div>
+      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 shadow-lg`} style={{ borderBottom: '1px solid #e5edff' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#1a56db' }}>
+                <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+              </div>
+              <span className="ml-2" style={{ fontFamily: 'Urbanist', color: '#1a56db', fontWeight: 800, fontSize: '22px' }}>Kunda</span>
+            </div>
 
-        {/* Center - Navigation */}
-        <div style={{ display: 'flex', gap: '32px' }}>
-          <a 
-            href="/dashboard/vendor" 
-            style={{
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#9a7850',
-              textDecoration: 'none'
-            }}
-          >
-            Overview
-          </a>
-          <a 
-            href="/dashboard/vendor/profile" 
-            style={{
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#9a7850',
-              textDecoration: 'none'
-            }}
-          >
-            Profile
-          </a>
-          <a 
-            href="/dashboard/vendor/bookings" 
-            style={{
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#9a7850',
-              textDecoration: 'none'
-            }}
-          >
-            Bookings
-          </a>
-          <a 
-            href="/dashboard/vendor/analytics" 
-            style={{
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#7a5c30',
-              textDecoration: 'none'
-            }}
-          >
-            Analytics
-          </a>
-        </div>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="/dashboard/vendor" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Overview</a>
+              <a href="/dashboard/vendor/profile" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Profile</a>
+              <a href="/dashboard/vendor/bookings" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Bookings</a>
+              <a href="/dashboard/vendor/analytics" className="hover:text-blue-600 transition-colors" style={{ color: '#1a56db', fontWeight: 600, fontSize: '14px' }}>Analytics</a>
+            </div>
 
-        {/* Right - User Info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            background: '#f0e4d0',
-            border: '1px solid #b08850',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <span style={{
-              color: '#7a5c30',
-              fontSize: '13px',
-              fontFamily: 'Jost',
-              fontWeight: 500
-            }}>
-              {userProfile.name.charAt(0).toUpperCase()}
-            </span>
+            {/* Right - User Info */}
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                {userProfile.name.charAt(0).toUpperCase()}
+              </div>
+              <span style={{ fontFamily: 'Urbanist', color: '#374151', fontWeight: 500 }}>
+                {userProfile.name}
+              </span>
+              <button
+                onClick={() => {
+                  window.location.href = '/login'
+                }}
+                className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium transition-colors hover:bg-blue-50"
+              >
+                Sign Out
+              </button>
+            </div>
           </div>
-          <span style={{
-            fontFamily: 'Jost',
-            fontSize: '13px',
-            color: '#7a5c30'
-          }}>
-            {userProfile.name}
-          </span>
-          <button
-            onClick={() => {
-              window.location.href = '/login'
-            }}
-            style={{
-              border: '0.5px solid #b08850',
-              color: '#b08850',
-              background: 'transparent',
-              padding: '6px 14px',
-              fontFamily: 'Jost',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              cursor: 'pointer'
-            }}
-          >
-            Sign Out
-          </button>
         </div>
       </nav>
 
       {/* HERO SECTION */}
-      <div style={{ padding: '32px 32px 20px', backgroundColor: '#fdf9f5' }}>
-        <div className="text-xs uppercase tracking-wider" style={{ color: '#b08850', fontFamily: 'Jost', fontWeight: 400 }}>
-          Vendor Analytics
+      <section style={{ 
+        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)',
+        minHeight: '320px',
+        padding: '80px 64px',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Decorative background rings */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
+          <div className="absolute top-40 right-32 w-48 h-48 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 1s' }}></div>
+          <div className="absolute bottom-20 left-1/2 w-64 h-64 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 2s' }}></div>
         </div>
-        <h1 
-          className="text-4xl font-light mt-2 mb-3" 
-          style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a', fontWeight: 300 }}
-        >
-          Performance Insights
-        </h1>
-        <p className="text-sm" style={{ fontFamily: 'Jost', color: '#9a7850' }}>
-          Track your business performance and growth metrics
-        </p>
-      </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium mb-6">
+            <div className="w-2 h-2 bg-green-500 rounded-full mr-2" style={{ animation: 'pulse 2s infinite' }}></div>
+            Vendor Dashboard
+          </div>
+          <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight" style={{ 
+            fontWeight: 900, 
+            letterSpacing: '-0.03em',
+            fontFamily: 'Urbanist'
+          }}>
+            Performance<br />
+            <span style={{ color: '#93c5fd' }}>Analytics</span>
+          </h1>
+          <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 400 }}>
+            Track your business performance and growth metrics in real-time
+          </p>
+        </div>
+      </section>
 
       {/* Period Selector */}
-      <div className="px-8 mb-6">
-        <div style={{ display: 'flex', gap: '12px' }}>
-          {['1month', '3months', '6months', '1year'].map((period) => (
-            <button
-              key={period}
-              onClick={() => setSelectedPeriod(period)}
-              style={{
-                padding: '8px 16px',
-                fontFamily: 'Jost',
-                fontSize: '11px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                background: selectedPeriod === period ? '#7a5c30' : 'transparent',
-                color: selectedPeriod === period ? '#fdf9f5' : '#7a5c30',
-                border: '0.5px solid #b08850',
-                cursor: 'pointer'
-              }}
-            >
-              {period === '1month' ? '1 Month' : period === '3months' ? '3 Months' : period === '6months' ? '6 Months' : '1 Year'}
-            </button>
-          ))}
+      <div className="px-8 mb-8">
+        <div className="flex justify-center">
+          <div className="inline-flex rounded-lg bg-gray-100 p-1">
+            {['1month', '3months', '6months', '1year'].map((period) => (
+              <button
+                key={period}
+                onClick={() => setSelectedPeriod(period)}
+                className={`px-6 py-2 rounded-md font-medium transition-all ${
+                  selectedPeriod === period 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {period === '1month' ? '1 Month' : period === '3months' ? '3 Months' : period === '6months' ? '6 Months' : '1 Year'}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* KEY METRICS */}
-      <div className="grid grid-cols-4 gap-3 px-8 mb-8">
-        {/* Profile Views */}
-        <div 
-          className="border"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
-            padding: '16px 18px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-xs uppercase" style={{ 
-              fontFamily: 'Jost', 
-              letterSpacing: '0.15em',
-              color: '#9a7850' 
-            }}>
-              Profile Views
+      <div className="max-w-7xl mx-auto px-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Profile Views */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+                Profile Views
+              </div>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#dbeafe', color: '#1a56db' }}>
+                <Eye className="w-6 h-6" />
+              </div>
             </div>
-            <Eye className="w-4 h-4" style={{ color: '#b08850' }} />
+            <div className="text-3xl font-bold mb-2" style={{ 
+              fontFamily: 'Urbanist', 
+              color: '#111928'
+            }}>
+              {analytics.profileViews}
+            </div>
+            <div className="flex items-center text-sm" style={{ color: '#057a55' }}>
+              <TrendingUp className="w-4 h-4 mr-1" />
+              +12% from last month
+            </div>
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
-            fontWeight: 300,
-            fontSize: '30px'
-          }}>
-            {analytics.profileViews}
-          </div>
-          <div className="flex items-center text-xs" style={{ fontFamily: 'Jost', color: '#16a34a' }}>
-            <TrendingUp className="w-3 h-3 mr-1" />
-            +12% from last month
-          </div>
-        </div>
 
-        {/* Enquiries */}
-        <div 
-          className="border"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
-            padding: '16px 18px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-xs uppercase" style={{ 
-              fontFamily: 'Jost', 
-              letterSpacing: '0.15em',
-              color: '#9a7850' 
-            }}>
-              Enquiries
+          {/* Enquiries */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+                Enquiries
+              </div>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#dcfce7', color: '#057a55' }}>
+                <Users className="w-6 h-6" />
+              </div>
             </div>
-            <Users className="w-4 h-4" style={{ color: '#b08850' }} />
+            <div className="text-3xl font-bold mb-2" style={{ 
+              fontFamily: 'Urbanist', 
+              color: '#111928'
+            }}>
+              {analytics.enquiries}
+            </div>
+            <div className="flex items-center text-sm" style={{ color: '#057a55' }}>
+              <TrendingUp className="w-4 h-4 mr-1" />
+              +8% from last month
+            </div>
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
-            fontWeight: 300,
-            fontSize: '30px'
-          }}>
-            {analytics.enquiries}
-          </div>
-          <div className="flex items-center text-xs" style={{ fontFamily: 'Jost', color: '#16a34a' }}>
-            <TrendingUp className="w-3 h-3 mr-1" />
-            +8% from last month
-          </div>
-        </div>
 
-        {/* Revenue */}
-        <div 
-          className="border"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
-            padding: '16px 18px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-xs uppercase" style={{ 
-              fontFamily: 'Jost', 
-              letterSpacing: '0.15em',
-              color: '#9a7850' 
-            }}>
-              Revenue
+          {/* Revenue */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+                Revenue
+              </div>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#fef3c7', color: '#c27803' }}>
+                <DollarSign className="w-6 h-6" />
+              </div>
             </div>
-            <DollarSign className="w-4 h-4" style={{ color: '#b08850' }} />
+            <div className="text-3xl font-bold mb-2" style={{ 
+              fontFamily: 'Urbanist', 
+              color: '#111928'
+            }}>
+              ${analytics.revenue.toLocaleString()}
+            </div>
+            <div className="flex items-center text-sm" style={{ color: '#dc2626' }}>
+              <TrendingDown className="w-4 h-4 mr-1" />
+              -3% from last month
+            </div>
           </div>
-          <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
-            fontWeight: 300,
-            fontSize: '30px'
-          }}>
-            ${analytics.revenue.toLocaleString()}
-          </div>
-          <div className="flex items-center text-xs" style={{ fontFamily: 'Jost', color: '#dc2626' }}>
-            <TrendingDown className="w-3 h-3 mr-1" />
-            -3% from last month
-          </div>
-        </div>
 
-        {/* Conversion Rate */}
-        <div 
-          className="border"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: 'rgba(180,140,90,0.2)', 
-            padding: '16px 18px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-2">
-            <div className="text-xs uppercase" style={{ 
-              fontFamily: 'Jost', 
-              letterSpacing: '0.15em',
-              color: '#9a7850' 
-            }}>
-              Conversion Rate
+          {/* Conversion Rate */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+                Conversion Rate
+              </div>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#ede9fe', color: '#5b21b6' }}>
+                <Star className="w-6 h-6" />
+              </div>
             </div>
-            <Star className="w-4 h-4" style={{ color: '#b08850' }} />
-          </div>
-          <div className="text-3xl font-light mb-1" style={{ 
-            fontFamily: 'Cormorant Garamond', 
-            color: '#3a2a1a',
-            fontWeight: 300,
-            fontSize: '30px'
-          }}>
-            {analytics.conversionRate.toFixed(1)}%
-          </div>
-          <div className="flex items-center text-xs" style={{ fontFamily: 'Jost', color: '#16a34a' }}>
-            <TrendingUp className="w-3 h-3 mr-1" />
-            +2% from last month
+            <div className="text-3xl font-bold mb-2" style={{ 
+              fontFamily: 'Urbanist', 
+              color: '#111928'
+            }}>
+              {analytics.conversionRate.toFixed(1)}%
+            </div>
+            <div className="flex items-center text-sm" style={{ color: '#057a55' }}>
+              <TrendingUp className="w-4 h-4 mr-1" />
+              +2% from last month
+            </div>
           </div>
         </div>
       </div>
 
       {/* CHARTS GRID */}
-      <div className="grid grid-cols-2 gap-6 px-8 mb-8">
-        {/* Profile Views Chart */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '24px'
-          }}
-        >
-          <h3 className="text-lg font-medium mb-4" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            Profile Views This Month
-          </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={analytics.monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,140,90,0.1)" />
-              <XAxis dataKey="month" tick={{ fontFamily: 'Jost', fontSize: '11px', fill: '#9a7850' }} />
-              <YAxis tick={{ fontFamily: 'Jost', fontSize: '11px', fill: '#9a7850' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  fontFamily: 'Jost', 
-                  backgroundColor: '#ffffff', 
-                  border: '0.5px solid rgba(180,140,90,0.2)',
-                  borderRadius: 0
-                }} 
-              />
-              <Bar dataKey="profileViews" fill="#b08850" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      <div className="max-w-7xl mx-auto px-8 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Profile Views Chart */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <h3 className="text-xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              Profile Views This Month
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={analytics.monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5edff" />
+                <XAxis dataKey="month" tick={{ fontFamily: 'Urbanist', fontSize: '12px', fill: '#6b7280' }} />
+                <YAxis tick={{ fontFamily: 'Urbanist', fontSize: '12px', fill: '#6b7280' }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    fontFamily: 'Urbanist', 
+                    backgroundColor: '#ffffff', 
+                    border: '1px solid #e5edff',
+                    borderRadius: '8px'
+                  }} 
+                />
+                <Bar dataKey="profileViews" fill="#1a56db" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Enquiries Chart */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '24px'
-          }}
-        >
-          <h3 className="text-lg font-medium mb-4" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            Enquiries Received
-          </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={analytics.monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,140,90,0.1)" />
-              <XAxis dataKey="month" tick={{ fontFamily: 'Jost', fontSize: '11px', fill: '#9a7850' }} />
-              <YAxis tick={{ fontFamily: 'Jost', fontSize: '11px', fill: '#9a7850' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  fontFamily: 'Jost', 
-                  backgroundColor: '#ffffff', 
-                  border: '0.5px solid rgba(180,140,90,0.2)',
-                  borderRadius: 0
-                }} 
-              />
-              <Line type="monotone" dataKey="enquiries" stroke="#7a5c30" strokeWidth={2} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+          {/* Enquiries Chart */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <h3 className="text-xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              Enquiries Received
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={analytics.monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5edff" />
+                <XAxis dataKey="month" tick={{ fontFamily: 'Urbanist', fontSize: '12px', fill: '#6b7280' }} />
+                <YAxis tick={{ fontFamily: 'Urbanist', fontSize: '12px', fill: '#6b7280' }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    fontFamily: 'Urbanist', 
+                    backgroundColor: '#ffffff', 
+                    border: '1px solid #e5edff',
+                    borderRadius: '8px'
+                  }} 
+                />
+                <Line type="monotone" dataKey="enquiries" stroke="#057a55" strokeWidth={3} dot={{ fill: '#057a55', r: 6 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Revenue Chart */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '24px'
-          }}
-        >
-          <h3 className="text-lg font-medium mb-4" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            Revenue by Month
-          </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={analytics.monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(180,140,90,0.1)" />
-              <XAxis dataKey="month" tick={{ fontFamily: 'Jost', fontSize: '11px', fill: '#9a7850' }} />
-              <YAxis tick={{ fontFamily: 'Jost', fontSize: '11px', fill: '#9a7850' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  fontFamily: 'Jost', 
-                  backgroundColor: '#ffffff', 
-                  border: '0.5px solid rgba(180,140,90,0.2)',
-                  borderRadius: 0
-                }} 
-              />
-              <Bar dataKey="revenue" fill="#7a5c30" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+          {/* Revenue Chart */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <h3 className="text-xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              Revenue by Month
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={analytics.monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5edff" />
+                <XAxis dataKey="month" tick={{ fontFamily: 'Urbanist', fontSize: '12px', fill: '#6b7280' }} />
+                <YAxis tick={{ fontFamily: 'Urbanist', fontSize: '12px', fill: '#6b7280' }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    fontFamily: 'Urbanist', 
+                    backgroundColor: '#ffffff', 
+                    border: '1px solid #e5edff',
+                    borderRadius: '8px'
+                  }} 
+                />
+                <Bar dataKey="revenue" fill="#c27803" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Category Distribution */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '24px'
-          }}
-        >
-          <h3 className="text-lg font-medium mb-4" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            Most Popular Categories
-          </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={analytics.categoryData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {analytics.categoryData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  fontFamily: 'Jost', 
-                  backgroundColor: '#ffffff', 
-                  border: '0.5px solid rgba(180,140,90,0.2)',
-                  borderRadius: 0
-                }} 
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          {/* Category Distribution */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <h3 className="text-xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              Most Popular Categories
+            </h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={analytics.categoryData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {analytics.categoryData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={['#1a56db', '#057a55', '#c27803', '#5b21b6', '#c2410c'][index]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{ 
+                    fontFamily: 'Urbanist', 
+                    backgroundColor: '#ffffff', 
+                    border: '1px solid #e5edff',
+                    borderRadius: '8px'
+                  }} 
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 
       {/* CONVERSION FUNNEL */}
-      <div className="px-8 mb-8">
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '24px'
-          }}
-        >
-          <h3 className="text-lg font-medium mb-6" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
+      <div className="max-w-7xl mx-auto px-8 mb-12">
+        <div className="p-6 rounded-xl border transition-all hover:shadow-lg" 
+             style={{ 
+               backgroundColor: 'white', 
+               borderColor: '#e5edff'
+             }}>
+          <h3 className="text-xl font-bold mb-6" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
             Conversion Funnel
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {analytics.funnelData.map((stage, index) => (
               <div key={stage.stage} className="flex items-center">
-                <div style={{ width: '150px', fontFamily: 'Jost', fontSize: '13px', color: '#3a2a1a' }}>
+                <div style={{ width: '180px', fontFamily: 'Urbanist', fontSize: '14px', color: '#374151', fontWeight: 500 }}>
                   {stage.stage}
                 </div>
                 <div className="flex-1 mx-4">
-                  <div className="h-8" style={{ background: '#f0e4d0', position: 'relative' }}>
+                  <div className="h-10 rounded-full" style={{ background: '#e5edff', position: 'relative' }}>
                     <div 
-                      className="h-full"
+                      className="h-full rounded-full"
                       style={{ 
                         width: `${stage.conversion}%`, 
-                        background: '#7a5c30',
+                        background: 'linear-gradient(90deg, #1a56db, #3f83f8)',
                         position: 'absolute',
                         left: 0,
-                        top: 0
+                        top: 0,
+                        transition: 'width 1s ease-in-out'
                       }}
                     ></div>
                   </div>
                 </div>
-                <div style={{ width: '80px', textAlign: 'right', fontFamily: 'Jost', fontSize: '13px', color: '#3a2a1a' }}>
+                <div style={{ width: '80px', textAlign: 'right', fontFamily: 'Urbanist', fontSize: '16px', color: '#111928', fontWeight: 600 }}>
                   {stage.count}
                 </div>
-                <div style={{ width: '60px', textAlign: 'right', fontFamily: 'Jost', fontSize: '11px', color: '#b08850' }}>
+                <div style={{ width: '60px', textAlign: 'right', fontFamily: 'Urbanist', fontSize: '12px', color: '#1a56db', fontWeight: 500 }}>
                   {stage.conversion.toFixed(1)}%
                 </div>
               </div>
@@ -686,61 +616,66 @@ export default function VendorAnalyticsPage() {
       </div>
 
       {/* ADDITIONAL METRICS */}
-      <div className="grid grid-cols-3 gap-6 px-8 pb-8">
-        {/* Average Booking Value */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '20px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
-              Average Booking Value
-            </h4>
-            <DollarSign className="w-4 h-4" style={{ color: '#b08850' }} />
+      <div className="max-w-7xl mx-auto px-8 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Average Booking Value */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-bold" style={{ fontFamily: 'Urbanist', color: '#374151' }}>
+                Average Booking Value
+              </h4>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#fef3c7', color: '#c27803' }}>
+                <DollarSign className="w-6 h-6" />
+              </div>
+            </div>
+            <div className="text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              ${analytics.avgBookingValue.toLocaleString()}
+            </div>
           </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            ${analytics.avgBookingValue.toLocaleString()}
-          </div>
-        </div>
 
-        {/* Repeat Clients */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '20px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
-              Repeat Clients
-            </h4>
-            <Users className="w-4 h-4" style={{ color: '#b08850' }} />
+          {/* Repeat Clients */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-bold" style={{ fontFamily: 'Urbanist', color: '#374151' }}>
+                Repeat Clients
+              </h4>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#dcfce7', color: '#057a55' }}>
+                <Users className="w-6 h-6" />
+              </div>
+            </div>
+            <div className="text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              {analytics.repeatClients}
+            </div>
           </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            {analytics.repeatClients}
-          </div>
-        </div>
 
-        {/* Busiest Day */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '20px'
-          }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-medium" style={{ fontFamily: 'Jost', color: '#3a2a1a' }}>
-              Busiest Day
-            </h4>
-            <Calendar className="w-4 h-4" style={{ color: '#b08850' }} />
-          </div>
-          <div className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond', color: '#3a2a1a' }}>
-            {analytics.busiestDay}
+          {/* Busiest Day */}
+          <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
+               style={{ 
+                 backgroundColor: 'white', 
+                 borderColor: '#e5edff'
+               }}>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-bold" style={{ fontFamily: 'Urbanist', color: '#374151' }}>
+                Busiest Day
+              </h4>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
+                   style={{ backgroundColor: '#ede9fe', color: '#5b21b6' }}>
+                <Calendar className="w-6 h-6" />
+              </div>
+            </div>
+            <div className="text-2xl font-bold" style={{ fontFamily: 'Urbanist', color: '#111928' }}>
+              {analytics.busiestDay}
+            </div>
           </div>
         </div>
       </div>
