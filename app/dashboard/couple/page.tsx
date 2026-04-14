@@ -15,6 +15,12 @@ import {
 } from 'lucide-react'
 import { Wedding, Guest, Expense, Vendor, Booking, ChecklistItem, WeatherData } from '../../../types'
 import AIChat from '../../../components/AIChat'
+import { celebrateTask } from '../../../lib/confetti'
+import { useCountUp } from '../../../hooks/useCountUp'
+import { useScrollReveal } from '../../../hooks/useScrollReveal'
+import AnimatedProgress from '../../../components/AnimatedProgress'
+import NotificationBell from '../../../components/NotificationBell'
+import { useToast } from '../../../components/Toast'
 
 // Motivational quotes
 const quotes = [
@@ -28,6 +34,7 @@ const quotes = [
 export default function CoupleDashboard() {
   const { loading: authLoading } = useRequireAuth('couple')
   const { user, userProfile, signOutUser } = useAuth()
+  const { showToast } = useToast()
   const [wedding, setWedding] = useState<Wedding | null>(null)
   const [guests, setGuests] = useState<Guest[]>([])
   const [expenses, setExpenses] = useState<Expense[]>([])
@@ -398,6 +405,22 @@ export default function CoupleDashboard() {
   }
 
   const stats = calculateStats()
+  
+  // Animated counters
+  const animatedDays = useCountUp(stats.daysUntilWedding)
+  const animatedGuests = useCountUp(stats.confirmedGuests)
+  const animatedTotalGuests = useCountUp(stats.totalGuests)
+  const animatedBudgetUsed = useCountUp(stats.budgetUsed)
+  const animatedVendors = useCountUp(stats.vendorsBooked)
+  const animatedTasksCompleted = useCountUp(stats.tasksCompleted)
+  const animatedTasksTotal = useCountUp(stats.tasksTotal)
+  const animatedProfileCompletion = useCountUp(stats.profileCompletion)
+  
+  // Scroll reveal for stats
+  const { ref: statsRef, isVisible: statsVisible } = useScrollReveal(0.1)
+  
+  // Hover state for cards
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
 
   // Task management functions
   const handleToggleTask = async (taskId: string) => {
@@ -414,8 +437,8 @@ export default function CoupleDashboard() {
       // Celebration animation for completed tasks
       const completedTask = updatedChecklist.find(item => item.id === taskId && item.done)
       if (completedTask) {
-        setCelebrating(true)
-        setTimeout(() => setCelebrating(false), 2000)
+        celebrateTask()
+        showToast('Task completed! Great job! 🎉', 'success')
       }
     } catch (error) {
       console.error('Error updating checklist:', error)
@@ -873,39 +896,7 @@ export default function CoupleDashboard() {
 
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ position: 'relative' }}>
-            <button
-              onClick={() => window.location.href = '/dashboard/couple/bookings'}
-              style={{
-                border: 'none',
-                backgroundColor: 'transparent',
-                padding: '6px',
-                cursor: 'pointer',
-                position: 'relative'
-              }}
-            >
-              <Bell size={20} color={'#1a56db'} />
-              {notificationCount > 0 && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-6px',
-                  right: '-6px',
-                  backgroundColor: '#c81e1e',
-                  color: '#ffffff',
-                  borderRadius: '50%',
-                  width: '18px',
-                  height: '18px',
-                  fontSize: '10px',
-                  fontWeight: 700,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  {notificationCount > 99 ? '99+' : notificationCount}
-                </div>
-              )}
-            </button>
-          </div>
+          <NotificationBell />
           
           <button
             onClick={() => setDarkMode(!darkMode)}
@@ -1564,19 +1555,32 @@ export default function CoupleDashboard() {
           </div>
 
           {/* STATS ROW */}
-          <div style={{ 
-            padding: '0 32px 32px', 
-            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '12px'
-          }}>
-            {/* Days until wedding */}
-            <div style={{
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-              border: `1px solid var(--color-border)`,
-              padding: '16px 18px'
+          <div 
+            ref={statsRef}
+            style={{ 
+              padding: '0 32px 32px', 
+              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '12px',
+              opacity: statsVisible ? 1 : 0,
+              transform: statsVisible ? 'translateY(0)' : 'translateY(24px)',
+              transition: 'all 0.6s ease'
             }}>
+            {/* Days until wedding */}
+            <div 
+              onMouseEnter={() => setHoveredCard('days')}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: hoveredCard === 'days' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
+                padding: '16px 18px',
+                borderRadius: '12px',
+                boxShadow: hoveredCard === 'days' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transform: hoveredCard === 'days' ? 'translateY(-3px)' : 'translateY(0)',
+                transition: 'all 0.25s ease',
+                cursor: 'pointer'
+              }}>
               <div style={{
                 fontSize: '12px',
                 fontWeight: 600,
@@ -1591,7 +1595,7 @@ export default function CoupleDashboard() {
                 fontWeight: 800,
                 color: 'var(--color-primary)',
                 letterSpacing: '-0.02em'
-              }}>{stats.daysUntilWedding}</div>
+              }}>{animatedDays}</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
@@ -1601,11 +1605,19 @@ export default function CoupleDashboard() {
             </div>
 
             {/* Guest count */}
-            <div style={{
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-              border: `1px solid var(--color-border)`,
-              padding: '16px 18px'
-            }}>
+            <div 
+              onMouseEnter={() => setHoveredCard('guests')}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: hoveredCard === 'guests' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
+                padding: '16px 18px',
+                borderRadius: '12px',
+                boxShadow: hoveredCard === 'guests' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transform: hoveredCard === 'guests' ? 'translateY(-3px)' : 'translateY(0)',
+                transition: 'all 0.25s ease',
+                cursor: 'pointer'
+              }}>
               <div style={{
                 fontSize: '12px',
                 fontWeight: 600,
@@ -1620,7 +1632,7 @@ export default function CoupleDashboard() {
                 fontWeight: 800,
                 color: 'var(--color-primary)',
                 letterSpacing: '-0.02em'
-              }}>{stats.confirmedGuests}/{stats.totalGuests}</div>
+              }}>{animatedGuests}/{animatedTotalGuests}</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
@@ -1630,11 +1642,19 @@ export default function CoupleDashboard() {
             </div>
 
             {/* Budget used */}
-            <div style={{
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-              border: `1px solid var(--color-border)`,
-              padding: '16px 18px'
-            }}>
+            <div 
+              onMouseEnter={() => setHoveredCard('budget')}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: hoveredCard === 'budget' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
+                padding: '16px 18px',
+                borderRadius: '12px',
+                boxShadow: hoveredCard === 'budget' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transform: hoveredCard === 'budget' ? 'translateY(-3px)' : 'translateY(0)',
+                transition: 'all 0.25s ease',
+                cursor: 'pointer'
+              }}>
               <div style={{
                 fontSize: '12px',
                 fontWeight: 600,
@@ -1649,27 +1669,28 @@ export default function CoupleDashboard() {
                 fontWeight: 800,
                 color: 'var(--color-primary)',
                 letterSpacing: '-0.02em'
-              }}>{stats.budgetUsed}%</div>
-              <div style={{
-                width: '100%',
-                height: '5px',
-                backgroundColor: '#ffffff',
-                marginTop: '8px'
-              }}>
-                <div style={{
-                  width: `${stats.budgetUsed}%`,
-                  height: '100%',
-                  backgroundColor: stats.budgetUsed > 80 ? 'var(--color-danger)' : stats.budgetUsed > 60 ? 'var(--color-warning)' : 'var(--color-success)',
-                }}></div>
-              </div>
+              }}>{animatedBudgetUsed}%</div>
+              <AnimatedProgress 
+                value={stats.budgetUsed} 
+                height={5}
+                color={stats.budgetUsed > 80 ? 'var(--color-danger)' : stats.budgetUsed > 60 ? 'var(--color-warning)' : 'var(--color-success)'}
+              />
             </div>
 
             {/* Vendors booked */}
-            <div style={{
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-              border: `1px solid var(--color-border)`,
-              padding: '16px 18px'
-            }}>
+            <div 
+              onMouseEnter={() => setHoveredCard('vendors')}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: hoveredCard === 'vendors' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
+                padding: '16px 18px',
+                borderRadius: '12px',
+                boxShadow: hoveredCard === 'vendors' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transform: hoveredCard === 'vendors' ? 'translateY(-3px)' : 'translateY(0)',
+                transition: 'all 0.25s ease',
+                cursor: 'pointer'
+              }}>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
@@ -1683,7 +1704,7 @@ export default function CoupleDashboard() {
                 fontSize: '30px',
                 fontWeight: 300,
                 color: 'var(--color-text)',
-              }}>{stats.vendorsBooked}</div>
+              }}>{animatedVendors}</div>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
@@ -1693,11 +1714,19 @@ export default function CoupleDashboard() {
             </div>
 
             {/* Tasks completed */}
-            <div style={{
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-              border: `1px solid var(--color-border)`,
-              padding: '16px 18px'
-            }}>
+            <div 
+              onMouseEnter={() => setHoveredCard('tasks')}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: hoveredCard === 'tasks' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
+                padding: '16px 18px',
+                borderRadius: '12px',
+                boxShadow: hoveredCard === 'tasks' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transform: hoveredCard === 'tasks' ? 'translateY(-3px)' : 'translateY(0)',
+                transition: 'all 0.25s ease',
+                cursor: 'pointer'
+              }}>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
@@ -1711,27 +1740,28 @@ export default function CoupleDashboard() {
                 fontSize: '30px',
                 fontWeight: 300,
                 color: 'var(--color-text)',
-              }}>{stats.tasksCompleted}/{stats.tasksTotal}</div>
-              <div style={{
-                width: '100%',
-                height: '5px',
-                backgroundColor: '#ffffff',
-                marginTop: '8px'
-              }}>
-                <div style={{
-                  width: `${stats.tasksTotal > 0 ? (stats.tasksCompleted / stats.tasksTotal) * 100 : 0}%`,
-                  height: '100%',
-                  backgroundColor: 'var(--color-success)',
-                }}></div>
-              </div>
+              }}>{animatedTasksCompleted}/{animatedTasksTotal}</div>
+              <AnimatedProgress 
+                value={stats.tasksTotal > 0 ? (stats.tasksCompleted / stats.tasksTotal) * 100 : 0} 
+                height={5}
+                color="var(--color-success)"
+              />
             </div>
 
             {/* Profile completion */}
-            <div style={{
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-              border: `1px solid var(--color-border)`,
-              padding: '16px 18px'
-            }}>
+            <div 
+              onMouseEnter={() => setHoveredCard('profile')}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{
+                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
+                border: hoveredCard === 'profile' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
+                padding: '16px 18px',
+                borderRadius: '12px',
+                boxShadow: hoveredCard === 'profile' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+                transform: hoveredCard === 'profile' ? 'translateY(-3px)' : 'translateY(0)',
+                transition: 'all 0.25s ease',
+                cursor: 'pointer'
+              }}>
               <div style={{
                 fontFamily: 'Urbanist',
                 fontSize: '11px',
@@ -1745,19 +1775,12 @@ export default function CoupleDashboard() {
                 fontSize: '30px',
                 fontWeight: 300,
                 color: 'var(--color-text)',
-              }}>{stats.profileCompletion}%</div>
-              <div style={{
-                width: '100%',
-                height: '5px',
-                backgroundColor: '#ffffff',
-                marginTop: '8px'
-              }}>
-                <div style={{
-                  width: `${stats.profileCompletion}%`,
-                  height: '100%',
-                  backgroundColor: 'var(--color-success)',
-                }}></div>
-              </div>
+              }}>{animatedProfileCompletion}%</div>
+              <AnimatedProgress 
+                value={stats.profileCompletion} 
+                height={5}
+                color="var(--color-success)"
+              />
             </div>
           </div>
 

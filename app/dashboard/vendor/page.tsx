@@ -8,6 +8,13 @@ import { doc, getDoc, collection, query, where, getDocs, orderBy, limit, onSnaps
 import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle, Eye, Users, CheckCircle, Bell, ExternalLink, Clock } from 'lucide-react'
 
 import { colors, typography, getStyles } from '../../../lib/styles'
+import { celebrateBooking } from '../../../lib/confetti'
+import { useCountUp } from '../../../hooks/useCountUp'
+import { useScrollReveal } from '../../../hooks/useScrollReveal'
+import AnimatedProgress from '../../../components/AnimatedProgress'
+import NotificationBell from '../../../components/NotificationBell'
+import { useToast } from '../../../components/Toast'
+import FloatingParticles from '../../../components/FloatingParticles'
 
 const formatDate = (timestamp: any): string => {
   if (!timestamp) return 'Unknown'
@@ -87,6 +94,7 @@ interface Booking {
 export default function VendorDashboard() {
   const { loading: authLoading } = useRequireAuth('vendor')
   const { user, userProfile } = useAuth()
+  const { showToast } = useToast()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalEnquiries: 0,
@@ -286,6 +294,17 @@ export default function VendorDashboard() {
     }
   }, [user, userProfile])
 
+  // Animated counters and scroll reveal
+  const animatedEnquiries = useCountUp(stats.totalEnquiries)
+  const animatedBookings = useCountUp(stats.confirmedBookings)
+  const animatedRevenue = useCountUp(stats.totalRevenue)
+  const animatedProfileViews = useCountUp(stats.profileViews)
+  const animatedConversionRate = useCountUp(Math.round(stats.conversionRate))
+  const { ref: statsRef, isVisible: statsVisible } = useScrollReveal(0.1)
+  
+  // Hover state for cards
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+
   const calculateProfileCompletion = (vendor: Vendor): number => {
     let completion = 0
     
@@ -416,40 +435,8 @@ export default function VendorDashboard() {
         </div>
 
         {/* Right - User Info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ position: 'relative' }}>
-            <button
-              onClick={() => window.location.href = '/dashboard/vendor/bookings'}
-              style={{
-                border: 'none',
-                backgroundColor: 'transparent',
-                padding: '6px',
-                cursor: 'pointer',
-                position: 'relative'
-              }}
-            >
-              <Bell size={20} color={colors.primaryDark} />
-              {unreadCount > 0 && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-6px',
-                  right: '-6px',
-                  backgroundColor: '#c81e1e',
-                  color: '#ffffff',
-                  borderRadius: '50%',
-                  width: '18px',
-                  height: '18px',
-                  fontSize: '10px',
-                  fontWeight: 700,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </div>
-              )}
-            </button>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <NotificationBell />
           
           <div style={{
             width: '32px',
@@ -595,14 +582,28 @@ export default function VendorDashboard() {
       )}
 
       {/* STATS ROW */}
-      <div className="grid grid-cols-5 gap-3 px-8 mb-5">
+      <div 
+        ref={statsRef}
+        className="grid grid-cols-5 gap-3 px-8 mb-5"
+        style={{
+          opacity: statsVisible ? 1 : 0,
+          transform: statsVisible ? 'translateY(0)' : 'translateY(24px)',
+          transition: 'all 0.6s ease'
+        }}
+      >
         {/* Total Enquiries */}
         <div 
-          className="border cursor-pointer hover:shadow-md transition-shadow"
+          onMouseEnter={() => setHoveredCard('enquiries')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="border cursor-pointer transition-all"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: colors.border, 
-            padding: '16px 18px'
+            borderColor: hoveredCard === 'enquiries' ? colors.primary : colors.border, 
+            padding: '16px 18px',
+            borderRadius: '12px',
+            boxShadow: hoveredCard === 'enquiries' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+            transform: hoveredCard === 'enquiries' ? 'translateY(-3px)' : 'translateY(0)',
+            transition: 'all 0.25s ease'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
@@ -619,7 +620,7 @@ export default function VendorDashboard() {
             fontSize: '36px',
             letterSpacing: '-0.02em'
           }}>
-            {stats.totalEnquiries}
+            {animatedEnquiries}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             {stats.thisWeekEnquiries} this week
@@ -628,11 +629,17 @@ export default function VendorDashboard() {
 
         {/* Confirmed Bookings */}
         <div 
-          className="border cursor-pointer hover:shadow-md transition-shadow"
+          onMouseEnter={() => setHoveredCard('bookings')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="border cursor-pointer transition-all"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: colors.border, 
-            padding: '16px 18px'
+            borderColor: hoveredCard === 'bookings' ? colors.primary : colors.border, 
+            padding: '16px 18px',
+            borderRadius: '12px',
+            boxShadow: hoveredCard === 'bookings' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+            transform: hoveredCard === 'bookings' ? 'translateY(-3px)' : 'translateY(0)',
+            transition: 'all 0.25s ease'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
@@ -649,7 +656,7 @@ export default function VendorDashboard() {
             fontSize: '36px',
             letterSpacing: '-0.02em'
           }}>
-            {stats.confirmedBookings}
+            {animatedBookings}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             {stats.upcomingBookings} upcoming
@@ -658,11 +665,17 @@ export default function VendorDashboard() {
 
         {/* Total Revenue */}
         <div 
-          className="border cursor-pointer hover:shadow-md transition-shadow"
+          onMouseEnter={() => setHoveredCard('revenue')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="border cursor-pointer transition-all"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: colors.border, 
-            padding: '16px 18px'
+            borderColor: hoveredCard === 'revenue' ? colors.primary : colors.border, 
+            padding: '16px 18px',
+            borderRadius: '12px',
+            boxShadow: hoveredCard === 'revenue' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+            transform: hoveredCard === 'revenue' ? 'translateY(-3px)' : 'translateY(0)',
+            transition: 'all 0.25s ease'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
@@ -679,7 +692,7 @@ export default function VendorDashboard() {
             fontSize: '36px',
             letterSpacing: '-0.02em'
           }}>
-            ${stats.totalRevenue.toLocaleString()}
+            ${animatedRevenue.toLocaleString()}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             from paid bookings
@@ -688,11 +701,17 @@ export default function VendorDashboard() {
 
         {/* Profile Views */}
         <div 
-          className="border cursor-pointer hover:shadow-md transition-shadow"
+          onMouseEnter={() => setHoveredCard('views')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="border cursor-pointer transition-all"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: colors.border, 
-            padding: '16px 18px'
+            borderColor: hoveredCard === 'views' ? colors.primary : colors.border, 
+            padding: '16px 18px',
+            borderRadius: '12px',
+            boxShadow: hoveredCard === 'views' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+            transform: hoveredCard === 'views' ? 'translateY(-3px)' : 'translateY(0)',
+            transition: 'all 0.25s ease'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
@@ -709,7 +728,7 @@ export default function VendorDashboard() {
             fontSize: '36px',
             letterSpacing: '-0.02em'
           }}>
-            {stats.profileViews}
+            {animatedProfileViews}
           </div>
           <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             this month
@@ -718,11 +737,17 @@ export default function VendorDashboard() {
 
         {/* Conversion Rate */}
         <div 
-          className="border cursor-pointer hover:shadow-md transition-shadow"
+          onMouseEnter={() => setHoveredCard('conversion')}
+          onMouseLeave={() => setHoveredCard(null)}
+          className="border cursor-pointer transition-all"
           style={{ 
             backgroundColor: '#ffffff', 
-            borderColor: colors.border, 
-            padding: '16px 18px'
+            borderColor: hoveredCard === 'conversion' ? colors.primary : colors.border, 
+            padding: '16px 18px',
+            borderRadius: '12px',
+            boxShadow: hoveredCard === 'conversion' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
+            transform: hoveredCard === 'conversion' ? 'translateY(-3px)' : 'translateY(0)',
+            transition: 'all 0.25s ease'
           }}
         >
           <div className="text-xs uppercase mb-2" style={{ 
@@ -739,7 +764,7 @@ export default function VendorDashboard() {
             fontSize: '36px',
             letterSpacing: '-0.02em'
           }}>
-            {stats.conversionRate.toFixed(1)}%
+            {animatedConversionRate}%
           </div>
           <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
             enquiries to bookings

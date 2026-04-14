@@ -3,6 +3,9 @@ import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../context/AuthContext";
 import ClientOnly from "@/components/ClientOnly";
+import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
+import { ToastProvider } from "@/components/Toast";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -27,9 +30,14 @@ export default function RootLayout({
         style={{ backgroundColor: '#f0f4ff', color: '#111928', margin: 0, padding: 0 }}
       >
         <ClientOnly>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <PageTransition>
+                {children}
+              </PageTransition>
+              <Footer />
+            </AuthProvider>
+          </ToastProvider>
         </ClientOnly>
       </body>
     </html>

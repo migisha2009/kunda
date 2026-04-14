@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Heart, Camera, MapPin, Music, Cake, Flower, Home as HomeIcon, Car, Shirt, Star, Users, Menu, X, Phone, MessageCircle, ChevronRight, Settings, Calendar, DollarSign, MessageSquare, AlertCircle, Check } from 'lucide-react'
+import FloatingParticles from '@/components/FloatingParticles'
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -175,6 +176,9 @@ export default function Home() {
         position: 'relative',
         overflow: 'hidden'
       }}>
+        {/* Floating Particles */}
+        <FloatingParticles />
+        
         {/* Decorative background rings */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
@@ -584,79 +588,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* 10. FOOTER */}
-      <footer style={{ backgroundColor: 'var(--color-text)', padding: '60px 64px 20px' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Kunda info */}
-            <div>
-              <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
-                  <Heart className="w-5 h-5 text-white" />
-                </div>
-                <span className="ml-2" style={{ fontFamily: 'var(--font-family)', color: 'var(--color-primary)', fontWeight: 'var(--font-weight-bold)', fontSize: 'var(--font-size-xl)' }}>Kunda</span>
-              </div>
-              <p className="text-sm mb-4" style={{ color: 'var(--color-muted)' }}>
-                Your perfect wedding, beautifully orchestrated. Rwanda's premier wedding planning platform.
-              </p>
-              <div className="flex space-x-3">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: 'var(--color-primary)' }}>
-                  <MessageCircle className="w-4 h-4 text-white" />
-                </div>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80" style={{ backgroundColor: 'var(--color-primary)' }}>
-                  <Phone className="w-4 h-4 text-white" />
-                </div>
-              </div>
-            </div>
-
-            {/* For Couples */}
-            <div>
-              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>For Couples</h3>
-              <ul className="space-y-2">
-                <li><Link href="/vendors" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Find Vendors</Link></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>How It Works</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Success Stories</a></li>
-              </ul>
-            </div>
-
-            {/* For Vendors */}
-            <div>
-              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>For Vendors</h3>
-              <ul className="space-y-2">
-                <li><Link href="/signup" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Join Kunda</Link></li>
-                <li><Link href="/dashboard/vendor" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Vendor Dashboard</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Vendor Resources</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Pricing Plans</a></li>
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <h3 className="font-bold mb-4" style={{ color: '#ffffff' }}>Company</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>About Us</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors" style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}>Terms of Service</a></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center" style={{ borderColor: 'var(--color-border)' }}>
-            <p className="text-sm" style={{ color: 'var(--color-muted)' }}>
-              &copy; 2024 Kunda. All rights reserved.
-            </p>
-            <div className="flex items-center mt-4 md:mt-0">
-              <span className="text-sm" style={{ color: 'var(--color-muted)' }}>Made with love in</span>
-              <MapPin className="w-4 h-4 mx-1" style={{ color: 'var(--color-primary)' }} />
-              <span className="text-sm font-medium" style={{ color: 'var(--color-primary)' }}>Kigali, Rwanda</span>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
