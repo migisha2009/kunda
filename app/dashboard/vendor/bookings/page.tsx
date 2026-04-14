@@ -21,7 +21,7 @@ import { colors } from '../../../../lib/styles'
 import { 
   MessageSquare, Clock, CheckCircle, XCircle, User, Calendar, 
   Search, Filter, Reply, ChevronDown, DollarSign, CreditCard, 
-  Copy, ExternalLink, Mail, AlertCircle, Download, Eye
+  Copy, ExternalLink, Mail, AlertCircle, Download, Eye, Heart
 } from 'lucide-react'
 
 interface Booking {
@@ -411,24 +411,24 @@ export default function VendorBookingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#f0f4ff' }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#b08850] rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-background)' }}>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[var(--color-accent)] rounded-full animate-spin"></div>
       </div>
     )
   }
 
   const dashFooter = (
   <footer style={{
-    background: '#ffffff',
-    borderTop: '1px solid #e5edff',
+    background: 'var(--color-card)',
+    borderTop: '1px solid var(--color-border)',
     padding: '16px 32px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontFamily: 'Urbanist, sans-serif',
+    fontFamily: 'var(--font-family-body)',
     marginTop: 'auto',
   }}>
-    <div style={{ fontSize: 13, color: '#9ca3af' }}>
+    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
       © 2026 Kunda Wedding Platform · Kigali, Rwanda
     </div>
     <div style={{
@@ -436,17 +436,17 @@ export default function VendorBookingsPage() {
     }}>
       <a href="https://wa.me/250783312746"
         target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
-          textDecoration: 'none' }}>
+        style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)',
+          textDecoration: 'none', fontFamily: 'var(--font-family-body)' }}>
         WhatsApp Support
       </a>
       <a href="https://instagram.com/darkxente"
         target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
-          textDecoration: 'none' }}>
+        style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)',
+          textDecoration: 'none', fontFamily: 'var(--font-family-body)' }}>
         @darkxente
       </a>
-      <span style={{ fontSize: 13, color: '#9ca3af' }}>
+      <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
         Made with in Rwanda
       </span>
     </div>
@@ -455,7 +455,7 @@ export default function VendorBookingsPage() {
 
   return (
     <div className="min-h-screen" style={{ 
-      backgroundColor: '#f0f4ff',
+      backgroundColor: 'var(--color-background)',
       display: 'flex',
       flexDirection: 'column'
     }}>
@@ -465,8 +465,9 @@ export default function VendorBookingsPage() {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '14px 32px',
-        background: '#ffffff',
-        borderBottom: '1px solid #e5edff'
+        background: 'var(--color-card)',
+        borderBottom: '1px solid var(--color-border)',
+        boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)'
       }}>
         {/* Left - Logo */}
         <div 
@@ -474,15 +475,22 @@ export default function VendorBookingsPage() {
           onClick={() => window.location.href = '/'}
         >
           <div style={{
-            width: '8px',
-            height: '8px',
-            border: '1.5px solid #1a56db',
-            marginRight: '12px'
-          }}></div>
+            width: 36,
+            height: 36,
+            background: 'var(--color-accent)',
+            borderRadius: 10,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 18,
+            marginRight: 10,
+          }}>
+            <Heart className="w-5 h-5 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+          </div>
           <span style={{
-            fontFamily: 'Urbanist',
+            fontFamily: 'var(--font-family-heading)',
             fontSize: '20px',
-            color: '#1a56db',
+            color: '#FFFFFF',
             letterSpacing: '0.1em'
           }}>Kunda</span>
         </div>
@@ -499,11 +507,11 @@ export default function VendorBookingsPage() {
               key={label}
               href={href}
               style={{
-                fontFamily: 'Urbanist',
+                fontFamily: 'var(--font-family-body)',
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.15em',
-                color: window.location.pathname === href ? '#1a56db' : '#6b7280',
+                color: window.location.pathname === href ? 'var(--color-accent)' : 'rgba(255,255,255,0.8)',
                 textDecoration: 'none'
               }}
             >
@@ -518,25 +526,25 @@ export default function VendorBookingsPage() {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            background: '#dbeafe',
-            border: '1px solid #3498db',
+            background: 'var(--gradient-hero)',
+            border: '1px solid var(--color-accent)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
             <span style={{
-              color: '#1a56db',
+              color: '#FFFFFF',
               fontSize: '13px',
-              fontFamily: 'Urbanist',
+              fontFamily: 'var(--font-family-body)',
               fontWeight: 500
             }}>
               {user?.email?.charAt(0).toUpperCase()}
             </span>
           </div>
           <span style={{
-            fontFamily: 'Urbanist',
+            fontFamily: 'var(--font-family-body)',
             fontSize: '13px',
-            color: '#1a56db'
+            color: '#FFFFFF'
           }}>
             {user?.email}
           </span>
@@ -545,11 +553,11 @@ export default function VendorBookingsPage() {
               window.location.href = '/login'
             }}
             style={{
-              border: '1px solid #1a56db',
-              color: '#b08850',
+              border: '1px solid var(--color-accent)',
+              color: 'var(--color-accent)',
               background: 'transparent',
               padding: '6px 14px',
-              fontFamily: 'Urbanist',
+              fontFamily: 'var(--font-family-body)',
               fontSize: '11px',
               textTransform: 'uppercase',
               cursor: 'pointer'
@@ -563,8 +571,8 @@ export default function VendorBookingsPage() {
       {/* Page Title */}
       <div style={{ padding: '48px 32px 32px' }}>
         <div className="text-xs uppercase tracking-wider mb-3" style={{ 
-          color: '#1a56db', 
-          fontFamily: 'Urbanist', 
+          color: 'var(--color-accent)', 
+          fontFamily: 'var(--font-family-body)', 
           fontWeight: 700,
           letterSpacing: '0.15em',
           fontSize: '12px'
@@ -574,8 +582,8 @@ export default function VendorBookingsPage() {
         <h1 
           className="text-4xl font-light mb-3" 
           style={{ 
-            fontFamily: 'Urbanist', 
-            color: '#0f2460', 
+            fontFamily: 'var(--font-family-heading)', 
+            color: '#FFFFFF', 
             fontWeight: 800,
             fontSize: '36px'
           }}
@@ -588,61 +596,61 @@ export default function VendorBookingsPage() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-5 gap-3 mb-8">
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: '#e5edff', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280', fontWeight: 700, fontSize: '11px' }}>
+          <div className="border" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-family-body)', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontSize: '11px' }}>
               Pending Enquiries
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#0f2460', fontWeight: 900, fontSize: '48px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 900, fontSize: '48px' }}>
               {enquiries.filter(e => e.status === 'pending').length}
             </div>
           </div>
           
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: '#e5edff', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280', fontWeight: 700, fontSize: '11px' }}>
+          <div className="border" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-family-body)', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontSize: '11px' }}>
               Replied
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#0f2460', fontWeight: 900, fontSize: '48px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 900, fontSize: '48px' }}>
               {enquiries.filter(e => e.status === 'replied').length}
             </div>
           </div>
 
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: '#e5edff', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280', fontWeight: 700, fontSize: '11px' }}>
+          <div className="border" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-family-body)', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontSize: '11px' }}>
               Total Bookings
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#0f2460', fontWeight: 900, fontSize: '48px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 900, fontSize: '48px' }}>
               {bookings.length}
             </div>
           </div>
 
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: '#e5edff', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280', fontWeight: 700, fontSize: '11px' }}>
+          <div className="border" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-family-body)', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontSize: '11px' }}>
               Total Revenue
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#0f2460', fontWeight: 900, fontSize: '48px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 900, fontSize: '48px' }}>
               ${totalRevenue.toLocaleString()}
             </div>
           </div>
 
-          <div className="border" style={{ backgroundColor: '#ffffff', borderColor: '#e5edff', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
-            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'Urbanist', letterSpacing: '0.15em', color: '#6b7280', fontWeight: 700, fontSize: '11px' }}>
+          <div className="border" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
+            <div className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-family-body)', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontSize: '11px' }}>
               Response Rate
             </div>
-            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'Urbanist', color: '#0f2460', fontWeight: 900, fontSize: '48px' }}>
+            <div className="text-3xl font-light mb-1" style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 900, fontSize: '48px' }}>
               {responseRate.toFixed(1)}%
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-6 mb-6" style={{ borderBottom: '1px solid #e5edff' }}>
+        <div className="flex gap-6 mb-6" style={{ borderBottom: '1px solid var(--color-border)' }}>
           <button
             onClick={() => setActiveTab('enquiries')}
             className="pb-3 text-sm font-medium transition-colors"
             style={{
-              fontFamily: 'Urbanist',
-              color: activeTab === 'enquiries' ? '#1a56db' : '#6b7280',
-              borderBottom: activeTab === 'enquiries' ? '2px solid #1a56db' : 'none'
+              fontFamily: 'var(--font-family-body)',
+              color: activeTab === 'enquiries' ? 'var(--color-accent)' : 'rgba(255,255,255,0.8)',
+              borderBottom: activeTab === 'enquiries' ? '2px solid var(--color-accent)' : 'none'
             }}
           >
             Enquiries ({enquiries.length})
@@ -651,9 +659,9 @@ export default function VendorBookingsPage() {
             onClick={() => setActiveTab('bookings')}
             className="pb-3 text-sm font-medium transition-colors"
             style={{
-              fontFamily: 'Urbanist',
-              color: activeTab === 'bookings' ? '#1a56db' : '#6b7280',
-              borderBottom: activeTab === 'bookings' ? '2px solid #1a56db' : 'none'
+              fontFamily: 'var(--font-family-body)',
+              color: activeTab === 'bookings' ? 'var(--color-accent)' : 'rgba(255,255,255,0.8)',
+              borderBottom: activeTab === 'bookings' ? '2px solid var(--color-accent)' : 'none'
             }}
           >
             Bookings ({bookings.length})
@@ -664,7 +672,7 @@ export default function VendorBookingsPage() {
         <div className="flex justify-between items-center mb-6">
           <div className="flex gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: '#6b7280' }} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: 'rgba(255,255,255,0.8)' }} />
               <input
                 type="text"
                 placeholder="Search by couple name..."
@@ -672,12 +680,12 @@ export default function VendorBookingsPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
                 style={{
-                  border: '1px solid #e5edff',
-                  background: '#ffffff',
+                  border: '1px solid var(--color-border)',
+                  background: 'rgba(255,255,255,0.9)',
                   padding: '10px 14px',
-                  fontFamily: 'Urbanist',
+                  fontFamily: 'var(--font-family-body)',
                   fontSize: '14px',
-                  color: '#111928',
+                  color: 'var(--color-heading)',
                   width: '250px',
                   borderRadius: '8px'
                 }}
@@ -688,12 +696,12 @@ export default function VendorBookingsPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               style={{
-                border: '1px solid #e5edff',
-                background: '#ffffff',
+                border: '1px solid var(--color-border)',
+                background: 'rgba(255,255,255,0.9)',
                 padding: '10px 14px',
-                fontFamily: 'Urbanist',
+                fontFamily: 'var(--font-family-body)',
                 fontSize: '14px',
-                color: '#111928',
+                color: 'var(--color-heading)',
                 borderRadius: '8px'
               }}
             >
