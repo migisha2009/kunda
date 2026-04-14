@@ -199,53 +199,19 @@ export default function VendorAnalyticsPage() {
   if (!user || !userProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ 
-        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)'
+        background: 'var(--gradient-hero)'
       }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-white rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[var(--color-accent)] rounded-full animate-spin"></div>
       </div>
     )
   }
 
-  const dashFooter = (
-  <footer style={{
-    background: '#ffffff',
-    borderTop: '1px solid #e5edff',
-    padding: '16px 32px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontFamily: 'Urbanist, sans-serif',
-    marginTop: 'auto',
-  }}>
-    <div style={{ fontSize: 13, color: '#9ca3af' }}>
-      © 2026 Kunda Wedding Platform · Kigali, Rwanda
-    </div>
-    <div style={{
-      display: 'flex', gap: 20, alignItems: 'center'
-    }}>
-      <a href="https://wa.me/250783312746"
-        target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
-          textDecoration: 'none' }}>
-        WhatsApp Support
-      </a>
-      <a href="https://instagram.com/darkxente"
-        target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
-          textDecoration: 'none' }}>
-        @darkxente
-      </a>
-      <span style={{ fontSize: 13, color: '#9ca3af' }}>
-        Made with in Rwanda
-      </span>
-    </div>
-  </footer>
-)
-
+  
   return (
     <div className="min-h-screen" style={{
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      background: 'var(--color-background)'
     }}>
       <style jsx>{`
         @keyframes heartbeat {
@@ -281,15 +247,15 @@ export default function VendorAnalyticsPage() {
       `}</style>
       
       {/* KUNDA NAVBAR */}
-      <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 shadow-lg`} style={{ borderBottom: '1px solid #e5edff' }}>
+      <nav className={`sticky top-0 z-50 transition-all duration-300 shadow-lg`} style={{ backgroundColor: 'var(--color-card)', borderBottom: '1px solid var(--color-border)', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#1a56db' }}>
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-accent)' }}>
                 <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
               </div>
-              <span className="ml-2" style={{ fontFamily: 'Urbanist', color: '#1a56db', fontWeight: 800, fontSize: '22px' }}>Kunda</span>
+              <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 800, fontSize: '22px' }}>Kunda</span>
             </div>
 
             {/* Desktop Navigation */}
@@ -305,9 +271,10 @@ export default function VendorAnalyticsPage() {
                   href={href}
                   className="hover:text-blue-600 transition-colors" 
                   style={{ 
-                    color: window.location.pathname === href ? '#1a56db' : '#6b7280', 
+                    color: window.location.pathname === href ? 'var(--color-accent)' : 'rgba(255,255,255,0.8)', 
                     fontWeight: 600, 
-                    fontSize: '14px' 
+                    fontSize: '14px',
+                    fontFamily: 'var(--font-family-body)'
                   }}
                 >
                   {label}
@@ -317,17 +284,22 @@ export default function VendorAnalyticsPage() {
 
             {/* Right - User Info */}
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold" style={{ background: 'var(--gradient-hero)' }}>
                 {userProfile.name.charAt(0).toUpperCase()}
               </div>
-              <span style={{ fontFamily: 'Urbanist', color: '#374151', fontWeight: 500 }}>
+              <span style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 500 }}>
                 {userProfile.name}
               </span>
               <button
                 onClick={() => {
                   window.location.href = '/login'
                 }}
-                className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium transition-colors hover:bg-blue-50"
+                className="px-4 py-2 rounded-lg border font-medium transition-colors"
+                style={{
+                  borderColor: 'var(--color-accent)',
+                  color: 'var(--color-accent)',
+                  fontFamily: 'var(--font-family-body)'
+                }}
               >
                 Sign Out
               </button>
@@ -338,7 +310,7 @@ export default function VendorAnalyticsPage() {
 
       {/* HERO SECTION */}
       <section style={{ 
-        background: 'linear-gradient(135deg, #0f2460, #1a56db 50%, #3f83f8)',
+        background: 'var(--gradient-hero)',
         minHeight: '320px',
         padding: '80px 64px',
         position: 'relative',
@@ -352,19 +324,23 @@ export default function VendorAnalyticsPage() {
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium mb-6">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2" style={{ animation: 'pulse 2s infinite' }}></div>
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-6" style={{ 
+            backgroundColor: 'rgba(76, 175, 80, 0.2)', 
+            color: 'var(--color-success)',
+            fontFamily: 'var(--font-family-body)'
+          }}>
+            <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: 'var(--color-success)', animation: 'pulse 2s infinite' }}></div>
             Vendor Dashboard
           </div>
           <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight" style={{ 
             fontWeight: 900, 
             letterSpacing: '-0.03em',
-            fontFamily: 'Urbanist'
+            fontFamily: 'var(--font-family-heading)'
           }}>
             Performance<br />
-            <span style={{ color: '#93c5fd' }}>Analytics</span>
+            <span style={{ color: 'var(--color-accent)' }}>Analytics</span>
           </h1>
-          <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 400 }}>
+          <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 400, fontFamily: 'var(--font-family-body)' }}>
             Track your business performance and growth metrics in real-time
           </p>
         </div>
@@ -373,16 +349,17 @@ export default function VendorAnalyticsPage() {
       {/* Period Selector */}
       <div className="px-8 mb-8">
         <div className="flex justify-center">
-          <div className="inline-flex rounded-lg bg-gray-100 p-1">
+          <div className="inline-flex rounded-lg p-1" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
             {['1month', '3months', '6months', '1year'].map((period) => (
               <button
                 key={period}
                 onClick={() => setSelectedPeriod(period)}
-                className={`px-6 py-2 rounded-md font-medium transition-all ${
-                  selectedPeriod === period 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                className={`px-6 py-2 rounded-md font-medium transition-all`}
+                style={{
+                  fontFamily: 'var(--font-family-body)',
+                  backgroundColor: selectedPeriod === period ? 'var(--color-accent)' : 'transparent',
+                  color: selectedPeriod === period ? '#FFFFFF' : 'rgba(255,255,255,0.8)'
+                }}
               >
                 {period === '1month' ? '1 Month' : period === '3months' ? '3 Months' : period === '6months' ? '6 Months' : '1 Year'}
               </button>
@@ -397,25 +374,26 @@ export default function VendorAnalyticsPage() {
           {/* Profile Views */}
           <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                style={{ 
-                 backgroundColor: 'white', 
-                 borderColor: '#e5edff'
+                 backgroundColor: 'var(--color-card)', 
+                 borderColor: 'var(--color-border)',
+                 boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)'
                }}>
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+              <div className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Profile Views
               </div>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
-                   style={{ backgroundColor: '#dbeafe', color: '#1a56db' }}>
+                   style={{ backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)' }}>
                 <Eye className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-2" style={{ 
-              fontFamily: 'Urbanist', 
-              color: '#111928'
+              fontFamily: 'var(--font-family-body)', 
+              color: '#FFFFFF'
             }}>
               {analytics.profileViews}
             </div>
-            <div className="flex items-center text-sm" style={{ color: '#057a55' }}>
+            <div className="flex items-center text-sm" style={{ color: 'var(--color-success)', fontFamily: 'var(--font-family-body)' }}>
               <TrendingUp className="w-4 h-4 mr-1" />
               +12% from last month
             </div>
@@ -424,25 +402,26 @@ export default function VendorAnalyticsPage() {
           {/* Enquiries */}
           <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                style={{ 
-                 backgroundColor: 'white', 
-                 borderColor: '#e5edff'
+                 backgroundColor: 'var(--color-card)', 
+                 borderColor: 'var(--color-border)',
+                 boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)'
                }}>
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+              <div className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Enquiries
               </div>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
-                   style={{ backgroundColor: '#dcfce7', color: '#057a55' }}>
+                   style={{ backgroundColor: 'rgba(76, 175, 80, 0.2)', color: 'var(--color-success)' }}>
                 <Users className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-2" style={{ 
-              fontFamily: 'Urbanist', 
-              color: '#111928'
+              fontFamily: 'var(--font-family-body)', 
+              color: '#FFFFFF'
             }}>
               {analytics.enquiries}
             </div>
-            <div className="flex items-center text-sm" style={{ color: '#057a55' }}>
+            <div className="flex items-center text-sm" style={{ color: 'var(--color-success)', fontFamily: 'var(--font-family-body)' }}>
               <TrendingUp className="w-4 h-4 mr-1" />
               +8% from last month
             </div>
@@ -451,25 +430,26 @@ export default function VendorAnalyticsPage() {
           {/* Revenue */}
           <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                style={{ 
-                 backgroundColor: 'white', 
-                 borderColor: '#e5edff'
+                 backgroundColor: 'var(--color-card)', 
+                 borderColor: 'var(--color-border)',
+                 boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)'
                }}>
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+              <div className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Revenue
               </div>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
-                   style={{ backgroundColor: '#fef3c7', color: '#c27803' }}>
+                   style={{ backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)' }}>
                 <DollarSign className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-2" style={{ 
-              fontFamily: 'Urbanist', 
-              color: '#111928'
+              fontFamily: 'var(--font-family-body)', 
+              color: '#FFFFFF'
             }}>
               ${analytics.revenue.toLocaleString()}
             </div>
-            <div className="flex items-center text-sm" style={{ color: '#dc2626' }}>
+            <div className="flex items-center text-sm" style={{ color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>
               <TrendingDown className="w-4 h-4 mr-1" />
               -3% from last month
             </div>
@@ -478,27 +458,28 @@ export default function VendorAnalyticsPage() {
           {/* Conversion Rate */}
           <div className="p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                style={{ 
-                 backgroundColor: 'white', 
-                 borderColor: '#e5edff'
+                 backgroundColor: 'var(--color-card)', 
+                 borderColor: 'var(--color-border)',
+                 boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)'
                }}>
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm font-bold" style={{ color: '#374151' }}>
+              <div className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Conversion Rate
               </div>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center" 
-                   style={{ backgroundColor: '#ede9fe', color: '#5b21b6' }}>
+                   style={{ backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)' }}>
                 <Star className="w-6 h-6" />
               </div>
             </div>
             <div className="text-3xl font-bold mb-2" style={{ 
-              fontFamily: 'Urbanist', 
-              color: '#111928'
+              fontFamily: 'var(--font-family-body)', 
+              color: '#FFFFFF'
             }}>
               {analytics.conversionRate.toFixed(1)}%
             </div>
-            <div className="flex items-center text-sm" style={{ color: '#057a55' }}>
+            <div className="flex items-center text-sm" style={{ color: 'var(--color-success)', fontFamily: 'var(--font-family-body)' }}>
               <TrendingUp className="w-4 h-4 mr-1" />
-              +2% from last month
+              +5% from last month
             </div>
           </div>
         </div>
@@ -733,7 +714,6 @@ export default function VendorAnalyticsPage() {
           </div>
         </div>
       </div>
-      {dashFooter}
-    </div>
+          </div>
   )
 }

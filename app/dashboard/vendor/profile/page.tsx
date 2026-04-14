@@ -167,42 +167,7 @@ export default function VendorProfile() {
 
   if (loading) return <div style={{ minHeight: '100vh', background: 'var(--color-background)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 44, height: 44, borderRadius: '50%', border: '3px solid rgba(245, 166, 35, 0.2)', borderTop: '3px solid var(--color-accent)', animation: 'spin 1s linear infinite' }} /></div>
 
-  const dashFooter = (
-  <footer style={{
-    background: 'var(--color-card)',
-    borderTop: '1px solid var(--color-border)',
-    padding: '16px 32px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontFamily: 'var(--font-family-body)',
-    marginTop: 'auto',
-  }}>
-    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
-      © 2026 Kunda Wedding Platform · Kigali, Rwanda
-    </div>
-    <div style={{
-      display: 'flex', gap: 20, alignItems: 'center'
-    }}>
-      <a href="https://wa.me/250783312746"
-        target="_blank"
-        style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)',
-          textDecoration: 'none', fontFamily: 'var(--font-family-body)' }}>
-        WhatsApp Support
-      </a>
-      <a href="https://instagram.com/darkxente"
-        target="_blank"
-        style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)',
-          textDecoration: 'none', fontFamily: 'var(--font-family-body)' }}>
-        @darkxente
-      </a>
-      <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
-        Made with in Rwanda
-      </span>
-    </div>
-  </footer>
-)
-
+  
   return (
     <div style={{ 
       minHeight: '100vh', 
@@ -595,7 +560,6 @@ export default function VendorProfile() {
       </div>
 
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}*{box-sizing:border-box;margin:0;padding:0}`}</style>
-      {dashFooter}
-    </div>
+          </div>
   )
 }

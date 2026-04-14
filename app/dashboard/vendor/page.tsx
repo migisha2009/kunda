@@ -912,44 +912,6 @@ export default function VendorDashboard() {
         </div>
       </div>
 
-      <footer style={{
-        background: 'var(--color-card)',
-        borderTop: '1px solid var(--color-border)',
-        padding: '16px 32px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        fontFamily: 'var(--font-family-body)',
-      }}>
-        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
-          © 2026 Kunda Wedding Platform · Kigali, Rwanda
-        </div>
-        <div style={{
-          display: 'flex', gap: 20, alignItems: 'center'
-        }}>
-          <a href="https://wa.me/250783312746"
-            target="_blank"
-            style={{
-              fontSize: 13, color: 'rgba(255,255,255,0.8)',
-              textDecoration: 'none',
-              fontFamily: 'var(--font-family-body)'
-            }}>
-            WhatsApp Support
-          </a>
-          <a href="https://instagram.com/darkxente"
-            target="_blank"
-            style={{
-              fontSize: 13, color: 'rgba(255,255,255,0.8)',
-              textDecoration: 'none',
-              fontFamily: 'var(--font-family-body)'
-            }}>
-            @darkxente
-          </a>
-          <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
-            Made with in Rwanda
-          </span>
-        </div>
-      </footer>
-    </div>
+          </div>
   )
 }
