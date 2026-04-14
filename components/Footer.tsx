@@ -8,7 +8,7 @@ export default function Footer() {
   const isDashboard = pathname?.startsWith('/dashboard')
   const isGuest = pathname?.startsWith('/guest')
   
-  if (isDashboard) return <DashboardFooter />
+  if (isDashboard) return <PublicFooter />
   return <PublicFooter />
 }
 
