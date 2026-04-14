@@ -126,8 +126,48 @@ export default function WeddingDetailsPage() {
     )
   }
 
+  const dashFooter = (
+  <footer style={{
+    background: '#ffffff',
+    borderTop: '1px solid #e5edff',
+    padding: '16px 32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontFamily: 'Urbanist, sans-serif',
+    marginTop: 'auto',
+  }}>
+    <div style={{ fontSize: 13, color: '#9ca3af' }}>
+      © 2026 Kunda Wedding Platform · Kigali, Rwanda
+    </div>
+    <div style={{
+      display: 'flex', gap: 20, alignItems: 'center'
+    }}>
+      <a href="https://wa.me/250783312746"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        WhatsApp Support
+      </a>
+      <a href="https://instagram.com/darkxente"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        @darkxente
+      </a>
+      <span style={{ fontSize: 13, color: '#9ca3af' }}>
+        Made with in Rwanda
+      </span>
+    </div>
+  </footer>
+)
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f0f4ff' }}>
+    <div className="min-h-screen" style={{ 
+      backgroundColor: '#f0f4ff',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -269,6 +309,7 @@ export default function WeddingDetailsPage() {
           </div>
         </form>
       </div>
+      {dashFooter}
     </div>
   )
 }

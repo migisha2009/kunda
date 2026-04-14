@@ -166,8 +166,50 @@ export default function VendorProfile() {
 
   if (loading) return <div style={{ minHeight: '100vh', background: '#f7f8fd', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 40, height: 40, borderRadius: '50%', border: '2px solid #c7d2fe', borderTop: '2px solid #4f69f6', animation: 'spin 1s linear infinite' }} /></div>
 
+  const dashFooter = (
+  <footer style={{
+    background: '#ffffff',
+    borderTop: '1px solid #e5edff',
+    padding: '16px 32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontFamily: 'Urbanist, sans-serif',
+    marginTop: 'auto',
+  }}>
+    <div style={{ fontSize: 13, color: '#9ca3af' }}>
+      © 2026 Kunda Wedding Platform · Kigali, Rwanda
+    </div>
+    <div style={{
+      display: 'flex', gap: 20, alignItems: 'center'
+    }}>
+      <a href="https://wa.me/250783312746"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        WhatsApp Support
+      </a>
+      <a href="https://instagram.com/darkxente"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        @darkxente
+      </a>
+      <span style={{ fontSize: 13, color: '#9ca3af' }}>
+        Made with in Rwanda
+      </span>
+    </div>
+  </footer>
+)
+
   return (
-    <div style={{ minHeight: '100vh', background: '#f7f8fd', fontFamily: 'Urbanist' }}>
+    <div style={{ 
+      minHeight: '100vh', 
+      background: '#f7f8fd', 
+      fontFamily: 'Urbanist',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px', background: '#fff', borderBottom: '0.5px solid #c7d2fe' }}>
         <span style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#4f69f6', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>Kunda</span>
         <div style={{ display: 'flex', gap: 24 }}>
@@ -384,6 +426,7 @@ export default function VendorProfile() {
       </div>
 
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}*{box-sizing:border-box;margin:0;padding:0}`}</style>
+      {dashFooter}
     </div>
   )
 }

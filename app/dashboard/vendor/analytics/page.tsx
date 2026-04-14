@@ -206,8 +206,47 @@ export default function VendorAnalyticsPage() {
     )
   }
 
+  const dashFooter = (
+  <footer style={{
+    background: '#ffffff',
+    borderTop: '1px solid #e5edff',
+    padding: '16px 32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontFamily: 'Urbanist, sans-serif',
+    marginTop: 'auto',
+  }}>
+    <div style={{ fontSize: 13, color: '#9ca3af' }}>
+      © 2026 Kunda Wedding Platform · Kigali, Rwanda
+    </div>
+    <div style={{
+      display: 'flex', gap: 20, alignItems: 'center'
+    }}>
+      <a href="https://wa.me/250783312746"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        WhatsApp Support
+      </a>
+      <a href="https://instagram.com/darkxente"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        @darkxente
+      </a>
+      <span style={{ fontSize: 13, color: '#9ca3af' }}>
+        Made with in Rwanda
+      </span>
+    </div>
+  </footer>
+)
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       <style jsx>{`
         @keyframes heartbeat {
           0% { transform: scale(1); }
@@ -679,6 +718,7 @@ export default function VendorAnalyticsPage() {
           </div>
         </div>
       </div>
+      {dashFooter}
     </div>
   )
 }

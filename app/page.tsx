@@ -265,7 +265,7 @@ export default function Home() {
       </section>
 
       {/* 3. STATS BAR */}
-      <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary-dark)', padding: '24px' }}>
+      <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary-dark)', padding: '16px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-6">

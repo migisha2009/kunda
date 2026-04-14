@@ -1,483 +1,347 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAuth } from '../../../context/AuthContext'
-import { useRequireAuth } from '../../../hooks/useRequireAuth'
-import { db } from '../../../lib/firebase'
-import { doc, getDoc, collection, query, where, getDocs, orderBy, limit, onSnapshot } from 'firebase/firestore'
-import { MessageSquare, Calendar, DollarSign, Star, Store, MapPin, TrendingUp, LogOut, Edit, AlertCircle, Eye, Users, CheckCircle, Bell, ExternalLink, Clock } from 'lucide-react'
-
-import { colors, typography, getStyles } from '../../../lib/styles'
-import { celebrateBooking } from '../../../lib/confetti'
-import { useCountUp } from '../../../hooks/useCountUp'
-import { useScrollReveal } from '../../../hooks/useScrollReveal'
-import AnimatedProgress from '../../../components/AnimatedProgress'
-import NotificationBell from '../../../components/NotificationBell'
-import { useToast } from '../../../components/Toast'
-import FloatingParticles from '../../../components/FloatingParticles'
-
-const formatDate = (timestamp: any): string => {
-  if (!timestamp) return 'Unknown'
-  
-  // Firestore Timestamp object
-  if (timestamp?.toDate) {
-    return timestamp.toDate().toLocaleDateString(
-      'en-US', {
-        year: 'numeric',
-        month: 'short', 
-        day: 'numeric'
-      }
-    )
-  }
-  
-  // Already a Date object
-  if (timestamp instanceof Date) {
-    return timestamp.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
-  }
-  
-  // String or number timestamp
-  try {
-    return new Date(timestamp).toLocaleDateString(
-      'en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      }
-    )
-  } catch {
-    return 'Unknown'
-  }
-}
-
-// Type definitions
-interface Vendor {
-  id: string
-  userId: string
-  businessName?: string
-  category?: string
-  bio?: string
-  location?: string
-  portfolioImages?: string[]
-  pricing?: {
-    min: number
-    max: number
-    currency?: string
-  }
-  rating?: number
-  reviewCount?: number
-  verified?: boolean
-}
-
-interface Enquiry {
-  id: string
-  vendorId: string
-  coupleId: string
-  message: string
-  status: 'pending' | 'replied' | 'closed'
-  createdAt: Date
-}
-
-interface Booking {
-  id: string
-  vendorId: string
-  amount: number
-  status: 'pending' | 'confirmed' | 'paid' | 'cancelled'
-  createdAt: Date
-  date?: Date
-  coupleName?: string
-}
+import { useAuth } from '@/context/AuthContext'
+import { useRequireAuth } from '@/hooks/useRequireAuth'
+import { db } from '@/lib/firebase'
+import { collection, query, where, 
+  getDocs, onSnapshot, orderBy, 
+  limit } from 'firebase/firestore'
+import { formatDate } from '@/lib/dateUtils'
 
 export default function VendorDashboard() {
-  const { loading: authLoading } = useRequireAuth('vendor')
+  const { loading } = useRequireAuth('vendor')
   const { user, userProfile } = useAuth()
-  const { showToast } = useToast()
-  const [loading, setLoading] = useState(true)
+  
+  const [vendorProfile, setVendorProfile] = 
+    useState<any>(null)
   const [stats, setStats] = useState({
     totalEnquiries: 0,
+    weekEnquiries: 0,
     confirmedBookings: 0,
+    upcomingBookings: 0,
     totalRevenue: 0,
-    profileCompletion: 0,
-    averageRating: 0,
+    avgRating: 0,
     reviewCount: 0,
-    profileViews: 0,
-    conversionRate: 0,
-    thisWeekEnquiries: 0,
-    upcomingBookings: 0
+    profileCompletion: 0,
   })
-  const [recentEnquiries, setRecentEnquiries] = useState<(Enquiry & { 
-    coupleName?: string; 
-    coupleEmail?: string;
-    unread?: boolean;
-  })[]>([])
-  const [vendorData, setVendorData] = useState<Vendor | null>(null)
-  const [nextBooking, setNextBooking] = useState<any>(null)
-  const [todayDate, setTodayDate] = useState('')
-  const [unreadCount, setUnreadCount] = useState(0)
+  const [recentEnquiries, setRecentEnquiries] = 
+    useState<any[]>([])
+  const [dataLoading, setDataLoading] = 
+    useState(true)
+  const [hoveredCard, setHoveredCard] = 
+    useState<string | null>(null)
 
   useEffect(() => {
-    if (!user || !userProfile) return
+    if (!user) return
+    loadData()
+  }, [user])
 
-    // Set today's date
-    const today = new Date()
-    setTodayDate(today.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    }))
-
-    const loadData = async () => {
-      try {
-        // Get vendor data
-        const vendorsQuery = query(
-          collection(db, 'vendors'),
-          where('userId', '==', user.uid)
-        )
-        const vendorsSnapshot = await getDocs(vendorsQuery)
-        let vendor: Vendor | null = null
-        let vendorId = user.uid
-        
-        if (!vendorsSnapshot.empty) {
-          vendor = {
-            id: vendorsSnapshot.docs[0].id,
-            ...vendorsSnapshot.docs[0].data()
-          } as Vendor
-          vendorId = vendorsSnapshot.docs[0].id
-          setVendorData(vendor)
-
-          // Calculate profile completion
-          const completion = calculateProfileCompletion(vendor)
-          setStats(prev => ({ ...prev, profileCompletion: completion }))
+  const loadData = async () => {
+    if (!user) return
+    try {
+      const vQuery = query(
+        collection(db, 'vendors'),
+        where('userId', '==', user.uid)
+      )
+      const vSnap = await getDocs(vQuery)
+      
+      if (!vSnap.empty) {
+        const vData = {
+          id: vSnap.docs[0].id,
+          ...vSnap.docs[0].data()
         }
-
-        // Load stats
-        const enquiriesQuery = query(
+        setVendorProfile(vData)
+        
+        const completion = calcCompletion(vData)
+        
+        const eQuery = query(
           collection(db, 'enquiries'),
-          where('vendorId', '==', vendorId)
+          where('vendorId', '==', user.uid)
         )
-        const enquiriesSnapshot = await getDocs(enquiriesQuery)
-        const totalEnquiries = enquiriesSnapshot.size
-
-        // Calculate this week's enquiries
-        const oneWeekAgo = new Date()
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
-        const thisWeekEnquiries = enquiriesSnapshot.docs.filter(doc => {
-          const createdAt = doc.data().createdAt?.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt)
-          return createdAt >= oneWeekAgo
-        }).length
-
-        const bookingsQuery = query(
-          collection(db, 'bookings'),
-          where('vendorId', '==', vendorId)
-        )
-        const bookingsSnapshot = await getDocs(bookingsQuery)
-        const bookings = bookingsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Booking[]
-
-        const confirmedBookings = bookings.filter(b => 
-          b.status === 'confirmed' || b.status === 'paid'
-        ).length
-
-        const upcomingBookings = bookings.filter(b => 
-          b.status === 'confirmed' || b.status === 'paid'
-        ).filter(b => {
-          const bookingDate = b.date || b.createdAt
-          return bookingDate >= today
-        }).length
-
-        const totalRevenue = bookings
-          .filter(b => b.status === 'paid')
-          .reduce((sum, b) => sum + (b.amount || 0), 0)
-
-        // Find next upcoming booking
-        const upcoming = bookings
-          .filter(b => b.status === 'confirmed' || b.status === 'paid')
-          .filter(b => {
-            const bookingDate = b.date || b.createdAt
-            return bookingDate >= today
-          })
-          .sort((a, b) => {
-            const dateA = a.date || a.createdAt
-            const dateB = b.date || b.createdAt
-            return dateA.getTime() - dateB.getTime()
-          })
-        
-        if (upcoming.length > 0) {
-          setNextBooking(upcoming[0])
-        }
-
-        const conversionRate = totalEnquiries > 0 ? (confirmedBookings / totalEnquiries) * 100 : 0
-
-        setStats(prev => ({
-          ...prev,
-          totalEnquiries,
-          confirmedBookings,
-          totalRevenue,
-          averageRating: vendor?.rating || 0,
-          reviewCount: vendor?.reviewCount || 0,
-          profileViews: Math.floor(Math.random() * 500) + 100, // Mock data
-          conversionRate,
-          thisWeekEnquiries,
-          upcomingBookings
+        const eSnap = await getDocs(eQuery)
+        const enquiries = eSnap.docs.map(d => ({
+          id: d.id, ...d.data()
         }))
-
-        // Set up real-time listener for recent enquiries
-        const recentEnquiriesQuery = query(
+        
+        const weekAgo = new Date()
+        weekAgo.setDate(weekAgo.getDate() - 7)
+        
+        const bQuery = query(
+          collection(db, 'bookings'),
+          where('vendorId', '==', user.uid)
+        )
+        const bSnap = await getDocs(bQuery)
+        const bookings = bSnap.docs.map(d => ({
+          id: d.id, ...d.data()
+        }))
+        
+        const paid = bookings.filter(
+          (b: any) => b.status === 'paid'
+        )
+        const confirmed = bookings.filter(
+          (b: any) => b.status === 'confirmed' 
+            || b.status === 'paid'
+        )
+        const revenue = paid.reduce(
+          (sum: number, b: any) => sum + (b.amount || 0), 0
+        )
+        
+        setStats({
+          totalEnquiries: enquiries.length,
+          weekEnquiries: enquiries.filter((e: any) => {
+            if (!e.createdAt) return false
+            const d = e.createdAt?.toDate?.() 
+              || new Date(e.createdAt)
+            return d > weekAgo
+          }).length,
+          confirmedBookings: confirmed.length,
+          upcomingBookings: confirmed.length,
+          totalRevenue: revenue,
+          avgRating: (vData as any).rating || 0,
+          reviewCount: (vData as any).reviewCount || 0,
+          profileCompletion: completion,
+        })
+        
+        const recentQ = query(
           collection(db, 'enquiries'),
-          where('vendorId', '==', vendorId),
+          where('vendorId', '==', user.uid),
           orderBy('createdAt', 'desc'),
           limit(5)
         )
-        
-        const unsubscribe = onSnapshot(recentEnquiriesQuery, async (snapshot) => {
-          const enquiriesData = await Promise.all(
-            snapshot.docs.map(async (enquiryDoc) => {
-              const enquiryData = {
-                id: enquiryDoc.id,
-                ...enquiryDoc.data()
-              } as Enquiry
-
-              // Convert Timestamp to Date using formatDate helper
-              if (enquiryData.createdAt && 
-                  typeof (enquiryData.createdAt as any)?.toDate === 'function') {
-                enquiryData.createdAt = (enquiryData.createdAt as any).toDate()
-              } else if (enquiryData.createdAt && 
-                         !(enquiryData.createdAt instanceof Date)) {
-                enquiryData.createdAt = new Date(enquiryData.createdAt as any)
-              }
-
-              // Fetch couple details
-              let coupleName = 'Unknown'
-              let coupleEmail = 'Unknown'
-              try {
-                const coupleDoc = await getDoc(doc(db, 'users', enquiryData.coupleId))
-                if (coupleDoc.exists()) {
-                  const coupleData = coupleDoc.data() as any
-                  coupleName = coupleData.name
-                  coupleEmail = coupleData.email
-                }
-              } catch (error) {
-                console.error('Error fetching couple details:', error)
-              }
-
-              return {
-                ...enquiryData,
-                coupleName,
-                coupleEmail,
-                unread: enquiryData.status === 'pending' // Mark pending as unread
-              }
-            })
-          )
-
-          setRecentEnquiries(enquiriesData)
-          setUnreadCount(enquiriesData.filter(e => e.unread).length)
-        })
-
-        return unsubscribe
-      } catch (error) {
-        console.error('Error loading vendor data:', error)
-      } finally {
-        setLoading(false)
+        const recentSnap = await getDocs(recentQ)
+        setRecentEnquiries(recentSnap.docs.map(d => ({
+          id: d.id, ...d.data()
+        })))
       }
-    }
-
-    loadData()
-
-    return () => {
-      // Cleanup handled inside loadData
-    }
-  }, [user, userProfile])
-
-  // Animated counters and scroll reveal
-  const animatedEnquiries = useCountUp(stats.totalEnquiries)
-  const animatedBookings = useCountUp(stats.confirmedBookings)
-  const animatedRevenue = useCountUp(stats.totalRevenue)
-  const animatedProfileViews = useCountUp(stats.profileViews)
-  const animatedConversionRate = useCountUp(Math.round(stats.conversionRate))
-  const { ref: statsRef, isVisible: statsVisible } = useScrollReveal(0.1)
-  
-  // Hover state for cards
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
-
-  const calculateProfileCompletion = (vendor: Vendor): number => {
-    let completion = 0
-    
-    if (vendor.businessName) completion += 20
-    if (vendor.category) completion += 20
-    
-    return completion
-  }
-
-  const formatTimeAgo = (date: Date): string => {
-    const now = new Date()
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-    
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes}m ago`
-    } else if (diffInMinutes < 1440) {
-      const hours = Math.floor(diffInMinutes / 60)
-      return `${hours}h ago`
-    } else {
-      const days = Math.floor(diffInMinutes / 1440)
-      return `${days}d ago`
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setDataLoading(false)
     }
   }
 
-  const getMissingFields = (): string[] => {
-    if (!vendorData) return []
-    
-    const missing = []
-    if (!vendorData.businessName) missing.push('business name')
-    if (!vendorData.category) missing.push('category')
-    if (!vendorData.bio) missing.push('bio')
-    if (!vendorData.location) missing.push('location')
-    if (!vendorData.portfolioImages || vendorData.portfolioImages.length === 0) missing.push('portfolio images')
-    if (!vendorData.pricing || vendorData.pricing.min === 0) missing.push('pricing')
-    
-    return missing
+  const calcCompletion = (v: any) => {
+    let score = 0
+    if (v.businessName) score += 20
+    if (v.category) score += 20
+    if (v.bio) score += 15
+    if (v.location) score += 15
+    if (v.portfolioImages?.length > 0) score += 15
+    if (v.pricing?.min) score += 15
+    return score
   }
 
-  if (authLoading || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#1a56db] rounded-full animate-spin"></div>
-      </div>
-    )
+  const signOut = async () => {
+    const { signOutUser } = await import('@/lib/auth')
+    await signOutUser()
+    window.location.href = '/login'
   }
 
-  if (!user || !userProfile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.bg }}>
-        <div className="w-8 h-8 border-2 border-solid border-transparent border-t-[#1a56db] rounded-full animate-spin"></div>
-      </div>
-    )
-  }
+  const name = vendorProfile?.businessName 
+    || userProfile?.name || 'Vendor'
+  const initials = name.substring(0, 2).toUpperCase()
 
-  const displayName = vendorData?.businessName || userProfile.name
-  const missingFields = getMissingFields()
+  const statCards = [
+    {
+      id: 'enquiries',
+      label: 'Total Enquiries',
+      value: stats.totalEnquiries,
+      hint: `${stats.weekEnquiries} this week`,
+      color: '#1a56db',
+      bg: '#ebf5ff',
+      icon: ' ',
+    },
+    {
+      id: 'bookings',
+      label: 'Confirmed Bookings',
+      value: stats.confirmedBookings,
+      hint: `${stats.upcomingBookings} upcoming`,
+      color: '#7c3aed',
+      bg: '#ede9fe',
+      icon: ' ',
+    },
+    {
+      id: 'revenue',
+      label: 'Total Revenue',
+      value: `$${stats.totalRevenue.toLocaleString()}`,
+      hint: 'from paid bookings',
+      color: '#057a55',
+      bg: '#def7ec',
+      icon: ' ',
+    },
+    {
+      id: 'rating',
+      label: 'Avg Rating',
+      value: stats.avgRating || ' ',
+      hint: `${stats.reviewCount} reviews`,
+      color: '#c2410c',
+      bg: '#fff7ed',
+      icon: ' ',
+    },
+  ]
+
+  if (loading || dataLoading) return (
+    <div style={{
+      minHeight: '100vh',
+      background: '#f0f4ff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <div style={{
+        width: 44,
+        height: 44,
+        borderRadius: '50%',
+        border: '3px solid #ebf5ff',
+        borderTop: '3px solid #1a56db',
+        animation: 'spin 1s linear infinite',
+      }} />
+    </div>
+  )
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.bg }}>
-      
-      {/* KUNDA NAVBAR */}
+    <div style={{
+      minHeight: '100vh',
+      background: '#f0f4ff',
+      fontFamily: 'Urbanist, sans-serif',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+
+      <style>{`
+        @keyframes spin { 
+          to { transform: rotate(360deg) } 
+        }
+        @keyframes fadeInUp { 
+          from { opacity:0; transform:translateY(20px) } 
+          to { opacity:1; transform:translateY(0) } 
+        }
+        @keyframes pulse {
+          0%,100% { opacity:0.5; }
+          50% { opacity:1; }
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap');
+      `}</style>
+
       <nav style={{
+        background: '#ffffff',
+        height: 64,
+        borderBottom: '1px solid #e5edff',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        padding: '0 32px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '14px 32px',
-        background: 'white',
-        borderBottom: `1px solid ${colors.border}`
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
       }}>
-        {/* Left - Logo */}
-        <div 
-          className="flex items-center cursor-pointer"
-          onClick={() => window.location.href = '/'}
-        >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}>
           <div style={{
-            width: '8px',
-            height: '8px',
-            border: `1.5px solid ${colors.primary}`,
-            marginRight: '12px'
-          }}></div>
-          <span style={{
-            fontFamily: 'Urbanist',
-            fontSize: '22px',
-            fontWeight: 800,
-            color: colors.primaryDark,
-            letterSpacing: '0.1em'
-          }}>Kunda</span>
-        </div>
-
-        {/* Center - Navigation */}
-        <div style={{ display: 'flex', gap: '32px' }}>
-          <a 
-            href="/dashboard/vendor" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: colors.primaryDark,
-              textDecoration: 'none'
-            }}
-          >
-            Overview
-          </a>
-          <a 
-            href="/dashboard/vendor/profile" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: colors.textSecondary,
-              textDecoration: 'none'
-            }}
-          >
-            Profile
-          </a>
-          <a 
-            href="/dashboard/vendor/bookings" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: colors.textSecondary,
-              textDecoration: 'none'
-            }}
-          >
-            Bookings
-          </a>
-        </div>
-
-        {/* Right - User Info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <NotificationBell />
-          
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            background: colors.bg,
-            border: `1px solid ${colors.border}`,
+            width: 36,
+            height: 36,
+            background: '#1a56db',
+            borderRadius: 10,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            fontSize: 18,
           }}>
-            <span style={{
-              color: colors.primaryDark,
-              fontSize: '13px',
-              fontFamily: 'Urbanist',
-              fontWeight: 500
-            }}>
-              {(vendorData?.businessName || userProfile.name).charAt(0).toUpperCase()}
-            </span>
+            
           </div>
           <span style={{
-            fontFamily: 'Urbanist',
-            fontSize: '13px',
-            color: colors.primaryDark
+            fontSize: 20,
+            fontWeight: 800,
+            color: '#111928',
           }}>
-            {vendorData?.businessName || userProfile.name}
+            Kunda
+          </span>
+          <span style={{
+            fontSize: 13,
+            color: '#9ca3af',
+            marginLeft: 4,
+          }}>
+            · Vendor
+          </span>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          gap: 0,
+        }}>
+          {[
+            ['Overview', '/dashboard/vendor'],
+            ['Profile', '/dashboard/vendor/profile'],
+            ['Bookings', '/dashboard/vendor/bookings'],
+            ['Analytics', '/dashboard/vendor/analytics'],
+          ].map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              style={{
+                padding: '0 18px',
+                height: 64,
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: 14,
+                fontWeight: 600,
+                color: href === '/dashboard/vendor'
+                  ? '#1a56db' : '#6b7280',
+                textDecoration: 'none',
+                borderBottom: href === '/dashboard/vendor'
+                  ? '2px solid #1a56db' : '2px solid transparent',
+                transition: 'all 0.2s',
+                fontFamily: 'Urbanist, sans-serif',
+              }}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}>
+          <div style={{
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 13,
+            fontWeight: 800,
+            color: '#fff',
+          }}>
+            {initials}
+          </div>
+          <span style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: '#111928',
+          }}>
+            {name}
           </span>
           <button
-            onClick={() => {
-              // signOutUser() - will need to implement this
-              window.location.href = '/login'
-            }}
+            onClick={signOut}
             style={{
-              border: `0.5px solid ${colors.primary}`,
-              color: colors.primary,
               background: 'transparent',
-              padding: '6px 14px',
-              fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              cursor: 'pointer'
+              border: '1.5px solid #1a56db',
+              color: '#1a56db',
+              padding: '7px 16px',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontFamily: 'Urbanist, sans-serif',
             }}
           >
             Sign Out
@@ -485,578 +349,571 @@ export default function VendorDashboard() {
         </div>
       </nav>
 
-      {/* HERO SECTION */}
-      <div style={{ padding: '32px 32px 20px', backgroundColor: colors.bg }}>
-        <div className="flex justify-between items-start">
-          <div>
-            <div className="text-xs uppercase tracking-wider mb-2" style={{ color: colors.primary, fontFamily: 'Urbanist', fontWeight: 400 }}>
-              Vendor Dashboard
-            </div>
-            <div className="flex items-center gap-3 mb-3">
-              <h1 
-                className="text-4xl" 
-                style={{ fontFamily: 'Urbanist', color: 'white', fontWeight: 800, fontSize: '36px' }}
-              >
-                {vendorData?.businessName || userProfile.name}
-              </h1>
-              {vendorData?.verified && (
-                <div 
-                  className="flex items-center text-xs px-2 py-1"
-                  style={{
-                    fontFamily: 'Urbanist',
-                    background: '#e8f5e0',
-                    color: '#3b6d11',
-                    border: '0.5px solid #c0dd97'
-                  }}
-                >
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Verified
-                </div>
-              )}
-            </div>
-            <p className="text-sm mb-2" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-              {vendorData?.category ? `${vendorData.category} — ${vendorData.location || 'Location not set'}` : 'Complete your profile to start receiving enquiries'}
-            </p>
-            <p className="text-xs" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
-              Welcome back! {todayDate}
-            </p>
+      <div style={{
+        background: 'linear-gradient(135deg,#0f2460,#1a56db,#3f83f8)',
+        padding: '32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute',
+          width: 300,
+          height: 300,
+          borderRadius: '50%',
+          border: '1px solid rgba(255,255,255,0.06)',
+          top: -100,
+          right: 200,
+        }} />
+        <div style={{
+          position: 'absolute',
+          width: 500,
+          height: 500,
+          borderRadius: '50%',
+          border: '1px solid rgba(255,255,255,0.04)',
+          top: -200,
+          right: 100,
+        }} />
+
+        <div style={{ zIndex: 1 }}>
+          <div style={{
+            fontSize: 11,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: '#93c5fd',
+            marginBottom: 8,
+          }}>
+            Vendor Dashboard
           </div>
-          
-          {unreadCount > 0 && (
-            <div 
-              className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
-              style={{
-                background: '#faeeda',
-                border: '0.5px solid #fac775',
-                padding: '8px 12px'
-              }}
-              onClick={() => window.location.href = '/dashboard/vendor/bookings'}
-            >
-              <Bell className="w-4 h-4 mr-2" style={{ color: '#633806' }} />
-              <span className="text-xs" style={{ fontFamily: 'Urbanist', color: '#633806' }}>
-                {unreadCount} new {unreadCount === 1 ? 'enquiry' : 'enquiries'}
-              </span>
+          <h1 style={{
+            fontSize: 36,
+            fontWeight: 800,
+            color: '#ffffff',
+            marginBottom: 6,
+            letterSpacing: '-0.02em',
+          }}>
+            {name}
+          </h1>
+          <p style={{
+            fontSize: 15,
+            color: 'rgba(255,255,255,0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            {vendorProfile?.category || 'Wedding Vendor'}
+            {vendorProfile?.location && (
+              <>
+                <span style={{ opacity: 0.4 }}>·</span>
+                {vendorProfile.location}
+              </>
+            )}
+          </p>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          gap: 10,
+          zIndex: 1,
+          alignItems: 'center',
+        }}>
+          {vendorProfile?.verified ? (
+            <div style={{
+              background: '#def7ec',
+              color: '#057a55',
+              padding: '6px 14px',
+              borderRadius: 50,
+              fontSize: 12,
+              fontWeight: 700,
+            }}>
+              Verified
+            </div>
+          ) : (
+            <div style={{
+              background: '#fdf6b2',
+              color: '#c27803',
+              padding: '6px 14px',
+              borderRadius: 50,
+              fontSize: 12,
+              fontWeight: 700,
+            }}>
+              Unverified
             </div>
           )}
+          
+          <a
+            href="/dashboard/vendor/profile"
+            style={{
+              background: '#ffffff',
+              color: '#1a56db',
+              padding: '9px 20px',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 700,
+              textDecoration: 'none',
+              fontFamily: 'Urbanist, sans-serif',
+            }}
+          >
+            Edit Profile
+          </a>
+          
+          <a
+            href="/dashboard/vendor/bookings"
+            style={{
+              background: 'rgba(255,255,255,0.15)',
+              color: '#ffffff',
+              padding: '9px 20px',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 700,
+              textDecoration: 'none',
+              border: '1px solid rgba(255,255,255,0.3)',
+              fontFamily: 'Urbanist, sans-serif',
+            }}
+          >
+            My Bookings
+          </a>
         </div>
       </div>
 
-      {/* PROFILE COMPLETION BANNER */}
       {stats.profileCompletion < 100 && (
-        <div 
-          className="flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity"
-          style={{ 
-            background: '#faf0e0', 
-            border: '0.5px solid ${colors.border}', 
-            padding: '14px 20px',
-            margin: '0 32px 20px'
-          }}
-          onClick={() => window.location.href = '/dashboard/vendor/profile'}
+        <div style={{
+          margin: '16px 24px 0',
+          background: '#ffffff',
+          borderRadius: 12,
+          border: '1px solid #e5edff',
+          borderLeft: '4px solid #1a56db',
+          padding: '14px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+          cursor: 'pointer',
+        }}
+          onClick={() => window.location.href = 
+            '/dashboard/vendor/profile'}
         >
-          <div>
-            <div className="text-xs uppercase" style={{ color: colors.textSecondary, fontFamily: 'Urbanist' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              color: '#6b7280',
+              marginBottom: 3,
+            }}>
               Profile Completion
             </div>
-            <div className="text-sm mt-1" style={{ color: colors.primaryDark, fontFamily: 'Urbanist' }}>
-              Add {missingFields.join(', ')} to attract more couples
+            <div style={{
+              fontSize: 13,
+              fontWeight: 500,
+              color: '#374151',
+            }}>
+              Complete your profile to attract 
+              more couples and get verified
             </div>
           </div>
-          <div className="flex-1 mx-4">
-            <div className="h-1" style={{ background: '#f0e4d0' }}>
-              <div 
-                className="h-full transition-all duration-500"
-                style={{ 
-                  width: `${stats.profileCompletion}%`, 
-                  background: colors.primary 
-                }}
-              ></div>
-            </div>
+          <div style={{
+            flex: 1,
+            height: 6,
+            background: '#e5edff',
+            borderRadius: 3,
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${stats.profileCompletion}%`,
+              background: '#1a56db',
+              borderRadius: 3,
+              transition: 'width 1s ease',
+            }} />
           </div>
-          <div 
-            className="text-2xl font-light" 
-            style={{ fontFamily: 'Urbanist', color: colors.primary }}
-          >
+          <div style={{
+            fontSize: 22,
+            fontWeight: 800,
+            color: '#1a56db',
+            minWidth: 52,
+            textAlign: 'right',
+          }}>
             {stats.profileCompletion}%
           </div>
         </div>
       )}
 
-      {/* STATS ROW */}
-      <div 
-        ref={statsRef}
-        className="grid grid-cols-5 gap-3 px-8 mb-5"
-        style={{
-          opacity: statsVisible ? 1 : 0,
-          transform: statsVisible ? 'translateY(0)' : 'translateY(24px)',
-          transition: 'all 0.6s ease'
-        }}
-      >
-        {/* Total Enquiries */}
-        <div 
-          onMouseEnter={() => setHoveredCard('enquiries')}
-          onMouseLeave={() => setHoveredCard(null)}
-          className="border cursor-pointer transition-all"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: hoveredCard === 'enquiries' ? colors.primary : colors.border, 
-            padding: '16px 18px',
-            borderRadius: '12px',
-            boxShadow: hoveredCard === 'enquiries' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-            transform: hoveredCard === 'enquiries' ? 'translateY(-3px)' : 'translateY(0)',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Urbanist', 
-            letterSpacing: '0.15em',
-            color: colors.textSecondary 
-          }}>
-            Total Enquiries
-          </div>
-          <div className="text-3xl mb-1" style={{ 
-            fontFamily: 'Urbanist', 
-            color: '#111928',
-            fontWeight: 800,
-            fontSize: '36px',
-            letterSpacing: '-0.02em'
-          }}>
-            {animatedEnquiries}
-          </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
-            {stats.thisWeekEnquiries} this week
-          </div>
-        </div>
-
-        {/* Confirmed Bookings */}
-        <div 
-          onMouseEnter={() => setHoveredCard('bookings')}
-          onMouseLeave={() => setHoveredCard(null)}
-          className="border cursor-pointer transition-all"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: hoveredCard === 'bookings' ? colors.primary : colors.border, 
-            padding: '16px 18px',
-            borderRadius: '12px',
-            boxShadow: hoveredCard === 'bookings' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-            transform: hoveredCard === 'bookings' ? 'translateY(-3px)' : 'translateY(0)',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Urbanist', 
-            letterSpacing: '0.15em',
-            color: colors.textSecondary 
-          }}>
-            Confirmed Bookings
-          </div>
-          <div className="text-3xl mb-1" style={{ 
-            fontFamily: 'Urbanist', 
-            color: '#111928',
-            fontWeight: 800,
-            fontSize: '36px',
-            letterSpacing: '-0.02em'
-          }}>
-            {animatedBookings}
-          </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
-            {stats.upcomingBookings} upcoming
-          </div>
-        </div>
-
-        {/* Total Revenue */}
-        <div 
-          onMouseEnter={() => setHoveredCard('revenue')}
-          onMouseLeave={() => setHoveredCard(null)}
-          className="border cursor-pointer transition-all"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: hoveredCard === 'revenue' ? colors.primary : colors.border, 
-            padding: '16px 18px',
-            borderRadius: '12px',
-            boxShadow: hoveredCard === 'revenue' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-            transform: hoveredCard === 'revenue' ? 'translateY(-3px)' : 'translateY(0)',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Urbanist', 
-            letterSpacing: '0.15em',
-            color: colors.textSecondary 
-          }}>
-            Total Revenue
-          </div>
-          <div className="text-3xl mb-1" style={{ 
-            fontFamily: 'Urbanist', 
-            color: '#111928',
-            fontWeight: 800,
-            fontSize: '36px',
-            letterSpacing: '-0.02em'
-          }}>
-            ${animatedRevenue.toLocaleString()}
-          </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
-            from paid bookings
-          </div>
-        </div>
-
-        {/* Profile Views */}
-        <div 
-          onMouseEnter={() => setHoveredCard('views')}
-          onMouseLeave={() => setHoveredCard(null)}
-          className="border cursor-pointer transition-all"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: hoveredCard === 'views' ? colors.primary : colors.border, 
-            padding: '16px 18px',
-            borderRadius: '12px',
-            boxShadow: hoveredCard === 'views' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-            transform: hoveredCard === 'views' ? 'translateY(-3px)' : 'translateY(0)',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Urbanist', 
-            letterSpacing: '0.15em',
-            color: colors.textSecondary 
-          }}>
-            Profile Views
-          </div>
-          <div className="text-3xl mb-1" style={{ 
-            fontFamily: 'Urbanist', 
-            color: '#111928',
-            fontWeight: 800,
-            fontSize: '36px',
-            letterSpacing: '-0.02em'
-          }}>
-            {animatedProfileViews}
-          </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
-            this month
-          </div>
-        </div>
-
-        {/* Conversion Rate */}
-        <div 
-          onMouseEnter={() => setHoveredCard('conversion')}
-          onMouseLeave={() => setHoveredCard(null)}
-          className="border cursor-pointer transition-all"
-          style={{ 
-            backgroundColor: '#ffffff', 
-            borderColor: hoveredCard === 'conversion' ? colors.primary : colors.border, 
-            padding: '16px 18px',
-            borderRadius: '12px',
-            boxShadow: hoveredCard === 'conversion' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-            transform: hoveredCard === 'conversion' ? 'translateY(-3px)' : 'translateY(0)',
-            transition: 'all 0.25s ease'
-          }}
-        >
-          <div className="text-xs uppercase mb-2" style={{ 
-            fontFamily: 'Urbanist', 
-            letterSpacing: '0.15em',
-            color: colors.textSecondary 
-          }}>
-            Conversion Rate
-          </div>
-          <div className="text-3xl mb-1" style={{ 
-            fontFamily: 'Urbanist', 
-            color: '#111928',
-            fontWeight: 800,
-            fontSize: '36px',
-            letterSpacing: '-0.02em'
-          }}>
-            {animatedConversionRate}%
-          </div>
-          <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.primary }}>
-            enquiries to bookings
-          </div>
-        </div>
-      </div>
-
-      {/* NEXT BOOKING HIGHLIGHT */}
-      {nextBooking && (
-        <div className="px-8 mb-6">
-          <div 
-            className="p-4"
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4,minmax(0,1fr))',
+        gap: 16,
+        padding: '20px 24px',
+        animation: 'fadeInUp 0.5s ease',
+      }}>
+        {statCards.map((card, i) => (
+          <div
+            key={card.id}
+            onMouseEnter={() => setHoveredCard(card.id)}
+            onMouseLeave={() => setHoveredCard(null)}
             style={{
-              background: '#e8f5e0',
-              border: '0.5px solid #c0dd97',
-              borderLeft: '4px solid #3b6d11'
+              background: '#ffffff',
+              borderRadius: 12,
+              border: hoveredCard === card.id
+                ? '1px solid #1a56db'
+                : '1px solid #e5edff',
+              boxShadow: hoveredCard === card.id
+                ? '0 8px 24px rgba(26,86,219,0.12)'
+                : '0 1px 3px rgba(0,0,0,0.08)',
+              padding: '18px 20px',
+              transform: hoveredCard === card.id
+                ? 'translateY(-3px)' : 'translateY(0)',
+              transition: 'all 0.25s ease',
+              animation: `fadeInUp 0.5s ease ${i*0.1}s both`,
+              overflow: 'hidden',
+              position: 'relative',
             }}
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-xs uppercase mb-1" style={{ fontFamily: 'Urbanist', color: '#3b6d11' }}>
-                  Next Upcoming Booking
-                </div>
-                <div className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
-                  {nextBooking.coupleName || 'Client'} • {formatDate(nextBooking.date)}
-                </div>
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0,
+              height: 4,
+              background: card.color,
+              borderRadius: '12px 12px 0 0',
+            }} />
+            <div style={{
+              width: 40,
+              height: 40,
+              borderRadius: '50%',
+              background: card.bg,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 20,
+              marginBottom: 12,
+            }}>
+              {card.icon}
+            </div>
+            <div style={{
+              fontSize: 32,
+              fontWeight: 800,
+              color: '#111928',
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+              marginBottom: 4,
+            }}>
+              {card.value}
+            </div>
+            <div style={{
+              fontSize: 12,
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              color: '#6b7280',
+              marginBottom: 4,
+            }}>
+              {card.label}
+            </div>
+            <div style={{
+              fontSize: 13,
+              fontWeight: 500,
+              color: card.color,
+            }}>
+              {card.hint}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)',
+        gap: 16,
+        padding: '0 24px 24px',
+        flex: 1,
+      }}>
+
+        <div style={{
+          background: '#ffffff',
+          borderRadius: 12,
+          border: '1px solid #e5edff',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            padding: '16px 20px',
+            borderBottom: '1px solid #f0f4ff',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+            <div style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#111928',
+            }}>
+              Recent Enquiries
+            </div>
+            <a href="/dashboard/vendor/bookings"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#1a56db',
+                textDecoration: 'none',
+              }}>
+              View All 
+            </a>
+          </div>
+
+          {recentEnquiries.length === 0 ? (
+            <div style={{
+              padding: '48px 20px',
+              textAlign: 'center',
+            }}>
+              <div style={{
+                fontSize: 48,
+                marginBottom: 12,
+              }}> </div>
+              <div style={{
+                fontSize: 18,
+                fontWeight: 700,
+                color: '#6b7280',
+                marginBottom: 6,
+              }}>
+                No enquiries yet
               </div>
-              <Clock className="w-5 h-5" style={{ color: '#3b6d11' }} />
+              <div style={{
+                fontSize: 14,
+                color: '#9ca3af',
+              }}>
+                Complete your profile to start 
+                receiving enquiries from couples
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* QUICK ACTIONS */}
-      <div className="px-8 mb-6">
-        <div className="flex gap-3">
-          <button
-            onClick={() => window.location.href = '/dashboard/vendor/profile'}
-            className="flex items-center text-xs px-4 py-2"
-            style={{
-              fontFamily: 'Urbanist',
-              background: colors.primaryDark,
-              color: colors.bg,
-              border: 'none',
-              cursor: 'pointer'
-            }}
-          >
-            <Edit className="w-4 h-4 mr-2" />
-            Edit Profile
-          </button>
-          <button
-            onClick={() => window.location.href = '/dashboard/vendor/bookings'}
-            className="flex items-center text-xs px-4 py-2"
-            style={{
-              fontFamily: 'Urbanist',
-              background: 'transparent',
-              color: colors.primaryDark,
-              border: `1px solid ${colors.border}`,
-              cursor: 'pointer'
-            }}
-          >
-            <Calendar className="w-4 h-4 mr-2" />
-            My Bookings
-          </button>
-          <button
-            onClick={() => window.location.href = `/vendor/${user?.uid}`}
-            className="flex items-center text-xs px-4 py-2"
-            style={{
-              fontFamily: 'Urbanist',
-              background: 'transparent',
-              color: colors.primaryDark,
-              border: `1px solid ${colors.border}`,
-              cursor: 'pointer'
-            }}
-          >
-            <ExternalLink className="w-4 h-4 mr-2" />
-            View Public Profile
-          </button>
-        </div>
-      </div>
-
-      {/* MAIN GRID */}
-      <div className="grid grid-cols-12 gap-4 px-8 pb-8">
-        {/* LEFT COLUMN - Recent Enquiries */}
-        <div className="col-span-8">
-          <div 
-            className="p-5"
-            style={{ backgroundColor: colors.bg, border: '0.5px solid ${colors.border}' }}
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
-                Recent Enquiries
-              </h2>
-              {unreadCount > 0 && (
-                <div 
-                  className="text-xs px-2 py-1"
-                  style={{
-                    fontFamily: 'Urbanist',
-                    background: '#faeeda',
-                    color: '#633806',
-                    border: '0.5px solid #fac775'
-                  }}
+          ) : (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+              {recentEnquiries.map((enq, i) => (
+                <div key={enq.id} style={{
+                  padding: '14px 20px',
+                  borderBottom: '1px solid #f0f4ff',
+                  display: 'flex',
+                  gap: 12,
+                  alignItems: 'flex-start',
+                  cursor: 'pointer',
+                  transition: 'background 0.15s',
+                }}
+                  onMouseEnter={e => 
+                    (e.currentTarget.style.background = '#f8faff')}
+                  onMouseLeave={e => 
+                    (e.currentTarget.style.background = 'transparent')}
                 >
-                  {unreadCount} unread
-                </div>
-              )}
-            </div>
-            
-            {recentEnquiries.length > 0 ? (
-              <div className="space-y-3">
-                {recentEnquiries.map((enquiry) => (
-                  <div 
-                    key={enquiry.id}
-                    className={`flex items-start justify-between p-3 cursor-pointer hover:bg-white transition-colors ${
-                      enquiry.unread ? 'bg-white' : ''
-                    }`}
-                    style={{ border: '0.5px solid ${colors.border}' }}
-                    onClick={() => window.location.href = '/dashboard/vendor/bookings'}
-                  >
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 600, fontSize: '15px' }}>
-                          {enquiry.coupleName}
-                        </div>
-                        {enquiry.unread && (
-                          <div className="w-2 h-2 rounded-full" style={{ background: colors.primary }}></div>
-                        )}
-                      </div>
-                      <div className="text-xs" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                        {enquiry.message.substring(0, 65)}{enquiry.message.length > 65 ? '...' : ''}
-                      </div>
+                  <div style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 13,
+                    fontWeight: 800,
+                    color: '#fff',
+                    flexShrink: 0,
+                  }}>
+                    {(enq.coupleName || 'C')
+                      .substring(0,2).toUpperCase()}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: '#111928',
+                      marginBottom: 3,
+                    }}>
+                      {enq.coupleName || 'Couple'}
                     </div>
-                    <div className="text-right ml-4">
-                      <div className="text-xs mb-1" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
-                        {formatTimeAgo(enquiry.createdAt)}
-                      </div>
-                      <div 
-                        className="text-xs px-2 py-1"
-                        style={{
-                          fontFamily: 'Urbanist',
-                          ...(enquiry.status === 'pending' && {
-                            background: '#faeeda',
-                            color: '#633806',
-                            border: '0.5px solid #fac775'
-                          }),
-                          ...(enquiry.status === 'replied' && {
-                            background: '#e8f5e0',
-                            color: '#3b6d11',
-                            border: '0.5px solid #c0dd97'
-                          }),
-                          ...(enquiry.status === 'closed' && {
-                            background: '#f0efef',
-                            color: '#5f5e5a'
-                          })
-                        }}
-                      >
-                        {enquiry.status.charAt(0).toUpperCase() + enquiry.status.slice(1)}
-                      </div>
+                    <div style={{
+                      fontSize: 12,
+                      color: '#6b7280',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}>
+                      {enq.message?.substring(0,65)}...
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <MessageSquare size={32} style={{ color: '#b4a090' }} className="mx-auto mb-3" />
-                <div className="text-sm" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  No enquiries yet
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    gap: 6,
+                    flexShrink: 0,
+                  }}>
+                    <div style={{
+                      fontSize: 11,
+                      color: '#9ca3af',
+                    }}>
+                      {formatDate(enq.createdAt)}
+                    </div>
+                    <div style={{
+                      padding: '3px 10px',
+                      borderRadius: 50,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      background: enq.status === 'pending'
+                        ? '#fdf6b2' : '#def7ec',
+                      color: enq.status === 'pending'
+                        ? '#c27803' : '#057a55',
+                    }}>
+                      {enq.status}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs mt-1" style={{ fontFamily: 'Urbanist', color: '#b4a090' }}>
-                  Your enquiries from couples will appear here
-                </div>
-              </div>
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* RIGHT COLUMN - Business Profile */}
-        <div className="col-span-4">
-          <div 
-            className="p-5"
-            style={{ backgroundColor: colors.bg, border: '0.5px solid ${colors.border}' }}
-          >
-            <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Urbanist', color: colors.textPrimary }}>
+        <div style={{
+          background: '#ffffff',
+          borderRadius: 12,
+          border: '1px solid #e5edff',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            padding: '16px 20px',
+            borderBottom: '1px solid #f0f4ff',
+          }}>
+            <div style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#111928',
+            }}>
               Business Profile
-            </h2>
-            
-            <div className="space-y-3">
-              <div 
-                className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${colors.border}` }}
-              >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  Category
-                </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
-                  {vendorData?.category || '—'}
-                </span>
-              </div>
-              
-              <div 
-                className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${colors.border}` }}
-              >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  Location
-                </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
-                  {vendorData?.location || '—'}
-                </span>
-              </div>
-              
-              <div 
-                className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${colors.border}` }}
-              >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  Price Range
-                </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
-                  {vendorData?.pricing && vendorData.pricing.min > 0 
-                    ? `$${vendorData.pricing.min.toLocaleString()} — $${vendorData.pricing.max?.toLocaleString() || 'TBD'}`
-                    : '—'
-                  }
-                </span>
-              </div>
-              
-              <div 
-                className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${colors.border}` }}
-              >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  Status
-                </span>
-                <div 
-                  className="text-xs px-2 py-1 uppercase"
-                  style={{
-                    fontFamily: 'Urbanist',
-                    background: vendorData?.verified ? '#e8f5e0' : '#faeeda',
-                    color: vendorData?.verified ? '#3b6d11' : '#633806',
-                    border: vendorData?.verified ? '0.5px solid #c0dd97' : '0.5px solid #fac775',
-                    padding: '3px 10px',
-                    fontSize: '10px'
-                  }}
-                >
-                  {vendorData?.verified ? 'Verified' : 'Unverified'}
-                </div>
-              </div>
-              
-              <div 
-                className="flex justify-between items-center pb-3"
-                style={{ borderBottom: `1px solid ${colors.border}` }}
-              >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  Portfolio
-                </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
-                  {vendorData?.portfolioImages?.length || 0} images
-                </span>
-              </div>
-              
-              <div 
-                className="flex justify-between items-center"
-              >
-                <span className="text-xs uppercase" style={{ fontFamily: 'Urbanist', color: colors.textSecondary }}>
-                  Rating
-                </span>
-                <span className="text-sm font-medium" style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 500 }}>
-                  {stats.averageRating > 0 
-                    ? `${stats.averageRating.toFixed(1)} (${stats.reviewCount} reviews)`
-                    : 'No reviews yet'
-                  }
-                </span>
-              </div>
             </div>
-            
-            <button
-              onClick={() => window.location.href = '/dashboard/vendor/profile'}
-              className="w-full mt-5 text-xs uppercase font-medium transition-colors"
-              style={{ 
-                background: colors.primaryDark, 
-                color: colors.bg, 
+          </div>
+          <div style={{ padding: '0 20px' }}>
+            {[
+              ['Category', vendorProfile?.category || ' '],
+              ['Location', vendorProfile?.location || ' '],
+              ['Price Range', vendorProfile?.pricing?.min
+                ? `$${vendorProfile.pricing.min} - $${vendorProfile.pricing.max}` 
+                : ' '],
+              ['Status', vendorProfile?.verified 
+                ? ' Verified' : ' Unverified'],
+              ['Portfolio', `${vendorProfile?.portfolioImages?.length || 0} images`],
+              ['Rating', stats.avgRating 
+                ? `${stats.avgRating} (${stats.reviewCount} reviews)` 
+                : 'No reviews yet'],
+            ].map(([key, val]) => (
+              <div key={key} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 0',
+                borderBottom: '1px solid #f0f4ff',
+              }}>
+                <span style={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  color: '#6b7280',
+                }}>
+                  {key}
+                </span>
+                <span style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: '#111928',
+                }}>
+                  {val}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: '16px 20px' }}>
+            <a
+              href="/dashboard/vendor/profile"
+              style={{
+                display: 'block',
+                width: '100%',
+                background: '#1a56db',
+                color: '#ffffff',
                 padding: '11px',
-                fontFamily: 'Urbanist',
-                border: 'none',
-                cursor: 'pointer'
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 700,
+                textAlign: 'center',
+                textDecoration: 'none',
+                fontFamily: 'Urbanist, sans-serif',
               }}
             >
               Edit Profile
-            </button>
+            </a>
+            
+            <a
+              href="/dashboard/vendor/analytics"
+              style={{
+                display: 'block',
+                width: '100%',
+                background: 'transparent',
+                color: '#1a56db',
+                padding: '11px',
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 700,
+                textAlign: 'center',
+                textDecoration: 'none',
+                border: '1.5px solid #1a56db',
+                marginTop: 8,
+                fontFamily: 'Urbanist, sans-serif',
+              }}
+            >
+              View Analytics
+            </a>
           </div>
         </div>
       </div>
+
+      <footer style={{
+        background: '#ffffff',
+        borderTop: '1px solid #e5edff',
+        padding: '16px 32px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontFamily: 'Urbanist, sans-serif',
+      }}>
+        <div style={{ fontSize: 13, color: '#9ca3af' }}>
+          © 2026 Kunda Wedding Platform · Kigali, Rwanda
+        </div>
+        <div style={{
+          display: 'flex', gap: 20, alignItems: 'center'
+        }}>
+          <a href="https://wa.me/250783312746"
+            target="_blank"
+            style={{
+              fontSize: 13, color: '#6b7280',
+              textDecoration: 'none'
+            }}>
+            WhatsApp Support
+          </a>
+          <a href="https://instagram.com/darkxente"
+            target="_blank"
+            style={{
+              fontSize: 13, color: '#6b7280',
+              textDecoration: 'none'
+            }}>
+            @darkxente
+          </a>
+          <span style={{ fontSize: 13, color: '#9ca3af' }}>
+            Made with in Rwanda
+          </span>
+        </div>
+      </footer>
     </div>
   )
 }
