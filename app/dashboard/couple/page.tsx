@@ -874,11 +874,16 @@ export default function CoupleDashboard() {
         {/* Left side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '8px',
-            height: '8px',
-            border: '1.5px solid #1a56db',
-            borderRadius: '50%'
-          }}></div>
+            width: '32px',
+            height: '32px',
+            backgroundColor: '#1a56db',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Heart className="w-5 h-5 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+          </div>
           <span style={{
             fontFamily: 'Urbanist',
             fontSize: '22px',

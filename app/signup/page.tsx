@@ -9,7 +9,7 @@ import { signUpWithEmail } from '../../lib/auth'
 import { createUser } from '../../lib/firestore'
 import { testFirebaseConnection, checkEnvironmentVariables } from '../../lib/firebase-test'
 import { User } from '../../types'
-import { Loader2, Users, Store, Eye, EyeOff, Check, X } from 'lucide-react'
+import { Loader2, Users, Store, Eye, EyeOff, Check, X, Heart } from 'lucide-react'
 import { colors, typography, getStyles } from '../../lib/styles'
 
 const passwordRequirements = {
@@ -158,6 +158,12 @@ export default function SignupPage() {
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', backgroundColor: 'var(--color-background)' }}>
       <div style={{ maxWidth: '448px', width: '100%', display: 'flex', flexDirection: 'column', gap: '32px', backgroundColor: 'var(--color-card)', padding: '32px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(75, 71, 165, 0.15)' }}>
         <div style={{ textAlign: 'center' }}>
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+            </div>
+            <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '24px' }}>Kunda</span>
+          </div>
           <h1 style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '32px', marginBottom: '8px' }}>Join Kunda</h1>
           <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontWeight: 400 }}>Start planning your perfect wedding</p>
         </div>

@@ -118,6 +118,12 @@ export default function ProfilePage() {
       <div style={{ maxWidth: '896px', margin: '0 auto', padding: '32px' }}>
         {/* Header */}
         <div style={{ marginBottom: '32px' }}>
+          <div className="flex items-center mb-4">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+            </div>
+            <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '24px' }}>Kunda</span>
+          </div>
           <h1 style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', fontFamily: 'var(--font-family-heading)', color: '#FFFFFF' }}>Profile Settings</h1>
           <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontWeight: 400 }}>Manage your account information and preferences</p>
         </div>

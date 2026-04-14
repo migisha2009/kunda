@@ -8,6 +8,7 @@ import { collection, query, where,
   getDocs, onSnapshot, orderBy, 
   limit } from 'firebase/firestore'
 import { formatDate } from '@/lib/dateUtils'
+import { Heart } from 'lucide-react'
 
 export default function VendorDashboard() {
   const { loading } = useRequireAuth('vendor')
@@ -184,7 +185,7 @@ export default function VendorDashboard() {
   if (loading || dataLoading) return (
     <div style={{
       minHeight: '100vh',
-      background: '#f0f4ff',
+      background: 'var(--color-background)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -193,8 +194,8 @@ export default function VendorDashboard() {
         width: 44,
         height: 44,
         borderRadius: '50%',
-        border: '3px solid #ebf5ff',
-        borderTop: '3px solid #1a56db',
+        border: '3px solid rgba(245, 166, 35, 0.2)',
+        borderTop: '3px solid var(--color-accent)',
         animation: 'spin 1s linear infinite',
       }} />
     </div>
@@ -203,8 +204,8 @@ export default function VendorDashboard() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#f0f4ff',
-      fontFamily: 'Urbanist, sans-serif',
+      background: 'var(--color-background)',
+      fontFamily: 'var(--font-family-body)',
       display: 'flex',
       flexDirection: 'column',
     }}>
@@ -221,14 +222,13 @@ export default function VendorDashboard() {
           0%,100% { opacity:0.5; }
           50% { opacity:1; }
         }
-        @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap');
       `}</style>
 
       <nav style={{
-        background: '#ffffff',
+        background: 'var(--color-card)',
         height: 64,
-        borderBottom: '1px solid #e5edff',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        borderBottom: '1px solid var(--color-border)',
+        boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
         padding: '0 32px',
         display: 'flex',
         alignItems: 'center',
@@ -245,26 +245,28 @@ export default function VendorDashboard() {
           <div style={{
             width: 36,
             height: 36,
-            background: '#1a56db',
+            background: 'var(--color-accent)',
             borderRadius: 10,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 18,
           }}>
-            
+            <Heart className="w-5 h-5 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
           </div>
           <span style={{
             fontSize: 20,
             fontWeight: 800,
-            color: '#111928',
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-family-heading)',
           }}>
             Kunda
           </span>
           <span style={{
             fontSize: 13,
-            color: '#9ca3af',
+            color: 'rgba(255,255,255,0.8)',
             marginLeft: 4,
+            fontFamily: 'var(--font-family-body)',
           }}>
             · Vendor
           </span>
@@ -291,12 +293,12 @@ export default function VendorDashboard() {
                 fontSize: 14,
                 fontWeight: 600,
                 color: window.location.pathname === href
-                  ? '#1a56db' : '#6b7280',
+                  ? 'var(--color-accent)' : 'rgba(255,255,255,0.8)',
                 textDecoration: 'none',
                 borderBottom: window.location.pathname === href
-                  ? '2px solid #1a56db' : '2px solid transparent',
+                  ? '2px solid var(--color-accent)' : '2px solid transparent',
                 transition: 'all 0.2s',
-                fontFamily: 'Urbanist, sans-serif',
+                fontFamily: 'var(--font-family-body)',
               }}
             >
               {label}
@@ -313,7 +315,7 @@ export default function VendorDashboard() {
             width: 36,
             height: 36,
             borderRadius: '50%',
-            background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+            background: 'var(--gradient-hero)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -326,7 +328,8 @@ export default function VendorDashboard() {
           <span style={{
             fontSize: 14,
             fontWeight: 600,
-            color: '#111928',
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-family-body)',
           }}>
             {name}
           </span>
@@ -334,14 +337,14 @@ export default function VendorDashboard() {
             onClick={signOut}
             style={{
               background: 'transparent',
-              border: '1.5px solid #1a56db',
-              color: '#1a56db',
+              border: '1.5px solid var(--color-accent)',
+              color: 'var(--color-accent)',
               padding: '7px 16px',
               borderRadius: 8,
               fontSize: 13,
               fontWeight: 700,
               cursor: 'pointer',
-              fontFamily: 'Urbanist, sans-serif',
+              fontFamily: 'var(--font-family-body)',
             }}
           >
             Sign Out
@@ -350,7 +353,7 @@ export default function VendorDashboard() {
       </nav>
 
       <div style={{
-        background: 'linear-gradient(135deg,#0f2460,#1a56db,#3f83f8)',
+        background: 'var(--gradient-hero)',
         padding: '32px',
         display: 'flex',
         alignItems: 'center',
@@ -383,8 +386,9 @@ export default function VendorDashboard() {
             fontWeight: 700,
             textTransform: 'uppercase',
             letterSpacing: '0.15em',
-            color: '#93c5fd',
+            color: 'rgba(255,255,255,0.8)',
             marginBottom: 8,
+            fontFamily: 'var(--font-family-body)',
           }}>
             Vendor Dashboard
           </div>
@@ -394,15 +398,17 @@ export default function VendorDashboard() {
             color: '#ffffff',
             marginBottom: 6,
             letterSpacing: '-0.02em',
+            fontFamily: 'var(--font-family-heading)',
           }}>
             {name}
           </h1>
           <p style={{
             fontSize: 15,
-            color: 'rgba(255,255,255,0.7)',
+            color: 'rgba(255,255,255,0.8)',
             display: 'flex',
             alignItems: 'center',
             gap: 8,
+            fontFamily: 'var(--font-family-body)',
           }}>
             {vendorProfile?.category || 'Wedding Vendor'}
             {vendorProfile?.location && (
@@ -422,23 +428,25 @@ export default function VendorDashboard() {
         }}>
           {vendorProfile?.verified ? (
             <div style={{
-              background: '#def7ec',
-              color: '#057a55',
+              background: 'rgba(76, 175, 80, 0.2)',
+              color: 'var(--color-success)',
               padding: '6px 14px',
               borderRadius: 50,
               fontSize: 12,
               fontWeight: 700,
+              fontFamily: 'var(--font-family-body)',
             }}>
               Verified
             </div>
           ) : (
             <div style={{
-              background: '#fdf6b2',
-              color: '#c27803',
+              background: 'rgba(245, 166, 35, 0.2)',
+              color: 'var(--color-accent)',
               padding: '6px 14px',
               borderRadius: 50,
               fontSize: 12,
               fontWeight: 700,
+              fontFamily: 'var(--font-family-body)',
             }}>
               Unverified
             </div>
@@ -448,13 +456,13 @@ export default function VendorDashboard() {
             href="/dashboard/vendor/profile"
             style={{
               background: '#ffffff',
-              color: '#1a56db',
+              color: 'var(--color-accent)',
               padding: '9px 20px',
               borderRadius: 8,
               fontSize: 13,
               fontWeight: 700,
               textDecoration: 'none',
-              fontFamily: 'Urbanist, sans-serif',
+              fontFamily: 'var(--font-family-body)',
             }}
           >
             Edit Profile
@@ -471,7 +479,7 @@ export default function VendorDashboard() {
               fontWeight: 700,
               textDecoration: 'none',
               border: '1px solid rgba(255,255,255,0.3)',
-              fontFamily: 'Urbanist, sans-serif',
+              fontFamily: 'var(--font-family-body)',
             }}
           >
             My Bookings
@@ -482,10 +490,10 @@ export default function VendorDashboard() {
       {stats.profileCompletion < 100 && (
         <div style={{
           margin: '16px 24px 0',
-          background: '#ffffff',
+          background: 'var(--color-card)',
           borderRadius: 12,
-          border: '1px solid #e5edff',
-          borderLeft: '4px solid #1a56db',
+          border: '1px solid var(--color-border)',
+          borderLeft: '4px solid var(--color-accent)',
           padding: '14px 20px',
           display: 'flex',
           alignItems: 'center',
@@ -501,15 +509,17 @@ export default function VendorDashboard() {
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              color: '#6b7280',
+              color: 'rgba(255,255,255,0.8)',
               marginBottom: 3,
+              fontFamily: 'var(--font-family-body)',
             }}>
               Profile Completion
             </div>
             <div style={{
               fontSize: 13,
               fontWeight: 500,
-              color: '#374151',
+              color: '#FFFFFF',
+              fontFamily: 'var(--font-family-body)',
             }}>
               Complete your profile to attract 
               more couples and get verified
@@ -518,14 +528,14 @@ export default function VendorDashboard() {
           <div style={{
             flex: 1,
             height: 6,
-            background: '#e5edff',
+            background: 'rgba(255,255,255,0.2)',
             borderRadius: 3,
             overflow: 'hidden',
           }}>
             <div style={{
               height: '100%',
               width: `${stats.profileCompletion}%`,
-              background: '#1a56db',
+              background: 'var(--color-accent)',
               borderRadius: 3,
               transition: 'width 1s ease',
             }} />
@@ -533,9 +543,10 @@ export default function VendorDashboard() {
           <div style={{
             fontSize: 22,
             fontWeight: 800,
-            color: '#1a56db',
+            color: 'var(--color-accent)',
             minWidth: 52,
             textAlign: 'right',
+            fontFamily: 'var(--font-family-body)',
           }}>
             {stats.profileCompletion}%
           </div>
@@ -555,14 +566,14 @@ export default function VendorDashboard() {
             onMouseEnter={() => setHoveredCard(card.id)}
             onMouseLeave={() => setHoveredCard(null)}
             style={{
-              background: '#ffffff',
+              background: 'var(--color-card)',
               borderRadius: 12,
               border: hoveredCard === card.id
-                ? '1px solid #1a56db'
-                : '1px solid #e5edff',
+                ? '1px solid var(--color-accent)'
+                : '1px solid var(--color-border)',
               boxShadow: hoveredCard === card.id
-                ? '0 8px 24px rgba(26,86,219,0.12)'
-                : '0 1px 3px rgba(0,0,0,0.08)',
+                ? '0 8px 24px rgba(245, 166, 35, 0.25)'
+                : '0 4px 12px rgba(75, 71, 165, 0.15)',
               padding: '18px 20px',
               transform: hoveredCard === card.id
                 ? 'translateY(-3px)' : 'translateY(0)',
@@ -576,14 +587,20 @@ export default function VendorDashboard() {
               position: 'absolute',
               top: 0, left: 0, right: 0,
               height: 4,
-              background: card.color,
+              background: card.color === '#1a56db' ? 'var(--color-accent)' : 
+                       card.color === '#7c3aed' ? 'var(--color-accent)' :
+                       card.color === '#057a55' ? 'var(--color-success)' :
+                       card.color === '#c2410c' ? 'var(--color-accent)' : 'var(--color-accent)',
               borderRadius: '12px 12px 0 0',
             }} />
             <div style={{
               width: 40,
               height: 40,
               borderRadius: '50%',
-              background: card.bg,
+              background: card.bg === '#ebf5ff' ? 'rgba(245, 166, 35, 0.2)' :
+                       card.bg === '#ede9fe' ? 'rgba(245, 166, 35, 0.2)' :
+                       card.bg === '#def7ec' ? 'rgba(76, 175, 80, 0.2)' :
+                       card.bg === '#fff7ed' ? 'rgba(245, 166, 35, 0.2)' : 'rgba(245, 166, 35, 0.2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -595,10 +612,11 @@ export default function VendorDashboard() {
             <div style={{
               fontSize: 32,
               fontWeight: 800,
-              color: '#111928',
+              color: '#FFFFFF',
               letterSpacing: '-0.02em',
               lineHeight: 1,
               marginBottom: 4,
+              fontFamily: 'var(--font-family-body)',
             }}>
               {card.value}
             </div>
@@ -607,15 +625,20 @@ export default function VendorDashboard() {
               fontWeight: 600,
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
-              color: '#6b7280',
+              color: 'rgba(255,255,255,0.8)',
               marginBottom: 4,
+              fontFamily: 'var(--font-family-body)',
             }}>
               {card.label}
             </div>
             <div style={{
               fontSize: 13,
               fontWeight: 500,
-              color: card.color,
+              color: card.color === '#1a56db' ? 'var(--color-accent)' : 
+                     card.color === '#7c3aed' ? 'var(--color-accent)' :
+                     card.color === '#057a55' ? 'var(--color-success)' :
+                     card.color === '#c2410c' ? 'var(--color-accent)' : 'var(--color-accent)',
+              fontFamily: 'var(--font-family-body)',
             }}>
               {card.hint}
             </div>
@@ -632,15 +655,15 @@ export default function VendorDashboard() {
       }}>
 
         <div style={{
-          background: '#ffffff',
+          background: 'var(--color-card)',
           borderRadius: 12,
-          border: '1px solid #e5edff',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+          border: '1px solid var(--color-border)',
+          boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
           overflow: 'hidden',
         }}>
           <div style={{
             padding: '16px 20px',
-            borderBottom: '1px solid #f0f4ff',
+            borderBottom: '1px solid var(--color-border)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -648,7 +671,8 @@ export default function VendorDashboard() {
             <div style={{
               fontSize: 18,
               fontWeight: 700,
-              color: '#111928',
+              color: '#FFFFFF',
+              fontFamily: 'var(--font-family-body)',
             }}>
               Recent Enquiries
             </div>
@@ -656,8 +680,9 @@ export default function VendorDashboard() {
               style={{
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#1a56db',
+                color: 'var(--color-accent)',
                 textDecoration: 'none',
+                fontFamily: 'var(--font-family-body)',
               }}>
               View All 
             </a>
@@ -675,14 +700,16 @@ export default function VendorDashboard() {
               <div style={{
                 fontSize: 18,
                 fontWeight: 700,
-                color: '#6b7280',
+                color: 'rgba(255,255,255,0.8)',
                 marginBottom: 6,
+                fontFamily: 'var(--font-family-body)',
               }}>
                 No enquiries yet
               </div>
               <div style={{
                 fontSize: 14,
-                color: '#9ca3af',
+                color: 'rgba(255,255,255,0.6)',
+                fontFamily: 'var(--font-family-body)',
               }}>
                 Complete your profile to start 
                 receiving enquiries from couples
@@ -696,7 +723,7 @@ export default function VendorDashboard() {
               {recentEnquiries.map((enq, i) => (
                 <div key={enq.id} style={{
                   padding: '14px 20px',
-                  borderBottom: '1px solid #f0f4ff',
+                  borderBottom: '1px solid var(--color-border)',
                   display: 'flex',
                   gap: 12,
                   alignItems: 'flex-start',
@@ -704,7 +731,7 @@ export default function VendorDashboard() {
                   transition: 'background 0.15s',
                 }}
                   onMouseEnter={e => 
-                    (e.currentTarget.style.background = '#f8faff')}
+                    (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
                   onMouseLeave={e => 
                     (e.currentTarget.style.background = 'transparent')}
                 >
@@ -712,7 +739,7 @@ export default function VendorDashboard() {
                     width: 38,
                     height: 38,
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+                    background: 'var(--gradient-hero)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -728,17 +755,19 @@ export default function VendorDashboard() {
                     <div style={{
                       fontSize: 14,
                       fontWeight: 600,
-                      color: '#111928',
+                      color: '#FFFFFF',
                       marginBottom: 3,
+                      fontFamily: 'var(--font-family-body)',
                     }}>
                       {enq.coupleName || 'Couple'}
                     </div>
                     <div style={{
                       fontSize: 12,
-                      color: '#6b7280',
+                      color: 'rgba(255,255,255,0.8)',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
+                      fontFamily: 'var(--font-family-body)',
                     }}>
                       {enq.message?.substring(0,65)}...
                     </div>
@@ -752,7 +781,8 @@ export default function VendorDashboard() {
                   }}>
                     <div style={{
                       fontSize: 11,
-                      color: '#9ca3af',
+                      color: 'rgba(255,255,255,0.6)',
+                      fontFamily: 'var(--font-family-body)',
                     }}>
                       {formatDate(enq.createdAt)}
                     </div>
@@ -762,9 +792,10 @@ export default function VendorDashboard() {
                       fontSize: 11,
                       fontWeight: 700,
                       background: enq.status === 'pending'
-                        ? '#fdf6b2' : '#def7ec',
+                        ? 'rgba(245, 166, 35, 0.2)' : 'rgba(76, 175, 80, 0.2)',
                       color: enq.status === 'pending'
-                        ? '#c27803' : '#057a55',
+                        ? 'var(--color-accent)' : 'var(--color-success)',
+                      fontFamily: 'var(--font-family-body)',
                     }}>
                       {enq.status}
                     </div>
@@ -776,20 +807,21 @@ export default function VendorDashboard() {
         </div>
 
         <div style={{
-          background: '#ffffff',
+          background: 'var(--color-card)',
           borderRadius: 12,
-          border: '1px solid #e5edff',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+          border: '1px solid var(--color-border)',
+          boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
           overflow: 'hidden',
         }}>
           <div style={{
             padding: '16px 20px',
-            borderBottom: '1px solid #f0f4ff',
+            borderBottom: '1px solid var(--color-border)',
           }}>
             <div style={{
               fontSize: 18,
               fontWeight: 700,
-              color: '#111928',
+              color: '#FFFFFF',
+              fontFamily: 'var(--font-family-body)',
             }}>
               Business Profile
             </div>
@@ -813,21 +845,23 @@ export default function VendorDashboard() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '12px 0',
-                borderBottom: '1px solid #f0f4ff',
+                borderBottom: '1px solid var(--color-border)',
               }}>
                 <span style={{
                   fontSize: 12,
                   fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.06em',
-                  color: '#6b7280',
+                  color: 'rgba(255,255,255,0.8)',
+                  fontFamily: 'var(--font-family-body)',
                 }}>
                   {key}
                 </span>
                 <span style={{
                   fontSize: 14,
                   fontWeight: 600,
-                  color: '#111928',
+                  color: '#FFFFFF',
+                  fontFamily: 'var(--font-family-body)',
                 }}>
                   {val}
                 </span>
@@ -840,7 +874,7 @@ export default function VendorDashboard() {
               style={{
                 display: 'block',
                 width: '100%',
-                background: '#1a56db',
+                background: 'var(--color-accent)',
                 color: '#ffffff',
                 padding: '11px',
                 borderRadius: 8,
@@ -848,7 +882,7 @@ export default function VendorDashboard() {
                 fontWeight: 700,
                 textAlign: 'center',
                 textDecoration: 'none',
-                fontFamily: 'Urbanist, sans-serif',
+                fontFamily: 'var(--font-family-body)',
               }}
             >
               Edit Profile
@@ -860,16 +894,16 @@ export default function VendorDashboard() {
                 display: 'block',
                 width: '100%',
                 background: 'transparent',
-                color: '#1a56db',
+                color: 'var(--color-accent)',
                 padding: '11px',
                 borderRadius: 8,
                 fontSize: 13,
                 fontWeight: 700,
                 textAlign: 'center',
                 textDecoration: 'none',
-                border: '1.5px solid #1a56db',
+                border: '1.5px solid var(--color-accent)',
                 marginTop: 8,
-                fontFamily: 'Urbanist, sans-serif',
+                fontFamily: 'var(--font-family-body)',
               }}
             >
               View Analytics
@@ -879,15 +913,15 @@ export default function VendorDashboard() {
       </div>
 
       <footer style={{
-        background: '#ffffff',
-        borderTop: '1px solid #e5edff',
+        background: 'var(--color-card)',
+        borderTop: '1px solid var(--color-border)',
         padding: '16px 32px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        fontFamily: 'Urbanist, sans-serif',
+        fontFamily: 'var(--font-family-body)',
       }}>
-        <div style={{ fontSize: 13, color: '#9ca3af' }}>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
           © 2026 Kunda Wedding Platform · Kigali, Rwanda
         </div>
         <div style={{
@@ -896,20 +930,22 @@ export default function VendorDashboard() {
           <a href="https://wa.me/250783312746"
             target="_blank"
             style={{
-              fontSize: 13, color: '#6b7280',
-              textDecoration: 'none'
+              fontSize: 13, color: 'rgba(255,255,255,0.8)',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-family-body)'
             }}>
             WhatsApp Support
           </a>
           <a href="https://instagram.com/darkxente"
             target="_blank"
             style={{
-              fontSize: 13, color: '#6b7280',
-              textDecoration: 'none'
+              fontSize: 13, color: 'rgba(255,255,255,0.8)',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-family-body)'
             }}>
             @darkxente
           </a>
-          <span style={{ fontSize: 13, color: '#9ca3af' }}>
+          <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
             Made with in Rwanda
           </span>
         </div>
