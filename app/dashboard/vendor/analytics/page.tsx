@@ -388,7 +388,7 @@ export default function VendorAnalyticsPage() {
       
       {/* KUNDA NAVBAR */}
       <nav className={`sticky top-0 z-50 transition-all duration-300 shadow-lg`} style={{ backgroundColor: 'var(--color-card)', borderBottom: '1px solid var(--color-border)', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-2 sm:px-4 lg:px-6">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
@@ -463,7 +463,7 @@ export default function VendorAnalyticsPage() {
           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-40 h-40 sm:w-64 sm:h-64 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 2s' }}></div>
         </div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="w-full px-2 sm:px-4 lg:px-6 relative z-10">
           <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-4 sm:mb-6" style={{ 
             backgroundColor: 'rgba(76, 175, 80, 0.2)', 
             color: 'var(--color-success)',
@@ -487,7 +487,7 @@ export default function VendorAnalyticsPage() {
       </section>
 
       {/* Period Selector */}
-      <div className="px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8">
+      <div className="w-full px-2 sm:px-4 lg:px-6 mb-6 sm:mb-8">
         <div className="flex justify-center">
           <div className="inline-flex rounded-lg p-1" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
             {['1month', '3months', '6months', '1year'].map((period) => (
@@ -514,8 +514,8 @@ export default function VendorAnalyticsPage() {
       </div>
 
       {/* KEY METRICS */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="w-full px-2 sm:px-4 lg:px-6 mb-8 sm:mb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
           {/* Profile Views */}
           <div className="p-4 sm:p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                style={{ 
@@ -631,8 +631,8 @@ export default function VendorAnalyticsPage() {
       </div>
 
       {/* CHARTS GRID */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8">
+      <div className="w-full px-2 sm:px-4 lg:px-6 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Profile Views Chart */}
           <div 
             className={`p-4 sm:p-6 rounded-xl border transition-all cursor-pointer ${
@@ -795,7 +795,7 @@ export default function VendorAnalyticsPage() {
       </div>
 
       {/* CONVERSION FUNNEL */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div className="w-full px-2 sm:px-4 lg:px-6 mb-8 sm:mb-12">
         <div className="p-4 sm:p-6 rounded-xl border transition-all hover:shadow-lg" 
              style={{ 
                backgroundColor: 'var(--color-card)', 
@@ -841,8 +841,8 @@ export default function VendorAnalyticsPage() {
       </div>
 
       {/* ADDITIONAL METRICS */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="w-full px-2 sm:px-4 lg:px-6 pb-8 sm:pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {/* Average Booking Value */}
           <div className="p-4 sm:p-6 rounded-xl border transition-all hover:shadow-lg hover:-translate-y-1" 
                style={{ 
