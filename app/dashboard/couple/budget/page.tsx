@@ -339,275 +339,213 @@ export default function BudgetTracker() {
   }
 
   return (
-    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-background)', fontFamily: 'var(--font-family)' }}>
 
-      {/* Header */}
-      <div style={{
-        backgroundColor: '#ffffff',
-        borderBottom: '1px solid #e5edff',
-        padding: '24px 32px'
+      {/* Hero Section Header */}
+      <section className="hero-section" style={{ 
+        minHeight: '200px',
+        padding: '60px 64px',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <div>
-            <h1 style={{
-              fontFamily: 'Urbanist',
-              fontSize: '36px',
-              fontWeight: 800,
-              color: '#0f2460',
-              marginBottom: '8px'
-            }}>Budget Tracker</h1>
-            <p style={{
-              fontFamily: 'Urbanist',
-              fontSize: '15px',
-              color: '#6b7280',
-              fontWeight: 400
-            }}>
-              Manage your wedding budget and expenses
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button
-              onClick={exportBudget}
-              style={{
-                border: '1.5px solid #1a56db',
-                color: '#1a56db',
-                padding: '12px 24px',
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                borderRadius: '8px'
-              }}
-            >
-              <Download size={16} />
-              Export CSV
-            </button>
-            <button
-              onClick={() => setShowAddExpense(true)}
-              style={{
-                backgroundColor: '#1a56db',
+        {/* Decorative background rings */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-20 w-24 h-24 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
+          <div className="absolute top-20 right-32 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 1s' }}></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 style={{
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
                 color: '#ffffff',
-                padding: '12px 24px',
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                borderRadius: '8px',
-                boxShadow: '0 4px 12px rgba(26,86,219,0.3)'
-              }}
-            >
-              <Plus size={16} />
-              Add Expense
-            </button>
+                margin: 0,
+                marginBottom: '8px'
+              }}>Budget Tracker</h1>
+              <p style={{
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-lg)',
+                color: 'rgba(255,255,255,0.75)',
+                margin: 0
+              }}>Track and manage your wedding expenses</p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <button
+                onClick={exportBudget}
+                className="btn-secondary"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Download size={16} />
+                Export CSV
+              </button>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Budget Overview Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px' }}>
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
-          }}>
-            <div style={{
-              fontFamily: 'Urbanist',
-              fontSize: '48px',
-              fontWeight: 900,
-              color: '#0f2460'
-            }}>{wedding?.budget?.currency || 'USD'} {stats.total.toLocaleString()}</div>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#6b7280',
-              marginTop: '4px'
-            }}>Total Budget</div>
-          </div>
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
-          }}>
-            <div style={{
-              fontFamily: 'Urbanist',
-              fontSize: '48px',
-              fontWeight: 900,
-              color: '#0f2460'
-            }}>{wedding?.budget?.currency || 'USD'} {stats.spent.toLocaleString()}</div>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#6b7280',
-              marginTop: '4px'
-            }}>Spent</div>
-          </div>
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
-          }}>
-            <div style={{
-              fontFamily: 'Urbanist',
-              fontSize: '48px',
-              fontWeight: 900,
-              color: '#0f2460'
-            }}>{wedding?.budget?.currency || 'USD'} {Math.abs(stats.remaining).toLocaleString()}</div>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#6b7280',
-              marginTop: '4px'
-            }}>{stats.remaining >= 0 ? 'Remaining' : 'Over Budget'}</div>
-          </div>
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
-          }}>
-            <div style={{
-              fontFamily: 'Urbanist',
-              fontSize: '48px',
-              fontWeight: 900,
-              color: '#0f2460'
-            }}>{wedding?.budget?.currency || 'USD'} {stats.paid.toLocaleString()}</div>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#6b7280',
-              marginTop: '4px'
-            }}>Paid</div>
-          </div>
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
-          }}>
-            <div style={{
-              fontFamily: 'Urbanist',
-              fontSize: '48px',
-              fontWeight: 900,
-              color: '#0f2460'
-            }}>{wedding?.budget?.currency || 'USD'} {stats.unpaid.toLocaleString()}</div>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: '#6b7280',
-              marginTop: '4px'
-            }}>Unpaid</div>
-          </div>
-        </div>
-
-        {/* Budget Settings */}
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginTop: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', fontWeight: 500 }}>Total Budget:</label>
-            <input
-              type="number"
-              value={wedding?.budget?.total || 0}
-              onChange={(e) => handleUpdateBudget(parseFloat(e.target.value) || 0, wedding?.budget?.currency || 'USD')}
-              style={{
-                padding: '10px 14px',
-                border: '1px solid #e5edff',
-                borderRadius: '8px',
-                fontFamily: 'Urbanist',
-                fontSize: '14px',
-                backgroundColor: '#ffffff',
-                color: '#111928',
-                width: '120px'
-              }}
-            />
-          </div>
+      {/* Budget Overview Section */}
+      <section className="page-wrapper" style={{ backgroundColor: 'white', padding: '80px 64px' }}>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)', color: 'var(--color-text)' }}>
+            Budget Overview
+          </h2>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', fontWeight: 500 }}>Currency:</label>
-            <select
-              value={wedding?.budget?.currency || 'USD'}
-              onChange={(e) => handleUpdateBudget(wedding?.budget?.total || 0, e.target.value)}
-              style={{
-                padding: '10px 14px',
-                border: '1px solid #e5edff',
-                borderRadius: '8px',
-                fontFamily: 'Urbanist',
-                fontSize: '14px',
-                backgroundColor: '#ffffff',
-                color: '#111928'
-              }}
-            >
-              {currencies.map(curr => (
-                <option key={curr.code} value={curr.code}>{curr.code} ({curr.symbol})</option>
-              ))}
-            </select>
+          {/* Budget Overview Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+            <div className="card">
+              <div style={{
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
+                color: 'var(--color-primary-dark)',
+                marginBottom: '8px'
+              }}>{wedding?.budget?.currency || 'USD'} {stats.total.toLocaleString()}</div>
+              <div style={{
+                fontSize: 'var(--font-size-xs)',
+                fontWeight: 'var(--font-weight-bold)',
+                textTransform: 'uppercase',
+                color: 'var(--color-muted)'
+              }}>Total Budget</div>
+            </div>
+            <div className="card">
+              <div style={{
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
+                color: 'var(--color-primary-dark)',
+                marginBottom: '8px'
+              }}>{wedding?.budget?.currency || 'USD'} {stats.spent.toLocaleString()}</div>
+              <div style={{
+                fontSize: 'var(--font-size-xs)',
+                fontWeight: 'var(--font-weight-bold)',
+                textTransform: 'uppercase',
+                color: 'var(--color-muted)'
+              }}>Spent</div>
+            </div>
+            <div className="card">
+              <div style={{
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
+                color: stats.remaining >= 0 ? 'var(--color-success)' : 'var(--color-danger)',
+                marginBottom: '8px'
+              }}>{wedding?.budget?.currency || 'USD'} {Math.abs(stats.remaining).toLocaleString()}</div>
+              <div style={{
+                fontSize: 'var(--font-size-xs)',
+                fontWeight: 'var(--font-weight-bold)',
+                textTransform: 'uppercase',
+                color: 'var(--color-muted)'
+              }}>{stats.remaining >= 0 ? 'Remaining' : 'Over Budget'}</div>
+            </div>
+            <div className="card">
+              <div style={{
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
+                color: 'var(--color-success)',
+                marginBottom: '8px'
+              }}>{wedding?.budget?.currency || 'USD'} {stats.paid.toLocaleString()}</div>
+              <div style={{
+                fontSize: 'var(--font-size-xs)',
+                fontWeight: 'var(--font-weight-bold)',
+                textTransform: 'uppercase',
+                color: 'var(--color-muted)'
+              }}>Paid</div>
+            </div>
+            <div className="card">
+              <div style={{
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
+                color: 'var(--color-warning)',
+                marginBottom: '8px'
+              }}>{wedding?.budget?.currency || 'USD'} {stats.unpaid.toLocaleString()}</div>
+              <div style={{
+                fontSize: 'var(--font-size-xs)',
+                fontWeight: 'var(--font-weight-bold)',
+                textTransform: 'uppercase',
+                color: 'var(--color-muted)'
+              }}>Unpaid</div>
+            </div>
           </div>
 
-          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280', fontWeight: 500 }}>
-            <input
-              type="checkbox"
-              checked={autoBooking}
-              onChange={(e) => setAutoBooking(e.target.checked)}
-              style={{ cursor: 'pointer' }}
-            />
-            Auto-booking amounts
-          </label>
-        </div>
-      </div>
-
-      {/* Budget Breakdown Chart */}
-      <div style={{ padding: '32px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
-          {/* Progress Bar Section */}
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '24px'
-          }}>
+          {/* Budget Settings */}
+          <div className="card" style={{ marginTop: '24px' }}>
             <h3 style={{
-              fontFamily: 'Urbanist',
-              fontSize: '20px',
-              fontWeight: 700,
-              color: '#0f2460',
+              fontFamily: 'var(--font-family)',
+              fontSize: 'var(--font-size-lg)',
+              fontWeight: 'var(--font-weight-bold)',
+              color: 'var(--color-text)',
               marginBottom: '16px'
-            }}>Budget Progress</h3>
+            }}>Budget Settings</h3>
+            <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <label style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-sm)', color: 'var(--color-muted)', fontWeight: 'var(--font-weight-medium)' }}>Total Budget:</label>
+                <input
+                  type="number"
+                  value={wedding?.budget?.total || 0}
+                  onChange={(e) => handleUpdateBudget(parseFloat(e.target.value) || 0, wedding?.budget?.currency || 'USD')}
+                  className="form-input"
+                  style={{ width: '120px' }}
+                />
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <label style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-sm)', color: 'var(--color-muted)', fontWeight: 'var(--font-weight-medium)' }}>Currency:</label>
+                <select
+                  value={wedding?.budget?.currency || 'USD'}
+                  onChange={(e) => handleUpdateBudget(wedding?.budget?.total || 0, e.target.value)}
+                  className="form-select"
+                >
+                  {currencies.map(curr => (
+                    <option key={curr.code} value={curr.code}>{curr.code} ({curr.symbol})</option>
+                  ))}
+                </select>
+              </div>
+
+              <label className="flex items-center gap-2" style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-sm)', color: 'var(--color-muted)', fontWeight: 'var(--font-weight-medium)' }}>
+                <input
+                  type="checkbox"
+                  checked={autoBooking}
+                  onChange={(e) => setAutoBooking(e.target.checked)}
+                  className="form-checkbox"
+                />
+                Auto-booking amounts
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Budget Breakdown Section */}
+      <section className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)', color: 'var(--color-text)' }}>
+            Budget Breakdown
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+            {/* Progress Bar Section */}
+            <div className="card">
+              <h3 style={{
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-xl)',
+                fontWeight: 'var(--font-weight-bold)',
+                color: 'var(--color-text)',
+                marginBottom: '16px'
+              }}>Budget Progress</h3>
             
             <div style={{ marginBottom: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: '#6b7280' }}>Total Budget</span>
-                <span style={{ fontFamily: 'Urbanist', fontSize: '16px', fontWeight: 600, color: '#0f2460' }}>
+                <span style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-base)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)' }}>
                   {wedding?.budget?.currency || 'USD'} {stats.total.toLocaleString()}
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: '#6b7280' }}>Total Spent</span>
-                <span style={{ fontFamily: 'Urbanist', fontSize: '16px', fontWeight: 600, color: '#0f2460' }}>
+                <span style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-sm)', color: 'var(--color-muted)' }}>Total Spent</span>
+                <span style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-base)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)' }}>
                   {wedding?.budget?.currency || 'USD'} {stats.spent.toLocaleString()}
                 </span>
               </div>
@@ -616,12 +554,12 @@ export default function BudgetTracker() {
             {/* Progress Bar */}
             <div style={{ marginBottom: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontFamily: 'Urbanist', fontSize: '12px', color: '#6b7280' }}>Progress</span>
+                <span style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-xs)', color: 'var(--color-muted)' }}>Progress</span>
                 <span style={{ 
-                  fontFamily: 'Urbanist', 
-                  fontSize: '12px', 
-                  fontWeight: 800, 
-                  color: stats.remaining >= 0 ? '#1a56db' : '#c81e1e' 
+                  fontFamily: 'var(--font-family)', 
+                  fontSize: 'var(--font-size-xs)', 
+                  fontWeight: 'var(--font-weight-black)', 
+                  color: stats.remaining >= 0 ? 'var(--color-primary)' : 'var(--color-danger)' 
                 }}>
                   {Math.round((stats.spent / stats.total) * 100)}%
                 </span>
@@ -629,24 +567,24 @@ export default function BudgetTracker() {
               <div style={{
                 width: '100%',
                 height: '10px',
-                backgroundColor: '#e5edff',
+                backgroundColor: 'var(--color-border)',
                 borderRadius: '50px',
                 overflow: 'hidden'
               }}>
                 <div style={{
                   width: `${Math.min((stats.spent / stats.total) * 100, 100)}%`,
                   height: '100%',
-                  backgroundColor: stats.remaining >= 0 ? '#1a56db' : '#c81e1e',
+                  backgroundColor: stats.remaining >= 0 ? 'var(--color-primary)' : 'var(--color-danger)',
                   borderRadius: '50px',
                   transition: 'width 0.3s ease'
                 }}></div>
               </div>
               <div style={{ 
                 marginTop: '8px',
-                fontFamily: 'Urbanist', 
-                fontSize: '11px', 
-                color: stats.remaining >= 0 ? '#057a55' : '#c81e1e',
-                fontWeight: 500
+                fontFamily: 'var(--font-family)', 
+                fontSize: 'var(--font-size-xs)', 
+                color: stats.remaining >= 0 ? 'var(--color-success)' : 'var(--color-danger)',
+                fontWeight: 'var(--font-weight-medium)'
               }}>
                 {stats.remaining >= 0 
                   ? `You have ${wedding?.budget?.currency || 'USD'} ${Math.abs(stats.remaining).toLocaleString()} remaining`
@@ -657,17 +595,12 @@ export default function BudgetTracker() {
           </div>
 
           {/* Pie Chart Section */}
-          <div style={{
-            backgroundColor: '#ffffff',
-            border: '1px solid #e5edff',
-            borderRadius: '12px',
-            padding: '24px'
-          }}>
+          <div className="card">
             <h3 style={{
-              fontFamily: 'Urbanist',
-              fontSize: '20px',
-              fontWeight: 700,
-              color: '#0f2460',
+              fontFamily: 'var(--font-family)',
+              fontSize: 'var(--font-size-xl)',
+              fontWeight: 'var(--font-weight-bold)',
+              color: 'var(--color-text)',
               marginBottom: '16px'
             }}>Spending by Category</h3>
             
@@ -689,7 +622,7 @@ export default function BudgetTracker() {
                   >
                     {categoryBreakdown.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={[
-                        '#1a56db', '#3f83f8', '#0f2460', '#1e3a8a', '#ebf5ff', '#6b7280', '#e5edff'
+                        'var(--color-primary)', 'var(--color-primary-light)', 'var(--color-primary-dark)', 'var(--color-success)', 'var(--color-warning)', 'var(--color-danger)', 'var(--color-muted)'
                       ][index % 7]} />
                     ))}
                   </Pie>
@@ -703,10 +636,10 @@ export default function BudgetTracker() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                color: '#6b7280'
+                color: 'var(--color-muted)'
               }}>
-                <Wallet size={48} style={{ marginBottom: '16px' }} />
-                <p style={{ fontFamily: 'Urbanist', fontSize: '14px', textAlign: 'center' }}>
+                <Wallet size={48} style={{ marginBottom: '16px', color: 'var(--color-muted)' }} />
+                <p style={{ fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-sm)', textAlign: 'center', color: 'var(--color-muted)' }}>
                   No expenses yet. Add your first expense to see the breakdown.
                 </p>
               </div>
@@ -714,113 +647,86 @@ export default function BudgetTracker() {
           </div>
         </div>
       </div>
+    </section>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '32px', padding: '0 32px 32px' }}>
-        {/* Main Expenses List */}
-        <div>
-          {/* Filters */}
-          <div style={{
-            backgroundColor: colors.bgCard,
-            border: `1px solid ${colors.border}`,
-            padding: '16px',
-            marginBottom: '16px'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <select
-                  value={filterCategory}
-                  onChange={(e) => setFilterCategory(e.target.value)}
-                  style={{
-                    padding: '6px 12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '12px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                >
-                  <option value="all">All Categories</option>
-                  <option value="venue">Venue</option>
-                  <option value="catering">Catering</option>
-                  <option value="decor">Decor</option>
-                  <option value="fashion">Fashion</option>
-                  <option value="beauty">Beauty</option>
-                  <option value="music">Music</option>
-                  <option value="transport">Transport</option>
-                  <option value="photography">Photography</option>
-                  <option value="other">Other</option>
-                </select>
+      {/* Expenses Section */}
+      <section className="page-wrapper" style={{ backgroundColor: 'white', padding: '80px 64px' }}>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)', color: 'var(--color-text)' }}>
+            Expense Management
+          </h2>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '32px' }}>
+            {/* Main Expenses List */}
+            <div>
+              {/* Filters */}
+              <div className="card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <select
+                      value={filterCategory}
+                      onChange={(e) => setFilterCategory(e.target.value)}
+                      className="form-select"
+                    >
+                      <option value="all">All Categories</option>
+                      <option value="venue">Venue</option>
+                      <option value="catering">Catering</option>
+                      <option value="decor">Decor</option>
+                      <option value="fashion">Fashion</option>
+                      <option value="beauty">Beauty</option>
+                      <option value="music">Music</option>
+                      <option value="transport">Transport</option>
+                      <option value="photography">Photography</option>
+                      <option value="other">Other</option>
+                    </select>
 
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value as any)}
-                  style={{
-                    padding: '6px 12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '12px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                >
-                  <option value="all">All Status</option>
-                  <option value="paid">Paid</option>
-                  <option value="unpaid">Unpaid</option>
-                </select>
+                    <select
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value as any)}
+                      className="form-select"
+                    >
+                      <option value="all">All Status</option>
+                      <option value="paid">Paid</option>
+                      <option value="unpaid">Unpaid</option>
+                    </select>
 
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  style={{
-                    padding: '6px 12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '12px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                >
-                  <option value="date">Sort by Date</option>
-                  <option value="amount">Sort by Amount</option>
-                  <option value="category">Sort by Category</option>
-                </select>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as any)}
+                      className="form-select"
+                    >
+                      <option value="date">Sort by Date</option>
+                      <option value="amount">Sort by Amount</option>
+                      <option value="category">Sort by Category</option>
+                    </select>
+                  </div>
+
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-family)', fontSize: 'var(--font-size-xs)' }}>
+                    <input
+                      type="checkbox"
+                      checked={showPaid}
+                      onChange={(e) => setShowPaid(e.target.checked)}
+                      style={{ cursor: 'pointer' }}
+                    />
+                    Show paid expenses
+                  </label>
+                </div>
               </div>
-
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Urbanist', fontSize: '12px' }}>
-                <input
-                  type="checkbox"
-                  checked={showPaid}
-                  onChange={(e) => setShowPaid(e.target.checked)}
-                  style={{ cursor: 'pointer' }}
-                />
-                Show paid expenses
-              </label>
-            </div>
-          </div>
 
           {/* Expenses List */}
           {filteredExpenses.length === 0 ? (
-            <div style={{
-              backgroundColor: colors.bgCard,
-              border: `1px solid ${colors.border}`,
-              padding: '48px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '48px',
-                color: colors.textSecondary,
-                marginBottom: '16px'
-              }}> <Wallet size={48} /> </div>
+            <div className="card" style={{ textAlign: 'center', padding: '48px' }}>
+              <Wallet size={48} style={{ marginBottom: '16px', color: 'var(--color-muted)' }} />
               <h3 style={{
-                fontFamily: 'Urbanist',
-                fontSize: '20px',
-                color: colors.textPrimary,
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-xl)',
+                color: 'var(--color-text)',
                 marginBottom: '8px'
               }}>No expenses found</h3>
               <p style={{
-                fontFamily: 'Urbanist',
-                fontSize: '14px',
-                color: colors.textSecondary
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-sm)',
+                color: 'var(--color-muted)'
               }}>
                 {filterCategory !== 'all' || filterStatus !== 'all' 
                   ? 'Try adjusting your filters or add your first expense.'
@@ -834,10 +740,7 @@ export default function BudgetTracker() {
                 const isEditing = editingExpense === expense.id
                 
                 return (
-                  <div key={expense.id} style={{
-                    backgroundColor: colors.bgCard,
-                    border: `1px solid ${colors.border}`,
-                    padding: '16px',
+                  <div key={expense.id} className="card" style={{
                     opacity: !showPaid && expense.paid ? 0.5 : 1
                   }}>
                     {isEditing ? (
@@ -847,41 +750,20 @@ export default function BudgetTracker() {
                             type="text"
                             defaultValue={expense.name}
                             onBlur={(e) => handleEditExpense(expense.id, { name: e.target.value })}
-                            style={{
-                              padding: '8px',
-                              border: '1px solid ' + colors.border,
-                              fontFamily: 'Urbanist',
-                              fontSize: '14px',
-                              backgroundColor: colors.bgCard,
-                              color: colors.textPrimary
-                            }}
+                            className="form-input"
                           />
                           <input
                             type="number"
                             defaultValue={expense.amount}
                             onBlur={(e) => handleEditExpense(expense.id, { amount: parseFloat(e.target.value) || 0 })}
-                            style={{
-                              padding: '8px',
-                              border: '1px solid ' + colors.border,
-                              fontFamily: 'Urbanist',
-                              fontSize: '14px',
-                              backgroundColor: colors.bgCard,
-                              color: colors.textPrimary
-                            }}
+                            className="form-input"
                           />
                         </div>
                         <div style={{ display: 'flex', gap: '8px' }}>
                           <select
                             defaultValue={expense.category}
                             onChange={(e) => handleEditExpense(expense.id, { category: e.target.value as any })}
-                            style={{
-                              padding: '6px',
-                              border: '1px solid ' + colors.border,
-                              fontFamily: 'Urbanist',
-                              fontSize: '12px',
-                              backgroundColor: colors.bgCard,
-                              color: colors.textPrimary
-                            }}
+                            className="form-select"
                           >
                             <option value="venue">Venue</option>
                             <option value="catering">Catering</option>
@@ -893,115 +775,47 @@ export default function BudgetTracker() {
                             <option value="photography">Photography</option>
                             <option value="other">Other</option>
                           </select>
-                          <input
-                            type="date"
-                            defaultValue={new Date(expense.date).toISOString().split('T')[0]}
-                            onChange={(e) => handleEditExpense(expense.id, { date: new Date(e.target.value) })}
-                            style={{
-                              padding: '6px',
-                              border: '1px solid ' + colors.border,
-                              fontFamily: 'Urbanist',
-                              fontSize: '12px',
-                              backgroundColor: colors.bgCard,
-                              color: colors.textPrimary
-                            }}
-                          />
+                          <select
+                            defaultValue={expense.paid ? 'paid' : 'unpaid'}
+                            onChange={(e) => handleEditExpense(expense.id, { paid: e.target.value === 'paid' })}
+                            className="form-select"
+                          >
+                            <option value="unpaid">Unpaid</option>
+                            <option value="paid">Paid</option>
+                          </select>
                           <button
                             onClick={() => setEditingExpense(null)}
-                            style={{
-                              backgroundColor: colors.primaryDark,
-                              color: colors.bg,
-                              padding: '6px 12px',
-                              fontFamily: 'Urbanist',
-                              fontSize: '11px',
-                              fontWeight: 500,
-                              textTransform: 'uppercase',
-                              border: 'none',
-                              cursor: 'pointer'
-                            }}
+                            className="btn-primary"
+                            style={{ padding: '6px 12px', fontSize: 'var(--font-size-xs)' }}
                           >
                             Save
                           </button>
                         </div>
                       </div>
                     ) : (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        {/* Status Icon */}
-                        <div
-                          onClick={() => handleTogglePaid(expense.id)}
-                          style={{
-                            width: '20px',
-                            height: '20px',
-                            border: expense.paid ? 'none' : `0.5px solid ${colors.warning}`,
-                            backgroundColor: expense.paid ? colors.success : 'transparent',
-                            cursor: 'pointer',
-                            position: 'relative',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexShrink: 0
-                          }}
-                        >
-                          {expense.paid && (
-                            <CheckCircle size={14} color="white" />
-                          )}
-                        </div>
-
-                        {/* Category Color */}
-                        <div style={{
-                          width: '4px',
-                          height: '40px',
-                          backgroundColor: categoryColors[expense.category],
-                          flexShrink: 0
-                        }}></div>
-
-                        {/* Expense Content */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                             <span style={{
-                              fontFamily: 'Urbanist',
-                              fontSize: '15px',
-                              fontWeight: 500,
-                              color: colors.textPrimary
+                              fontFamily: 'var(--font-family)',
+                              fontSize: 'var(--font-size-sm)',
+                              fontWeight: 'var(--font-weight-semibold)',
+                              color: 'var(--color-text)'
+                            }}>{expense.name}</span>
+                            <span className="px-2 py-1 text-xs rounded" style={{
+                              backgroundColor: categoryColors[expense.category] + '20',
+                              color: categoryColors[expense.category]
                             }}>
-                              {expense.name}
+                              {expense.category.charAt(0).toUpperCase() + expense.category.slice(1)}
                             </span>
-                            {expense.isBooking && (
-                              <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                padding: '2px 6px',
-                                backgroundColor: colors.warning,
-                                borderRadius: '4px',
-                                fontSize: '10px',
-                                fontWeight: 500,
-                                color: colors.textPrimary
+                            {expense.paid && (
+                              <span className="px-2 py-1 text-xs rounded" style={{
+                                backgroundColor: 'var(--color-success-bg)',
+                                color: 'var(--color-success)'
                               }}>
-                                <CreditCard size={10} />
-                                Booking
-                              </div>
+                                Paid
+                            </span>
                             )}
-                          </div>
-                          
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <span style={{
-                              fontSize: '11px',
-                              color: colors.textSecondary,
-                              textTransform: 'capitalize'
-                            }}>
-                              {expense.category}
-                            </span>
-                            <span style={{
-                              fontSize: '11px',
-                              color: colors.textSecondary,
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '4px'
-                            }}>
-                              <Calendar size={12} />
-                              {formatDate(expense.date)}
-                            </span>
                             {expense.vendorId && (
                               <span style={{
                                 fontSize: '11px',
@@ -1067,325 +881,94 @@ export default function BudgetTracker() {
         </div>
 
         {/* Sidebar */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {/* Category Breakdown */}
-          <div style={{
-            backgroundColor: colors.bgCard,
-            border: `1px solid ${colors.border}`,
-            padding: '16px'
-          }}>
-            <h3 style={{
-              fontFamily: 'Urbanist',
-              fontSize: '18px',
-              color: colors.textPrimary,
-              marginBottom: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              <PieChartIcon size={18} />
-              Category Breakdown
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {categoryBreakdown.map(({ category, amount, percentage }) => (
-                <div key={category} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: categoryColors[category],
-                    borderRadius: '50%'
-                  }}></div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{
-                        fontSize: '12px',
-                        color: colors.textPrimary,
-                        textTransform: 'capitalize'
-                      }}>
-                        {category}
-                      </span>
-                      <span style={{
-                        fontSize: '12px',
-                        color: colors.textPrimary,
-                        fontWeight: 500
-                      }}>
-                        {wedding?.budget?.currency || 'USD'} {amount.toLocaleString()}
-                      </span>
-                    </div>
-                    <div style={{
-                      height: '4px',
-                      backgroundColor: colors.bg,
-                      borderRadius: '2px',
-                      marginTop: '4px',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{
-                        height: '100%',
-                        backgroundColor: categoryColors[category],
-                        width: `${Math.min(percentage, 100)}%`,
-                        borderRadius: '2px'
-                      }}></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Budget Progress */}
-          <div style={{
-            backgroundColor: colors.bgCard,
-            border: `1px solid ${colors.border}`,
-            padding: '16px'
-          }}>
-            <h3 style={{
-              fontFamily: 'Urbanist',
-              fontSize: '18px',
-              color: colors.textPrimary,
-              marginBottom: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              <TrendingUp size={18} />
-              Budget Progress
-            </h3>
-            <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-              <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '32px',
-                fontWeight: 300,
-                color: colors.textPrimary
-              }}>
-                {(wedding?.budget?.total || 0) > 0 ? Math.round((stats.spent / stats.total) * 100) : 0}%
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: colors.textSecondary
-              }}>
-                of budget spent
-              </div>
-            </div>
-            <div style={{
-              height: '8px',
-              backgroundColor: colors.bg,
-              borderRadius: '4px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                backgroundColor: stats.remaining >= 0 ? colors.success : colors.danger,
-                width: `${Math.min((wedding?.budget?.total || 0) > 0 ? (stats.spent / stats.total) * 100 : 0, 100)}%`,
-                borderRadius: '4px'
-              }}></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Add Expense Modal */}
-      {showAddExpense && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: colors.bgCard,
-            border: `1px solid ${colors.border}`,
-            padding: '24px',
-            width: '90%',
-            maxWidth: '500px'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h2 style={{
-                fontFamily: 'Urbanist',
-                fontSize: '20px',
-                color: colors.textPrimary
-              }}>Add New Expense</h2>
-              <button
-                onClick={() => setShowAddExpense(false)}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                <X size={20} color={colors.textSecondary} />
-              </button>
-            </div>
-
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <input
-                  type="text"
-                  placeholder="Description"
-                  value={newExpense.description}
-                  onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
-                  style={{
-                    padding: '12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '14px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                />
-                <input
-                  type="number"
-                  placeholder="Amount"
-                  value={newExpense.amount}
-                  onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-                  style={{
-                    padding: '12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '14px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                />
+              {/* Category Breakdown */}
+              <div className="card">
+                <h3 style={{
+                  fontFamily: 'var(--font-family)',
+                  fontSize: 'var(--font-size-lg)',
+                  fontWeight: 'var(--font-weight-bold)',
+                  color: 'var(--color-text)',
+                  marginBottom: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <PieChartIcon size={18} />
+                  Category Breakdown
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {categoryBreakdown.map(({ category, amount, percentage }) => (
+                    <div key={category} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{
+                        width: '12px',
+                        height: '12px',
+                        backgroundColor: categoryColors[category],
+                        borderRadius: '50%'
+                      }}></div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{
+                            fontSize: 'var(--font-size-xs)',
+                            color: 'var(--color-text)',
+                            textTransform: 'capitalize'
+                          }}>
+                            {category}
+                          </span>
+                          <span style={{
+                            fontSize: 'var(--font-size-xs)',
+                            color: 'var(--color-text)',
+                            fontWeight: 'var(--font-weight-medium)'
+                          }}>
+                            {wedding?.budget?.currency || 'USD'} {amount.toLocaleString()}
+                          </span>
+                        </div>
+                        <div style={{
+                          height: '4px',
+                          backgroundColor: 'var(--color-background)',
+                          borderRadius: '2px',
+                          marginTop: '4px',
+                          overflow: 'hidden'
+                        }}>
+                          <div style={{
+                            height: '100%',
+                            backgroundColor: categoryColors[category],
+                            width: `${Math.min(percentage, 100)}%`,
+                            borderRadius: '2px'
+                          }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <select
-                  value={newExpense.category}
-                  onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value as any })}
-                  style={{
-                    padding: '12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '14px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                >
-                  <option value="venue">Venue</option>
-                  <option value="catering">Catering</option>
-                  <option value="decor">Decor</option>
-                  <option value="fashion">Fashion</option>
-                  <option value="beauty">Beauty</option>
-                  <option value="music">Music</option>
-                  <option value="transport">Transport</option>
-                  <option value="photography">Photography</option>
-                  <option value="other">Other</option>
-                </select>
-
-                <input
-                  type="date"
-                  value={newExpense.date}
-                  onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
-                  style={{
-                    padding: '12px',
-                    border: '1px solid ' + colors.border,
-                    fontFamily: 'Urbanist',
-                    fontSize: '14px',
-                    backgroundColor: colors.bgCard,
-                    color: colors.textPrimary
-                  }}
-                />
-              </div>
-
-              <input
-                type="text"
-                placeholder="Vendor (optional)"
-                value={newExpense.vendor}
-                onChange={(e) => setNewExpense({ ...newExpense, vendor: e.target.value })}
-                style={{
-                  padding: '12px',
-                  border: '1px solid ' + colors.border,
-                  fontFamily: 'Urbanist',
-                  fontSize: '14px',
-                  backgroundColor: colors.bgCard,
-                  color: colors.textPrimary
-                }}
-              />
-
-              <textarea
-                placeholder="Notes (optional)"
-                value={newExpense.notes}
-                onChange={(e) => setNewExpense({ ...newExpense, notes: e.target.value })}
-                rows={3}
-                style={{
-                  padding: '12px',
-                  border: '1px solid ' + colors.border,
-                  fontFamily: 'Urbanist',
-                  fontSize: '14px',
-                  backgroundColor: colors.bgCard,
-                  color: colors.textPrimary,
-                  resize: 'vertical'
-                }}
-              />
-
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Urbanist', fontSize: '14px' }}>
-                  <input
-                    type="checkbox"
-                    checked={newExpense.paid}
-                    onChange={(e) => setNewExpense({ ...newExpense, paid: e.target.checked })}
-                    style={{ cursor: 'pointer' }}
-                  />
-                  Mark as paid
-                </label>
-
-                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'Urbanist', fontSize: '14px' }}>
-                  <input
-                    type="checkbox"
-                    checked={newExpense.isBooking}
-                    onChange={(e) => setNewExpense({ ...newExpense, isBooking: e.target.checked })}
-                    style={{ cursor: 'pointer' }}
-                  />
-                  Booking expense
-                </label>
-              </div>
-
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-                <button
-                  onClick={() => setShowAddExpense(false)}
-                  style={{
-                    border: `1px solid ${colors.primary}`,
-                    color: colors.primary,
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleAddExpense}
-                  disabled={!newExpense.description.trim() || !newExpense.amount}
-                  style={{
-                    backgroundColor: colors.primaryDark,
-                    color: colors.bg,
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    border: 'none',
-                    cursor: (!newExpense.description.trim() || !newExpense.amount) ? 'not-allowed' : 'pointer',
-                    opacity: (!newExpense.description.trim() || !newExpense.amount) ? 0.7 : 1
-                  }}
-                >
-                  Add Expense
-                </button>
+              {/* Quick Actions */}
+              <div className="card">
+                <h3 style={{
+                  fontFamily: 'var(--font-family)',
+                  fontSize: 'var(--font-size-lg)',
+                  fontWeight: 'var(--font-weight-bold)',
+                  color: 'var(--color-text)',
+                  marginBottom: '16px'
+                }}>Quick Actions</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <button
+                    onClick={() => setShowAddExpense(true)}
+                    className="btn-primary"
+                    style={{ justifyContent: 'flex-start' }}
+                  >
+                    <Plus size={16} style={{ marginRight: '8px' }} />
+                    Add Expense
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </section>
+
+      {/* AI Chat Component */}
       <AIChat />
     </div>
   )
