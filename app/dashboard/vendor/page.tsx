@@ -290,10 +290,10 @@ export default function VendorDashboard() {
                 alignItems: 'center',
                 fontSize: 14,
                 fontWeight: 600,
-                color: href === '/dashboard/vendor'
+                color: window.location.pathname === href
                   ? '#1a56db' : '#6b7280',
                 textDecoration: 'none',
-                borderBottom: href === '/dashboard/vendor'
+                borderBottom: window.location.pathname === href
                   ? '2px solid #1a56db' : '2px solid transparent',
                 transition: 'all 0.2s',
                 fontFamily: 'Urbanist, sans-serif',

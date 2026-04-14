@@ -489,58 +489,27 @@ export default function VendorBookingsPage() {
 
         {/* Center - Navigation */}
         <div style={{ display: 'flex', gap: '32px' }}>
-          <a 
-            href="/dashboard/vendor" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#6b7280',
-              textDecoration: 'none'
-            }}
-          >
-            Overview
-          </a>
-          <a 
-            href="/dashboard/vendor/profile" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#6b7280',
-              textDecoration: 'none'
-            }}
-          >
-            Profile
-          </a>
-          <a 
-            href="/dashboard/vendor/bookings" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#1a56db',
-              textDecoration: 'none'
-            }}
-          >
-            Bookings
-          </a>
-          <a 
-            href="/dashboard/vendor/analytics" 
-            style={{
-              fontFamily: 'Urbanist',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.15em',
-              color: '#6b7280',
-              textDecoration: 'none'
-            }}
-          >
-            Analytics
-          </a>
+          {[
+            ['Overview', '/dashboard/vendor'],
+            ['Profile', '/dashboard/vendor/profile'],
+            ['Bookings', '/dashboard/vendor/bookings'],
+            ['Analytics', '/dashboard/vendor/analytics'],
+          ].map(([label, href]) => (
+            <a 
+              key={label}
+              href={href}
+              style={{
+                fontFamily: 'Urbanist',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: window.location.pathname === href ? '#1a56db' : '#6b7280',
+                textDecoration: 'none'
+              }}
+            >
+              {label}
+            </a>
+          ))}
         </div>
 
         {/* Right - User Info */}

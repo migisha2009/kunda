@@ -240,32 +240,32 @@ export default function Home() {
         </div>
       </section>
       {/* 3. STATS BAR */}
-      <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary-dark)', padding: '16px' }}>
+      <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary)', padding: '16px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease' : 'none' }}>2,400+</div>
-              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Weddings</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-accent)' }}>Weddings</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.2s' : 'none' }}>380+</div>
-              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Vendors</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-accent)' }}>Vendors</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.4s' : 'none' }}>98%</div>
-              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Satisfied</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-accent)' }}>Satisfied</div>
             </div>
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease 0.6s' : 'none' }}>10+</div>
-              <div className="text-sm uppercase" style={{ color: 'var(--color-primary-pale)' }}>Categories</div>
+              <div className="text-sm uppercase" style={{ color: 'var(--color-accent)' }}>Categories</div>
             </div>
           </div>
         </div>
       </section>
       {/* 4. FEATURES SECTION */}
-      <section id="features" data-animate className="page-wrapper" style={{ backgroundColor: 'white', padding: '80px 64px' }}>
+      <section id="features" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)', color: 'var(--color-text)' }}>
+          <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)' }}>
             Everything you need for your perfect wedding
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -277,11 +277,11 @@ export default function Home() {
                        animation: visibleSections.has('features') ? `fadeInUp 0.6s ease ${index * 0.1}s both` : 'none'
                      }}>
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" 
-                       style={{ backgroundColor: `${feature.color}20`, color: feature.color }}>
+                       style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: feature.color }}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-text)' }}>{feature.name}</h3>
-                  <p className="text-sm" style={{ color: 'var(--color-muted)' }}>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>
                     {feature.name === 'Smart Planning Tools' && 'AI-powered timeline and task management'}
                     {feature.name === 'Verified Vendors' && 'All vendors are background-checked and reviewed'}
                     {feature.name === 'Guest Management' && 'RSVP tracking and guest list organization'}
@@ -303,11 +303,11 @@ export default function Home() {
               const Icon = category.icon
               return (
                 <div key={index} 
-                     className="p-4 rounded-xl text-center transition-all hover:bg-blue-600 hover:text-white cursor-pointer"
+                     className="p-4 rounded-xl text-center transition-all cursor-pointer"
                      style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', border: `1px solid var(--color-border)`, animation: visibleSections.has('categories') ? `fadeInUp 0.6s ease ${index * 0.05}s both` : 'none' }}
                      onMouseEnter={(e) => {
                        const target = e.currentTarget
-                       target.style.backgroundColor = 'var(--color-primary)'
+                       target.style.backgroundColor = 'var(--color-accent)'
                        target.style.color = '#ffffff'
                        const iconDiv = target.querySelector('div')
                        if (iconDiv) {
@@ -318,17 +318,17 @@ export default function Home() {
                      onMouseLeave={(e) => {
                        const target = e.currentTarget
                        target.style.backgroundColor = 'var(--color-card)'
-                       target.style.color = 'var(--color-primary-dark)'
+                       target.style.color = 'var(--color-text)'
                        const iconDiv = target.querySelector('div')
                        if (iconDiv) {
-                         iconDiv.style.backgroundColor = '#ffffff'
-                         iconDiv.style.color = 'var(--color-primary-dark)'
+                         iconDiv.style.backgroundColor = 'rgba(255,255,255,0.1)'
+                         iconDiv.style.color = 'var(--color-accent)'
                        }
                      }}>
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-2 transition-all" style={{ backgroundColor: '#ffffff', color: 'var(--color-primary-dark)' }}>
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-2 transition-all" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'var(--color-accent)' }}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <div className="text-xs font-bold" style={{ color: 'var(--color-primary-dark)' }}>{category.name}</div>
+                  <div className="text-xs font-bold" style={{ color: 'var(--color-text)' }}>{category.name}</div>
                 </div>
               )
             })}
@@ -339,14 +339,18 @@ export default function Home() {
       <section id="how-it-works" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center mb-8">
-            <div className="inline-flex rounded-lg bg-gray-100 p-1">
+            <div className="inline-flex rounded-lg p-1" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
               <button
                 onClick={() => setActiveTab('couples')}
                 className={`px-6 py-2 rounded-md font-medium transition-all ${
                   activeTab === 'couples' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-accent text-white' 
+                    : 'text-white hover:text-accent'
                 }`}
+                style={{ 
+                  backgroundColor: activeTab === 'couples' ? 'var(--color-accent)' : 'transparent',
+                  color: activeTab === 'couples' ? '#FFFFFF' : 'var(--color-text)'
+                }}
               >
                 For Couples
               </button>
@@ -354,9 +358,13 @@ export default function Home() {
                 onClick={() => setActiveTab('vendors')}
                 className={`px-6 py-2 rounded-md font-medium transition-all ${
                   activeTab === 'vendors' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-accent text-white' 
+                    : 'text-white hover:text-accent'
                 }`}
+                style={{ 
+                  backgroundColor: activeTab === 'vendors' ? 'var(--color-accent)' : 'transparent',
+                  color: activeTab === 'vendors' ? '#FFFFFF' : 'var(--color-text)'
+                }}
               >
                 For Vendors
               </button>
@@ -365,7 +373,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {/* Connection line */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-blue-600 -translate-y-1/2 z-0"></div>
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 z-0" style={{ backgroundColor: 'var(--color-accent)' }}></div>
             
             {(activeTab === 'couples' ? [
               { number: 1, title: 'Create Account', desc: 'Sign up free in 60 seconds' },
@@ -377,11 +385,11 @@ export default function Home() {
               { number: 3, title: 'Grow Revenue', desc: 'Manage bookings and payments' }
             ]).map((step, index) => (
               <div key={index} className="relative z-10 text-center" style={{ animation: visibleSections.has('how-it-works') ? `fadeInUp 0.6s ease ${index * 0.1}s both` : 'none' }}>
-                <div className="w-13 h-13 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+                <div className="w-13 h-13 rounded-full text-white flex items-center justify-center mx-auto mb-4 text-xl font-bold" style={{ backgroundColor: 'var(--color-accent)' }}>
                   {step.number}
                 </div>
                 <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-text)' }}>{step.title}</h3>
-                <p className="text-sm" style={{ color: 'var(--color-muted)' }}>{step.desc}</p>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -389,6 +397,14 @@ export default function Home() {
       </section>
       {/* 7. TESTIMONIALS SECTION */}
       <section id="testimonials" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
+        <div className="max-w-7xl mx-auto text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)' }}>
+            Love Stories from Happy Couples
+          </h2>
+          <p style={{ fontFamily: 'var(--font-family-body)', color: 'var(--color-heading)', opacity: 0.8 }}>
+            See what couples are saying about their Kunda experience
+          </p>
+        </div>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
@@ -399,17 +415,17 @@ export default function Home() {
                    }}>
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" style={{ color: 'var(--color-warning)' }} />
+                    <Star key={i} className="w-4 h-4 fill-current" style={{ color: 'var(--color-accent)' }} />
                   ))}
                 </div>
-                <p className="text-sm mb-4 italic" style={{ color: 'var(--color-muted)' }}>"{testimonial.text}"</p>
+                <p className="text-sm mb-4 italic" style={{ color: 'rgba(255,255,255,0.8)' }}>"{testimonial.text}"</p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold mr-3" style={{ background: 'var(--gradient-hero)' }}>
                     {testimonial.name.charAt(0)}
                   </div>
                   <div>
                     <div className="font-medium" style={{ color: 'var(--color-text)' }}>{testimonial.name}</div>
-                    <div className="text-xs" style={{ color: 'var(--color-muted)' }}>{testimonial.location}</div>
+                    <div className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{testimonial.location}</div>
                   </div>
                 </div>
               </div>
@@ -420,59 +436,59 @@ export default function Home() {
       {/* 8. CONTACT SECTION */}
       <section id="contact" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: 'var(--color-text)' }}>
+          <h2 className="text-3xl font-bold text-center mb-12" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-text)' }}>
             Get in touch with Kunda
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-accent)' }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Phone</div>
-                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>+250 783 312 746</div>
+                  <div className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>+250 783 312 746</div>
                 </div>
               </div>
-              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-accent)' }}>
                   <Phone className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Phone 2</div>
-                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>+250 782 526 295</div>
+                  <div className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>+250 782 526 295</div>
                 </div>
               </div>
-              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-accent)' }}>
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Instagram</div>
-                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>@darkxente</div>
+                  <div className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>@darkxente</div>
                 </div>
               </div>
-              <div className="card flex items-center" style={{ backgroundColor: 'var(--color-background)' }}>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <div className="card flex items-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mr-3" style={{ backgroundColor: 'var(--color-accent)' }}>
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Location</div>
-                  <div className="text-sm" style={{ color: 'var(--color-muted)' }}>Kigali, Rwanda</div>
+                  <div className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>Kigali, Rwanda</div>
                 </div>
               </div>
             </div>
 
             {/* Contact form */}
-            <div className="card" style={{ backgroundColor: 'var(--color-background)' }}>
+            <div className="card" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
               {formSubmitted ? (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--color-success-bg)' }}>
                     <Check className="w-8 h-8" style={{ color: 'var(--color-success)' }} />
                   </div>
                   <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--color-text)' }}>Message Sent!</h3>
-                  <p className="text-sm" style={{ color: 'var(--color-muted)' }}>We'll get back to you soon.</p>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>We'll get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleFormSubmit}>
@@ -482,8 +498,8 @@ export default function Home() {
                       placeholder="Name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="input"
-                      style={{ backgroundColor: '#ffffff', borderColor: 'var(--color-border)' }}
+                      className="w-full p-3 rounded-lg border focus:outline-none"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderColor: 'var(--color-border)', color: 'var(--color-heading)' }}
                       required
                     />
                   </div>
@@ -493,8 +509,8 @@ export default function Home() {
                       placeholder="Email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="input"
-                      style={{ backgroundColor: '#ffffff', borderColor: 'var(--color-border)' }}
+                      className="w-full p-3 rounded-lg border focus:outline-none"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderColor: 'var(--color-border)', color: 'var(--color-heading)' }}
                       required
                     />
                   </div>
@@ -505,14 +521,14 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
                       className="w-full p-3 rounded-lg border focus:outline-none resize-none"
-                      style={{ backgroundColor: '#ffffff', borderColor: 'var(--color-border)' }}
+                      style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderColor: 'var(--color-border)', color: 'var(--color-heading)' }}
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-lg text-white font-medium transition-all hover:opacity-90 btn-primary"
-                    style={{ backgroundColor: 'var(--color-primary)' }}
+                    className="w-full py-3 rounded-lg text-white font-medium transition-all hover:opacity-90"
+                    style={{ backgroundColor: 'var(--color-accent)' }}
                   >
                     Send Message
                   </button>

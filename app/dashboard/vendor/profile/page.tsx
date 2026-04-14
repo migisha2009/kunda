@@ -227,7 +227,7 @@ export default function VendorProfile() {
           <span style={{ fontFamily: 'Urbanist', fontSize: 20, fontWeight: 800, color: '#0f2460', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>Kunda</span>
         </div>
         <div style={{ display: 'flex', gap: 0 }}>
-          {[['Overview','/dashboard/vendor'],['Profile','/dashboard/vendor/profile'],['Bookings','/dashboard/vendor/bookings']].map(([l,h]) => (
+          {[['Overview','/dashboard/vendor'],['Profile','/dashboard/vendor/profile'],['Bookings','/dashboard/vendor/bookings'],['Analytics','/dashboard/vendor/analytics']].map(([l,h]) => (
             <a key={l} href={h} style={{ 
               padding: '0 18px',
               height: 64,
@@ -235,9 +235,9 @@ export default function VendorProfile() {
               alignItems: 'center',
               fontSize: 14,
               fontWeight: 600,
-              color: h === '/dashboard/vendor/profile' ? '#1a56db' : '#6b7280',
+              color: window.location.pathname === h ? '#1a56db' : '#6b7280',
               textDecoration: 'none',
-              borderBottom: h === '/dashboard/vendor/profile' ? '2px solid #1a56db' : '2px solid transparent',
+              borderBottom: window.location.pathname === h ? '2px solid #1a56db' : '2px solid transparent',
               transition: 'all 0.2s',
               fontFamily: 'Urbanist, sans-serif',
             }}>{l}</a>

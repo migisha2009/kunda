@@ -85,10 +85,10 @@ export default function VendorsPage() {
   
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-background)' }}>
         <div style={{ textAlign: 'center' }}>
-          <Loader2 style={{ width: '32px', height: '32px' }} className="animate-spin mx-auto mb-4" />
-          <p style={{ color: colors.textSecondary }}>Loading vendors...</p>
+          <Loader2 style={{ width: '32px', height: '32px', color: 'var(--color-accent)' }} className="animate-spin mx-auto mb-4" />
+          <p style={{ fontFamily: 'var(--font-family-body)', color: 'var(--color-heading)' }}>Loading vendors...</p>
         </div>
       </div>
     )
@@ -96,24 +96,24 @@ export default function VendorsPage() {
 
   if (error) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-background)' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ color: colors.danger, marginBottom: '16px' }}>
+          <div style={{ color: 'var(--color-danger)', marginBottom: '16px' }}>
             <svg style={{ width: '64px', height: '64px' }} className="mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, marginBottom: '8px' }}>Error Loading Vendors</h3>
-          <p style={{ color: colors.textSecondary, marginBottom: '16px' }}>{error}</p>
+          <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-heading)', fontFamily: 'var(--font-family-body)', marginBottom: '8px' }}>Error Loading Vendors</h3>
+          <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', marginBottom: '16px' }}>{error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            style={{ padding: '12px 16px', backgroundColor: colors.primary, color: colors.white, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', fontWeight: 600, cursor: 'pointer' }}
+            style={{ padding: '12px 16px', backgroundColor: 'var(--color-accent)', color: '#FFFFFF', borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'var(--font-family-body)', fontWeight: 600, cursor: 'pointer' }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = colors.primaryDark
+              e.currentTarget.style.backgroundColor = 'var(--color-accent-dark)'
               e.currentTarget.style.transform = 'translateY(-1px)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = colors.primary
+              e.currentTarget.style.backgroundColor = 'var(--color-accent)'
               e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
@@ -126,16 +126,16 @@ export default function VendorsPage() {
 
   const dashFooter = (
   <footer style={{
-    background: '#ffffff',
-    borderTop: '1px solid #e5edff',
+    background: 'var(--color-card)',
+    borderTop: '1px solid var(--color-border)',
     padding: '16px 32px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontFamily: 'Urbanist, sans-serif',
+    fontFamily: 'var(--font-family-body)',
     marginTop: 'auto',
   }}>
-    <div style={{ fontSize: 13, color: '#9ca3af' }}>
+    <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
       © 2026 Kunda Wedding Platform · Kigali, Rwanda
     </div>
     <div style={{
@@ -143,17 +143,17 @@ export default function VendorsPage() {
     }}>
       <a href="https://wa.me/250783312746"
         target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
+        style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)',
           textDecoration: 'none' }}>
         WhatsApp Support
       </a>
       <a href="https://instagram.com/darkxente"
         target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
+        style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)',
           textDecoration: 'none' }}>
         @darkxente
       </a>
-      <span style={{ fontSize: 13, color: '#9ca3af' }}>
+      <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
         Made with in Rwanda
       </span>
     </div>
@@ -163,15 +163,15 @@ export default function VendorsPage() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      backgroundColor: colors.bg,
+      backgroundColor: 'var(--color-background)',
       display: 'flex',
       flexDirection: 'column'
     }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px' }}>
         {/* Header */}
         <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '36px', marginBottom: '8px' }}>Find Wedding Vendors</h1>
-          <p style={{ fontFamily: 'Urbanist', color: colors.textSecondary, fontSize: '14px' }}>Discover the best wedding professionals for your special day</p>
+          <h1 style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)', fontWeight: 700, fontSize: '36px', marginBottom: '8px' }}>Find Wedding Vendors</h1>
+          <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>Discover the best wedding professionals for your special day</p>
         </div>
 
         {/* Filters */}
@@ -182,7 +182,7 @@ export default function VendorsPage() {
 
         {/* Results Count */}
         <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: colors.textSecondary, fontFamily: 'Urbanist', fontSize: '14px' }}>
+          <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>
             {filteredVendors.length} vendor{filteredVendors.length !== 1 ? 's' : ''} found
           </p>
         </div>
@@ -196,13 +196,13 @@ export default function VendorsPage() {
           </div>
         ) : (
           <div style={{ textAlign: 'center', padding: '48px 0' }}>
-            <div style={{ color: colors.textMuted, marginBottom: '16px' }}>
+            <div style={{ color: 'rgba(255,255,255,0.4)', marginBottom: '16px' }}>
               <svg style={{ width: '64px', height: '64px' }} className="mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, marginBottom: '8px' }}>No vendors yet</h3>
-            <p style={{ color: colors.textSecondary }}>Check back soon as we add wedding vendors to our platform</p>
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-family-body)', marginBottom: '8px' }}>No vendors yet</h3>
+            <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)' }}>Check back soon as we add wedding vendors to our platform</p>
           </div>
         )}
       </div>

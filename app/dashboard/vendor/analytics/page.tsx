@@ -294,10 +294,25 @@ export default function VendorAnalyticsPage() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="/dashboard/vendor" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Overview</a>
-              <a href="/dashboard/vendor/profile" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Profile</a>
-              <a href="/dashboard/vendor/bookings" className="hover:text-blue-600 transition-colors" style={{ color: '#6b7280', fontWeight: 600, fontSize: '14px' }}>Bookings</a>
-              <a href="/dashboard/vendor/analytics" className="hover:text-blue-600 transition-colors" style={{ color: '#1a56db', fontWeight: 600, fontSize: '14px' }}>Analytics</a>
+              {[
+                ['Overview', '/dashboard/vendor'],
+                ['Profile', '/dashboard/vendor/profile'],
+                ['Bookings', '/dashboard/vendor/bookings'],
+                ['Analytics', '/dashboard/vendor/analytics'],
+              ].map(([label, href]) => (
+                <a 
+                  key={label}
+                  href={href}
+                  className="hover:text-blue-600 transition-colors" 
+                  style={{ 
+                    color: window.location.pathname === href ? '#1a56db' : '#6b7280', 
+                    fontWeight: 600, 
+                    fontSize: '14px' 
+                  }}
+                >
+                  {label}
+                </a>
+              ))}
             </div>
 
             {/* Right - User Info */}
