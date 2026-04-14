@@ -161,10 +161,10 @@ export default function VendorProfile() {
     return missing
   }
 
-  const inp: React.CSSProperties = { width: '100%', borderBottom: '1px solid #c7d2fe', background: '#f7f8fd', padding: '10px 14px', fontSize: 13, fontFamily: 'Urbanist', color: '#333', outline: 'none', boxSizing: 'border-box' }
-  const lbl: React.CSSProperties = { display: 'block', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6b7eb9', marginBottom: 6, fontFamily: 'Urbanist' }
+  const inp: React.CSSProperties = { width: '100%', border: '1px solid #e5edff', background: '#ffffff', padding: '12px 16px', fontSize: 14, fontFamily: 'Urbanist', color: '#111928', outline: 'none', boxSizing: 'border-box', borderRadius: '8px', transition: 'border-color 0.2s ease' }
+  const lbl: React.CSSProperties = { display: 'block', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#1a56db', marginBottom: 8, fontFamily: 'Urbanist' }
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#f7f8fd', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 40, height: 40, borderRadius: '50%', border: '2px solid #c7d2fe', borderTop: '2px solid #4f69f6', animation: 'spin 1s linear infinite' }} /></div>
+  if (loading) return <div style={{ minHeight: '100vh', background: '#f0f4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 44, height: 44, borderRadius: '50%', border: '3px solid #ebf5ff', borderTop: '3px solid #1a56db', animation: 'spin 1s linear infinite' }} /></div>
 
   const dashFooter = (
   <footer style={{
@@ -205,25 +205,67 @@ export default function VendorProfile() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: '#f7f8fd', 
+      background: '#f0f4ff', 
       fontFamily: 'Urbanist',
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px', background: '#fff', borderBottom: '0.5px solid #c7d2fe' }}>
-        <span style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#4f69f6', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>Kunda</span>
-        <div style={{ display: 'flex', gap: 24 }}>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', background: '#ffffff', borderBottom: '1px solid #e5edff', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{
+            width: 36,
+            height: 36,
+            background: '#1a56db',
+            borderRadius: 10,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 18,
+          }}>
+            
+          </div>
+          <span style={{ fontFamily: 'Urbanist', fontSize: 20, fontWeight: 800, color: '#0f2460', cursor: 'pointer' }} onClick={() => window.location.href = '/'}>Kunda</span>
+        </div>
+        <div style={{ display: 'flex', gap: 0 }}>
           {[['Overview','/dashboard/vendor'],['Profile','/dashboard/vendor/profile'],['Bookings','/dashboard/vendor/bookings']].map(([l,h]) => (
-            <a key={l} href={h} style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: l === 'Profile' ? '#7a5c30' : '#9a7850', textDecoration: 'none' }}>{l}</a>
+            <a key={l} href={h} style={{ 
+              padding: '0 18px',
+              height: 64,
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: 14,
+              fontWeight: 600,
+              color: h === '/dashboard/vendor/profile' ? '#1a56db' : '#6b7280',
+              textDecoration: 'none',
+              borderBottom: h === '/dashboard/vendor/profile' ? '2px solid #1a56db' : '2px solid transparent',
+              transition: 'all 0.2s',
+              fontFamily: 'Urbanist, sans-serif',
+            }}>{l}</a>
           ))}
         </div>
-        <span style={{ fontSize: 13, color: '#1a56db' }}>{userProfile?.name || 'Vendor'}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg,#1a56db,#3f83f8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 13,
+            fontWeight: 800,
+            color: '#fff',
+          }}>
+            {(userProfile?.name || 'Vendor').substring(0,2).toUpperCase()}
+          </div>
+          <span style={{ fontSize: 14, fontWeight: 600, color: '#111928' }}>{userProfile?.name || 'Vendor'}</span>
+        </div>
       </nav>
 
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '32px 24px' }}>
-        <p style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a56db', marginBottom: 6 }}>Vendor Profile</p>
-        <h1 style={{ fontFamily: 'Urbanist', fontSize: 36, fontWeight: 300, color: '#111928', marginBottom: 4 }}>Edit Your Profile</h1>
-        <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 28 }}>Complete your profile to appear in vendor discovery</p>
+        <p style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1a56db', marginBottom: 8, fontWeight: 700 }}>Vendor Profile</p>
+        <h1 style={{ fontFamily: 'Urbanist', fontSize: 36, fontWeight: 800, color: '#111928', marginBottom: 8, letterSpacing: '-0.02em' }}>Edit Your Profile</h1>
+        <p style={{ fontSize: 15, color: '#6b7280', marginBottom: 32 }}>Complete your profile to appear in vendor discovery</p>
 
         {/* Profile Completion Bar */}
         <div style={{
@@ -319,10 +361,35 @@ export default function VendorProfile() {
           )}
         </div>
 
-        {saved && <div style={{ background: '#1a56db', border: '0.5px solid #5dcaa5', padding: '12px 16px', marginBottom: 20, color: '#085041', fontSize: 13 }}>Profile saved!</div>}
+        {saved && <div style={{ 
+          background: '#def7ec', 
+          border: '1px solid #057a55', 
+          padding: '12px 16px', 
+          marginBottom: 24, 
+          color: '#057a55', 
+          fontSize: 14,
+          fontWeight: 600,
+          borderRadius: '8px',
+          fontFamily: 'Urbanist'
+        }}>Profile saved successfully!</div>}
 
-        <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Basic Information</h2>
+        <div style={{ 
+          background: '#ffffff', 
+          border: '1px solid #e5edff', 
+          borderRadius: '12px', 
+          padding: '32px', 
+          marginBottom: '24px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
+        }}>
+          <h2 style={{ 
+            fontFamily: 'Urbanist', 
+            fontSize: 20, 
+            fontWeight: 700, 
+            color: '#111928', 
+            marginBottom: 24, 
+            paddingBottom: 12, 
+            borderBottom: '1px solid #e5edff'
+          }}>Basic Information</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
             <div>
               <label style={lbl}>Business Name *</label>
@@ -383,9 +450,24 @@ export default function VendorProfile() {
           </div>
         </div>
 
-        <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Contact & Social</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+        <div style={{ 
+          background: '#ffffff', 
+          border: '1px solid #e5edff', 
+          borderRadius: '12px', 
+          padding: '32px', 
+          marginBottom: '24px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
+        }}>
+          <h2 style={{ 
+            fontFamily: 'Urbanist', 
+            fontSize: 20, 
+            fontWeight: 700, 
+            color: '#111928', 
+            marginBottom: 24, 
+            paddingBottom: 12, 
+            borderBottom: '1px solid #e5edff'
+          }}>Contact & Social</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
             <div>
               <label style={lbl}>Website</label>
               <input value={form.website} onChange={e => setForm(p => ({...p, website: e.target.value}))} placeholder="https://..." style={inp} />
@@ -401,26 +483,111 @@ export default function VendorProfile() {
           </div>
         </div>
 
-        <div style={{ background: '#fff', border: '1px solid #e5edff', padding: 28, marginBottom: 16 }}>
-          <h2 style={{ fontFamily: 'Urbanist', fontSize: 20, color: '#111928', marginBottom: 16, paddingBottom: 10, borderBottom: '0.5px solid ${colors.border}' }}>Portfolio ({images.length}/10)</h2>
-          <label style={{ display: 'block', border: '1px dashed ${colors.border}', background: '#f0f4ff', padding: 32, textAlign: 'center', cursor: 'pointer' }}>
+        <div style={{ 
+          background: '#ffffff', 
+          border: '1px solid #e5edff', 
+          borderRadius: '12px', 
+          padding: '32px', 
+          marginBottom: '24px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
+        }}>
+          <h2 style={{ 
+            fontFamily: 'Urbanist', 
+            fontSize: 20, 
+            fontWeight: 700, 
+            color: '#111928', 
+            marginBottom: 24, 
+            paddingBottom: 12, 
+            borderBottom: '1px solid #e5edff'
+          }}>Portfolio ({images.length}/10)</h2>
+          <label style={{ 
+            display: 'block', 
+            border: '2px dashed #e5edff', 
+            background: '#f8faff', 
+            padding: '40px', 
+            textAlign: 'center', 
+            cursor: 'pointer',
+            borderRadius: '12px',
+            transition: 'all 0.2s ease'
+          }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = '#1a56db'
+              e.currentTarget.style.backgroundColor = '#f0f4ff'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = '#e5edff'
+              e.currentTarget.style.backgroundColor = '#f8faff'
+            }}
+          >
             <input type="file" accept="image/*" multiple onChange={upload} style={{ display: 'none' }} disabled={images.length >= 10 || uploading} />
-            <div style={{ fontSize: 13, color: '#6b7280' }}>{uploading ? 'Uploading...' : 'Click to upload images'}</div>
-            <div style={{ fontSize: 11, color: '#9ca3af' }}>PNG, JPG up to 5MB each</div>
+            <div style={{ fontSize: 16, color: '#1a56db', fontWeight: 600, marginBottom: 8 }}>
+              {uploading ? 'Uploading...' : 'Click to upload images'}
+            </div>
+            <div style={{ fontSize: 13, color: '#6b7280' }}>PNG, JPG up to 5MB each</div>
           </label>
           {images.length > 0 && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 8, marginTop: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12, marginTop: 24 }}>
               {images.map((url, i) => (
-                <div key={i} style={{ position: 'relative', aspectRatio: '1', overflow: 'hidden' }}>
+                <div key={i} style={{ position: 'relative', aspectRatio: '1', overflow: 'hidden', borderRadius: '8px' }}>
                   <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  <button onClick={() => setImages(p => p.filter((_,idx) => idx !== i))} style={{ position: 'absolute', top: 4, right: 4, width: 20, height: 20, background: 'rgba(0,0,0,0.6)', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 14 }}>×</button>
+                  <button 
+                    onClick={() => setImages(p => p.filter((_,idx) => idx !== i))} 
+                    style={{ 
+                      position: 'absolute', 
+                      top: 8, 
+                      right: 8, 
+                      width: 24, 
+                      height: 24, 
+                      background: 'rgba(0,0,0,0.7)', 
+                      color: '#fff', 
+                      border: 'none', 
+                      cursor: 'pointer', 
+                      fontSize: 14,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'background 0.2s ease'
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(220,38,38,0.9)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.7)'}
+                  >×</button>
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <button onClick={save} disabled={saving} style={{ width: '100%', background: saving ? '#9ca3af' : '#1a56db', color: '#fdf9f5', border: 'none', padding: 14, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', cursor: saving ? 'not-allowed' : 'pointer', fontFamily: 'Urbanist', marginBottom: 32 }}>
+        <button 
+          onClick={save} 
+          disabled={saving} 
+          style={{ 
+            width: '100%', 
+            background: saving ? '#9ca3af' : '#1a56db', 
+            color: '#ffffff', 
+            border: 'none', 
+            padding: '16px', 
+            fontSize: 14, 
+            fontWeight: 700,
+            letterSpacing: '0.06em', 
+            textTransform: 'uppercase', 
+            cursor: saving ? 'not-allowed' : 'pointer', 
+            fontFamily: 'Urbanist', 
+            marginBottom: 32,
+            borderRadius: '8px',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseEnter={e => {
+            if (!saving) {
+              e.currentTarget.style.background = '#0f2460'
+            }
+          }}
+          onMouseLeave={e => {
+            if (!saving) {
+              e.currentTarget.style.background = '#1a56db'
+            }
+          }}
+        >
           {saving ? 'Saving...' : 'Save Profile'}
         </button>
       </div>

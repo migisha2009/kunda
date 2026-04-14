@@ -1954,32 +1954,73 @@ export default function CoupleDashboard() {
                 }}>{quote}</p>
               </div>
 
-              {/* Recent checklist items */}
+              {/* Recent checklist items - Blue/White Design */}
               <div style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: `1px solid var(--color-border)`,
-                padding: '20px'
+                background: '#ffffff',
+                border: '1px solid #e5edff',
+                borderRadius: '12px',
+                padding: '24px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{
-                    fontFamily: 'Urbanist',
-                    fontSize: '16px',
-                    color: 'var(--color-text)',
-                  }}>Recent Tasks</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <div>
+                    <h3 style={{
+                      fontFamily: 'Urbanist',
+                      fontSize: '18px',
+                      fontWeight: 700,
+                      color: '#111928',
+                      marginBottom: '4px'
+                    }}>Wedding Checklist</h3>
+                    <p style={{
+                      fontFamily: 'Urbanist',
+                      fontSize: '13px',
+                      color: '#6b7280'
+                    }}>{wedding.checklist.filter(t => t.done).length} of {wedding.checklist.length} completed</p>
+                  </div>
                   <button
                     onClick={() => window.location.href = '/dashboard/couple/checklist'}
                     style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '11px',
-                      color: 'var(--color-primary)',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: '#1a56db',
                       textTransform: 'uppercase',
                       backgroundColor: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer'
+                      border: '1px solid #1a56db',
+                      borderRadius: '8px',
+                      padding: '8px 16px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.backgroundColor = '#1a56db'
+                      e.currentTarget.style.color = '#ffffff'
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.color = '#1a56db'
                     }}
                   >
                     View All
                   </button>
+                </div>
+                
+                {/* Progress Bar */}
+                <div style={{
+                  width: '100%',
+                  height: '8px',
+                  backgroundColor: '#e5edff',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                  marginBottom: '20px'
+                }}>
+                  <div style={{
+                    width: `${(wedding.checklist.filter(t => t.done).length / wedding.checklist.length) * 100}%`,
+                    height: '100%',
+                    backgroundColor: '#1a56db',
+                    borderRadius: '4px',
+                    transition: 'width 0.3s ease'
+                  }}></div>
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1987,45 +2028,83 @@ export default function CoupleDashboard() {
                     <div key={item.id} style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '12px'
-                    }}>
-                      <div
-                        onClick={() => handleToggleTask(item.id)}
-                        style={{
-                          width: '16px',
-                          height: '16px',
-                          border: item.done ? 'none' : `0.5px solid var(--color-primary)`,
-                          backgroundColor: item.done ? 'var(--color-primary)' : 'transparent',
-                          cursor: 'pointer',
-                          position: 'relative',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
+                      gap: '12px',
+                      padding: '12px',
+                      backgroundColor: item.done ? '#f0f4ff' : '#ffffff',
+                      border: `1px solid ${item.done ? '#1a56db' : '#e5edff'}`,
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease',
+                      cursor: 'pointer'
+                    }}
+                      onClick={() => handleToggleTask(item.id)}
+                      onMouseEnter={e => {
+                        if (!item.done) {
+                          e.currentTarget.style.backgroundColor = '#f8faff'
+                          e.currentTarget.style.borderColor = '#1a56db'
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!item.done) {
+                          e.currentTarget.style.backgroundColor = '#ffffff'
+                          e.currentTarget.style.borderColor = '#e5edff'
+                        }
+                      }}
+                    >
+                      <div style={{
+                        width: '20px',
+                        height: '20px',
+                        border: item.done ? 'none' : `2px solid #e5edff`,
+                        backgroundColor: item.done ? '#1a56db' : '#ffffff',
+                        borderRadius: '6px',
+                        position: 'relative',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
                         {item.done && (
                           <div style={{
-                            width: '8px',
-                            height: '8px',
+                            width: '6px',
+                            height: '10px',
                             backgroundColor: '#ffffff',
                             clipPath: 'polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 60%)'
                           }}></div>
                         )}
                       </div>
-                      <span style={{
-                        fontFamily: 'Urbanist',
-                        fontSize: '13px',
-                        color: item.done ? 'var(--color-muted)' : 'var(--color-text)',
-                        textDecoration: item.done ? 'line-through' : 'none'
-                      }}>{item.task}</span>
-                      {item.urgent && (
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{
-                          width: '6px',
-                          height: '6px',
-                          backgroundColor: 'var(--color-danger)',
-                          borderRadius: '50%'
-                        }}></div>
-                      )}
+                          fontFamily: 'Urbanist',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                          color: item.done ? '#6b7280' : '#111928',
+                          textDecoration: item.done ? 'line-through' : 'none',
+                          marginBottom: '2px'
+                        }}>{item.task}</div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          <span style={{
+                            fontFamily: 'Urbanist',
+                            fontSize: '11px',
+                            color: '#9ca3af',
+                            textTransform: 'capitalize'
+                          }}>{item.category}</span>
+                          {item.urgent && (
+                            <span style={{
+                              fontFamily: 'Urbanist',
+                              fontSize: '10px',
+                              fontWeight: 600,
+                              color: '#c2410c',
+                              backgroundColor: '#fff7ed',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              textTransform: 'uppercase'
+                            }}>Urgent</span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
