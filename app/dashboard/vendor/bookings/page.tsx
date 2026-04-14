@@ -557,10 +557,10 @@ export default function VendorBookingsPage() {
         </h1>
       </div>
 
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="w-full px-2 sm:px-4 lg:px-6">
 
         {/* Stats Row */}
-        <div className="grid grid-cols-5 gap-3 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8">
           <div className="border" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px', padding: '16px 18px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)' }}>
             <div className="text-xs uppercase mb-2" style={{ fontFamily: 'var(--font-family-body)', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.8)', fontWeight: 700, fontSize: '11px' }}>
               Pending Enquiries
