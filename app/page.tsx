@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Heart, Camera, MapPin, Music, Cake, Flower, Home as HomeIcon, Car, Shirt, Star, Users, Menu, X, Phone, MessageCircle, ChevronRight, Settings, Calendar, DollarSign, MessageSquare, AlertCircle, Check } from 'lucide-react'
@@ -65,7 +64,6 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
   // Countdown timer
   useEffect(() => {
     const targetDate = new Date()
@@ -87,7 +85,6 @@ export default function Home() {
     
     return () => clearInterval(timer)
   }, [])
-
   // Intersection Observer for animations
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -106,7 +103,6 @@ export default function Home() {
 
     return () => observer.disconnect()
   }, [])
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setFormSubmitted(true)
@@ -115,7 +111,6 @@ export default function Home() {
       setFormData({ name: '', email: '', message: '' })
     }, 3000)
   }
-
   return (
     <div className="min-h-screen">
       {/* 1. STICKY NAVBAR */}
@@ -168,14 +163,8 @@ export default function Home() {
           )}
         </div>
       </nav>
-
       {/* 2. HERO SECTION */}
-      <section className="hero-section" style={{ 
-        minHeight: '560px',
-        padding: '80px 64px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+      <section className="hero-section" style={{ minHeight: '560px', padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
         {/* Floating Particles */}
         <FloatingParticles />
         
@@ -193,9 +182,7 @@ export default function Home() {
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2" style={{ animation: 'pulse 2s infinite' }}></div>
               Rwanda's #1 Wedding Platform
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ 
-              fontFamily: 'var(--font-family)'
-            }}>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ fontFamily: 'var(--font-family)' }}>
               Your Perfect Wedding,<br />
               <span style={{ color: 'var(--color-primary-pale)' }}>Beautifully</span><br />
               Orchestrated
@@ -230,27 +217,15 @@ export default function Home() {
             <div className="card-glass">
               <div className="text-white text-sm font-medium mb-4">Next Wedding Countdown</div>
               <div className="grid grid-cols-4 gap-3 mb-6">
-                <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                  <div className="text-2xl font-bold text-white">{countdown.days}</div>
-                  <div className="text-xs uppercase text-white opacity-50">Days</div>
-                </div>
-                <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                  <div className="text-2xl font-bold text-white">{countdown.hours}</div>
-                  <div className="text-xs uppercase text-white opacity-50">Hours</div>
-                </div>
-                <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                  <div className="text-2xl font-bold text-white">{countdown.minutes}</div>
-                  <div className="text-xs uppercase text-white opacity-50">Mins</div>
-                </div>
-                <div className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                  <div className="text-2xl font-bold text-white">{countdown.seconds}</div>
-                  <div className="text-xs uppercase text-white opacity-50">Secs</div>
-                </div>
+                {(['days', 'hours', 'minutes', 'seconds'] as const).map((unit, index) => (
+                  <div key={unit} className="text-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                    <div className="text-2xl font-bold text-white">{countdown[unit]}</div>
+                    <div className="text-xs uppercase text-white opacity-50">{unit.charAt(0).toUpperCase() + unit.slice(1, -1)}</div>
+                  </div>
+                ))}
               </div>
               <div className="flex items-center p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">
-                  A
-                </div>
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">A</div>
                 <div>
                   <div className="text-white font-medium">Amara & David</div>
                   <div className="text-xs text-white opacity-60">Kigali Convention Center</div>
@@ -263,7 +238,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 3. STATS BAR */}
       <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary-dark)', padding: '16px' }}>
         <div className="max-w-7xl mx-auto">
@@ -287,7 +261,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 4. FEATURES SECTION */}
       <section id="features" data-animate className="page-wrapper" style={{ backgroundColor: 'white', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto text-center">
@@ -321,7 +294,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 5. VENDOR CATEGORIES SECTION */}
       <section id="categories" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
@@ -331,12 +303,7 @@ export default function Home() {
               return (
                 <div key={index} 
                      className="p-4 rounded-xl text-center transition-all hover:bg-blue-600 hover:text-white cursor-pointer"
-                     style={{ 
-                       backgroundColor: 'var(--color-card)',
-                       borderColor: 'var(--color-border)',
-                       border: `1px solid var(--color-border)`,
-                       animation: visibleSections.has('categories') ? `fadeInUp 0.6s ease ${index * 0.05}s both` : 'none'
-                     }}
+                     style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', border: `1px solid var(--color-border)`, animation: visibleSections.has('categories') ? `fadeInUp 0.6s ease ${index * 0.05}s both` : 'none' }}
                      onMouseEnter={(e) => {
                        const target = e.currentTarget
                        target.style.backgroundColor = 'var(--color-primary)'
@@ -357,8 +324,7 @@ export default function Home() {
                          iconDiv.style.color = 'var(--color-primary-dark)'
                        }
                      }}>
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-2 transition-all" 
-                       style={{ backgroundColor: '#ffffff', color: 'var(--color-primary-dark)' }}>
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center mx-auto mb-2 transition-all" style={{ backgroundColor: '#ffffff', color: 'var(--color-primary-dark)' }}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <div className="text-xs font-bold" style={{ color: 'var(--color-primary-dark)' }}>{category.name}</div>
@@ -368,7 +334,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 6. HOW IT WORKS SECTION */}
       <section id="how-it-works" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
@@ -421,7 +386,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 7. TESTIMONIALS SECTION */}
       <section id="testimonials" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
@@ -452,7 +416,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 8. CONTACT SECTION */}
       <section id="contact" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
         <div className="max-w-7xl mx-auto">
@@ -558,13 +521,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* 9. CTA BANNER */}
-      <section className="hero-section" style={{ 
-        padding: '80px 64px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+      <section className="hero-section" style={{ padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
           <div className="absolute top-40 right-32 w-48 h-48 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 1s' }}></div>
