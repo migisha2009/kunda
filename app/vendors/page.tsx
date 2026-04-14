@@ -125,20 +125,22 @@ export default function VendorsPage() {
   }
 
   const dashFooter = (
-  <footer style={{
+  <footer className="vendor-footer" style={{
     background: 'var(--color-card)',
     borderTop: '1px solid var(--color-border)',
-    padding: '16px 32px',
+    padding: '16px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     fontFamily: 'var(--font-family-body)',
     marginTop: 'auto',
+    flexWrap: 'wrap',
+    gap: '12px'
   }}>
     <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
       © 2026 Kunda Wedding Platform · Kigali, Rwanda
     </div>
-    <div style={{
+    <div className="vendor-footer-links" style={{
       display: 'flex', gap: 20, alignItems: 'center'
     }}>
       <a href="https://wa.me/250783312746"
@@ -167,16 +169,16 @@ export default function VendorsPage() {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '16px' }}>
         {/* Header */}
-        <div style={{ marginBottom: '32px' }}>
+        <div style={{ marginBottom: '24px' }}>
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
               <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
             </div>
             <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '24px' }}>Kunda</span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)', fontWeight: 700, fontSize: '36px', marginBottom: '8px' }}>Find Wedding Vendors</h1>
+          <h1 style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)', fontWeight: 700, fontSize: '28px', marginBottom: '8px' }}>Find Wedding Vendors</h1>
           <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>Discover the best wedding professionals for your special day</p>
         </div>
 
@@ -195,7 +197,7 @@ export default function VendorsPage() {
 
         {/* Vendor Grid */}
         {filteredVendors.length > 0 ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+          <div className="vendor-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
             {filteredVendors.map((vendor) => (
               <VendorCard key={vendor.id} vendor={vendor} />
             ))}

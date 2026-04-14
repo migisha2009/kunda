@@ -165,7 +165,7 @@ export default function Home() {
         </div>
       </nav>
       {/* 2. HERO SECTION */}
-      <section className="hero-section" style={{ minHeight: '560px', padding: '80px 64px', position: 'relative', overflow: 'hidden', background: 'var(--gradient-hero)' }}>
+      <section className="landing-hero hero-section" style={{ minHeight: '560px', position: 'relative', overflow: 'hidden', background: 'var(--gradient-hero)' }}>
         {/* Floating Particles */}
         <FloatingParticles />
         
@@ -183,15 +183,15 @@ export default function Home() {
               <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: 'var(--color-success)', animation: 'pulse 2s infinite' }}></div>
               Rwanda's #1 Wedding Platform
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF' }}>
+            <h1 className="hero-title-landing text-5xl md:text-6xl font-bold mb-6 leading-tight" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF' }}>
               Your Perfect Wedding,<br />
               <span style={{ color: 'var(--color-accent)' }}>Beautifully</span><br />
               Orchestrated
             </h1>
-            <p className="text-lg mb-8" style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.85)', fontWeight: '400' }}>
+            <p className="hero-subtitle-landing text-lg mb-8" style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.85)', fontWeight: '400' }}>
               Connect with verified wedding vendors, manage your budget, and plan every detail of your special day
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="hero-buttons flex flex-col sm:flex-row gap-4 mb-8">
               <Link href="/signup" className="btn-primary">
                 Plan My Wedding
               </Link>
@@ -240,9 +240,9 @@ export default function Home() {
         </div>
       </section>
       {/* 3. STATS BAR */}
-      <section id="stats" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-primary)', padding: '16px' }}>
+      <section id="stats" data-animate className="stats-section page-wrapper" style={{ backgroundColor: 'var(--color-primary)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-6">
               <div className="text-3xl font-bold text-white mb-2" style={{ animation: visibleSections.has('stats') ? 'countUp 1s ease' : 'none' }}>2,400+</div>
               <div className="text-sm uppercase" style={{ color: 'var(--color-accent)' }}>Weddings</div>
@@ -263,12 +263,12 @@ export default function Home() {
         </div>
       </section>
       {/* 4. FEATURES SECTION */}
-      <section id="features" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
+      <section id="features" data-animate className="features-section page-wrapper" style={{ backgroundColor: 'var(--color-background)' }}>
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-16" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)' }}>
             Everything you need for your perfect wedding
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => {
               const Icon = feature.icon
               return (
@@ -296,9 +296,9 @@ export default function Home() {
         </div>
       </section>
       {/* 5. VENDOR CATEGORIES SECTION */}
-      <section id="categories" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
+      <section id="categories" data-animate className="categories-section page-wrapper" style={{ backgroundColor: 'var(--color-background)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="categories-grid grid grid-cols-2 md:grid-cols-5 gap-4">
             {vendorCategories.map((category, index) => {
               const Icon = category.icon
               return (
@@ -396,7 +396,7 @@ export default function Home() {
         </div>
       </section>
       {/* 7. TESTIMONIALS SECTION */}
-      <section id="testimonials" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-background)', padding: '80px 64px' }}>
+      <section id="testimonials" data-animate className="testimonials-section page-wrapper" style={{ backgroundColor: 'var(--color-background)' }}>
         <div className="max-w-7xl mx-auto text-center mb-12">
           <h2 className="text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-heading)' }}>
             Love Stories from Happy Couples
@@ -406,7 +406,7 @@ export default function Home() {
           </p>
         </div>
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="testimonials-grid grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} 
                    className="card"
@@ -434,12 +434,12 @@ export default function Home() {
         </div>
       </section>
       {/* 8. CONTACT SECTION */}
-      <section id="contact" data-animate className="page-wrapper" style={{ backgroundColor: 'var(--color-card)', padding: '80px 64px' }}>
+      <section id="contact" data-animate className="contact-section page-wrapper md:py-12 lg:py-20" style={{ backgroundColor: 'var(--color-card)' }}>
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12" style={{ fontFamily: 'var(--font-family-heading)', color: 'var(--color-text)' }}>
             Get in touch with Kunda
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="contact-grid grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="card flex items-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
@@ -539,7 +539,7 @@ export default function Home() {
         </div>
       </section>
       {/* 9. CTA BANNER */}
-      <section className="hero-section" style={{ padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
+      <section className="cta-section hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
           <div className="absolute top-40 right-32 w-48 h-48 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 1s' }}></div>
@@ -547,7 +547,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)' }}>
+          <h2 className="cta-title text-4xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-family)', fontWeight: 'var(--font-weight-black)' }}>
             Begin your forever, beautifully
           </h2>
           <p className="text-lg mb-8" style={{ color: 'rgba(255,255,255,0.75)' }}>

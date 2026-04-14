@@ -1225,129 +1225,259 @@ export default function CoupleDashboard() {
         <div>
           {/* HERO SECTION WITH WEDDING OVERVIEW */}
           <div style={{ 
-            background: 'var(--gradient-hero)',
-            padding: '32px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+            padding: '48px 32px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             position: 'relative',
             overflow: 'hidden',
+            minHeight: '320px'
           }}>
+            {/* Animated background elements */}
+            <div style={{
+              position: 'absolute',
+              width: 400,
+              height: 400,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+              top: -150,
+              right: -100,
+              animation: 'float 6s ease-in-out infinite'
+            }} />
             <div style={{
               position: 'absolute',
               width: 300,
               height: 300,
               borderRadius: '50%',
-              border: '1px solid rgba(255,255,255,0.06)',
-              top: -100,
-              right: 200,
+              background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
+              bottom: -100,
+              left: -50,
+              animation: 'float 8s ease-in-out infinite reverse'
             }} />
             <div style={{
               position: 'absolute',
-              width: 500,
-              height: 500,
+              width: 200,
+              height: 200,
               borderRadius: '50%',
-              border: '1px solid rgba(255,255,255,0.04)',
-              top: -200,
-              right: 100,
+              background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
+              top: '50%',
+              right: '10%',
+              animation: 'pulse 4s ease-in-out infinite'
             }} />
 
-            <div style={{ zIndex: 1 }}>
+            <div style={{ zIndex: 1, maxWidth: '600px' }}>
+              {/* Welcome badge */}
               <div style={{
-                fontSize: 11,
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.15em',
-                color: 'rgba(255,255,255,0.8)',
-                marginBottom: 8,
-                fontFamily: 'var(--font-family-body)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                padding: '8px 16px',
+                borderRadius: '24px',
+                marginBottom: '20px',
+                animation: 'slideInLeft 0.8s ease-out'
               }}>
-                Wedding Dashboard
+                <Heart size={16} color={'rgba(255,255,255,0.95)'} style={{ animation: 'heartbeat 2s infinite' }} />
+                <span style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.95)',
+                  fontFamily: 'Urbanist',
+                }}>
+                  Wedding Dashboard
+                </span>
               </div>
+              
+              {/* Couple names */}
               <h1 style={{
-                fontSize: 36,
-                fontWeight: 800,
+                fontSize: 56,
+                fontWeight: 900,
                 color: '#ffffff',
-                marginBottom: 6,
-                letterSpacing: '-0.02em',
-                fontFamily: 'var(--font-family-heading)',
+                marginBottom: '16px',
+                letterSpacing: '-0.03em',
+                fontFamily: 'Urbanist',
+                lineHeight: 1.1,
+                textShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                animation: 'slideInLeft 0.8s ease-out 0.2s both'
               }}>
                 {wedding.coupleName1} & {wedding.coupleName2}
               </h1>
-              <p style={{
-                fontSize: 15,
-                color: 'rgba(255,255,255,0.8)',
+              
+              {/* Wedding details */}
+              <div style={{
                 display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                fontFamily: 'var(--font-family-body)',
+                flexDirection: 'column',
+                gap: '12px',
+                marginBottom: '32px',
+                animation: 'slideInLeft 0.8s ease-out 0.4s both'
               }}>
-                {wedding.venue}
-                {wedding.date && (
-                  <>
-                    <span style={{ opacity: 0.4 }}>·</span>
-                    {formatDate(wedding.date)}
-                  </>
-                )}
-              </p>
-
-
-
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  fontSize: 18,
+                  color: 'rgba(255,255,255,0.95)',
+                  fontFamily: 'Urbanist',
+                  fontWeight: 500
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(10px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '1px solid rgba(255,255,255,0.3)'
+                  }}>
+                    <MapPin size={16} color={'rgba(255,255,255,0.95)'} />
+                  </div>
+                  <span>{wedding.venue}</span>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  fontSize: 18,
+                  color: 'rgba(255,255,255,0.95)',
+                  fontFamily: 'Urbanist',
+                  fontWeight: 500
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(10px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '1px solid rgba(255,255,255,0.3)'
+                  }}>
+                    <Calendar size={16} color={'rgba(255,255,255,0.95)'} />
+                  </div>
+                  <span>{formatDate(wedding.date)}</span>
+                  {wedding.ceremonyTime && (
+                    <>
+                      <span style={{ opacity: 0.6, margin: '0 4px' }}>·</span>
+                      <span>{wedding.ceremonyTime} Ceremony</span>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div style={{
               display: 'flex',
-              gap: 10,
+              gap: '16px',
               zIndex: 1,
               alignItems: 'center',
+              flexWrap: 'wrap',
+              animation: 'slideInRight 0.8s ease-out 0.6s both'
             }}>
               <a
                 href="/vendors"
                 style={{
-                  background: '#ffffff',
-                  color: 'var(--color-accent)',
-                  padding: '9px 20px',
-                  borderRadius: 8,
-                  fontSize: 13,
+                  background: 'rgba(255,255,255,0.95)',
+                  color: '#667eea',
+                  padding: '14px 28px',
+                  borderRadius: '16px',
+                  fontSize: 15,
                   fontWeight: 700,
                   textDecoration: 'none',
-                  fontFamily: 'var(--font-family-body)',
+                  fontFamily: 'Urbanist',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.8)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.25)'
+                  e.currentTarget.style.background = 'rgba(255,255,255,1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.95)'
                 }}
               >
+                <Search size={18} />
                 Browse Vendors
               </a>
               
               <a
                 href="/dashboard/couple/guests"
                 style={{
-                  background: 'rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(20px)',
                   color: '#ffffff',
-                  padding: '9px 20px',
-                  borderRadius: 8,
-                  fontSize: 13,
+                  padding: '14px 28px',
+                  borderRadius: '16px',
+                  fontSize: 15,
                   fontWeight: 700,
                   textDecoration: 'none',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  fontFamily: 'var(--font-family-body)',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  fontFamily: 'Urbanist',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.3)'
+                  e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.2)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)'
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = 'none'
                 }}
               >
+                <Users size={18} />
                 Manage Guests
               </a>
               
               <a
                 href="/dashboard/couple/budget"
                 style={{
-                  background: 'rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(20px)',
                   color: '#ffffff',
-                  padding: '9px 20px',
-                  borderRadius: 8,
-                  fontSize: 13,
+                  padding: '14px 28px',
+                  borderRadius: '16px',
+                  fontSize: 15,
                   fontWeight: 700,
                   textDecoration: 'none',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  fontFamily: 'var(--font-family-body)',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  fontFamily: 'Urbanist',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.3)'
+                  e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.2)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)'
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = 'none'
                 }}
               >
+                <DollarSign size={18} />
                 Budget
               </a>
             </div>
@@ -1360,80 +1490,108 @@ export default function CoupleDashboard() {
             style={{ 
               display: 'grid',
               gridTemplateColumns: 'repeat(4,minmax(0,1fr))',
-              gap: 16,
-              padding: '20px 24px',
-              animation: 'fadeInUp 0.5s ease',
+              gap: 20,
+              padding: '32px 24px 24px',
+              animation: 'fadeInUp 0.6s ease',
             }}>
             {/* Days until wedding */}
             <div
               onMouseEnter={() => setHoveredCard('days')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                background: 'var(--color-card)',
-                borderRadius: 12,
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: 16,
                 border: hoveredCard === 'days'
-                  ? '1px solid var(--color-accent)'
-                  : '1px solid var(--color-border)',
+                  ? '2px solid rgba(255,255,255,0.4)'
+                  : '1px solid rgba(255,255,255,0.2)',
                 boxShadow: hoveredCard === 'days'
-                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
-                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
-                padding: '18px 20px',
+                  ? '0 20px 40px rgba(102, 126, 234, 0.4)'
+                  : '0 10px 25px rgba(102, 126, 234, 0.25)',
+                padding: '24px',
                 transform: hoveredCard === 'days'
-                  ? 'translateY(-3px)' : 'translateY(0)',
-                transition: 'all 0.25s ease',
-                animation: 'fadeInUp 0.5s ease 0s both',
+                  ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                animation: 'fadeInUp 0.6s ease 0s both',
                 overflow: 'hidden',
                 position: 'relative',
+                cursor: 'pointer',
+                backdropFilter: 'blur(10px)'
               }}
             >
+              {/* Animated gradient overlay */}
               <div style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0,
-                height: 4,
-                background: 'var(--color-accent)',
-                borderRadius: '12px 12px 0 0',
+                height: '100%',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                borderRadius: 16,
+                opacity: hoveredCard === 'days' ? 1 : 0.7,
+                transition: 'opacity 0.3s ease'
               }} />
+              
+              {/* Icon container */}
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'rgba(245, 166, 35, 0.2)',
+                width: 56,
+                height: 56,
+                borderRadius: '16px',
+                background: 'rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(20px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
-                marginBottom: 12,
+                marginBottom: 20,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+                transition: 'all 0.3s ease',
+                transform: hoveredCard === 'days' ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                border: '1px solid rgba(255,255,255,0.3)'
               }}>
-                <Calendar size={20} color="var(--color-accent)" />
+                <Calendar size={28} color="#ffffff" />
               </div>
+              
+              {/* Main number */}
               <div style={{
-                fontSize: 32,
-                fontWeight: 800,
-                color: '#FFFFFF',
-                letterSpacing: '-0.02em',
+                fontSize: 42,
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '-0.03em',
                 lineHeight: 1,
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                position: 'relative',
+                zIndex: 1
               }}>
                 {animatedDays}
               </div>
+              
+              {/* Label */}
               <div style={{
                 fontSize: 12,
-                fontWeight: 600,
+                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                color: 'rgba(255,255,255,0.8)',
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                letterSpacing: '0.1em',
+                color: 'rgba(255,255,255,0.9)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                position: 'relative',
+                zIndex: 1
               }}>
                 Days Until Wedding
               </div>
+              
+              {/* Subtitle */}
               <div style={{
                 fontSize: 13,
                 fontWeight: 500,
-                color: 'var(--color-accent)',
-                fontFamily: 'var(--font-family-body)',
+                color: 'rgba(255,255,255,0.8)',
+                fontFamily: 'Urbanist',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                position: 'relative',
+                zIndex: 1
               }}>
+                <Clock size={14} color="rgba(255,255,255,0.8)" />
                 {formatDate(wedding.date)}
               </div>
             </div>
@@ -1443,71 +1601,104 @@ export default function CoupleDashboard() {
               onMouseEnter={() => setHoveredCard('guests')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                background: 'var(--color-card)',
-                borderRadius: 12,
+                background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                borderRadius: 16,
                 border: hoveredCard === 'guests'
-                  ? '1px solid var(--color-accent)'
-                  : '1px solid var(--color-border)',
+                  ? '2px solid rgba(255,255,255,0.4)'
+                  : '1px solid rgba(255,255,255,0.2)',
                 boxShadow: hoveredCard === 'guests'
-                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
-                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
-                padding: '18px 20px',
+                  ? '0 20px 40px rgba(16, 185, 129, 0.4)'
+                  : '0 10px 25px rgba(16, 185, 129, 0.25)',
+                padding: '24px',
                 transform: hoveredCard === 'guests'
-                  ? 'translateY(-3px)' : 'translateY(0)',
-                transition: 'all 0.25s ease',
-                animation: 'fadeInUp 0.5s ease 0.1s both',
+                  ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                animation: 'fadeInUp 0.6s ease 0.1s both',
                 overflow: 'hidden',
                 position: 'relative',
+                cursor: 'pointer',
+                backdropFilter: 'blur(10px)'
               }}
             >
+              {/* Animated gradient overlay */}
               <div style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0,
-                height: 4,
-                background: 'var(--color-accent)',
-                borderRadius: '12px 12px 0 0',
+                height: '100%',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                borderRadius: 16,
+                opacity: hoveredCard === 'guests' ? 1 : 0.7,
+                transition: 'opacity 0.3s ease'
               }} />
+              
+              {/* Icon container */}
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'rgba(245, 166, 35, 0.2)',
+                width: 56,
+                height: 56,
+                borderRadius: '16px',
+                background: 'rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(20px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
-                marginBottom: 12,
+                marginBottom: 20,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+                transition: 'all 0.3s ease',
+                transform: hoveredCard === 'guests' ? 'scale(1.1) rotate(-5deg)' : 'scale(1) rotate(0deg)',
+                border: '1px solid rgba(255,255,255,0.3)'
               }}>
-                <Users size={20} color="var(--color-accent)" />
+                <Users size={28} color="#ffffff" />
               </div>
+              
+              {/* Main number */}
               <div style={{
-                fontSize: 32,
-                fontWeight: 800,
-                color: '#FFFFFF',
-                letterSpacing: '-0.02em',
+                fontSize: 42,
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '-0.03em',
                 lineHeight: 1,
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                position: 'relative',
+                zIndex: 1
               }}>
-                {animatedGuests}/{animatedTotalGuests}
+                {animatedGuests}<span style={{
+                  fontSize: 28,
+                  color: 'rgba(255,255,255,0.8)',
+                  fontWeight: 600,
+                  margin: '0 6px'
+                }}>/</span>{animatedTotalGuests}
               </div>
+              
+              {/* Label */}
               <div style={{
                 fontSize: 12,
-                fontWeight: 600,
+                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                color: 'rgba(255,255,255,0.8)',
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                letterSpacing: '0.1em',
+                color: 'rgba(255,255,255,0.9)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                position: 'relative',
+                zIndex: 1
               }}>
                 Guest Count
               </div>
+              
+              {/* Subtitle */}
               <div style={{
                 fontSize: 13,
                 fontWeight: 500,
-                color: 'var(--color-accent)',
-                fontFamily: 'var(--font-family-body)',
+                color: 'rgba(255,255,255,0.8)',
+                fontFamily: 'Urbanist',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                position: 'relative',
+                zIndex: 1
               }}>
+                <CheckSquare size={14} color="rgba(255,255,255,0.8)" />
                 confirmed invited
               </div>
             </div>
@@ -1517,78 +1708,126 @@ export default function CoupleDashboard() {
               onMouseEnter={() => setHoveredCard('budget')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                background: 'var(--color-card)',
-                borderRadius: 12,
+                background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+                borderRadius: 16,
                 border: hoveredCard === 'budget'
-                  ? '1px solid var(--color-accent)'
-                  : '1px solid var(--color-border)',
+                  ? '2px solid rgba(255,255,255,0.4)'
+                  : '1px solid rgba(255,255,255,0.2)',
                 boxShadow: hoveredCard === 'budget'
-                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
-                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
-                padding: '18px 20px',
+                  ? '0 20px 40px rgba(245, 158, 11, 0.4)'
+                  : '0 10px 25px rgba(245, 158, 11, 0.25)',
+                padding: '24px',
                 transform: hoveredCard === 'budget'
-                  ? 'translateY(-3px)' : 'translateY(0)',
-                transition: 'all 0.25s ease',
-                animation: 'fadeInUp 0.5s ease 0.2s both',
+                  ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                animation: 'fadeInUp 0.6s ease 0.2s both',
                 overflow: 'hidden',
                 position: 'relative',
+                cursor: 'pointer',
+                backdropFilter: 'blur(10px)'
               }}
             >
+              {/* Animated gradient overlay */}
               <div style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0,
-                height: 4,
-                background: 'var(--color-accent)',
-                borderRadius: '12px 12px 0 0',
+                height: '100%',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                borderRadius: 16,
+                opacity: hoveredCard === 'budget' ? 1 : 0.7,
+                transition: 'opacity 0.3s ease'
               }} />
+              
+              {/* Icon container */}
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'rgba(245, 166, 35, 0.2)',
+                width: 56,
+                height: 56,
+                borderRadius: '16px',
+                background: 'rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(20px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
-                marginBottom: 12,
+                marginBottom: 20,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+                transition: 'all 0.3s ease',
+                transform: hoveredCard === 'budget' ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                border: '1px solid rgba(255,255,255,0.3)'
               }}>
-                <DollarSign size={20} color="var(--color-accent)" />
+                <DollarSign size={28} color="#ffffff" />
               </div>
+              
+              {/* Main number */}
               <div style={{
-                fontSize: 32,
-                fontWeight: 800,
-                color: '#FFFFFF',
-                letterSpacing: '-0.02em',
+                fontSize: 42,
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '-0.03em',
                 lineHeight: 1,
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                position: 'relative',
+                zIndex: 1
               }}>
                 {animatedBudgetUsed}%
               </div>
+              
+              {/* Label */}
               <div style={{
                 fontSize: 12,
-                fontWeight: 600,
+                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                color: 'rgba(255,255,255,0.8)',
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                letterSpacing: '0.1em',
+                color: 'rgba(255,255,255,0.9)',
+                marginBottom: 12,
+                fontFamily: 'Urbanist',
+                position: 'relative',
+                zIndex: 1
               }}>
                 Budget Used
               </div>
+              
+              {/* Progress bar */}
               <div style={{
-                height: 6,
+                height: 10,
                 background: 'rgba(255,255,255,0.2)',
-                borderRadius: 3,
+                borderRadius: 5,
                 overflow: 'hidden',
-                marginTop: 8,
+                marginTop: 12,
+                position: 'relative',
+                zIndex: 1
               }}>
                 <div style={{
                   height: '100%',
                   width: `${stats.budgetUsed}%`,
-                  background: stats.budgetUsed > 80 ? '#EF4444' : stats.budgetUsed > 60 ? '#F59E0B' : '#10B981',
-                  borderRadius: 3,
-                  transition: 'width 1s ease',
+                  background: stats.budgetUsed > 80 ? 'linear-gradient(90deg, #EF4444, #DC2626)' : stats.budgetUsed > 60 ? 'linear-gradient(90deg, #F59E0B, #D97706)' : 'linear-gradient(90deg, #10B981, #059669)',
+                  borderRadius: 5,
+                  transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                  position: 'relative'
+                }}>
+                  {/* Animated shimmer effect */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                    animation: 'shimmer 2s linear infinite',
+                    borderRadius: 5
+                  }} />
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: `${stats.budgetUsed}%`,
+                  transform: 'translate(-50%, -50%)',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  background: '#ffffff',
+                  border: '3px solid ' + (stats.budgetUsed > 80 ? '#EF4444' : stats.budgetUsed > 60 ? '#F59E0B' : '#10B981'),
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                  transition: 'all 0.3s ease'
                 }} />
               </div>
             </div>
@@ -1598,71 +1837,99 @@ export default function CoupleDashboard() {
               onMouseEnter={() => setHoveredCard('vendors')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                background: 'var(--color-card)',
-                borderRadius: 12,
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                borderRadius: 16,
                 border: hoveredCard === 'vendors'
-                  ? '1px solid var(--color-accent)'
-                  : '1px solid var(--color-border)',
+                  ? '2px solid rgba(255,255,255,0.4)'
+                  : '1px solid rgba(255,255,255,0.2)',
                 boxShadow: hoveredCard === 'vendors'
-                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
-                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
-                padding: '18px 20px',
+                  ? '0 20px 40px rgba(139, 92, 246, 0.4)'
+                  : '0 10px 25px rgba(139, 92, 246, 0.25)',
+                padding: '24px',
                 transform: hoveredCard === 'vendors'
-                  ? 'translateY(-3px)' : 'translateY(0)',
-                transition: 'all 0.25s ease',
-                animation: 'fadeInUp 0.5s ease 0.3s both',
+                  ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                animation: 'fadeInUp 0.6s ease 0.3s both',
                 overflow: 'hidden',
                 position: 'relative',
+                cursor: 'pointer',
+                backdropFilter: 'blur(10px)'
               }}
             >
+              {/* Animated gradient overlay */}
               <div style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0,
-                height: 4,
-                background: 'var(--color-accent)',
-                borderRadius: '12px 12px 0 0',
+                height: '100%',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                borderRadius: 16,
+                opacity: hoveredCard === 'vendors' ? 1 : 0.7,
+                transition: 'opacity 0.3s ease'
               }} />
+              
+              {/* Icon container */}
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'rgba(245, 166, 35, 0.2)',
+                width: 56,
+                height: 56,
+                borderRadius: '16px',
+                background: 'rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(20px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20,
-                marginBottom: 12,
+                marginBottom: 20,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+                transition: 'all 0.3s ease',
+                transform: hoveredCard === 'vendors' ? 'scale(1.1) rotate(-5deg)' : 'scale(1) rotate(0deg)',
+                border: '1px solid rgba(255,255,255,0.3)'
               }}>
-                <Star size={20} color="var(--color-accent)" />
+                <Star size={28} color="#ffffff" />
               </div>
+              
+              {/* Main number */}
               <div style={{
-                fontSize: 32,
-                fontWeight: 800,
-                color: '#FFFFFF',
-                letterSpacing: '-0.02em',
+                fontSize: 42,
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '-0.03em',
                 lineHeight: 1,
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                position: 'relative',
+                zIndex: 1
               }}>
                 {animatedVendors}
               </div>
+              
+              {/* Label */}
               <div style={{
                 fontSize: 12,
-                fontWeight: 600,
+                fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                color: 'rgba(255,255,255,0.8)',
-                marginBottom: 4,
-                fontFamily: 'var(--font-family-body)',
+                letterSpacing: '0.1em',
+                color: 'rgba(255,255,255,0.9)',
+                marginBottom: 8,
+                fontFamily: 'Urbanist',
+                position: 'relative',
+                zIndex: 1
               }}>
                 Vendors Booked
               </div>
+              
+              {/* Subtitle */}
               <div style={{
                 fontSize: 13,
                 fontWeight: 500,
-                color: 'var(--color-accent)',
-                fontFamily: 'var(--font-family-body)',
+                color: 'rgba(255,255,255,0.8)',
+                fontFamily: 'Urbanist',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                position: 'relative',
+                zIndex: 1
               }}>
+                <TrendingUp size={14} color="rgba(255,255,255,0.8)" />
                 service providers
               </div>
             </div>
@@ -1670,126 +1937,315 @@ export default function CoupleDashboard() {
 
           {/* COUNTDOWN SECTION */}
           <div style={{
-            background: 'var(--color-card)',
-            borderRadius: 12,
-            border: '1px solid var(--color-border)',
-            padding: '24px',
-            margin: '0 24px 20px',
-            boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+            borderRadius: 20,
+            border: '1px solid rgba(255,255,255,0.2)',
+            padding: '40px',
+            margin: '0 24px 32px',
+            boxShadow: '0 20px 60px rgba(102, 126, 234, 0.3)',
+            position: 'relative',
+            overflow: 'hidden',
+            backdropFilter: 'blur(20px)'
           }}>
+            {/* Animated background elements */}
+            <div style={{
+              position: 'absolute',
+              top: -50,
+              right: -50,
+              width: 200,
+              height: 200,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+              animation: 'float 8s ease-in-out infinite'
+            }} />
+            <div style={{
+              position: 'absolute',
+              bottom: -30,
+              left: -30,
+              width: 150,
+              height: 150,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
+              animation: 'float 6s ease-in-out infinite reverse'
+            }} />
+            
+            {/* Top animated border */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+              animation: 'shimmer 3s linear infinite'
+            }} />
+            
+            {/* Header */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '12px',
-              marginBottom: '20px'
+              gap: '16px',
+              marginBottom: '32px',
+              position: 'relative',
+              zIndex: 1
             }}>
-              <Clock size={24} color={'var(--color-accent)'} />
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(20px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+                animation: 'pulse 3s infinite',
+                border: '1px solid rgba(255,255,255,0.3)'
+              }}>
+                <Clock size={24} color="#ffffff" />
+              </div>
               <h3 style={{
-                fontFamily: 'var(--font-family-body)',
-                fontSize: 18,
-                fontWeight: 700,
-                color: '#FFFFFF',
+                fontFamily: 'Urbanist',
+                fontSize: 24,
+                fontWeight: 900,
+                color: '#ffffff',
                 marginBottom: 0,
-                textAlign: 'center'
+                textAlign: 'center',
+                letterSpacing: '-0.02em',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)'
               }}>Countdown to Your Special Day</h3>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+            {/* Countdown grid */}
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(4, 1fr)', 
+              gap: '20px',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              {/* Days */}
               <div style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                padding: '16px',
-                textAlign: 'center'
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: 16,
+                padding: '28px 20px',
+                textAlign: 'center',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
               }}>
+                {/* Inner glow effect */}
                 <div style={{
-                  fontFamily: 'var(--font-family-body)',
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: 'var(--color-accent)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                  opacity: 0.8
+                }} />
+                <div style={{
+                  fontFamily: 'Urbanist',
+                  fontSize: 48,
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1,
+                  textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                  marginBottom: '12px',
+                  position: 'relative',
+                  zIndex: 1
                 }}>{countdown.days}</div>
                 <div style={{
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 12,
+                  fontWeight: 700,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: 'rgba(255,255,255,0.6)',
-                  marginTop: '4px'
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.9)',
+                  fontFamily: 'Urbanist',
+                  position: 'relative',
+                  zIndex: 1
                 }}>Days</div>
               </div>
+              
+              {/* Hours */}
               <div style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                padding: '16px',
-                textAlign: 'center'
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: 16,
+                padding: '28px 20px',
+                textAlign: 'center',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
               }}>
+                {/* Inner glow effect */}
                 <div style={{
-                  fontFamily: 'var(--font-family-body)',
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: 'var(--color-accent)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                  opacity: 0.8
+                }} />
+                <div style={{
+                  fontFamily: 'Urbanist',
+                  fontSize: 48,
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1,
+                  textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                  marginBottom: '12px',
+                  position: 'relative',
+                  zIndex: 1
                 }}>{countdown.hours}</div>
                 <div style={{
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 12,
+                  fontWeight: 700,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: 'rgba(255,255,255,0.6)',
-                  marginTop: '4px'
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.9)',
+                  fontFamily: 'Urbanist',
+                  position: 'relative',
+                  zIndex: 1
                 }}>Hours</div>
               </div>
+              
+              {/* Minutes */}
               <div style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                padding: '16px',
-                textAlign: 'center'
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: 16,
+                padding: '28px 20px',
+                textAlign: 'center',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
               }}>
+                {/* Inner glow effect */}
                 <div style={{
-                  fontFamily: 'var(--font-family-body)',
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: 'var(--color-accent)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                  opacity: 0.8
+                }} />
+                <div style={{
+                  fontFamily: 'Urbanist',
+                  fontSize: 48,
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1,
+                  textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                  marginBottom: '12px',
+                  position: 'relative',
+                  zIndex: 1
                 }}>{countdown.mins}</div>
                 <div style={{
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 12,
+                  fontWeight: 700,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: 'rgba(255,255,255,0.6)',
-                  marginTop: '4px'
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.9)',
+                  fontFamily: 'Urbanist',
+                  position: 'relative',
+                  zIndex: 1
                 }}>Minutes</div>
               </div>
+              
+              {/* Seconds */}
               <div style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                padding: '16px',
-                textAlign: 'center'
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                borderRadius: 16,
+                padding: '28px 20px',
+                textAlign: 'center',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
               }}>
+                {/* Inner glow effect */}
                 <div style={{
-                  fontFamily: 'var(--font-family-body)',
-                  fontSize: 36,
-                  fontWeight: 800,
-                  color: 'var(--color-accent)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                  opacity: 0.8
+                }} />
+                <div style={{
+                  fontFamily: 'Urbanist',
+                  fontSize: 48,
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1,
+                  textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                  marginBottom: '12px',
+                  position: 'relative',
+                  zIndex: 1
                 }}>{countdown.secs}</div>
                 <div style={{
-                  fontSize: 11,
-                  fontWeight: 600,
+                  fontSize: 12,
+                  fontWeight: 700,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: 'rgba(255,255,255,0.6)',
-                  marginTop: '4px'
+                  letterSpacing: '0.15em',
+                  color: 'rgba(255,255,255,0.9)',
+                  fontFamily: 'Urbanist',
+                  position: 'relative',
+                  zIndex: 1
                 }}>Seconds</div>
               </div>
             </div>
@@ -1799,278 +2255,498 @@ export default function CoupleDashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)',
-            gap: 16,
-            padding: '0 24px 24px',
+            gap: 24,
+            padding: '0 32px 40px',
             flex: 1,
-            backgroundColor: 'var(--color-background)',
+            backgroundColor: '#f8faff',
+            position: 'relative'
           }}>
             {/* LEFT COLUMN - Main content */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {/* Next upcoming task */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {/* Next upcoming task - Compact Design */}
               {wedding.checklist.filter(t => !t.done).length > 0 && (
                 <div style={{
-                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                  border: `1px solid var(--color-border)`,
-                  padding: '20px'
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: '12px',
+                  padding: '16px 20px',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.25)',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}>
-                  <h3 style={{
-                    fontFamily: 'Urbanist',
-                    fontSize: '16px',
-                    color: 'var(--color-text)',
-                    marginBottom: '12px'
-                  }}>Next Upcoming Task</h3>
-                  {(() => {
-                    const nextTask = wedding.checklist
-                      .filter(t => !t.done)
-                      .sort((a, b) => {
-                        if (a.urgent && !b.urgent) return -1
-                        if (!a.urgent && b.urgent) return 1
-                        return a.order - b.order
-                      })[0]
+                  {/* Subtle overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, right: 0,
+                    height: '100%',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                    borderRadius: '12px'
+                  }} />
+                  
+                  <div style={{ position: 'relative', zIndex: 1 }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: '12px'
+                    }}>
+                      <h3 style={{
+                        fontFamily: 'Urbanist',
+                        fontSize: '14px',
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        margin: 0,
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase'
+                      }}>Next Task</h3>
+                      <div style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: 'rgba(255,255,255,0.8)',
+                        backgroundColor: 'rgba(255,255,255,0.2)',
+                        padding: '4px 8px',
+                        borderRadius: '6px'
+                      }}>
+                        Priority
+                      </div>
+                    </div>
                     
-                    return nextTask ? (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        {nextTask.urgent && (
-                          <div style={{
-                            width: '8px',
-                            height: '8px',
-                            backgroundColor: 'var(--color-danger)',
-                            borderRadius: '50%'
-                          }}></div>
-                        )}
-                        <div>
-                          <div style={{
-                            fontFamily: 'Urbanist',
-                            fontSize: '14px',
-                            color: 'var(--color-text)',
-                            marginBottom: '4px'
-                          }}>{nextTask.task}</div>
-                          {nextTask.dueDate && (
+                    {(() => {
+                      const nextTask = wedding.checklist
+                        .filter(t => !t.done)
+                        .sort((a, b) => {
+                          if (a.urgent && !b.urgent) return -1
+                          if (!a.urgent && b.urgent) return 1
+                          return a.order - b.order
+                        })[0]
+                      
+                      return nextTask ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          {nextTask.urgent && (
+                            <div style={{
+                              width: '8px',
+                              height: '8px',
+                              backgroundColor: '#fbbf24',
+                              borderRadius: '50%',
+                              animation: 'pulse 2s infinite',
+                              boxShadow: '0 0 0 3px rgba(251, 191, 36, 0.3)'
+                            }}></div>
+                          )}
+                          <div style={{ flex: 1 }}>
                             <div style={{
                               fontFamily: 'Urbanist',
-                              fontSize: '11px',
-                              color: 'var(--color-muted)',
-                            }}>
-                              Due: {formatDate(nextTask.dueDate)}
-                            </div>
-                          )}
+                              fontSize: '15px',
+                              fontWeight: 600,
+                              color: '#ffffff',
+                              marginBottom: '4px',
+                              lineHeight: 1.3
+                            }}>{nextTask.task}</div>
+                            {nextTask.dueDate && (
+                              <div style={{
+                                fontFamily: 'Urbanist',
+                                fontSize: '12px',
+                                color: 'rgba(255,255,255,0.8)',
+                                fontWeight: 500
+                              }}>
+                                📅 {formatDate(nextTask.dueDate)}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ) : null
-                  })()}
+                      ) : null
+                    })()}
+                  </div>
                 </div>
               )}
 
-              {/* Weather widget */}
+              {/* Weather widget - Compact Design */}
               <div style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: `1px solid var(--color-border)`,
-                padding: '20px'
+                background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+                borderRadius: '12px',
+                padding: '16px 20px',
+                boxShadow: '0 8px 24px rgba(14, 165, 233, 0.25)',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
-                <h3 style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '16px',
-                  color: 'var(--color-text)',
-                  marginBottom: '12px'
-                }}>Weather on Your Wedding Day</h3>
-                {weather ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                {/* Subtle overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0,
+                  height: '100%',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                  borderRadius: '12px'
+                }} />
+                
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '12px'
+                  }}>
+                    <h3 style={{
+                      fontFamily: 'Urbanist',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      margin: 0,
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase'
+                    }}>Weather</h3>
                     <div style={{
-                      fontSize: '32px',
-                      color: 'var(--color-primary)',
-                    }}>{weather.icon}</div>
-                    <div>
-                      <div style={{
-                        fontFamily: 'Urbanist',
-                        fontSize: '24px',
-                        color: 'var(--color-text)',
-                      }}>{weather.temperature}°C</div>
-                      <div style={{
-                        fontFamily: 'Urbanist',
-                        fontSize: '12px',
-                        color: 'var(--color-muted)',
-                      }}>{weather.condition}</div>
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: 'rgba(255,255,255,0.8)',
+                      backgroundColor: 'rgba(255,255,255,0.2)',
+                      padding: '4px 8px',
+                      borderRadius: '6px'
+                    }}>
+                      Forecast
                     </div>
                   </div>
-                ) : (
-                  <div style={{
-                    fontFamily: 'Urbanist',
-                    fontSize: '12px',
-                    color: 'var(--color-muted)',
-                  }}>
-                    Weather forecast will be available closer to your wedding date
-                  </div>
-                )}
+                  
+                  {weather ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <div style={{
+                        fontSize: '36px',
+                        color: '#ffffff',
+                        filter: 'drop-shadow(0 4px 8px rgba(255,255,255,0.3))'
+                      }}>{weather.icon}</div>
+                      <div>
+                        <div style={{
+                          fontFamily: 'Urbanist',
+                          fontSize: '24px',
+                          fontWeight: 700,
+                          color: '#ffffff',
+                          lineHeight: 1,
+                          marginBottom: '2px'
+                        }}>{weather.temperature}°C</div>
+                        <div style={{
+                          fontFamily: 'Urbanist',
+                          fontSize: '12px',
+                          color: 'rgba(255,255,255,0.8)',
+                          fontWeight: 500
+                        }}>{weather.condition}</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{
+                      fontFamily: 'Urbanist',
+                      fontSize: '13px',
+                      color: 'rgba(255,255,255,0.8)',
+                      fontWeight: 500,
+                      fontStyle: 'italic'
+                    }}>
+                      Available closer to wedding date
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Motivational quote */}
+              {/* Motivational quote - Compact Design */}
               <div style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: `1px solid var(--color-border)`,
-                padding: '20px'
-              }}>
-                <h3 style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '16px',
-                  color: 'var(--color-text)',
-                  marginBottom: '12px'
-                }}>Quote of the Day</h3>
-                <p style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '14px',
-                  color: 'var(--color-text)',
-                  fontStyle: 'italic',
-                  lineHeight: 1.5
-                }}>{quote}</p>
-              </div>
-
-              {/* Recent checklist items - Blue/White Design */}
-              <div style={{
-                background: '#ffffff',
-                border: '1px solid #e5edff',
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                 borderRadius: '12px',
-                padding: '24px',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
+                padding: '16px 20px',
+                boxShadow: '0 8px 24px rgba(245, 158, 11, 0.25)',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                {/* Subtle overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0,
+                  height: '100%',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                  borderRadius: '12px'
+                }} />
+                
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '12px'
+                  }}>
+                    <h3 style={{
+                      fontFamily: 'Urbanist',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      color: '#ffffff',
+                      margin: 0,
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase'
+                    }}>Daily Quote</h3>
+                    <div style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: 'rgba(255,255,255,0.8)',
+                      backgroundColor: 'rgba(255,255,255,0.2)',
+                      padding: '4px 8px',
+                      borderRadius: '6px'
+                    }}>
+                      Inspiration
+                    </div>
+                  </div>
+                  
+                  <p style={{
+                    fontFamily: 'Urbanist',
+                    fontSize: '14px',
+                    color: '#ffffff',
+                    fontStyle: 'italic',
+                    lineHeight: 1.5,
+                    fontWeight: 500,
+                    margin: 0,
+                    position: 'relative',
+                    paddingLeft: '20px'
+                  }}>
+                    <span style={{
+                      position: 'absolute',
+                      left: '0',
+                      top: '0',
+                      fontSize: '20px',
+                      color: 'rgba(255,255,255,0.6)',
+                      lineHeight: 1
+                    }}>"</span>
+                    {quote}
+                    <span style={{
+                      position: 'absolute',
+                      bottom: '-4px',
+                      right: '0',
+                      fontSize: '20px',
+                      color: 'rgba(255,255,255,0.6)',
+                      lineHeight: 1
+                    }}>"</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Enhanced Wedding Checklist */}
+              <div style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #f8faff 100%)',
+                border: '1px solid #e5edff',
+                borderRadius: '16px',
+                padding: '28px',
+                boxShadow: '0 8px 32px rgba(26, 86, 219, 0.1)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                {/* Subtle gradient overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0,
+                  height: '3px',
+                  background: 'linear-gradient(90deg, #667eea, #764ba2, #f093fb)',
+                  borderRadius: '16px 16px 0 0'
+                }} />
+                
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                   <div>
                     <h3 style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '18px',
-                      fontWeight: 700,
+                      fontSize: '20px',
+                      fontWeight: 800,
                       color: '#111928',
-                      marginBottom: '4px'
+                      marginBottom: '6px',
+                      letterSpacing: '-0.02em'
                     }}>Wedding Checklist</h3>
-                    <p style={{
-                      fontFamily: 'Urbanist',
-                      fontSize: '13px',
-                      color: '#6b7280'
-                    }}>{wedding.checklist.filter(t => t.done).length} of {wedding.checklist.length} completed</p>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}>
+                      <p style={{
+                        fontFamily: 'Urbanist',
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        margin: 0
+                      }}>{wedding.checklist.filter(t => t.done).length} of {wedding.checklist.length} completed</p>
+                      <div style={{
+                        fontSize: '12px',
+                        fontWeight: 700,
+                        color: '#1a56db',
+                        backgroundColor: 'rgba(26, 86, 219, 0.1)',
+                        padding: '2px 8px',
+                        borderRadius: '12px'
+                      }}>
+                        {Math.round((wedding.checklist.filter(t => t.done).length / wedding.checklist.length) * 100)}%
+                      </div>
+                    </div>
                   </div>
                   <button
                     onClick={() => window.location.href = '/dashboard/couple/checklist'}
                     style={{
                       fontFamily: 'Urbanist',
                       fontSize: '12px',
-                      fontWeight: 600,
-                      color: '#1a56db',
+                      fontWeight: 700,
+                      color: '#ffffff',
                       textTransform: 'uppercase',
-                      backgroundColor: 'transparent',
-                      border: '1px solid #1a56db',
-                      borderRadius: '8px',
-                      padding: '8px 16px',
+                      backgroundColor: '#1a56db',
+                      border: 'none',
+                      borderRadius: '12px',
+                      padding: '12px 20px',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      boxShadow: '0 4px 12px rgba(26, 86, 219, 0.3)',
+                      letterSpacing: '0.05em'
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.backgroundColor = '#1a56db'
-                      e.currentTarget.style.color = '#ffffff'
+                      e.currentTarget.style.backgroundColor = '#1e40af'
+                      e.currentTarget.style.transform = 'translateY(-2px)'
+                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(26, 86, 219, 0.4)'
                     }}
                     onMouseLeave={e => {
-                      e.currentTarget.style.backgroundColor = 'transparent'
-                      e.currentTarget.style.color = '#1a56db'
+                      e.currentTarget.style.backgroundColor = '#1a56db'
+                      e.currentTarget.style.transform = 'translateY(0)'
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(26, 86, 219, 0.3)'
                     }}
                   >
                     View All
                   </button>
                 </div>
                 
-                {/* Progress Bar */}
+                {/* Enhanced Progress Bar */}
                 <div style={{
                   width: '100%',
-                  height: '8px',
+                  height: '12px',
                   backgroundColor: '#e5edff',
-                  borderRadius: '4px',
+                  borderRadius: '6px',
                   overflow: 'hidden',
-                  marginBottom: '20px'
+                  marginBottom: '24px',
+                  position: 'relative'
                 }}>
                   <div style={{
                     width: `${(wedding.checklist.filter(t => t.done).length / wedding.checklist.length) * 100}%`,
                     height: '100%',
-                    backgroundColor: '#1a56db',
-                    borderRadius: '4px',
-                    transition: 'width 0.3s ease'
-                  }}></div>
+                    background: 'linear-gradient(90deg, #667eea, #764ba2, #f093fb)',
+                    borderRadius: '6px',
+                    transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                    position: 'relative',
+                    boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)'
+                  }}>
+                    {/* Shimmer effect */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, left: 0, right: 0, bottom: 0,
+                      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                      animation: 'shimmer 2s linear infinite',
+                      borderRadius: '6px'
+                    }} />
+                  </div>
+                  {/* Progress indicator dot */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: `${(wedding.checklist.filter(t => t.done).length / wedding.checklist.length) * 100}%`,
+                    transform: 'translate(-50%, -50%)',
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                    background: '#ffffff',
+                    border: '3px solid #667eea',
+                    boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)',
+                    transition: 'all 0.3s ease'
+                  }} />
                 </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {wedding.checklist.slice(0, 5).map((item) => (
-                    <div key={item.id} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '12px',
-                      backgroundColor: item.done ? '#f0f4ff' : '#ffffff',
-                      border: `1px solid ${item.done ? '#1a56db' : '#e5edff'}`,
-                      borderRadius: '8px',
-                      transition: 'all 0.2s ease',
-                      cursor: 'pointer'
-                    }}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {wedding.checklist.slice(0, 5).map((item, index) => (
+                    <div 
+                      key={item.id} 
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        padding: '16px',
+                        backgroundColor: item.done ? 'rgba(102, 126, 234, 0.08)' : '#ffffff',
+                        border: `1px solid ${item.done ? 'rgba(102, 126, 234, 0.3)' : '#e5edff'}`,
+                        borderRadius: '12px',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        animation: `fadeInUp 0.5s ease ${index * 0.1}s both`
+                      }}
                       onClick={() => handleToggleTask(item.id)}
                       onMouseEnter={e => {
                         if (!item.done) {
-                          e.currentTarget.style.backgroundColor = '#f8faff'
-                          e.currentTarget.style.borderColor = '#1a56db'
+                          e.currentTarget.style.backgroundColor = 'rgba(102, 126, 234, 0.05)'
+                          e.currentTarget.style.borderColor = 'rgba(102, 126, 234, 0.4)'
+                          e.currentTarget.style.transform = 'translateX(4px)'
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.15)'
                         }
                       }}
                       onMouseLeave={e => {
                         if (!item.done) {
                           e.currentTarget.style.backgroundColor = '#ffffff'
                           e.currentTarget.style.borderColor = '#e5edff'
+                          e.currentTarget.style.transform = 'translateX(0)'
+                          e.currentTarget.style.boxShadow = 'none'
                         }
                       }}
                     >
+                      {/* Enhanced checkbox */}
                       <div style={{
-                        width: '20px',
-                        height: '20px',
+                        width: '24px',
+                        height: '24px',
                         border: item.done ? 'none' : `2px solid #e5edff`,
-                        backgroundColor: item.done ? '#1a56db' : '#ffffff',
-                        borderRadius: '6px',
+                        backgroundColor: item.done ? 'linear-gradient(135deg, #667eea, #764ba2)' : '#ffffff',
+                        borderRadius: '8px',
                         position: 'relative',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        flexShrink: 0
+                        flexShrink: 0,
+                        transition: 'all 0.3s ease',
+                        boxShadow: item.done ? '0 4px 12px rgba(102, 126, 234, 0.3)' : '0 2px 4px rgba(0,0,0,0.05)'
                       }}>
                         {item.done && (
                           <div style={{
-                            width: '6px',
-                            height: '10px',
+                            width: '8px',
+                            height: '12px',
                             backgroundColor: '#ffffff',
-                            clipPath: 'polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 60%)'
+                            clipPath: 'polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 60%)',
+                            animation: 'checkmark 0.3s ease-out'
                           }}></div>
                         )}
                       </div>
+                      
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{
                           fontFamily: 'Urbanist',
-                          fontSize: '14px',
-                          fontWeight: 500,
+                          fontSize: '15px',
+                          fontWeight: 600,
                           color: item.done ? '#6b7280' : '#111928',
                           textDecoration: item.done ? 'line-through' : 'none',
-                          marginBottom: '2px'
+                          marginBottom: '4px',
+                          transition: 'all 0.2s ease'
                         }}>{item.task}</div>
                         <div style={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '8px'
+                          gap: '10px'
                         }}>
                           <span style={{
                             fontFamily: 'Urbanist',
-                            fontSize: '11px',
+                            fontSize: '12px',
+                            fontWeight: 500,
                             color: '#9ca3af',
-                            textTransform: 'capitalize'
+                            textTransform: 'capitalize',
+                            backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                            padding: '3px 8px',
+                            borderRadius: '6px'
                           }}>{item.category}</span>
                           {item.urgent && (
                             <span style={{
                               fontFamily: 'Urbanist',
                               fontSize: '10px',
-                              fontWeight: 600,
-                              color: '#c2410c',
-                              backgroundColor: '#fff7ed',
-                              padding: '2px 6px',
-                              borderRadius: '4px',
-                              textTransform: 'uppercase'
+                              fontWeight: 700,
+                              color: '#dc2626',
+                              backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                              padding: '3px 8px',
+                              borderRadius: '6px',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em',
+                              animation: 'pulse 2s infinite'
                             }}>Urgent</span>
                           )}
                         </div>
@@ -2082,26 +2758,55 @@ export default function CoupleDashboard() {
 
               {/* Recent guests */}
               <div style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: `1px solid var(--color-border)`,
-                padding: '20px'
+                background: 'linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%)',
+                border: '1px solid #dcfce7',
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: '0 4px 16px rgba(34, 197, 94, 0.08)',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
+                {/* Accent border */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0,
+                  width: '4px',
+                  height: '100%',
+                  background: 'linear-gradient(180deg, #22c55e, #16a34a)',
+                  borderRadius: '16px 0 0 16px'
+                }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h3 style={{
                     fontFamily: 'Urbanist',
-                    fontSize: '16px',
-                    color: 'var(--color-text)',
+                    fontSize: '18px',
+                    fontWeight: 700,
+                    color: '#111928',
+                    marginBottom: '4px',
+                    letterSpacing: '-0.02em'
                   }}>Recent Guests</h3>
                   <button
                     onClick={() => window.location.href = '/dashboard/couple/guests'}
                     style={{
                       fontFamily: 'Urbanist',
-                      fontSize: '11px',
-                      color: 'var(--color-primary)',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: '#16a34a',
                       textTransform: 'uppercase',
-                      backgroundColor: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer'
+                      backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                      border: '1px solid rgba(34, 197, 94, 0.3)',
+                      borderRadius: '8px',
+                      padding: '6px 12px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      letterSpacing: '0.05em'
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.backgroundColor = 'rgba(34, 197, 94, 0.2)'
+                      e.currentTarget.style.transform = 'translateY(-1px)'
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.backgroundColor = 'rgba(34, 197, 94, 0.1)'
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
                     Manage All
@@ -2145,45 +2850,97 @@ export default function CoupleDashboard() {
             </div>
 
             {/* RIGHT COLUMN - Vendor Panel */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <div style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: `1px solid var(--color-border)`,
-                padding: '20px'
+                background: 'linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)',
+                border: '1px solid #e9d5ff',
+                borderRadius: '16px',
+                padding: '28px',
+                boxShadow: '0 8px 32px rgba(168, 85, 247, 0.1)',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                {/* Accent border */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0,
+                  width: '4px',
+                  height: '100%',
+                  background: 'linear-gradient(180deg, #a855f7, #9333ea)',
+                  borderRadius: '16px 0 0 16px'
+                }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                   <h3 style={{
                     fontFamily: 'Urbanist',
-                    fontSize: '16px',
-                    color: 'var(--color-text)',
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    color: '#111928',
+                    marginBottom: '4px',
+                    letterSpacing: '-0.02em'
                   }}>Featured Vendors</h3>
                   <button
                     onClick={() => setShowVendorPanel(!showVendorPanel)}
                     style={{
-                      backgroundColor: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer'
+                      backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                      border: '1px solid rgba(168, 85, 247, 0.3)',
+                      borderRadius: '12px',
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.backgroundColor = 'rgba(168, 85, 247, 0.2)'
+                      e.currentTarget.style.transform = 'translateY(-2px)'
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.backgroundColor = 'rgba(168, 85, 247, 0.1)'
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
-                    {showVendorPanel ? <ChevronUp size={16} color={'var(--color-primary)'} /> : <ChevronDown size={16} color={'var(--color-primary)'} />}
+                    <span style={{
+                      fontFamily: 'Urbanist',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: '#9333ea',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em'
+                    }}>
+                      {showVendorPanel ? 'Hide' : 'Show'}
+                    </span>
+                    {showVendorPanel ? <ChevronUp size={16} color={'#9333ea'} /> : <ChevronDown size={16} color={'#9333ea'} />}
                   </button>
                 </div>
 
                 {showVendorPanel && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {/* Vendor filters */}
-                    <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                    {/* Enhanced Vendor filters */}
+                    <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
                       <select
                         value={vendorFilter}
                         onChange={(e) => setVendorFilter(e.target.value)}
                         style={{
                           flex: 1,
-                          padding: '6px',
-                          border: `1px solid var(--color-border)`,
+                          padding: '10px 14px',
+                          border: '1px solid #e9d5ff',
+                          borderRadius: '10px',
                           fontFamily: 'Urbanist',
-                          fontSize: '11px',
-                          backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                          color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          backgroundColor: '#ffffff',
+                          color: '#111928',
+                          transition: 'all 0.2s ease',
+                          cursor: 'pointer'
+                        }}
+                        onFocus={e => {
+                          e.currentTarget.style.borderColor = '#9333ea'
+                          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.1)'
+                        }}
+                        onBlur={e => {
+                          e.currentTarget.style.borderColor = '#e9d5ff'
+                          e.currentTarget.style.boxShadow = 'none'
                         }}
                       >
                         <option value="all">All Categories</option>
@@ -2195,17 +2952,28 @@ export default function CoupleDashboard() {
                       </select>
                       <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="Search vendors..."
                         value={vendorSearch}
                         onChange={(e) => setVendorSearch(e.target.value)}
                         style={{
                           flex: 1,
-                          padding: '6px',
-                          border: `1px solid var(--color-border)`,
+                          padding: '10px 14px',
+                          border: '1px solid #e9d5ff',
+                          borderRadius: '10px',
                           fontFamily: 'Urbanist',
-                          fontSize: '11px',
-                          backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                          color: darkMode ? 'var(--color-text)' : 'var(--color-text)'
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          backgroundColor: '#ffffff',
+                          color: '#111928',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onFocus={e => {
+                          e.currentTarget.style.borderColor = '#9333ea'
+                          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.1)'
+                        }}
+                        onBlur={e => {
+                          e.currentTarget.style.borderColor = '#e9d5ff'
+                          e.currentTarget.style.boxShadow = 'none'
                         }}
                       />
                     </div>
@@ -2318,3 +3086,58 @@ export default function CoupleDashboard() {
     </div>
   )
 }
+
+// Add CSS animations
+const style = document.createElement('style')
+style.textContent = `
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  
+  @keyframes slideInLeft {
+    0% { transform: translateX(-50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes slideInRight {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  @keyframes fadeInUp {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes checkmark {
+    0% { 
+      transform: scale(0) rotate(-45deg); 
+      opacity: 0; 
+    }
+    50% { 
+      transform: scale(1.2) rotate(-45deg); 
+      opacity: 1; 
+    }
+    100% { 
+      transform: scale(1) rotate(-45deg); 
+      opacity: 1; 
+    }
+  }
+`
+document.head.appendChild(style)
