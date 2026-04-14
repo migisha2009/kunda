@@ -794,42 +794,6 @@ export default function CoupleDashboard() {
     )
   }
 
-  const dashFooter = (
-  <footer style={{
-    background: '#ffffff',
-    borderTop: '1px solid #e5edff',
-    padding: '16px 32px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontFamily: 'Urbanist, sans-serif',
-    marginTop: 'auto',
-  }}>
-    <div style={{ fontSize: 13, color: '#9ca3af' }}>
-      © 2026 Kunda Wedding Platform · Kigali, Rwanda
-    </div>
-    <div style={{
-      display: 'flex', gap: 20, alignItems: 'center'
-    }}>
-      <a href="https://wa.me/250783312746"
-        target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
-          textDecoration: 'none' }}>
-        WhatsApp Support
-      </a>
-      <a href="https://instagram.com/darkxente"
-        target="_blank"
-        style={{ fontSize: 13, color: '#6b7280',
-          textDecoration: 'none' }}>
-        @darkxente
-      </a>
-      <span style={{ fontSize: 13, color: '#9ca3af' }}>
-        Made with in Rwanda
-      </span>
-    </div>
-  </footer>
-)
-
   return (
     <div style={{ 
       backgroundColor: '#f0f4ff', 
@@ -1261,583 +1225,584 @@ export default function CoupleDashboard() {
         <div>
           {/* HERO SECTION WITH WEDDING OVERVIEW */}
           <div style={{ 
-            padding: '32px', 
-            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)',
-            backgroundImage: wedding.heroImage ? `url(${wedding.heroImage})` : 'none',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            position: 'relative'
+            background: 'var(--gradient-hero)',
+            padding: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            position: 'relative',
+            overflow: 'hidden',
           }}>
-            {wedding.heroImage && (
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(253, 249, 245, 0.85)',
-                zIndex: 1
-              }}></div>
-            )}
-            
-            <div style={{ position: 'relative', zIndex: 2 }}>
-              {/* Welcome message and date info */}
-              <div style={{ marginBottom: '24px' }}>
-                <div style={{
-                  fontSize: '11px',
-                  fontWeight: 500,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.2em',
-                  color: 'var(--color-muted)',
-                  marginBottom: '8px'
-                }}>
-                  {todayInfo.dayOfWeek} {todayInfo.date}
-                </div>
-                <div style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '13px',
-                  color: 'var(--color-muted)',
-                  marginBottom: '16px'
-                }}>
-                  {todayInfo.daysAgo} days ago you started planning your wedding
-                </div>
-              </div>
+            <div style={{
+              position: 'absolute',
+              width: 300,
+              height: 300,
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.06)',
+              top: -100,
+              right: 200,
+            }} />
+            <div style={{
+              position: 'absolute',
+              width: 500,
+              height: 500,
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.04)',
+              top: -200,
+              right: 100,
+            }} />
 
-              {/* Couple names and venue */}
-              <div style={{ marginBottom: '24px' }}>
-                <h1 style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '40px',
-                  fontWeight: 800,
-                  color: 'var(--color-text)',
-                  marginBottom: '8px'
-                }}>
-                  Welcome, {wedding.coupleName1} & {wedding.coupleName2}
-                </h1>
-                <p style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '16px',
-                  fontWeight: 400,
-                  color: 'var(--color-muted)',
-                  marginBottom: '8px'
-                }}>
-                  {wedding.venue} {wedding.venueAddress && `· ${wedding.venueAddress}`}
-                </p>
-                <p style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '16px',
-                  fontWeight: 400,
-                  color: 'var(--color-muted)'
-                }}>
-                  {formatDate(wedding.date)} · {wedding.ceremonyTime} Ceremony
-                </p>
-              </div>
-
-              {/* Live countdown timer */}
+            <div style={{ zIndex: 1 }}>
               <div style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: `1px solid var(--color-border)`,
-                padding: '20px',
-                marginBottom: '24px'
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.15em',
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: 8,
+                fontFamily: 'var(--font-family-body)',
               }}>
-                <h3 style={{
-                  fontFamily: 'Urbanist',
-                  fontSize: '18px',
-                  fontWeight: 700,
-                  color: 'var(--color-text)',
-                  marginBottom: '16px',
-                  textAlign: 'center'
-                }}>Countdown to Your Special Day</h3>
-                
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
-                  <div style={{
-                    backgroundColor: '#ffffff',
-                    border: `1px solid var(--color-border)`,
-                    padding: '16px',
-                    textAlign: 'center'
-                  }}>
-                    <div style={{
-                      fontFamily: 'Urbanist',
-                      fontSize: '36px',
-                      fontWeight: 800,
-                      color: 'var(--color-primary)',
-                      letterSpacing: '-0.02em'
-                    }}>{countdown.days}</div>
-                    <div style={{
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                      color: 'var(--color-muted)',
-                      marginTop: '4px'
-                    }}>Days</div>
-                  </div>
-                  <div style={{
-                    backgroundColor: '#ffffff',
-                    border: `1px solid var(--color-border)`,
-                    padding: '16px',
-                    textAlign: 'center'
-                  }}>
-                    <div style={{
-                      fontFamily: 'Urbanist',
-                      fontSize: '36px',
-                      fontWeight: 800,
-                      color: 'var(--color-primary)',
-                      letterSpacing: '-0.02em'
-                    }}>{countdown.hours}</div>
-                    <div style={{
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                      color: 'var(--color-muted)',
-                      marginTop: '4px'
-                    }}>Hours</div>
-                  </div>
-                  <div style={{
-                    backgroundColor: '#ffffff',
-                    border: `1px solid var(--color-border)`,
-                    padding: '16px',
-                    textAlign: 'center'
-                  }}>
-                    <div style={{
-                      fontFamily: 'Urbanist',
-                      fontSize: '36px',
-                      fontWeight: 800,
-                      color: 'var(--color-primary)',
-                      letterSpacing: '-0.02em'
-                    }}>{countdown.mins}</div>
-                    <div style={{
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                      color: 'var(--color-muted)',
-                      marginTop: '4px'
-                    }}>Minutes</div>
-                  </div>
-                  <div style={{
-                    backgroundColor: '#ffffff',
-                    border: `1px solid var(--color-border)`,
-                    padding: '16px',
-                    textAlign: 'center'
-                  }}>
-                    <div style={{
-                      fontFamily: 'Urbanist',
-                      fontSize: '36px',
-                      fontWeight: 800,
-                      color: 'var(--color-primary)',
-                      letterSpacing: '-0.02em'
-                    }}>{countdown.secs}</div>
-                    <div style={{
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                      color: 'var(--color-muted)',
-                      marginTop: '4px'
-                    }}>Seconds</div>
-                  </div>
-                </div>
+                Wedding Dashboard
               </div>
+              <h1 style={{
+                fontSize: 36,
+                fontWeight: 800,
+                color: '#ffffff',
+                marginBottom: 6,
+                letterSpacing: '-0.02em',
+                fontFamily: 'var(--font-family-heading)',
+              }}>
+                {wedding.coupleName1} & {wedding.coupleName2}
+              </h1>
+              <p style={{
+                fontSize: 15,
+                color: 'rgba(255,255,255,0.8)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                {wedding.venue}
+                {wedding.date && (
+                  <>
+                    <span style={{ opacity: 0.4 }}>·</span>
+                    {formatDate(wedding.date)}
+                  </>
+                )}
+              </p>
 
-              {/* Quick action buttons */}
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '24px' }}>
-                <button
-                  onClick={() => window.location.href = '/vendors'}
-                  style={{
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-text)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <Search size={16} color={'var(--color-primary)'} />
-                  Browse Vendors
-                </button>
-                <button
-                  onClick={() => window.location.href = '/dashboard/couple/guests'}
-                  style={{
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-text)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <Users size={16} color={'var(--color-primary)'} />
-                  Guests
-                </button>
-                <button
-                  onClick={() => window.location.href = '/dashboard/couple/bookings'}
-                  style={{
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-text)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <Calendar size={16} color={'var(--color-primary)'} />
-                  Bookings
-                </button>
-                <button
-                  onClick={() => window.location.href = '/dashboard/couple/budget'}
-                  style={{
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-text)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <DollarSign size={16} color={'var(--color-primary)'} />
-                  Budget
-                </button>
-                <button
-                  onClick={shareWeddingPage}
-                  style={{
-                    border: `0.5px solid var(--color-border)`,
-                    color: 'var(--color-primary)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <Share2 size={16} color={'var(--color-primary)'} />
-                  Share
-                </button>
-                <button
-                  onClick={printWeddingSummary}
-                  style={{
-                    border: `0.5px solid var(--color-border)`,
-                    color: 'var(--color-primary)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <Printer size={16} color={'var(--color-primary)'} />
-                  Print
-                </button>
-              </div>
 
-              {/* Wedding photo upload slot */}
-              {!wedding.heroImage && (
-                <div style={{
-                  backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                  border: `1px solid var(--color-border)`,
-                  padding: '32px',
-                  textAlign: 'center',
-                  marginBottom: '24px'
-                }}>
-                  <Upload size={48} color={'var(--color-primary)'} style={{ margin: '0 auto 16px' }} />
-                  <p style={{
-                    fontFamily: 'Urbanist',
-                    fontSize: '14px',
-                    color: 'var(--color-muted)',
-                    marginBottom: '16px'
-                  }}>
-                    Upload your wedding photo
-                  </p>
-                  <button style={{
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-text)',
-                    padding: '10px 20px',
-                    fontFamily: 'Urbanist',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    border: 'none',
-                    cursor: 'pointer'
-                  }}>
-                    Choose Photo
-                  </button>
-                </div>
-              )}
+
             </div>
+
+            <div style={{
+              display: 'flex',
+              gap: 10,
+              zIndex: 1,
+              alignItems: 'center',
+            }}>
+              <a
+                href="/vendors"
+                style={{
+                  background: '#ffffff',
+                  color: 'var(--color-accent)',
+                  padding: '9px 20px',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontFamily: 'var(--font-family-body)',
+                }}
+              >
+                Browse Vendors
+              </a>
+              
+              <a
+                href="/dashboard/couple/guests"
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  color: '#ffffff',
+                  padding: '9px 20px',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  fontFamily: 'var(--font-family-body)',
+                }}
+              >
+                Manage Guests
+              </a>
+              
+              <a
+                href="/dashboard/couple/budget"
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  color: '#ffffff',
+                  padding: '9px 20px',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  fontFamily: 'var(--font-family-body)',
+                }}
+              >
+                Budget
+              </a>
+            </div>
+
           </div>
 
           {/* STATS ROW */}
           <div 
             ref={statsRef}
             style={{ 
-              padding: '0 32px 32px', 
-              backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '12px',
-              opacity: statsVisible ? 1 : 0,
-              transform: statsVisible ? 'translateY(0)' : 'translateY(24px)',
-              transition: 'all 0.6s ease'
+              gridTemplateColumns: 'repeat(4,minmax(0,1fr))',
+              gap: 16,
+              padding: '20px 24px',
+              animation: 'fadeInUp 0.5s ease',
             }}>
             {/* Days until wedding */}
-            <div 
+            <div
               onMouseEnter={() => setHoveredCard('days')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: hoveredCard === 'days' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
-                padding: '16px 18px',
-                borderRadius: '12px',
-                boxShadow: hoveredCard === 'days' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-                transform: hoveredCard === 'days' ? 'translateY(-3px)' : 'translateY(0)',
+                background: 'var(--color-card)',
+                borderRadius: 12,
+                border: hoveredCard === 'days'
+                  ? '1px solid var(--color-accent)'
+                  : '1px solid var(--color-border)',
+                boxShadow: hoveredCard === 'days'
+                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
+                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
+                padding: '18px 20px',
+                transform: hoveredCard === 'days'
+                  ? 'translateY(-3px)' : 'translateY(0)',
                 transition: 'all 0.25s ease',
-                cursor: 'pointer'
-              }}>
+                animation: 'fadeInUp 0.5s ease 0s both',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
               <div style={{
-                fontSize: '12px',
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                height: 4,
+                background: 'var(--color-accent)',
+                borderRadius: '12px 12px 0 0',
+              }} />
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: 'rgba(245, 166, 35, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                marginBottom: 12,
+              }}>
+                <Calendar size={20} color="var(--color-accent)" />
+              </div>
+              <div style={{
+                fontSize: 32,
+                fontWeight: 800,
+                color: '#FFFFFF',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                {animatedDays}
+              </div>
+              <div style={{
+                fontSize: 12,
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: 'var(--color-muted)',
-                marginBottom: '8px'
-              }}>Days Until Wedding</div>
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                Days Until Wedding
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '36px',
-                fontWeight: 800,
-                color: 'var(--color-primary)',
-                letterSpacing: '-0.02em'
-              }}>{animatedDays}</div>
-              <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                color: 'var(--color-muted)',
-                marginTop: '4px'
-              }}>{formatDate(wedding.date)}</div>
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'var(--color-accent)',
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                {formatDate(wedding.date)}
+              </div>
             </div>
 
             {/* Guest count */}
-            <div 
+            <div
               onMouseEnter={() => setHoveredCard('guests')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: hoveredCard === 'guests' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
-                padding: '16px 18px',
-                borderRadius: '12px',
-                boxShadow: hoveredCard === 'guests' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-                transform: hoveredCard === 'guests' ? 'translateY(-3px)' : 'translateY(0)',
+                background: 'var(--color-card)',
+                borderRadius: 12,
+                border: hoveredCard === 'guests'
+                  ? '1px solid var(--color-accent)'
+                  : '1px solid var(--color-border)',
+                boxShadow: hoveredCard === 'guests'
+                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
+                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
+                padding: '18px 20px',
+                transform: hoveredCard === 'guests'
+                  ? 'translateY(-3px)' : 'translateY(0)',
                 transition: 'all 0.25s ease',
-                cursor: 'pointer'
-              }}>
+                animation: 'fadeInUp 0.5s ease 0.1s both',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
               <div style={{
-                fontSize: '12px',
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                height: 4,
+                background: 'var(--color-accent)',
+                borderRadius: '12px 12px 0 0',
+              }} />
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: 'rgba(245, 166, 35, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                marginBottom: 12,
+              }}>
+                <Users size={20} color="var(--color-accent)" />
+              </div>
+              <div style={{
+                fontSize: 32,
+                fontWeight: 800,
+                color: '#FFFFFF',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                {animatedGuests}/{animatedTotalGuests}
+              </div>
+              <div style={{
+                fontSize: 12,
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: 'var(--color-muted)',
-                marginBottom: '8px'
-              }}>Guest Count</div>
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                Guest Count
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '36px',
-                fontWeight: 800,
-                color: 'var(--color-primary)',
-                letterSpacing: '-0.02em'
-              }}>{animatedGuests}/{animatedTotalGuests}</div>
-              <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                color: 'var(--color-muted)',
-                marginTop: '4px'
-              }}>confirmed invited</div>
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'var(--color-accent)',
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                confirmed invited
+              </div>
             </div>
 
             {/* Budget used */}
-            <div 
+            <div
               onMouseEnter={() => setHoveredCard('budget')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: hoveredCard === 'budget' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
-                padding: '16px 18px',
-                borderRadius: '12px',
-                boxShadow: hoveredCard === 'budget' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-                transform: hoveredCard === 'budget' ? 'translateY(-3px)' : 'translateY(0)',
+                background: 'var(--color-card)',
+                borderRadius: 12,
+                border: hoveredCard === 'budget'
+                  ? '1px solid var(--color-accent)'
+                  : '1px solid var(--color-border)',
+                boxShadow: hoveredCard === 'budget'
+                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
+                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
+                padding: '18px 20px',
+                transform: hoveredCard === 'budget'
+                  ? 'translateY(-3px)' : 'translateY(0)',
                 transition: 'all 0.25s ease',
-                cursor: 'pointer'
-              }}>
+                animation: 'fadeInUp 0.5s ease 0.2s both',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
               <div style={{
-                fontSize: '12px',
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                height: 4,
+                background: 'var(--color-accent)',
+                borderRadius: '12px 12px 0 0',
+              }} />
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: 'rgba(245, 166, 35, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                marginBottom: 12,
+              }}>
+                <DollarSign size={20} color="var(--color-accent)" />
+              </div>
+              <div style={{
+                fontSize: 32,
+                fontWeight: 800,
+                color: '#FFFFFF',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                {animatedBudgetUsed}%
+              </div>
+              <div style={{
+                fontSize: 12,
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: 'var(--color-muted)',
-                marginBottom: '8px'
-              }}>Budget Used</div>
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                Budget Used
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '36px',
-                fontWeight: 800,
-                color: 'var(--color-primary)',
-                letterSpacing: '-0.02em'
-              }}>{animatedBudgetUsed}%</div>
-              <AnimatedProgress 
-                value={stats.budgetUsed} 
-                height={5}
-                color={stats.budgetUsed > 80 ? 'var(--color-danger)' : stats.budgetUsed > 60 ? 'var(--color-warning)' : 'var(--color-success)'}
-              />
+                height: 6,
+                background: 'rgba(255,255,255,0.2)',
+                borderRadius: 3,
+                overflow: 'hidden',
+                marginTop: 8,
+              }}>
+                <div style={{
+                  height: '100%',
+                  width: `${stats.budgetUsed}%`,
+                  background: stats.budgetUsed > 80 ? '#EF4444' : stats.budgetUsed > 60 ? '#F59E0B' : '#10B981',
+                  borderRadius: 3,
+                  transition: 'width 1s ease',
+                }} />
+              </div>
             </div>
 
             {/* Vendors booked */}
-            <div 
+            <div
               onMouseEnter={() => setHoveredCard('vendors')}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: hoveredCard === 'vendors' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
-                padding: '16px 18px',
-                borderRadius: '12px',
-                boxShadow: hoveredCard === 'vendors' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-                transform: hoveredCard === 'vendors' ? 'translateY(-3px)' : 'translateY(0)',
+                background: 'var(--color-card)',
+                borderRadius: 12,
+                border: hoveredCard === 'vendors'
+                  ? '1px solid var(--color-accent)'
+                  : '1px solid var(--color-border)',
+                boxShadow: hoveredCard === 'vendors'
+                  ? '0 8px 24px rgba(245, 166, 35, 0.25)'
+                  : '0 4px 12px rgba(75, 71, 165, 0.15)',
+                padding: '18px 20px',
+                transform: hoveredCard === 'vendors'
+                  ? 'translateY(-3px)' : 'translateY(0)',
                 transition: 'all 0.25s ease',
-                cursor: 'pointer'
+                animation: 'fadeInUp 0.5s ease 0.3s both',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                height: 4,
+                background: 'var(--color-accent)',
+                borderRadius: '12px 12px 0 0',
+              }} />
+              <div style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: 'rgba(245, 166, 35, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                marginBottom: 12,
               }}>
+                <Star size={20} color="var(--color-accent)" />
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: 32,
+                fontWeight: 800,
+                color: '#FFFFFF',
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                {animatedVendors}
+              </div>
+              <div style={{
+                fontSize: 12,
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                color: 'var(--color-muted)',
-                marginBottom: '8px'
-              }}>Vendors Booked</div>
+                letterSpacing: '0.06em',
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: 4,
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                Vendors Booked
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '30px',
-                fontWeight: 300,
-                color: 'var(--color-text)',
-              }}>{animatedVendors}</div>
-              <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                color: 'var(--color-muted)',
-                marginTop: '4px'
-              }}>service providers</div>
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'var(--color-accent)',
+                fontFamily: 'var(--font-family-body)',
+              }}>
+                service providers
+              </div>
             </div>
+          </div>
 
-            {/* Tasks completed */}
-            <div 
-              onMouseEnter={() => setHoveredCard('tasks')}
-              onMouseLeave={() => setHoveredCard(null)}
-              style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: hoveredCard === 'tasks' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
-                padding: '16px 18px',
-                borderRadius: '12px',
-                boxShadow: hoveredCard === 'tasks' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-                transform: hoveredCard === 'tasks' ? 'translateY(-3px)' : 'translateY(0)',
-                transition: 'all 0.25s ease',
-                cursor: 'pointer'
-              }}>
-              <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                color: 'var(--color-muted)',
-                marginBottom: '8px'
-              }}>Tasks Completed</div>
-              <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '30px',
-                fontWeight: 300,
-                color: 'var(--color-text)',
-              }}>{animatedTasksCompleted}/{animatedTasksTotal}</div>
-              <AnimatedProgress 
-                value={stats.tasksTotal > 0 ? (stats.tasksCompleted / stats.tasksTotal) * 100 : 0} 
-                height={5}
-                color="var(--color-success)"
-              />
+          {/* COUNTDOWN SECTION */}
+          <div style={{
+            background: 'var(--color-card)',
+            borderRadius: 12,
+            border: '1px solid var(--color-border)',
+            padding: '24px',
+            margin: '0 24px 20px',
+            boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              marginBottom: '20px'
+            }}>
+              <Clock size={24} color={'var(--color-accent)'} />
+              <h3 style={{
+                fontFamily: 'var(--font-family-body)',
+                fontSize: 18,
+                fontWeight: 700,
+                color: '#FFFFFF',
+                marginBottom: 0,
+                textAlign: 'center'
+              }}>Countdown to Your Special Day</h3>
             </div>
-
-            {/* Profile completion */}
-            <div 
-              onMouseEnter={() => setHoveredCard('profile')}
-              onMouseLeave={() => setHoveredCard(null)}
-              style={{
-                backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-card)',
-                border: hoveredCard === 'profile' ? '1px solid var(--color-primary)' : `1px solid var(--color-border)`,
-                padding: '16px 18px',
-                borderRadius: '12px',
-                boxShadow: hoveredCard === 'profile' ? '0 8px 24px rgba(26,86,219,0.12)' : '0 1px 3px rgba(0,0,0,0.08)',
-                transform: hoveredCard === 'profile' ? 'translateY(-3px)' : 'translateY(0)',
-                transition: 'all 0.25s ease',
-                cursor: 'pointer'
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+              <div style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                padding: '16px',
+                textAlign: 'center'
               }}>
+                <div style={{
+                  fontFamily: 'var(--font-family-body)',
+                  fontSize: 36,
+                  fontWeight: 800,
+                  color: 'var(--color-accent)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1
+                }}>{countdown.days}</div>
+                <div style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: 'rgba(255,255,255,0.6)',
+                  marginTop: '4px'
+                }}>Days</div>
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '11px',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                color: 'var(--color-muted)',
-                marginBottom: '8px'
-              }}>Profile Completion</div>
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                padding: '16px',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontFamily: 'var(--font-family-body)',
+                  fontSize: 36,
+                  fontWeight: 800,
+                  color: 'var(--color-accent)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1
+                }}>{countdown.hours}</div>
+                <div style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: 'rgba(255,255,255,0.6)',
+                  marginTop: '4px'
+                }}>Hours</div>
+              </div>
               <div style={{
-                fontFamily: 'Urbanist',
-                fontSize: '30px',
-                fontWeight: 300,
-                color: 'var(--color-text)',
-              }}>{animatedProfileCompletion}%</div>
-              <AnimatedProgress 
-                value={stats.profileCompletion} 
-                height={5}
-                color="var(--color-success)"
-              />
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                padding: '16px',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontFamily: 'var(--font-family-body)',
+                  fontSize: 36,
+                  fontWeight: 800,
+                  color: 'var(--color-accent)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1
+                }}>{countdown.mins}</div>
+                <div style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: 'rgba(255,255,255,0.6)',
+                  marginTop: '4px'
+                }}>Minutes</div>
+              </div>
+              <div style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                padding: '16px',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontFamily: 'var(--font-family-body)',
+                  fontSize: 36,
+                  fontWeight: 800,
+                  color: 'var(--color-accent)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1
+                }}>{countdown.secs}</div>
+                <div style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: 'rgba(255,255,255,0.6)',
+                  marginTop: '4px'
+                }}>Seconds</div>
+              </div>
             </div>
           </div>
 
           {/* MAIN CONTENT GRID */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 320px',
-            gap: '16px',
-            padding: '0 32px 32px',
-            backgroundColor: darkMode ? 'var(--color-primary-dark)' : 'var(--color-background)'
+            gridTemplateColumns: 'minmax(0,1.6fr) minmax(0,1fr)',
+            gap: 16,
+            padding: '0 24px 24px',
+            flex: 1,
+            backgroundColor: 'var(--color-background)',
           }}>
             {/* LEFT COLUMN - Main content */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -2350,25 +2315,6 @@ export default function CoupleDashboard() {
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        @keyframes celebrate {
-          0% { 
-            transform: translate(-50%, -50%) scale(0.5);
-            opacity: 0;
-          }
-          50% { 
-            transform: translate(-50%, -50%) scale(1.2);
-            opacity: 1;
-          }
-          100% { 
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0;
-          }
-        }
-      `}</style>
-      <AIChat />
-      {dashFooter}
     </div>
   )
 }
