@@ -85,20 +85,20 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
   const hasActiveFilters = category || location || rating !== 'all' || minPrice || maxPrice
 
   return (
-    <div style={{ padding: '24px', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', marginBottom: '24px', backgroundColor: colors.bgCard, border: `1px solid ${colors.border}` }}>
+    <div style={{ padding: '24px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)', marginBottom: '24px', backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Filter style={{ width: '20px', height: '20px', marginRight: '8px', color: colors.textSecondary }} />
-          <h2 style={{ fontSize: '18px', fontWeight: 600, color: colors.textPrimary, fontFamily: 'Urbanist' }}>Filters</h2>
+          <Filter style={{ width: '20px', height: '20px', marginRight: '8px', color: 'var(--color-accent)' }} />
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>Filters</h2>
         </div>
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            style={{ display: 'flex', alignItems: 'center', fontSize: '14px', transition: 'opacity 0.2s ease', color: colors.textSecondary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', fontSize: '14px', transition: 'opacity 0.2s ease', color: 'rgba(255,255,255,0.8)', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-family-body)' }}
             onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
             onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
           >
-            <X style={{ width: '16px', height: '16px', marginRight: '4px', color: colors.textSecondary }} />
+            <X style={{ width: '16px', height: '16px', marginRight: '4px', color: 'rgba(255,255,255,0.8)' }} />
             Clear All
           </button>
         )}
@@ -107,19 +107,19 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
         {/* Category Filter */}
         <div>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>
             Category
           </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
             onFocus={(e) => {
-              e.target.style.borderColor = colors.primary
-              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              e.target.style.borderColor = 'var(--color-accent)'
+              e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = colors.border
+              e.target.style.borderColor = 'var(--color-border)'
               e.target.style.boxShadow = 'none'
               updateFilters()
             }}
@@ -135,7 +135,7 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
 
         {/* Location Filter */}
         <div>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>
             Location
           </label>
           <input
@@ -143,13 +143,13 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="City, State, or Country"
-            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
             onFocus={(e) => {
-              e.target.style.borderColor = colors.primary
-              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              e.target.style.borderColor = 'var(--color-accent)'
+              e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = colors.border
+              e.target.style.borderColor = 'var(--color-border)'
               e.target.style.boxShadow = 'none'
               updateFilters()
             }}
@@ -158,19 +158,19 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
 
         {/* Rating Filter */}
         <div>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>
             Rating
           </label>
           <select
             value={rating}
             onChange={(e) => setRating(e.target.value)}
-            style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+            style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
             onFocus={(e) => {
-              e.target.style.borderColor = colors.primary
-              e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+              e.target.style.borderColor = 'var(--color-accent)'
+              e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = colors.border
+              e.target.style.borderColor = 'var(--color-border)'
               e.target.style.boxShadow = 'none'
               updateFilters()
             }}
@@ -183,7 +183,7 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
 
         {/* Price Range Filter */}
         <div>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: colors.textPrimary }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>
             Budget Range (USD)
           </label>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -195,25 +195,25 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
               style={{ 
                 flex: 1, 
                 padding: '12px 16px', 
-                border: `1px solid ${colors.border}`, 
+                border: '1px solid var(--color-border)', 
                 borderRadius: '8px', 
-                fontFamily: 'Urbanist', 
+                fontFamily: 'var(--font-family-body)', 
                 fontSize: '16px', 
-                color: colors.textPrimary, 
-                backgroundColor: colors.white, 
+                color: 'var(--color-heading)', 
+                backgroundColor: 'rgba(255,255,255,0.9)', 
                 outline: 'none' 
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = colors.primary
-                e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                e.target.style.borderColor = 'var(--color-accent)'
+                e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = colors.border
+                e.target.style.borderColor = 'var(--color-border)'
                 e.target.style.boxShadow = 'none'
                 updateFilters()
               }}
             />
-            <span style={{ fontFamily: 'Urbanist', fontSize: '14px', color: colors.textSecondary }}>to</span>
+            <span style={{ fontFamily: 'var(--font-family-body)', fontSize: '14px', color: 'rgba(255,255,255,0.8)' }}>to</span>
             <input
               type="number"
               value={maxPrice}
@@ -222,20 +222,20 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
               style={{ 
                 flex: 1, 
                 padding: '12px 16px', 
-                border: `1px solid ${colors.border}`, 
+                border: '1px solid var(--color-border)', 
                 borderRadius: '8px', 
-                fontFamily: 'Urbanist', 
+                fontFamily: 'var(--font-family-body)', 
                 fontSize: '16px', 
-                color: colors.textPrimary, 
-                backgroundColor: colors.white, 
+                color: 'var(--color-heading)', 
+                backgroundColor: 'rgba(255,255,255,0.9)', 
                 outline: 'none' 
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = colors.primary
-                e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                e.target.style.borderColor = 'var(--color-accent)'
+                e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = colors.border
+                e.target.style.borderColor = 'var(--color-border)'
                 e.target.style.boxShadow = 'none'
                 updateFilters()
               }}
@@ -246,17 +246,17 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
 
       {/* Active Filters Display */}
       {hasActiveFilters && (
-        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: `1px solid ${colors.border}` }}>
+        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--color-border)' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {category && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primary }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)', fontFamily: 'var(--font-family-body)' }}>
                 Category: {category}
                 <button
                   onClick={() => {
                     setCategory('')
                     updateFilters()
                   }}
-                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: 'var(--color-accent)', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
                   onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
                   onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
@@ -265,14 +265,14 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
               </span>
             )}
             {location && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)', fontFamily: 'var(--font-family-body)' }}>
                 Location: {location}
                 <button
                   onClick={() => {
                     setLocation('')
                     updateFilters()
                   }}
-                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: 'var(--color-accent)', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
                   onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
                   onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
@@ -281,14 +281,14 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
               </span>
             )}
             {rating !== 'all' && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)', fontFamily: 'var(--font-family-body)' }}>
                 Rating: {rating}+ Stars
                 <button
                   onClick={() => {
                     setRating('all')
                     updateFilters()
                   }}
-                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: 'var(--color-accent)', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
                   onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
                   onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
@@ -297,7 +297,7 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
               </span>
             )}
             {(minPrice || maxPrice) && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: colors.primaryLight, color: colors.primaryDark }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', borderRadius: '50px', fontSize: '14px', backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)', fontFamily: 'var(--font-family-body)' }}>
                 Price: ${minPrice || '0'} - ${maxPrice || '999999'}
                 <button
                   onClick={() => {
@@ -305,7 +305,7 @@ export default function VendorFilters({ currentCategory, currentLocation }: Vend
                     setMaxPrice('')
                     updateFilters()
                   }}
-                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: colors.primary, backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
+                  style={{ marginLeft: '8px', transition: 'opacity 0.2s ease', color: 'var(--color-accent)', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
                   onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
                   onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >

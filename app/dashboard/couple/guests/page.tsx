@@ -293,8 +293,51 @@ export default function GuestManagement() {
     )
   }
 
+  const dashFooter = (
+  <footer style={{
+    background: '#ffffff',
+    borderTop: '1px solid #e5edff',
+    padding: '16px 32px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontFamily: 'Urbanist, sans-serif',
+    marginTop: 'auto',
+  }}>
+    <div style={{ fontSize: 13, color: '#9ca3af' }}>
+      © 2026 Kunda Wedding Platform · Kigali, Rwanda
+    </div>
+    <div style={{
+      display: 'flex', gap: 20, alignItems: 'center'
+    }}>
+      <a href="https://wa.me/250783312746"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        WhatsApp Support
+      </a>
+      <a href="https://instagram.com/darkxente"
+        target="_blank"
+        style={{ fontSize: 13, color: '#6b7280',
+          textDecoration: 'none' }}>
+        @darkxente
+      </a>
+      <span style={{ fontSize: 13, color: '#9ca3af' }}>
+        Made with in Rwanda
+      </span>
+    </div>
+  </footer>
+)
+
   return (
-    <div style={{ backgroundColor: '#f0f4ff', color: '#111928', minHeight: '100vh', fontFamily: 'Urbanist, sans-serif' }}>
+    <div style={{ 
+      backgroundColor: '#f0f4ff', 
+      color: '#111928', 
+      minHeight: '100vh', 
+      fontFamily: 'Urbanist, sans-serif',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
 
       {/* Header */}
       <div style={{
@@ -1483,6 +1526,7 @@ export default function GuestManagement() {
         </div>
       )}
       <AIChat />
+      {dashFooter}
     </div>
   )
 }

@@ -9,57 +9,61 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Landing Page Colors
+        // Wedding Design System Colors
         primary: {
-          DEFAULT: '#1a56db',
-          dark: '#1e3a8a',
-          light: '#3f83f8',
-          accent: '#93c5fd',
-          hover: '#2563eb',
+          DEFAULT: '#4B47A5',  // Dark Purple for cards
+          dark: '#3D3A8C',     // Deep Indigo/Purple
+          light: '#6B6BC7',    // Lighter Purple
+          accent: '#E8EAFF',   // Soft Lavender
+          hover: '#5A56B5',    // Hover state
         },
-        neutral: {
-          white: '#ffffff',
-          50: '#f0f4ff',
-          100: '#e5edff',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#64748b',
-          500: '#475569',
-          600: '#334155',
-          700: '#1e293b',
-          800: '#0f172a',
-          900: '#020617',
+        accent: {
+          DEFAULT: '#F5A623',  // Golden-Yellow for CTAs
+          dark: '#F8A800',     // Alternative Gold
+          light: '#FFEAA7',    // Light Amber
+        },
+        heading: {
+          DEFAULT: '#1A1A4E',  // Dark Navy for headings
+          dark: '#2B2870',     // Alternative Navy
+        },
+        background: {
+          DEFAULT: '#E8EAFF',  // Soft Lavender page background
+          card: '#4B47A5',     // Dark Purple card background
+          progress: '#E5E7EB', // Light gray progress bar background
         },
         text: {
-          primary: '#111928',
-          secondary: '#6b7280',
-          muted: '#9ca3af',
+          primary: '#FFFFFF',   // White text on dark backgrounds
+          secondary: '#E8EAFF', // Soft Lavender text
+          muted: '#B8B5D1',    // Muted purple text
+          heading: '#1A1A4E',   // Dark Navy headings
         },
-        backgroundColor: {
-          primary: '#f0f4ff',
-          card: '#ffffff',
-          sidebar: '#1e3a8a',
+        border: {
+          DEFAULT: '#D1D0E8',  // Soft light purple borders
+          card: '#6B6BC7',     // Purple card borders
         },
-        border: '#e5edff',
         // Status Colors
         success: {
-          DEFAULT: '#057a55',
-          bg: '#def7ec',
+          DEFAULT: '#4CAF50',  // Light Green for checkmarks
+          bg: '#E8F5E8',       // Light green background
         },
         warning: {
-          WARNING: '#c27803',
-          bg: '#fdf6b2',
+          DEFAULT: '#F5A623',  // Orange-Yellow for progress
+          bg: '#FFF4E6',       // Light orange background
         },
         danger: {
-          DANGER: '#c81e1e',
-          bg: '#fde8e8',
+          DEFAULT: '#E74C3C',  // Red for hearts/errors
+          bg: '#FDEDEC',       // Light red background
         },
         // Legacy support
-        background: "var(--background)",
         foreground: "var(--foreground)"
       },
       fontFamily: {
-        urbanist: ['Urbanist', 'sans-serif'],
+        // Wedding Design System Fonts
+        'playfair': ['Playfair Display', 'serif'],  // Bold serif for headings
+        'poppins': ['Poppins', 'sans-serif'],        // Clean sans-serif for body
+        'urbanist': ['Urbanist', 'sans-serif'],     // Legacy support
+        'heading': ['Playfair Display', 'serif'],   // Main heading font
+        'body': ['Poppins', 'sans-serif'],          // Body text font
       },
       fontSize: {
         'xs': ['11px', { lineHeight: '1.5' }],

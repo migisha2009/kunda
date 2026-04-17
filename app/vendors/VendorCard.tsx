@@ -16,12 +16,14 @@ export default function VendorCard({ vendor }: VendorCardProps) {
 
   return (
     <Link href={`/vendors/${vendor.id}`}>
-      <div style={{ backgroundColor: colors.white, borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: `1px solid ${colors.border}`, overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow 0.2s ease' }}
+      <div style={{ backgroundColor: 'var(--color-card)', borderRadius: '12px', boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)', border: '1px solid var(--color-border)', overflow: 'hidden', cursor: 'pointer', transition: 'all 0.2s ease' }}
            onMouseEnter={(e) => {
-             e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)'
+             e.currentTarget.style.boxShadow = '0 8px 24px rgba(75, 71, 165, 0.25)'
+             e.currentTarget.style.transform = 'translateY(-2px)'
            }}
            onMouseLeave={(e) => {
-             e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)'
+             e.currentTarget.style.boxShadow = '0 4px 12px rgba(75, 71, 165, 0.15)'
+             e.currentTarget.style.transform = 'translateY(0)'
            }}>
         {/* Image */}
         <div style={{ position: 'relative', height: '192px' }}>
@@ -34,7 +36,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
               e.currentTarget.src = '/placeholder-vendor.jpg'
             }}
           />
-          <div style={{ position: 'absolute', top: '8px', right: '8px', backgroundColor: colors.white, padding: '4px 8px', borderRadius: '50px', fontSize: '12px', fontWeight: 600, color: colors.textPrimary }}>
+          <div style={{ position: 'absolute', top: '8px', right: '8px', backgroundColor: 'rgba(255,255,255,0.9)', padding: '4px 8px', borderRadius: '50px', fontSize: '12px', fontWeight: 600, color: 'var(--color-heading)', fontFamily: 'var(--font-family-body)' }}>
             {vendor.category.charAt(0).toUpperCase() + vendor.category.slice(1).toLowerCase()}
           </div>
         </div>
@@ -42,20 +44,20 @@ export default function VendorCard({ vendor }: VendorCardProps) {
         {/* Content */}
         <div style={{ padding: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <h3 style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 600, fontSize: '18px' }}>
+            <h3 style={{ fontFamily: 'var(--font-family-body)', color: '#FFFFFF', fontWeight: 600, fontSize: '18px' }}>
                 {(vendor.businessName || vendor.name).split(' ').map(word => 
                   word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
                 ).join(' ')}
               </h3>
             {vendor.verified && (
-              <div style={{ backgroundColor: colors.primaryLight, color: colors.primary, fontSize: '12px', padding: '4px 8px', borderRadius: '50px', fontWeight: 600 }}>
+              <div style={{ backgroundColor: 'rgba(245, 166, 35, 0.2)', color: 'var(--color-accent)', fontSize: '12px', padding: '4px 8px', borderRadius: '50px', fontWeight: 600, fontFamily: 'var(--font-family-body)' }}>
                 Verified
               </div>
             )}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px', color: colors.textSecondary, marginBottom: '12px' }}>
-            <MapPin style={{ width: '16px', height: '16px', marginRight: '4px' }} />
+          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginBottom: '12px', fontFamily: 'var(--font-family-body)' }}>
+            <MapPin style={{ width: '16px', height: '16px', marginRight: '4px', color: 'var(--color-accent)' }} />
             {vendor.location.split(',').map(part => 
               part.trim().split(' ').map(word => 
                 word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
@@ -66,33 +68,33 @@ export default function VendorCard({ vendor }: VendorCardProps) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               {(!vendor.rating || vendor.rating === 0) ? (
-                <div style={{ backgroundColor: colors.successBg, color: colors.success, fontSize: '12px', padding: '4px 8px', borderRadius: '50px', fontWeight: 600 }}>
+                <div style={{ backgroundColor: 'rgba(76, 175, 80, 0.2)', color: 'var(--color-success)', fontSize: '12px', padding: '4px 8px', borderRadius: '50px', fontWeight: 600, fontFamily: 'var(--font-family-body)' }}>
                   New
                 </div>
               ) : (
                 <>
-                  <Star style={{ width: '16px', height: '16px', color: colors.warning, marginRight: '4px', fill: 'currentColor' }} />
-                  <span style={{ fontWeight: 600, color: colors.textPrimary }}>{vendor.rating.toFixed(1)}</span>
-                  <span style={{ fontSize: '14px', color: colors.textMuted, marginLeft: '4px' }}>({vendor.reviewCount || 0})</span>
+                  <Star style={{ width: '16px', height: '16px', color: 'var(--color-accent)', marginRight: '4px', fill: 'currentColor' }} />
+                  <span style={{ fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>{vendor.rating.toFixed(1)}</span>
+                  <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginLeft: '4px', fontFamily: 'var(--font-family-body)' }}>({vendor.reviewCount || 0})</span>
                 </>
               )}
             </div>
           </div>
 
-          <div style={{ fontSize: '14px', color: colors.textSecondary, marginBottom: '16px' }}>
+          <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginBottom: '16px', fontFamily: 'var(--font-family-body)' }}>
             {vendor.pricing?.currency || '$'} {vendor.pricing?.min?.toLocaleString() || 0} - {vendor.pricing?.max?.toLocaleString() || 0}
           </div>
 
-          <button style={{ width: '100%', padding: '12px 16px', backgroundColor: colors.primary, color: colors.white, fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'Urbanist', fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(26,86,219,0.3)' }}
+          <button style={{ width: '100%', padding: '12px 16px', backgroundColor: 'var(--color-accent)', color: '#FFFFFF', fontWeight: 600, borderRadius: '8px', transition: 'all 0.2s ease', fontFamily: 'var(--font-family-body)', fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(245, 166, 35, 0.3)' }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = colors.primaryDark
+                    e.currentTarget.style.backgroundColor = 'var(--color-accent-dark)'
                     e.currentTarget.style.transform = 'translateY(-1px)'
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(245, 166, 35, 0.4)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = colors.primary
+                    e.currentTarget.style.backgroundColor = 'var(--color-accent)'
                     e.currentTarget.style.transform = 'translateY(0)'
-                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,86,219,0.3)'
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(245, 166, 35, 0.3)'
                   }}>
             View Profile
           </button>

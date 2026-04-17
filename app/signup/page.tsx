@@ -9,7 +9,7 @@ import { signUpWithEmail } from '../../lib/auth'
 import { createUser } from '../../lib/firestore'
 import { testFirebaseConnection, checkEnvironmentVariables } from '../../lib/firebase-test'
 import { User } from '../../types'
-import { Loader2, Users, Store, Eye, EyeOff, Check, X } from 'lucide-react'
+import { Loader2, Users, Store, Eye, EyeOff, Check, X, Heart } from 'lucide-react'
 import { colors, typography, getStyles } from '../../lib/styles'
 
 const passwordRequirements = {
@@ -56,6 +56,8 @@ export default function SignupPage() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [emailValid, setEmailValid] = useState<boolean | null>(null)
+  const [phoneValid, setPhoneValid] = useState<boolean | null>(null)
   const router = useRouter()
 
   // Test Firebase connection on component mount
@@ -153,48 +155,54 @@ export default function SignupPage() {
   }, [isPasswordWeak, router])
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', backgroundColor: colors.bg }}>
-      <div style={{ maxWidth: '448px', width: '100%', display: 'flex', flexDirection: 'column', gap: '32px', backgroundColor: colors.white, padding: '32px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', backgroundColor: 'var(--color-background)' }}>
+      <div style={{ maxWidth: '448px', width: '100%', display: 'flex', flexDirection: 'column', gap: '32px', backgroundColor: 'var(--color-card)', padding: '32px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(75, 71, 165, 0.15)' }}>
         <div style={{ textAlign: 'center' }}>
-          <h1 style={{ fontFamily: 'Urbanist', color: colors.textPrimary, fontWeight: 800, fontSize: '32px', marginBottom: '8px' }}>Join Kunda</h1>
-          <p style={{ color: colors.textSecondary, fontSize: '14px', fontWeight: 400 }}>Start planning your perfect wedding</p>
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
+              <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+            </div>
+            <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '24px' }}>Kunda</span>
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '32px', marginBottom: '8px' }}>Join Kunda</h1>
+          <p style={{ fontFamily: 'var(--font-family-body)', color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontWeight: 400 }}>Start planning your perfect wedding</p>
         </div>
 
         {!selectedRole ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: 600, textAlign: 'center', color: colors.textPrimary }}>I am a...</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 600, textAlign: 'center', color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>I am a...</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <button
                 onClick={() => handleRoleSelect('couple')}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px', border: '2px solid #e5e7eb', borderRadius: '12px', transition: 'all 0.2s ease', backgroundColor: colors.white, cursor: 'pointer' }}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px', border: '2px solid var(--color-border)', borderRadius: '12px', transition: 'all 0.2s ease', backgroundColor: 'rgba(255,255,255,0.1)', cursor: 'pointer' }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = colors.primary
-                  e.currentTarget.style.backgroundColor = colors.primaryLight + '20'
+                  e.currentTarget.style.borderColor = 'var(--color-accent)'
+                  e.currentTarget.style.backgroundColor = 'rgba(245, 166, 35, 0.1)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb'
-                  e.currentTarget.style.backgroundColor = colors.white
+                  e.currentTarget.style.borderColor = 'var(--color-border)'
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'
                 }}
               >
-                <Users style={{ width: '48px', height: '48px', color: colors.primary, marginBottom: '12px' }} />
-                <span style={{ fontWeight: 600, color: colors.textPrimary }}>Couple</span>
-                <span style={{ fontSize: '14px', color: colors.textSecondary, marginTop: '4px' }}>Planning our wedding</span>
+                <Users style={{ width: '48px', height: '48px', color: 'var(--color-accent)', marginBottom: '12px' }} />
+                <span style={{ fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>Couple</span>
+                <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginTop: '4px', fontFamily: 'var(--font-family-body)' }}>Planning our wedding</span>
               </button>
               <button
                 onClick={() => handleRoleSelect('vendor')}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px', border: '2px solid #e5e7eb', borderRadius: '12px', transition: 'all 0.2s ease', backgroundColor: colors.white, cursor: 'pointer' }}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px', border: '2px solid var(--color-border)', borderRadius: '12px', transition: 'all 0.2s ease', backgroundColor: 'rgba(255,255,255,0.1)', cursor: 'pointer' }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = colors.success
-                  e.currentTarget.style.backgroundColor = colors.successBg
+                  e.currentTarget.style.borderColor = 'var(--color-success)'
+                  e.currentTarget.style.backgroundColor = 'rgba(76, 175, 80, 0.1)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#e5e7eb'
-                  e.currentTarget.style.backgroundColor = colors.white
+                  e.currentTarget.style.borderColor = 'var(--color-border)'
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'
                 }}
               >
-                <Store style={{ width: '48px', height: '48px', color: colors.success, marginBottom: '12px' }} />
-                <span style={{ fontWeight: 600, color: colors.textPrimary }}>Vendor</span>
-                <span style={{ fontSize: '14px', color: colors.textSecondary, marginTop: '4px' }}>Offering wedding services</span>
+                <Store style={{ width: '48px', height: '48px', color: 'var(--color-success)', marginBottom: '12px' }} />
+                <span style={{ fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>Vendor</span>
+                <span style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginTop: '4px', fontFamily: 'var(--font-family-body)' }}>Offering wedding services</span>
               </button>
             </div>
           </div>
@@ -203,126 +211,126 @@ export default function SignupPage() {
             <input type="hidden" {...register('role')} />
             
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Full Name
               </label>
               <input
                 {...register('name')}
                 type="text"
-                style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+                style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
                 placeholder="John Doe"
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                  e.target.style.borderColor = 'var(--color-accent)'
+                  e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border
+                  e.target.style.borderColor = 'var(--color-border)'
                   e.target.style.boxShadow = 'none'
                 }}
               />
               {errors.name && (
-                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.name.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>{errors.name.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Email Address
               </label>
               <input
                 {...register('email')}
                 type="email"
-                style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+                style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
                 placeholder="john@example.com"
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                  e.target.style.borderColor = 'var(--color-accent)'
+                  e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border
+                  e.target.style.borderColor = 'var(--color-border)'
                   e.target.style.boxShadow = 'none'
                 }}
               />
               {errors.email && (
-                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.email.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>{errors.email.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Phone Number
               </label>
               <input
                 {...register('phone')}
                 type="tel"
-                style={{ width: '100%', padding: '12px 16px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
+                style={{ width: '100%', padding: '12px 16px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
                 placeholder="+1234567890"
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                  e.target.style.borderColor = 'var(--color-accent)'
+                  e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border
+                  e.target.style.borderColor = 'var(--color-border)'
                   e.target.style.boxShadow = 'none'
                 }}
               />
               {errors.phone && (
-                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.phone.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>{errors.phone.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Password
               </label>
               <div style={{ position: 'relative' }}>
                 <input
                   {...register('password')}
                   type={showPassword ? 'text' : 'password'}
-                  style={{ width: '100%', padding: '12px 16px', paddingRight: '40px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
-                  placeholder="••••••••"
+                  style={{ width: '100%', padding: '12px 16px', paddingRight: '40px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
+                  placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
                   onFocus={(e) => {
-                    e.target.style.borderColor = colors.primary
-                    e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                    e.target.style.borderColor = 'var(--color-accent)'
+                    e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = colors.border
+                    e.target.style.borderColor = 'var(--color-border)'
                     e.target.style.boxShadow = 'none'
                   }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: colors.textSecondary, cursor: 'pointer' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = colors.textPrimary}
-                  onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.6)', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
                 >
                   {showPassword ? <EyeOff style={{ width: '16px', height: '16px' }} /> : <Eye style={{ width: '16px', height: '16px' }} />}
                 </button>
               </div>
               {errors.password && (
-                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.password.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>{errors.password.message}</p>
               )}
               
               {/* Password Strength Indicator */}
               {password && passwordStrength && (
                 <div style={{ marginTop: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 600, color: colors.textPrimary }}>Password Strength</span>
+                    <span style={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF', fontFamily: 'var(--font-family-body)' }}>Password Strength</span>
                     <span style={{ fontSize: '12px', fontWeight: 600, color: 
-                      passwordStrength.score <= 2 ? colors.danger :
-                      passwordStrength.score === 3 ? colors.warning :
-                      colors.success
+                      passwordStrength.score <= 2 ? 'var(--color-danger)' :
+                      passwordStrength.score === 3 ? 'var(--color-accent)' :
+                      'var(--color-success)'
                     }}>
                       {passwordStrength.label}
                     </span>
                   </div>
-                  <div style={{ width: '100%', backgroundColor: '#e5e7eb', borderRadius: '50px', height: '8px' }}>
+                  <div style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '50px', height: '8px' }}>
                     <div
                       style={{ height: '8px', borderRadius: '50px', transition: 'all 0.3s ease', backgroundColor: 
-                        passwordStrength.score <= 2 ? colors.danger :
-                        passwordStrength.score === 3 ? colors.warning :
-                        colors.success,
+                        passwordStrength.score <= 2 ? 'var(--color-danger)' :
+                        passwordStrength.score === 3 ? 'var(--color-accent)' :
+                        'var(--color-success)',
                         width: `${(passwordStrength.score / 5) * 100}%`
                       }}
                     />
@@ -336,11 +344,11 @@ export default function SignupPage() {
                   {requirements.map((req, index) => (
                     <div key={index} style={{ display: 'flex', alignItems: 'center', fontSize: '12px' }}>
                       {req.met ? (
-                        <Check style={{ width: '12px', height: '12px', color: colors.success, marginRight: '8px' }} />
+                        <Check style={{ width: '12px', height: '12px', color: 'var(--color-success)', marginRight: '8px' }} />
                       ) : (
-                        <X style={{ width: '12px', height: '12px', color: colors.danger, marginRight: '8px' }} />
+                        <X style={{ width: '12px', height: '12px', color: 'var(--color-danger)', marginRight: '8px' }} />
                       )}
-                      <span style={{ color: req.met ? colors.success : colors.textSecondary }}>
+                      <span style={{ color: req.met ? 'var(--color-success)' : 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-family-body)' }}>
                         {req.label}
                       </span>
                     </div>
@@ -350,64 +358,64 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: colors.textSecondary }}>
+              <label className="block mb-2" style={{ fontSize: '13px', fontWeight: 600, color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
                 Confirm Password
               </label>
               <div style={{ position: 'relative' }}>
                 <input
                   {...register('confirmPassword')}
                   type={showConfirmPassword ? 'text' : 'password'}
-                  style={{ width: '100%', padding: '12px 16px', paddingRight: '40px', border: `1px solid ${colors.border}`, borderRadius: '8px', fontFamily: 'Urbanist', fontSize: '16px', color: colors.textPrimary, backgroundColor: colors.white, outline: 'none' }}
-                  placeholder="••••••••"
+                  style={{ width: '100%', padding: '12px 16px', paddingRight: '40px', border: '1px solid var(--color-border)', borderRadius: '8px', fontFamily: 'var(--font-family-body)', fontSize: '16px', color: 'var(--color-heading)', backgroundColor: 'rgba(255,255,255,0.9)', outline: 'none' }}
+                  placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"
                   onFocus={(e) => {
-                    e.target.style.borderColor = colors.primary
-                    e.target.style.boxShadow = `0 0 0 3px ${colors.primary}20`
+                    e.target.style.borderColor = 'var(--color-accent)'
+                    e.target.style.boxShadow = `0 0 0 3px rgba(245, 166, 35, 0.2)`
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = colors.border
+                    e.target.style.borderColor = 'var(--color-border)'
                     e.target.style.boxShadow = 'none'
                   }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: colors.textSecondary, cursor: 'pointer' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = colors.textPrimary}
-                  onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.6)', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
                 >
                   {showConfirmPassword ? <EyeOff style={{ width: '16px', height: '16px' }} /> : <Eye style={{ width: '16px', height: '16px' }} />}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>{errors.confirmPassword.message}</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>{errors.confirmPassword.message}</p>
               )}
               {confirmPassword && password !== confirmPassword && (
-                <p style={{ marginTop: '4px', fontSize: '14px', color: colors.danger }}>Passwords don't match</p>
+                <p style={{ marginTop: '4px', fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>Passwords don't match</p>
               )}
             </div>
 
             {error && (
-              <div style={{ padding: '12px', backgroundColor: colors.dangerBg, border: `1px solid ${colors.danger}30`, borderRadius: '8px' }}>
-                <p style={{ fontSize: '14px', color: colors.danger }}>{error}</p>
+              <div style={{ padding: '12px', backgroundColor: 'var(--color-danger-bg)', border: '1px solid var(--color-danger)', borderRadius: '8px' }}>
+                <p style={{ fontSize: '14px', color: 'var(--color-danger)', fontFamily: 'var(--font-family-body)' }}>{error}</p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isLoading || isPasswordWeak}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '12px 16px', backgroundColor: colors.primary, color: colors.white, borderRadius: '8px', fontSize: '15px', fontWeight: 700, letterSpacing: '0.02em', fontFamily: 'Urbanist', cursor: (isLoading || isPasswordWeak) ? 'not-allowed' : 'pointer', opacity: (isLoading || isPasswordWeak) ? 0.5 : 1, transition: 'all 0.2s ease', boxShadow: '0 4px 12px rgba(26,86,219,0.3)' }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '12px 16px', backgroundColor: 'var(--color-accent)', color: '#FFFFFF', borderRadius: '8px', fontSize: '15px', fontWeight: 700, letterSpacing: '0.02em', fontFamily: 'var(--font-family-body)', cursor: (isLoading || isPasswordWeak) ? 'not-allowed' : 'pointer', opacity: (isLoading || isPasswordWeak) ? 0.5 : 1, transition: 'all 0.2s ease', boxShadow: '0 4px 12px rgba(245, 166, 35, 0.3)' }}
               onMouseEnter={(e) => {
                 if (!isLoading && !isPasswordWeak) {
-                  e.currentTarget.style.backgroundColor = colors.primaryDark
+                  e.currentTarget.style.backgroundColor = 'var(--color-accent-dark)'
                   e.currentTarget.style.transform = 'translateY(-1px)'
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(245, 166, 35, 0.4)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isLoading && !isPasswordWeak) {
-                  e.currentTarget.style.backgroundColor = colors.primary
+                  e.currentTarget.style.backgroundColor = 'var(--color-accent)'
                   e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,86,219,0.3)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(245, 166, 35, 0.3)'
                 }
               }}
             >
@@ -424,9 +432,9 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setSelectedRole(null)}
-              style={{ width: '100%', padding: '12px 16px', color: colors.textSecondary, transition: 'color 0.2s ease', fontFamily: 'Urbanist', fontSize: '14px', fontWeight: 500, cursor: 'pointer', backgroundColor: 'transparent', border: 'none' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = colors.textPrimary}
-              onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+              style={{ width: '100%', padding: '12px 16px', color: 'rgba(255,255,255,0.8)', transition: 'color 0.2s ease', fontFamily: 'var(--font-family-body)', fontSize: '14px', fontWeight: 500, cursor: 'pointer', backgroundColor: 'transparent', border: 'none' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,1)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
             >
               Back to role selection
             </button>
@@ -434,11 +442,11 @@ export default function SignupPage() {
         )}
 
         <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: '14px', color: colors.textSecondary }}>
+          <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-family-body)' }}>
             Already have an account?{' '}
-            <a href="/login" style={{ color: colors.primary, fontWeight: 600, textDecoration: 'none' }}
-               onMouseEnter={(e) => e.currentTarget.style.color = colors.primaryDark}
-               onMouseLeave={(e) => e.currentTarget.style.color = colors.primary}>
+            <a href="/login" style={{ color: 'var(--color-accent)', fontWeight: 600, textDecoration: 'none' }}
+               onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-dark)'}
+               onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-accent)'} >
               Sign in
             </a>
           </p>

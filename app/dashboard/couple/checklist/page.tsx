@@ -320,28 +320,14 @@ export default function WeddingChecklist() {
           height: '40px',
           border: '3px solid #f0e4d0',
           borderTop: `3px solid ${gold}`,
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
+          borderRadius: '50%'
         }}></div>
-        <style jsx>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
       </div>
     )
   }
 
   return (
-    <div style={{ backgroundColor: cream, color: brown, minHeight: '100vh' }}>
-      {/* Google Fonts */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link 
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;ital&family=Jost:wght@300;400;500&display=swap" 
-        rel="stylesheet" 
-      />
+    <div style={{ backgroundColor: '#f8faff', color: '#111827', minHeight: '100vh' }}>
       
       {/* Celebration Animation */}
       {celebrating && (
@@ -365,6 +351,7 @@ export default function WeddingChecklist() {
         </div>
       )}
 
+<<<<<<< HEAD
       {/* Hero Section Header */}
       <section className="hero-section" style={{ 
         minHeight: '200px',
@@ -492,88 +479,329 @@ export default function WeddingChecklist() {
             padding: '16px',
             textAlign: 'center'
           }}>
-            <div style={{
-              fontFamily: 'Cormorant Garamond',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: brown
-            }}>{stats.total}</div>
-            <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              color: muted,
-              marginTop: '4px'
-            }}>Total Tasks</div>
+=======
+      {/* Header - Modern Design */}
+      <div style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+        padding: '40px 32px',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated background elements */}
+        <div style={{
+          position: 'absolute',
+          top: -50,
+          right: -50,
+          width: 200,
+          height: 200,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+          animation: 'float 8s ease-in-out infinite'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: -30,
+          left: -30,
+          width: 150,
+          height: 150,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
+          animation: 'float 6s ease-in-out infinite reverse'
+        }} />
+        
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+            <div>
+              <h1 style={{
+                fontFamily: 'Urbanist',
+                fontSize: '42px',
+                fontWeight: 900,
+                color: '#ffffff',
+                marginBottom: '12px',
+                letterSpacing: '-0.03em',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+              }}>Wedding Checklist</h1>
+              <p style={{
+                fontFamily: 'Urbanist',
+                fontSize: '16px',
+                color: 'rgba(255,255,255,0.9)',
+                fontWeight: 500
+              }}>Stay organized and track your wedding planning progress</p>
+            </div>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={exportChecklist}
+                style={{
+                  background: 'rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(20px)',
+                  color: '#ffffff',
+                  padding: '12px 20px',
+                  fontFamily: 'Urbanist',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  borderRadius: '12px',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.3)'
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+              >
+                <Download size={16} />
+                Export
+              </button>
+              <button
+                onClick={() => setShowAddTask(true)}
+                style={{
+                  background: 'rgba(255,255,255,0.95)',
+                  color: '#667eea',
+                  padding: '12px 20px',
+                  fontFamily: 'Urbanist',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  borderRadius: '12px',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.3)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)'
+                }}
+              >
+                <Plus size={16} />
+                Add Task
+              </button>
+              <button
+                onClick={handleGenerateWithAI}
+                disabled={isGenerating}
+                style={{
+                  background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                  color: '#ffffff',
+                  padding: '12px 20px',
+                  fontFamily: 'Urbanist',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  border: 'none',
+                  cursor: isGenerating ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  borderRadius: '12px',
+                  opacity: isGenerating ? 0.7 : 1,
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 8px 24px rgba(245, 158, 11, 0.3)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isGenerating) {
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(245, 158, 11, 0.4)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isGenerating) {
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(245, 158, 11, 0.3)'
+                  }
+                }}
+              >
+                {isGenerating ? (
+                  <div>
+                    <div style={{
+                      width: '16px',
+                      height: '16px',
+                      border: '2px solid #ffffff',
+                      borderTop: '2px solid transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite'
+                    }}></div>
+                    Generating...
+                  </div>
+                ) : (
+                  <div>
+                    <Sparkles size={16} />
+                    Generate with AI
+                  </div>
+                )}
+              </button>
+            </div>
           </div>
-          <div style={{
-            backgroundColor: cream,
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px',
-            textAlign: 'center'
-          }}>
+
+          {/* Modern Stats Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
             <div style={{
-              fontFamily: 'Cormorant Garamond',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: brown
-            }}>{stats.completed}</div>
+              background: 'rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255,255,255,0.3)',
+              borderRadius: '16px',
+              padding: '20px',
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}>
+              <div style={{
+                fontFamily: 'Urbanist',
+                fontSize: '36px',
+                fontWeight: 900,
+                color: '#ffffff',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+              }}>{stats.total}</div>
+              <div style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.9)',
+                marginTop: '8px',
+                letterSpacing: '0.05em'
+              }}>Total Tasks</div>
+            </div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              color: muted,
-              marginTop: '4px'
-            }}>Completed</div>
-          </div>
-          <div style={{
-            backgroundColor: cream,
-            border: '0.5px solid rgba(180,140,90,0.2)',
-            padding: '16px',
-            textAlign: 'center'
-          }}>
+              background: 'rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255,255,255,0.3)',
+              borderRadius: '16px',
+              padding: '20px',
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}>
+              <div style={{
+                fontFamily: 'Urbanist',
+                fontSize: '36px',
+                fontWeight: 900,
+                color: '#ffffff',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+              }}>{stats.completed}</div>
+              <div style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.9)',
+                marginTop: '8px',
+                letterSpacing: '0.05em'
+              }}>Completed</div>
+            </div>
             <div style={{
-              fontFamily: 'Cormorant Garamond',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: brown
-            }}>{stats.pending}</div>
+              background: 'rgba(255,255,255,0.15)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255,255,255,0.3)',
+              borderRadius: '16px',
+              padding: '20px',
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}>
+              <div style={{
+                fontFamily: 'Urbanist',
+                fontSize: '36px',
+                fontWeight: 900,
+                color: '#ffffff',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+              }}>{stats.pending}</div>
+              <div style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.9)',
+                marginTop: '8px',
+                letterSpacing: '0.05em'
+              }}>Pending</div>
+            </div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              color: muted,
-              marginTop: '4px'
-            }}>Pending</div>
-          </div>
-          <div style={{
-            backgroundColor: '#fee2e2',
-            border: '0.5px solid rgba(220, 38, 38, 0.2)',
-            padding: '16px',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              fontFamily: 'Cormorant Garamond',
-              fontSize: '28px',
-              fontWeight: 300,
-              color: '#dc2626'
-            }}>{stats.urgent}</div>
-            <div style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              color: '#dc2626',
-              marginTop: '4px'
-            }}>Urgent</div>
+              background: 'rgba(239, 68, 68, 0.2)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(239, 68, 68, 0.4)',
+              borderRadius: '16px',
+              padding: '20px',
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)'
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.3)'
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(239, 68, 68, 0.3)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)'
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}>
+              <div style={{
+                fontFamily: 'Urbanist',
+                fontSize: '36px',
+                fontWeight: 900,
+                color: '#ffffff',
+                textShadow: '0 4px 8px rgba(239, 68, 68, 0.5)'
+              }}>{stats.urgent}</div>
+              <div style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.9)',
+                marginTop: '8px',
+                letterSpacing: '0.05em'
+              }}>Urgent</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Filters and Controls */}
+      {/* Modern Filters and Controls */}
       <div style={{
-        backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
-        padding: '16px 32px'
+        backgroundColor: '#f8faff',
+        borderBottom: '1px solid #e5edff',
+        padding: '20px 32px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -581,12 +809,24 @@ export default function WeddingChecklist() {
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
               style={{
-                padding: '6px 12px',
-                border: '0.5px solid rgba(180,140,90,0.3)',
-                fontFamily: 'Jost',
-                fontSize: '12px',
-                backgroundColor: 'white',
-                color: brown
+                padding: '10px 14px',
+                border: '1px solid #e5edff',
+                borderRadius: '10px',
+                fontFamily: 'Urbanist',
+                fontSize: '13px',
+                fontWeight: 500,
+                backgroundColor: '#ffffff',
+                color: '#111827',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onFocus={e => {
+                e.currentTarget.style.borderColor = '#667eea'
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+              }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor = '#e5edff'
+                e.currentTarget.style.boxShadow = 'none'
               }}
             >
               <option value="all">All Categories</option>
@@ -604,12 +844,24 @@ export default function WeddingChecklist() {
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as any)}
               style={{
-                padding: '6px 12px',
-                border: '0.5px solid rgba(180,140,90,0.3)',
-                fontFamily: 'Jost',
-                fontSize: '12px',
-                backgroundColor: 'white',
-                color: brown
+                padding: '10px 14px',
+                border: '1px solid #e5edff',
+                borderRadius: '10px',
+                fontFamily: 'Urbanist',
+                fontSize: '13px',
+                fontWeight: 500,
+                backgroundColor: '#ffffff',
+                color: '#111827',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onFocus={e => {
+                e.currentTarget.style.borderColor = '#667eea'
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+              }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor = '#e5edff'
+                e.currentTarget.style.boxShadow = 'none'
               }}
             >
               <option value="all">All Status</option>
@@ -621,12 +873,24 @@ export default function WeddingChecklist() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
               style={{
-                padding: '6px 12px',
-                border: '0.5px solid rgba(180,140,90,0.3)',
-                fontFamily: 'Jost',
-                fontSize: '12px',
-                backgroundColor: 'white',
-                color: brown
+                padding: '10px 14px',
+                border: '1px solid #e5edff',
+                borderRadius: '10px',
+                fontFamily: 'Urbanist',
+                fontSize: '13px',
+                fontWeight: 500,
+                backgroundColor: '#ffffff',
+                color: '#111827',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onFocus={e => {
+                e.currentTarget.style.borderColor = '#667eea'
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+              }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor = '#e5edff'
+                e.currentTarget.style.boxShadow = 'none'
               }}
             >
               <option value="order">Sort by Order</option>
@@ -636,12 +900,26 @@ export default function WeddingChecklist() {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'Jost', fontSize: '12px' }}>
+            <label style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              fontFamily: 'Urbanist', 
+              fontSize: '13px',
+              fontWeight: 500,
+              color: '#6b7280',
+              cursor: 'pointer'
+            }}>
               <input
                 type="checkbox"
                 checked={showCompleted}
                 onChange={(e) => setShowCompleted(e.target.checked)}
-                style={{ cursor: 'pointer' }}
+                style={{ 
+                  cursor: 'pointer',
+                  width: '16px',
+                  height: '16px',
+                  accentColor: '#667eea'
+                }}
               />
               Show completed
             </label>
@@ -1076,6 +1354,15 @@ export default function WeddingChecklist() {
       )}
 
       <style jsx>{`
+        @keyframes float {
+          0%, 100% { 
+            transform: translateY(0px) rotate(0deg); 
+          }
+          50% { 
+            transform: translateY(-20px) rotate(5deg); 
+          }
+        }
+        
         @keyframes celebrate {
           0% { 
             transform: translate(-50%, -50%) scale(0.5);
@@ -1089,6 +1376,11 @@ export default function WeddingChecklist() {
             transform: translate(-50%, -50%) scale(1);
             opacity: 0;
           }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
     </div>

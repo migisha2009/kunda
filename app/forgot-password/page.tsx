@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../../lib/firebase'
-import { Mail, ArrowLeft, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { Mail, ArrowLeft, CheckCircle, AlertCircle, Loader2, Heart } from 'lucide-react'
 import { colors, typography } from '../../lib/styles'
 
 export default function ForgotPasswordPage() {
@@ -53,6 +53,12 @@ export default function ForgotPasswordPage() {
         <div style={{ borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '32px', backgroundColor: colors.bgCard }}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--color-primary)' }}>
+                <Heart className="w-6 h-6 text-white" style={{ animation: 'heartbeat 2s infinite' }} />
+              </div>
+              <span className="ml-2" style={{ fontFamily: 'var(--font-family-heading)', color: '#FFFFFF', fontWeight: 700, fontSize: '24px' }}>Kunda</span>
+            </div>
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', backgroundColor: colors.primaryLight }}>
               <Mail style={{ width: '32px', height: '32px', color: colors.primary }} />
             </div>
