@@ -365,113 +365,126 @@ export default function WeddingChecklist() {
         </div>
       )}
 
-      {/* Header */}
-      <div style={{
-        backgroundColor: 'white',
-        borderBottom: '0.5px solid rgba(180,140,90,0.2)',
-        padding: '24px 32px'
+      {/* Hero Section Header */}
+      <section className="hero-section" style={{ 
+        minHeight: '200px',
+        padding: '60px 64px',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <div>
-            <h1 style={{
-              fontFamily: 'Cormorant Garamond',
-              fontSize: '32px',
-              fontWeight: 300,
-              color: brown,
-              marginBottom: '8px'
-            }}>Wedding Checklist</h1>
-            <p style={{
-              fontFamily: 'Jost',
-              fontSize: '14px',
-              color: muted
-            }}>
-              Track all your wedding planning tasks in one place
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button
-              onClick={exportChecklist}
-              style={{
-                border: `0.5px solid ${gold}`,
-                color: gold,
-                padding: '8px 16px',
-                fontFamily: 'Jost',
-                fontSize: '11px',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <Download size={16} />
-              Export
-            </button>
-            <button
-              onClick={() => setShowAddTask(true)}
-              style={{
-                backgroundColor: goldDark,
-                color: cream,
-                padding: '8px 16px',
-                fontFamily: 'Jost',
-                fontSize: '11px',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <Plus size={16} />
-              Add Task
-            </button>
-            <button
-              onClick={handleGenerateWithAI}
-              disabled={isGenerating}
-              style={{
-                background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                color: '#ffffff',
-                padding: '12px 20px',
-                fontFamily: 'Jost',
-                fontSize: '11px',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                border: 'none',
-                cursor: isGenerating ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                borderRadius: '8px',
-                opacity: isGenerating ? 0.7 : 1
-              }}
-            >
-              {isGenerating ? (
-                <>
-                  <div style={{
-                    width: '16px',
-                    height: '16px',
-                    border: '2px solid #ffffff',
-                    borderTop: '2px solid transparent',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite'
-                  }}></div>
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Sparkles size={16} />
-                  Generate with AI
-                </>
-              )}
-            </button>
-          </div>
+        {/* Decorative background rings */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-20 w-24 h-24 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite' }}></div>
+          <div className="absolute top-20 right-32 w-32 h-32 rounded-full border border-white opacity-8" style={{ animation: 'pulse 4s infinite 1s' }}></div>
         </div>
 
-        {/* Stats Cards */}
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 style={{
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-4xl)',
+                fontWeight: 'var(--font-weight-black)',
+                color: '#ffffff',
+                margin: 0,
+                marginBottom: '8px'
+              }}>Wedding Checklist</h1>
+              <p style={{
+                fontFamily: 'var(--font-family)',
+                fontSize: 'var(--font-size-lg)',
+                color: 'rgba(255,255,255,0.75)',
+                margin: 0
+              }}>
+                Track all your wedding planning tasks in one place
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={exportChecklist}
+                style={{
+                  border: `0.5px solid ${gold}`,
+                  color: gold,
+                  padding: '8px 16px',
+                  fontFamily: 'Jost',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  backgroundColor: 'transparent',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Download size={16} />
+                Export
+              </button>
+              <button
+                onClick={() => setShowAddTask(true)}
+                style={{
+                  backgroundColor: goldDark,
+                  color: cream,
+                  padding: '8px 16px',
+                  fontFamily: 'Jost',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Plus size={16} />
+                Add Task
+              </button>
+              <button
+                onClick={handleGenerateWithAI}
+                disabled={isGenerating}
+                style={{
+                  background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                  color: '#ffffff',
+                  padding: '12px 20px',
+                  fontFamily: 'Jost',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  border: 'none',
+                  cursor: isGenerating ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  borderRadius: '8px',
+                  opacity: isGenerating ? 0.7 : 1
+                }}
+              >
+                {isGenerating ? (
+                  <>
+                    <div style={{
+                      width: '16px',
+                      height: '16px',
+                      border: '2px solid #ffffff',
+                      borderTop: '2px solid transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite'
+                    }}></div>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={16} />
+                    Generate with AI
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Cards */}
+      <div style={{ padding: '32px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
           <div style={{
             backgroundColor: cream,
