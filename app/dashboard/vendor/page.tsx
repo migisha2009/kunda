@@ -226,19 +226,20 @@ export default function VendorDashboard() {
         }
       `}</style>
 
-      <nav style={{
-        background: 'var(--color-card)',
-        height: 64,
-        borderBottom: '1px solid var(--color-border)',
-        boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
-        className: 'nav-padding',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-      }}>
+      <nav 
+        className="nav-padding"
+        style={{
+          background: 'var(--color-card)',
+          height: 64,
+          borderBottom: '1px solid var(--color-border)',
+          boxShadow: '0 4px 12px rgba(75, 71, 165, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+        }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',

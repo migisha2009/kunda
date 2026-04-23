@@ -87,6 +87,70 @@ export default function CoupleDashboard() {
   const [showPaidOnly, setShowPaidOnly] = useState(false)
   const [notificationCount, setNotificationCount] = useState(0)
 
+  // Add CSS animations - client side only
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = `
+      @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.6; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+      }
+      
+      @keyframes slideInLeft {
+        0% { transform: translateX(-50px); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
+      }
+      
+      @keyframes slideInRight {
+        0% { transform: translateX(50px); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
+      }
+      
+      @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      @keyframes fadeInUp {
+        0% { transform: translateY(30px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+      
+      @keyframes checkmark {
+        0% { 
+          transform: scale(0) rotate(-45deg); 
+          opacity: 0; 
+        }
+        50% { 
+          transform: scale(1.2) rotate(-45deg); 
+          opacity: 1; 
+        }
+        100% { 
+          transform: scale(1) rotate(-45deg); 
+          opacity: 1; 
+        }
+      }
+    `
+    document.head.appendChild(style)
+    
+    return () => {
+      // Cleanup style element on unmount
+      if (document.head.contains(style)) {
+        document.head.removeChild(style)
+      }
+    }
+  }, [])
+
   // Guest state
   const [newGuest, setNewGuest] = useState({ name: '', email: '', phone: '', dietary: '', plusOne: false, plusOneName: '', notes: '' })
   const [guestFilter, setGuestFilter] = useState<'all' | 'attending' | 'declined' | 'pending' | 'maybe'>('all')
@@ -3086,58 +3150,3 @@ export default function CoupleDashboard() {
     </div>
   )
 }
-
-// Add CSS animations
-const style = document.createElement('style')
-style.textContent = `
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
-  }
-  
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-  }
-  
-  @keyframes slideInLeft {
-    0% { transform: translateX(-50px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-  }
-  
-  @keyframes slideInRight {
-    0% { transform: translateX(50px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-  }
-  
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-  
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-  
-  @keyframes fadeInUp {
-    0% { transform: translateY(30px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
-  }
-  
-  @keyframes checkmark {
-    0% { 
-      transform: scale(0) rotate(-45deg); 
-      opacity: 0; 
-    }
-    50% { 
-      transform: scale(1.2) rotate(-45deg); 
-      opacity: 1; 
-    }
-    100% { 
-      transform: scale(1) rotate(-45deg); 
-      opacity: 1; 
-    }
-  }
-`
-document.head.appendChild(style)

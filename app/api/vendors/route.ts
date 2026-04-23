@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllVendors } from '../../../lib/firestore'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
-    const category = request.nextUrl.searchParams.get('category')
-    const location = request.nextUrl.searchParams.get('location')
+    const { searchParams } = new URL(request.url)
+    const category = searchParams.get('category')
+    const location = searchParams.get('location')
 
     const vendors = await getAllVendors()
     
